@@ -1,32 +1,61 @@
-<template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+<template lang="html">
+  <div>
+    <div id="mobile">
+      <tc-header title="Fitness Planner" />
+      <tc-tabbar>
+        <tc-tabbar-item routeName="home" icon="house" title="Home" />
+      </tc-tabbar>
     </div>
+    <div id="desktop">
+      <tc-navbar>
+        <b slot="logo"><i class="ti-gym" /> Fitness Planner</b>
+        <tc-navbar-item routeName="home" icon="house" name="Home" />
+      </tc-navbar>
+    </div>
+
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+html {
+  font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Inter,
+    Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol;
+  scroll-behavior: smooth;
+  text-rendering: auto;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+
+  background: $background;
+  color: $color;
 }
 
-#nav {
-  padding: 30px;
+body {
+  margin: 0;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+a {
+  text-decoration: none;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+#mobile {
+  @media #{$isDesktop} {
+    display: none;
+  }
+}
+#desktop {
+  @media #{$isMobile} {
+    display: none;
+  }
+}
+
+[content] {
+  padding: 50px 5vw {
+    top: calc(50px + env(safe-area-inset-top));
+    bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+  @media #{$isMobile} {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
   }
 }
 </style>

@@ -5,7 +5,7 @@ module.exports = {
       // eslint-disable-next-line @typescript-eslint/camelcase
       start_url: '.'
     },
-    name: 'Newsroom',
+    name: 'Fitness Planner',
     themeColor: '#000',
     msTileColor: '#ffffff',
     appleMobileWebAppCapable: 'yes',
