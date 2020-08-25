@@ -4,12 +4,14 @@
       <tc-header title="Fitness Planner" />
       <tc-tabbar>
         <tc-tabbar-item routeName="home" icon="house" title="Home" />
+        <tc-tabbar-item routeName="community" icon="users" title="Community" />
       </tc-tabbar>
     </div>
     <div id="desktop">
       <tc-navbar>
         <b slot="logo"><i class="ti-gym" /> Fitness Planner</b>
         <tc-navbar-item routeName="home" icon="house" name="Home" />
+        <tc-navbar-item routeName="community" icon="users" name="Community" />
       </tc-navbar>
     </div>
 
