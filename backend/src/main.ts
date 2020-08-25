@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
 
 const KEY_PATH = '/etc/letsencrypt/live/api.timos.design/';
+
 async function bootstrap() {
   const httpsOptions: HttpsOptions = {};
   let app: NestApplication;
