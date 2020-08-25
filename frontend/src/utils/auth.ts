@@ -1,7 +1,7 @@
 import store from '@/store';
 import { IUser } from './interfaces';
 
-function getToken(): string | null {
+export function getToken(): string | null {
   return localStorage.getItem('fitness-planner-auth');
 }
 export function getUserFromJWT(): IUser {

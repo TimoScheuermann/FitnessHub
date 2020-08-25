@@ -6,10 +6,13 @@ import {
   Param,
   Post,
   Put,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
+import FPUser from 'src/auth/user.decorator';
+import { IUser } from 'src/user/interfaces/IUser';
 import { ITrainingplan } from './interfaces/ITrainingplan';
 import { TrainingplanService } from './trainingplan.service';
 
@@ -17,17 +20,8 @@ import { TrainingplanService } from './trainingplan.service';
 export class TrainingplanController {
   constructor(private readonly trainingplanService: TrainingplanService) {}
 
-  // timo 5f453b8db14a934804094c36
-
   @Get()
   async getAllPlans(): Promise<ITrainingplan[]> {
-    await this.trainingplanService.updateById({
-      ...(
-        await this.trainingplanService.getPlanById('5f455c0ad3f38d41288bc0e5')
-      ).toObject(),
-      author: '5f453b8db14a934804094c36',
-      title: 'First plan',
-    });
     return this.trainingplanService.getAllPlans();
   }
 
@@ -38,20 +32,35 @@ export class TrainingplanController {
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
-  async deleteById(@Param('id') id: string): Promise<ITrainingplan> {
+  async deleteById(
+    @FPUser() user: IUser,
+    @Param('id') id: string,
+  ): Promise<ITrainingplan> {
+    const plan = await this.trainingplanService.getPlanById(id);
+    if (plan.author !== user._id) {
+      throw new UnauthorizedException();
+    }
     return this.trainingplanService.deletePlanById(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put()
-  async updateById(@Body() plan: ITrainingplan): Promise<ITrainingplan> {
+  async updateById(
+    @FPUser() user: IUser,
+    @Body() plan: ITrainingplan,
+  ): Promise<ITrainingplan> {
+    if (plan.author !== user._id) {
+      throw new UnauthorizedException();
+    }
     return this.trainingplanService.updateById(plan);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   async createTrainingplan(
+    @FPUser() user: IUser,
     @Body() plan: ITrainingplan,
   ): Promise<ITrainingplan> {
-    return this.trainingplanService.create(plan);
+    return this.trainingplanService.create({ ...plan, author: user._id });
   }
 }
