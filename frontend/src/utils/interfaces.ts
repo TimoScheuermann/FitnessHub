@@ -7,5 +7,25 @@ export interface IUser {
   readonly avatar: string;
   readonly date: number;
   readonly group: string;
-  readonly plans: string[];
+}
+export interface IUserInfo {
+  username: string;
+  avatar: string;
+}
+
+export interface ITrainingplan {
+  _id?: string;
+  readonly title: string;
+  readonly author: string;
+  readonly category: string;
+  readonly time: number;
+  readonly units: ITrainingUnit[];
+}
+export interface ITrainingUnit {
+  name: string;
+  repetitions: number;
+  sets: number;
+  video: string;
+  image: string;
+  affectedMuscles: string[];
 }
