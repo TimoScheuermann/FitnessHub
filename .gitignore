@@ -2,7 +2,10 @@
 node_modules
 /dist
 backend/dist
+fronted/dist
 dist
+
+backend/.env
 
 # local env files
 .env.local
