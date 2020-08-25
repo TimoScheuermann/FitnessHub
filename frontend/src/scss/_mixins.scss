@@ -1,0 +1,98 @@
+@mixin backdrop-blur($bdbColor) {
+  background: $bdbColor;
+  @supports (backdrop-filter: saturate(180%) blur(20px)) {
+    background: rgba($bdbColor, 0.5);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+
+@mixin tc-container {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  height: 20px;
+  margin: 3px;
+  user-select: none;
+  transition: 0.2s ease-in-out;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+@mixin tc-container__dark {
+  @include tc-container();
+  color: #fff;
+  background: lighten($color, 20%);
+  border-color: rgba(#fff, 0.01);
+  &:hover,
+  &:focus,
+  &:focus-within {
+    border-color: rgba(#fff, 0.4);
+  }
+}
+@mixin tc-container__light {
+  @include tc-container();
+  color: $color;
+  background: $paragraph;
+  border-radius: $border-radius;
+  &:hover,
+  &:focus,
+  &:focus-within {
+    border-color: rgba($color, 0.4);
+  }
+}
+
+@mixin tc-container--title {
+  text-align: left;
+  font-weight: bold;
+  position: absolute;
+  white-space: nowrap;
+  top: -25px;
+}
+@mixin tc-container--indicator__icon {
+  padding-right: 5px;
+  margin-right: 5px;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 0.5px;
+    border-radius: 10px;
+    right: 0;
+    opacity: 0.6;
+    background: currentColor;
+  }
+}
+
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    position: absolute !important;
+    border-radius: 4px;
+    transition: 0.2s ease;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    transition: 0.2s ease;
+    border-radius: 4px;
+  }
+}
+@mixin custom-scrollbar__dark {
+  @include custom-scrollbar();
+  &::-webkit-scrollbar-thumb {
+    background: #666;
+    &:hover {
+      background: #888;
+    }
+  }
+}
+
+@mixin custom-scrollbar__light {
+  @include custom-scrollbar();
+  &::-webkit-scrollbar-thumb {
+    background: #aaa;
+    &:hover {
+      background: #888;
+    }
+  }
+}
