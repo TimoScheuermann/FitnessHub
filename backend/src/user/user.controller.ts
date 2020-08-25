@@ -23,8 +23,8 @@ export class UserController {
     };
   }
 
-  @Get(':id/plan')
-  async getUsersPlan(@Param('id') id: string): Promise<any> {
-    return {};
+  @Get(':id/plans')
+  async getUsersPlan(@Param('id') id: string): Promise<any[]> {
+    return [{}];
   }
 }

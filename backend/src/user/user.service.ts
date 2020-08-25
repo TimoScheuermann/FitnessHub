@@ -32,7 +32,7 @@ export class UserService {
         ...iuser,
         date: new Date().getTime(),
         group: 'User',
-        plan: '',
+        plans: [],
       });
       return user;
     }

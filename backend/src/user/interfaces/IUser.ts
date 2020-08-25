@@ -9,5 +9,5 @@ export interface IUser {
   readonly avatar: string;
   readonly date?: number;
   readonly group?: string;
-  readonly plan?: string;
+  readonly plans?: string[];
 }

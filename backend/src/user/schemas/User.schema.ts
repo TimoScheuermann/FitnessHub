@@ -26,7 +26,7 @@ export class User extends Document {
   date: number;
 
   @Prop()
-  plan: string;
+  plans: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
