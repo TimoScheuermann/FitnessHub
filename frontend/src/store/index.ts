@@ -1,12 +1,31 @@
 /* eslint-disable */
+import { IUser } from '@/utils/interfaces';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+  state: {
+    user: {} as IUser,
+    userValidated: false
+  },
+  getters: {
+    valid: (state: any): boolean => {
+      return state.userValidated;
+    },
+    user: (state: any): IUser => {
+      return state.user;
+    }
+  },
+  mutations: {
+    signOut(state: any) {
+      state.userValidated = false;
+      state.user = undefined;
+    },
+    signIn(state: any, user: IUser) {
+      state.user = user;
+      state.userValidated = true;
+    }
+  }
 });

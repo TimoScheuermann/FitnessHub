@@ -5,6 +5,7 @@
       <tc-tabbar>
         <tc-tabbar-item routeName="home" icon="house" title="Home" />
         <tc-tabbar-item routeName="community" icon="users" title="Community" />
+        <tc-tabbar-item routeName="login" icon="login" title="Anmelden" />
       </tc-tabbar>
     </div>
     <div id="desktop">
@@ -12,6 +13,9 @@
         <b slot="logo"><i class="ti-gym" /> Fitness Planner</b>
         <tc-navbar-item routeName="home" icon="house" name="Home" />
         <tc-navbar-item routeName="community" icon="users" name="Community" />
+        <template slot="actions">
+          <tc-button name="Anmelden" icon="login" routeName="login" />
+        </template>
       </tc-navbar>
     </div>
 

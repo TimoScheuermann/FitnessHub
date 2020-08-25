@@ -1,6 +1,8 @@
 <template>
   <div class="home" content>
-    Home
+    <h1>Home</h1>
+    <p>User valid: {{ $store.getters.valid }}</p>
+    <p>User: {{ $store.getters.user }}</p>
   </div>
 </template>
 

@@ -18,6 +18,11 @@ const router = new VueRouter({
       component: () => import('@/views/Community.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/Login.vue')
+    },
+    {
       path: '*',
       redirect: { name: 'home' }
     }
