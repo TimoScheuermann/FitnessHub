@@ -4,6 +4,7 @@
 
 * [Frontend](https://fitness-planner.timos.design/)
 * [Backend](https://api.timos.design:3000/)
+* [Jira](https://fancyfitnessplanner.atlassian.net/)
 
 ## Gruppenmitglieder
 * Jeannine Bertrand
