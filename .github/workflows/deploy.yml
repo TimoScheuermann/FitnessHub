@@ -1,0 +1,15 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: git pull, build and deploy
+        if: github.event.commits[0].message != 'synch'
+        run: |
+          echo "Starte deploy",
+          sshpass -p ${{ secrets.pw }} ssh root@api.timos.design -o StrictHostKeyChecking=no < ./deploy.bash
