@@ -1,5 +1,10 @@
 # Fitness-Planner
 
+## Links (alle https)
+
+[Frontend](https://fitness-planner.timos.design/)
+[Backend](https://api.timos.design:3000/)
+
 ## Gruppenmitglieder
 Jeannine Bertrand, Velichka Popp, Jan Eger, Nicolas Fürhaupter, Moritz Jürgens, Timo Scheuermann
 
