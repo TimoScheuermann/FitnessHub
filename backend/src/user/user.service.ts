@@ -13,7 +13,7 @@ export class UserService {
     private readonly tgbotService: TgbotService,
   ) {}
 
-  async userExists(provider: Provider, thirdPartyId: number): Promise<boolean> {
+  async userExists(provider: Provider, thirdPartyId: string): Promise<boolean> {
     const users = await this.userModel.findOne({
       provider: provider,
       thirdPartyId: thirdPartyId,
@@ -53,7 +53,7 @@ export class UserService {
 
   async getUserByOAuth(
     provider: Provider,
-    thirdPartyId: number | string,
+    thirdPartyId: string,
   ): Promise<User> {
     return this.userModel.findOne({
       provider: provider,

@@ -1,6 +1,6 @@
 export interface IUser {
   readonly _id: string;
-  readonly thirdPartyId: number | string;
+  readonly thirdPartyId: string;
   readonly provider: 'google' | 'github' | 'adobe' | 'amazon';
   readonly givenName: string;
   readonly familyName: string;

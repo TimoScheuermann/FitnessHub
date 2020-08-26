@@ -33,7 +33,7 @@ export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
         avatar: photos[0].value,
         familyName: '',
         givenName: username,
-        thirdPartyId: id,
+        thirdPartyId: `${id}`,
         provider: Provider.GITHUB,
       };
 

@@ -17,7 +17,7 @@ export class User extends Document {
   provider: Provider;
 
   @Prop()
-  thirdPartyId: number | string;
+  thirdPartyId: string;
 
   @Prop()
   group: string;

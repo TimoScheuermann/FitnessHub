@@ -32,7 +32,7 @@ export class SteamStrategy extends PassportStrategy(Strategy, 'steam') {
         avatar: _json.avatarfull,
         familyName: '',
         givenName: displayName,
-        thirdPartyId: id,
+        thirdPartyId: `${id}`,
         provider: Provider.STEAM,
       };
 

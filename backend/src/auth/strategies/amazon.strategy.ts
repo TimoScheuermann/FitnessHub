@@ -30,7 +30,7 @@ export class AmazonStrategy extends PassportStrategy(Strategy, 'amazon') {
         avatar: '',
         familyName: '',
         givenName: profile.displayName,
-        thirdPartyId: profile.id,
+        thirdPartyId: `${profile.id}`,
         provider: Provider.AMAZON,
       };
       const jwt = await this.authService.validateOAuthLogin(user);

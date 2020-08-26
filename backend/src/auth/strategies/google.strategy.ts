@@ -33,7 +33,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         avatar: photos[0].value,
         familyName: name.familyName,
         givenName: name.givenName,
-        thirdPartyId: profile.id,
+        thirdPartyId: `${profile.id}`,
         provider: Provider.GOOGLE,
       };
 

@@ -30,7 +30,7 @@ export class AdobeStrategy extends PassportStrategy(Strategy, 'adobe') {
         avatar: '',
         familyName: profile._json.last_name,
         givenName: profile._json.first_name,
-        thirdPartyId: profile.id,
+        thirdPartyId: `${profile.id}`,
         provider: Provider.ADOBE,
       };
       const jwt = await this.authService.validateOAuthLogin(user);
