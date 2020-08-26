@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { TrainingplanModule } from './trainingplan/trainingplan.module';
 import { UserModule } from './user/user.module';
+import { TgbotModule } from './tgbot/tgbot.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     AuthModule,
     TrainingplanModule,
+    TgbotModule,
   ],
   controllers: [AppController],
 })
