@@ -28,6 +28,7 @@
     "@nestjs/mongoose": "^7.0.2",
     "@nestjs/passport": "^7.1.0",
     "@nestjs/platform-express": "^7.4.2",
+    "@nestjs/swagger": "^4.6.0",
     "fs-sync": "^1.0.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.0",
@@ -41,7 +42,8 @@
     "passport-steam": "^1.0.14",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^6.13.2",

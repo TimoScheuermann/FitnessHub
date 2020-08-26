@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBody } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FPUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -43,6 +44,7 @@ export class TrainingplanController {
     return this.trainingplanService.deletePlanById(id);
   }
 
+  @ApiBody({ description: 'Test' })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put()
   async updateById(
