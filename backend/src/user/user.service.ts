@@ -45,7 +45,7 @@ export class UserService {
 
   async getUserByOAuth(
     provider: Provider,
-    thirdPartyId: number,
+    thirdPartyId: number | string,
   ): Promise<User> {
     return this.userModel.findOne({
       provider: provider,
