@@ -12,7 +12,11 @@
           title="Profil"
         />
         <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
-        <tc-tabbar-item routeName="nutrition" icon="apple" title="Ernährung" />
+        <tc-tabbar-item
+          routeName="nutrition"
+          icon="food-bowl"
+          title="Ernährung"
+        />
         <tc-tabbar-item routeName="search" icon="lens" title="Suche" />
       </tc-tabbar>
     </div>
@@ -21,7 +25,11 @@
         <b slot="logo"><i class="ti-gym" /> Fitness Planner</b>
         <tc-navbar-item routeName="home" icon="house" name="Start" />
         <tc-navbar-item routeName="community" icon="users" name="Community" />
-        <tc-navbar-item routeName="nutrition" icon="apple" name="Ernährung" />
+        <tc-navbar-item
+          routeName="nutrition"
+          icon="food-bowl"
+          name="Ernährung"
+        />
         <tc-navbar-item routeName="search" icon="lens" name="Suche" />
         <template slot="actions">
           <tc-button
@@ -88,6 +96,7 @@ html {
 
 body {
   margin: 0;
+  min-height: 100vh;
 }
 
 a {
