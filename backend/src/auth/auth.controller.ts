@@ -31,4 +31,30 @@ export class AuthController {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
+
+  @Get('outlook')
+  @UseGuards(AuthGuard('outlook'))
+  outlookLogin() {
+    // initiates the outlook OAuth2 login flow
+  }
+
+  @Get('outlook/callback')
+  @UseGuards(AuthGuard('outlook'))
+  outlookLoginCallback(@Req() req: any, @Res() res) {
+    const jwt: string = req.user.jwt;
+    this.authService.redirect(jwt, res);
+  }
+
+  @Get('adobe')
+  @UseGuards(AuthGuard('adobe'))
+  adobeLogin() {
+    // initiates the adobe OAuth2 login flow
+  }
+
+  @Get('adobe/callback')
+  @UseGuards(AuthGuard('adobe'))
+  adobeLoginCallback(@Req() req: any, @Res() res) {
+    const jwt: string = req.user.jwt;
+    this.authService.redirect(jwt, res);
+  }
 }

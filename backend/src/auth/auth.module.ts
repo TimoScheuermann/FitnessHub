@@ -6,11 +6,20 @@ import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { AdobeStrategy } from './strategies/adobe.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { OutlookStrategy } from './strategies/outlook.strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy, GitHubStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    GoogleStrategy,
+    GitHubStrategy,
+    OutlookStrategy,
+    AdobeStrategy,
+  ],
   imports: [
     UserModule,
     JwtModule.registerAsync({
