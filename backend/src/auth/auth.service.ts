@@ -9,6 +9,7 @@ export enum Provider {
   GOOGLE = 'google',
   GITHUB = 'github',
   OUTLOOK = 'outlook',
+  ADOBE = 'adobe',
 }
 
 @Injectable()
