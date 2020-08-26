@@ -26,6 +26,11 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     store.commit('signIn', getUserFromJWT());
   }
 
+  if (to.name === 'login' && store.getters.valid) {
+    next({ name: 'profile' });
+    return;
+  }
+
   if (to.meta.needsSignIn && !store.getters.valid) {
     next(from);
     return;
