@@ -4,7 +4,7 @@
 
 | Type | Path       | Parameter  | Body | Returns         | Description                     |
 | ---- | ---------- | ---------- | ---- | --------------- | ------------------------------- |
-| POST | /verify    | x          | x    | error / true    | Verifies a user                 |
+| POST | /verify    | x          | x    | error / true    | Check if a user is verified     |
 | GET  | /:id       | id: string | x    | IUserInfo       | returns a users name and avatar |
 | GET  | /:id/plans | id: string | x    | ITrainingplan[] | returns a users created plans   |
 
@@ -16,8 +16,9 @@
 | GET  | /github | x         | x    | x       | Sign in with GitHub |
 | GET  | /adobe  | x         | x    | x       | Sign in with Adobe  |
 | GET  | /amazon | x         | x    | x       | Sign in with Amazon |
+| GET  | /steam  | x         | x    | x       | Sign in with Steam  |
 
-### trainingplan
+### Trainingplan
 
 | Type   | Path | Parameter  | Body          | Returns                   | Description                             |
 | ------ | ---- | ---------- | ------------- | ------------------------- | --------------------------------------- |

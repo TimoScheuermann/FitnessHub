@@ -1,10 +1,14 @@
 # Fitness-Planner
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e82e9b04-0e9a-4c26-84ea-10b6c940d433/deploy-status)](https://app.netlify.com/sites/fitness-planner/deploys)
+[![Website Fitness Planner](https://img.shields.io/website-up-down-green-red/https/fitness-planner.timos.design.svg)]()
+[![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/kennethreitz)
 
 ## Links (alle https)
 
 * [Frontend](https://fitness-planner.timos.design/)
 * [Backend](https://api.timos.design:3000/)
 * [Jira](https://fancyfitnessplanner.atlassian.net/)
+* [Endpoints](https://github.com/TimoScheuermann/Fitness-Planner/blob/master/REST.md)
 
 ## Gruppenmitglieder
 * Jeannine Bertrand
@@ -76,7 +80,11 @@ Ernährung:
 - Rezepte
 
 Login:
-- Sign in with xy
+- Sign in with Google
+- Sign in with GitHub
+- Sign in with Steam
+- Sign in with Adobe
+- Sign in with Amazon
 
 
 
