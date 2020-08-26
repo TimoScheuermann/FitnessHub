@@ -2,14 +2,12 @@
   <div class="login">
     <tc-hero :dark="true">
       <img
-        src="https://images.unsplash.com/photo-1517344368193-41552b6ad3f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+        src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
         slot="background"
         alt=""
       />
-      <tl-flow flow="column">
-        <h1>Melde dich an</h1>
-        <h2>und werde Teil der Community</h2>
-      </tl-flow>
+      <h1>Melde dich an</h1>
+      <h2>und werde Teil der Community</h2>
     </tc-hero>
     <div content>
       <h1>Login</h1>
@@ -80,18 +78,10 @@ export default class Login extends Vue {
 
 <style lang="scss" scoped>
 .tc-hero {
-  img {
-    filter: brightness(80%);
+  h1,
+  h2 {
+    margin: 2.5px 0;
+    text-align: center;
   }
-  .tl-flow {
-    h1,
-    h2 {
-      margin: 2.5px 0;
-      text-align: center;
-    }
-  }
-}
-[content] {
-  padding-top: 0;
 }
 </style>

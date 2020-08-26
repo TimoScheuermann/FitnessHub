@@ -16,6 +16,11 @@ export default new Vuex.Store({
     },
     user: (state: any): IUser => {
       return state.user;
+    },
+    name: (state: any): string => {
+      return [state.user.givenName, state.user.familyName]
+        .filter(x => !!x)
+        .join(' ');
     }
   },
   mutations: {

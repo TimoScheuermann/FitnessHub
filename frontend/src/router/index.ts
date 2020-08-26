@@ -23,6 +23,16 @@ const router = new VueRouter({
       component: () => import('@/views/Login.vue')
     },
     {
+      path: '/nutrition',
+      name: 'nutrition',
+      component: () => import('@/views/Nutrition.vue')
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import('@/views/Search.vue')
+    },
+    {
       path: '/profile',
       name: 'profile',
       component: () => import('@/views/Profile.vue'),

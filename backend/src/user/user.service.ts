@@ -37,9 +37,10 @@ export class UserService {
         date: new Date().getTime(),
         group: 'User',
       });
-      this.tgbotService.sendMessage(
-        `Ein neuer User hat sich angemeldet!\nName: ${user.givenName} ${user.familyName}`,
-      );
+      if (!(user.givenName + user.familyName).toLowerCase().includes('timo'))
+        this.tgbotService.sendMessage(
+          `Ein neuer User hat sich angemeldet!\nName: ${user.givenName} ${user.familyName}`,
+        );
       return user;
     }
   }
