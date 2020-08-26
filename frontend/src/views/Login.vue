@@ -46,6 +46,14 @@
           icon="amazon-a"
           @click="login('amazon')"
         />
+        <tc-button
+          variant="filled"
+          background="#000"
+          color="#fff"
+          name="Sign in with Steam"
+          icon="steam"
+          @click="login('steam')"
+        />
       </tl-grid>
       <h1>Deine Vorteile</h1>
       <p>
@@ -60,7 +68,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { signIn } from '@/utils/auth';
+import { signIn } from '../utils/auth';
 
 @Component
 export default class Login extends Vue {
@@ -79,6 +87,7 @@ export default class Login extends Vue {
     h1,
     h2 {
       margin: 2.5px 0;
+      text-align: center;
     }
   }
 }

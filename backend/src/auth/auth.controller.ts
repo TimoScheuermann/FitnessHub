@@ -57,4 +57,17 @@ export class AuthController {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
+
+  @Get('steam')
+  @UseGuards(AuthGuard('steam'))
+  steamLogin() {
+    // initiates the steam OAuth2 login flow
+  }
+
+  @Get('steam/callback')
+  @UseGuards(AuthGuard('steam'))
+  steamLoginCallback(@Req() req: any, @Res() res) {
+    const jwt: string = req.user.jwt;
+    this.authService.redirect(jwt, res);
+  }
 }

@@ -1,3 +1,4 @@
+import router from '@/router';
 import store from '@/store';
 import { IUser } from './interfaces';
 
@@ -18,6 +19,7 @@ export function signIn(provider = 'google') {
 export function signOut() {
   localStorage.removeItem('fitness-planner-auth');
   store.commit('signOut');
+  router.push({ name: 'home' });
 }
 
 export async function verfiyUser(): Promise<boolean> {

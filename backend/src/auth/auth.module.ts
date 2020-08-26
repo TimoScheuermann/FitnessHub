@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { AdobeStrategy } from './strategies/adobe.strategy';
 import { AmazonStrategy } from './strategies/amazon.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { SteamStrategy } from './strategies/steam.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -19,6 +20,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
     GitHubStrategy,
     AdobeStrategy,
     AmazonStrategy,
+    SteamStrategy,
   ],
   imports: [
     UserModule,

@@ -23,6 +23,14 @@ const router = new VueRouter({
       component: () => import('@/views/Login.vue')
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('@/views/Profile.vue'),
+      meta: {
+        needsSignIn: true
+      }
+    },
+    {
       path: '*',
       redirect: { name: 'home' }
     }
