@@ -32,19 +32,6 @@ export class AuthController {
     this.authService.redirect(jwt, res);
   }
 
-  @Get('outlook')
-  @UseGuards(AuthGuard('outlook'))
-  outlookLogin() {
-    // initiates the outlook OAuth2 login flow
-  }
-
-  @Get('outlook/callback')
-  @UseGuards(AuthGuard('outlook'))
-  outlookLoginCallback(@Req() req: any, @Res() res) {
-    const jwt: string = req.user.jwt;
-    this.authService.redirect(jwt, res);
-  }
-
   @Get('adobe')
   @UseGuards(AuthGuard('adobe'))
   adobeLogin() {
@@ -54,6 +41,19 @@ export class AuthController {
   @Get('adobe/callback')
   @UseGuards(AuthGuard('adobe'))
   adobeLoginCallback(@Req() req: any, @Res() res) {
+    const jwt: string = req.user.jwt;
+    this.authService.redirect(jwt, res);
+  }
+
+  @Get('amazon')
+  @UseGuards(AuthGuard('amazon'))
+  amazonLogin() {
+    // initiates the amazon OAuth2 login flow
+  }
+
+  @Get('amazon/callback')
+  @UseGuards(AuthGuard('amazon'))
+  amazonLoginCallback(@Req() req: any, @Res() res) {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }

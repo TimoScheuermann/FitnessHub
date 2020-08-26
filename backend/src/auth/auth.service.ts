@@ -8,8 +8,9 @@ import { UserService } from 'src/user/user.service';
 export enum Provider {
   GOOGLE = 'google',
   GITHUB = 'github',
-  OUTLOOK = 'outlook',
+  AMAZON = 'amazon',
   ADOBE = 'adobe',
+  STEAM = 'steam',
 }
 
 @Injectable()

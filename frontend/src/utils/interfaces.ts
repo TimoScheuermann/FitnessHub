@@ -1,7 +1,7 @@
 export interface IUser {
   readonly _id: string;
-  readonly thirdPartyId: number;
-  readonly provider: 'google' | 'github';
+  readonly thirdPartyId: number | string;
+  readonly provider: 'google' | 'github' | 'adobe' | 'amazon';
   readonly givenName: string;
   readonly familyName: string;
   readonly avatar: string;
@@ -9,12 +9,12 @@ export interface IUser {
   readonly group: string;
 }
 export interface IUserInfo {
-  username: string;
-  avatar: string;
+  readonly username: string;
+  readonly avatar: string;
 }
 
 export interface ITrainingplan {
-  _id?: string;
+  readonly _id: string;
   readonly title: string;
   readonly author: string;
   readonly category: string;
@@ -22,10 +22,10 @@ export interface ITrainingplan {
   readonly units: ITrainingUnit[];
 }
 export interface ITrainingUnit {
-  name: string;
-  repetitions: number;
-  sets: number;
-  video: string;
-  image: string;
-  affectedMuscles: string[];
+  readonly name: string;
+  readonly repetitions: number;
+  readonly sets: number;
+  readonly video: string;
+  readonly image: string;
+  readonly affectedMuscles: string[];
 }

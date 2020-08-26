@@ -14,6 +14,8 @@
 | ---- | ------- | --------- | ---- | ------- | ------------------- |
 | GET  | /google | x         | x    | x       | Sign in with Google |
 | GET  | /github | x         | x    | x       | Sign in with GitHub |
+| GET  | /adobe  | x         | x    | x       | Sign in with Adobe  |
+| GET  | /amazon | x         | x    | x       | Sign in with Amazon |
 
 ### trainingplan
 

@@ -15,14 +15,36 @@
       <h1>Login</h1>
       <tl-grid gap="30px 0px">
         <tc-button
+          variant="filled"
+          background="#000"
+          color="#fff"
           name="Sign in with Google"
           icon="google"
           @click="login('google')"
         />
         <tc-button
+          variant="filled"
+          background="#000"
+          color="#fff"
           name="Sign in with GitHub"
           icon="github"
           @click="login('github')"
+        />
+        <tc-button
+          variant="filled"
+          background="#000"
+          color="#fff"
+          name="Sign in with Adobe"
+          icon="adobe"
+          @click="login('adobe')"
+        />
+        <tc-button
+          variant="filled"
+          background="#000"
+          color="#fff"
+          name="Sign in with Amazon"
+          icon="amazon-a"
+          @click="login('amazon')"
         />
       </tl-grid>
       <h1>Deine Vorteile</h1>
@@ -39,6 +61,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { signIn } from '@/utils/auth';
+
 @Component
 export default class Login extends Vue {
   public login(provider = 'google') {

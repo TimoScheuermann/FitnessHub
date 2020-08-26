@@ -5307,6 +5307,13 @@ passport-adobe-oauth2@^1.0.1:
     passport-oauth "1.0.x"
     pkginfo "0.2.x"
 
+passport-amazon@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-amazon/-/passport-amazon-1.0.0.tgz#8cbd998a84734c72aaaf752951af230d10a18fa0"
+  integrity sha1-jL2ZioRzTHKqr3UpUa8jDRChj6A=
+  dependencies:
+    passport-oauth2 "1.x.x"
+
 passport-github@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/passport-github/-/passport-github-1.1.0.tgz#8ce1e3fcd61ad7578eb1df595839e4aea12355d4"
@@ -5356,14 +5363,6 @@ passport-oauth@1.0.x:
   dependencies:
     passport-oauth1 "1.x.x"
     passport-oauth2 "1.x.x"
-
-passport-outlook@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/passport-outlook/-/passport-outlook-2.2.1.tgz#4ce00cbb9069a412092eaed0f8a94fd5a9f7bcaa"
-  integrity sha512-f/I8k6p5eCWN6tehQot//+No2mBQgSEw/JiD+HyqwJ4ExYj8cqpXDJFO3J/Iqxvs7da1XM5gQxUTYaPA9uffoA==
-  dependencies:
-    passport-oauth2 "1.x.x"
-    request "2.x.x"
 
 passport-steam@^1.0.14:
   version "1.0.14"
@@ -5863,7 +5862,7 @@ request-promise-native@^1.0.5:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@2.x.x, request@^2.87.0, request@^2.88.2:
+request@^2.87.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
