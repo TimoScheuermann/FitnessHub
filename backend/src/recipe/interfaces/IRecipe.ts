@@ -1,5 +1,5 @@
+import { INutrition } from './INutrition';
 import { IRecipeIngredient } from './IRecipeIngredient';
-
 export interface IRecipe {
   _id?: string;
   readonly title: string;
@@ -8,5 +8,6 @@ export interface IRecipe {
   readonly video: string;
   readonly image: string;
   readonly ingredients: IRecipeIngredient[];
-  readonly calories: number;
+  readonly nutrition: INutrition[];
+  readonly category: string;
 }

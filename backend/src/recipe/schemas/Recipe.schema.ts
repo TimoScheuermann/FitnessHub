@@ -27,6 +27,9 @@ export class Recipe extends Document {
 
   @Prop()
   calories: number;
+
+  @Prop()
+  category: string;
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);
