@@ -6,6 +6,9 @@ import { AuthModule } from './auth/auth.module';
 import { TrainingplanModule } from './trainingplan/trainingplan.module';
 import { UserModule } from './user/user.module';
 import { TgbotModule } from './tgbot/tgbot.module';
+import { RecipeModule } from './recipe/recipe.module';
+import { NutritionplanService } from './nutritionplan/nutritionplan.service';
+import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
 
 @Module({
   imports: [
@@ -26,7 +29,10 @@ import { TgbotModule } from './tgbot/tgbot.module';
     AuthModule,
     TrainingplanModule,
     TgbotModule,
+    RecipeModule,
+    NutritionplanModule,
   ],
   controllers: [AppController],
+  providers: [NutritionplanService],
 })
 export class AppModule {}
