@@ -113,12 +113,12 @@ export default class Friends extends Vue {
   }
 
   public async denyInvite(id: string): Promise<void> {
-    await axios.delete('friends/deny' + id);
+    await axios.delete('friends/deny/' + id);
     this.loadInvites();
   }
 
   public async removeFriend(id: string): Promise<void> {
-    await axios.delete('friends/remove' + id);
+    await axios.delete('friends/remove/' + id);
     this.loadFriends();
   }
 }
