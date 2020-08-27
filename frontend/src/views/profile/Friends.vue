@@ -1,6 +1,9 @@
 <template>
   <div class="friends">
-    <tc-hero>
+    <tc-hero
+      color="#fff"
+      gradient="linear-gradient(90deg, rgb(243, 114, 209) 0%,rgb(44, 19, 241) 100%);"
+    >
       <h1>Freunde</h1>
     </tc-hero>
     <div content>
