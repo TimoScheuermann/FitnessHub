@@ -9,6 +9,7 @@ export interface IUser {
   readonly group: string;
 }
 export interface IUserInfo {
+  readonly _id: string;
   readonly username: string;
   readonly avatar: string;
 }

@@ -9,6 +9,7 @@ import { TgbotModule } from './tgbot/tgbot.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { NutritionplanService } from './nutritionplan/nutritionplan.service';
 import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
     TgbotModule,
     RecipeModule,
     NutritionplanModule,
+    FriendsModule,
   ],
   controllers: [AppController],
   providers: [NutritionplanService],

@@ -1,3 +1,4 @@
+import EmptyRouter from '@/views-interim/EmptyRouter.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -33,12 +34,31 @@ const router = new VueRouter({
       component: () => import('@/views/Search.vue')
     },
     {
+      path: '/playground',
+      name: 'playground',
+      component: () => import('@/views/Playground.vue')
+    },
+    {
       path: '/profile',
-      name: 'profile',
-      component: () => import('@/views/Profile.vue'),
-      meta: {
-        needsSignIn: true
-      }
+      component: EmptyRouter,
+      children: [
+        {
+          path: '',
+          name: 'profile',
+          component: () => import('@/views/profile/Profile.vue'),
+          meta: {
+            needsSignIn: true
+          }
+        },
+        {
+          path: '/friends',
+          name: 'friends',
+          component: () => import('@/views/profile/Friends.vue'),
+          meta: {
+            needsSignIn: true
+          }
+        }
+      ]
     },
     {
       path: '*',

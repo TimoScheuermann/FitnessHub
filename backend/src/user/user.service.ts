@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Provider } from 'src/auth/auth.service';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from './interfaces/IUser';
+import { IUserInfo } from './interfaces/IUserInfo';
 import { User } from './schemas/User.schema';
 
 @Injectable()
@@ -64,5 +65,38 @@ export class UserService {
     return this.userModel.findOne({
       _id: id,
     });
+  }
+
+  async getUserInfoById(id: string): Promise<IUserInfo> {
+    const user = await this.getUserById(id);
+    return {
+      _id: user._id,
+      username: this.transformName(user),
+      avatar: user.avatar,
+    };
+  }
+
+  public async find(query: string): Promise<IUserInfo[]> {
+    const reg = new RegExp(`${query}`, 'i');
+    return (
+      await this.userModel
+        .find({
+          $or: [{ familyName: reg }, { givenName: reg }],
+        })
+        .limit(30)
+    )
+      .map(x => x.toObject())
+      .map((x: IUser) => {
+        return {
+          _id: x._id,
+          avatar: x.avatar,
+          username: this.transformName(x),
+        } as IUserInfo;
+      })
+      .sort((a, b) => a.username.localeCompare(b.username));
+  }
+
+  public transformName(user: IUser): string {
+    return [user.givenName, user.familyName].filter(x => !!x).join(' ');
   }
 }

@@ -1,8 +1,10 @@
-import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
+import FPUser from 'src/auth/user.decorator';
 import { ITrainingplan } from 'src/trainingplan/interfaces/ITrainingplan';
 import { TrainingplanService } from 'src/trainingplan/trainingplan.service';
+import { IUser } from './interfaces/IUser';
 import { IUserInfo } from './interfaces/IUserInfo';
 import { UserService } from './user.service';
 
@@ -21,15 +23,17 @@ export class UserController {
 
   @Get(':id')
   async getUserDetails(@Param('id') id: string): Promise<IUserInfo> {
-    const user = await this.userService.getUserById(id);
-    return {
-      username: [user.givenName, user.familyName].filter(x => !!x).join(' '),
-      avatar: user.avatar,
-    };
+    return this.userService.getUserInfoById(id);
   }
 
-  @Get(':id/plans')
-  async getUsersPlan(@Param('id') id: string): Promise<ITrainingplan[]> {
-    return this.trainingplanService.getPlansOfUser(id);
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('plans')
+  async getUsersPlan(@FPUser() user: IUser): Promise<ITrainingplan[]> {
+    return this.trainingplanService.getPlansOfUser(user._id);
+  }
+
+  @Post('search')
+  async findUser(@Body() body: any): Promise<IUserInfo[]> {
+    return this.userService.find(body.query);
   }
 }
