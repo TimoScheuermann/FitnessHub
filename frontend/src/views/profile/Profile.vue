@@ -1,15 +1,21 @@
 <template>
   <div class="profile">
-    <tc-hero
-      color="#fff"
-      gradient="linear-gradient(90deg, rgb(243, 114, 209) 0%,rgb(44, 19, 241) 100%);"
-    >
-      <tl-flow flow="column">
+    <tc-hero :hasFixedHeader="false" :height="200">
+      <img
+        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+        slot="background"
+        alt=""
+      />
+      <tl-flow>
         <fp-avatar />
-        <h1>{{ name }}</h1>
+        <div class="info">
+          <div class="name">{{ name }}</div>
+          <div class="date">Mitglied seit: {{ date }}</div>
+        </div>
       </tl-flow>
     </tc-hero>
     <div content>
+      <h1>Profil</h1>
       <tc-list tfcolor="error">
         <tc-list-item title="Abmelden" icon="logout" @click="signout" />
       </tc-list>
@@ -39,6 +45,11 @@ export default class Profile extends Vue {
     return [user.givenName, user.familyName].filter(x => !!x).join(' ');
   }
 
+  get date(): string {
+    const date: Date = new Date(this.$store.getters.user.date);
+    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+  }
+
   public signout() {
     signOut();
   }
@@ -46,13 +57,26 @@ export default class Profile extends Vue {
 </script>
 
 <style lang="scss" scoped>
-[content] {
-  padding-top: 20px;
-}
-.tc-hero h1 {
-  margin: 0;
-  margin-top: 5px;
-  text-align: center;
+.tc-hero {
+  img {
+    filter: brightness(60%);
+  }
+  .tl-flow {
+    margin-top: env(safe-area-inset-top);
+    .fp-avatar,
+    .tc-avatar {
+      transform: scale(0.8);
+      margin: 5px;
+    }
+    .info {
+      margin: 5px;
+      color: #fff;
+      .name {
+        font-weight: 500;
+        font-size: 1.2em;
+      }
+    }
+  }
 }
 .tc-list {
   margin-bottom: 20px;

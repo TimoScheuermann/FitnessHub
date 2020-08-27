@@ -1,7 +1,6 @@
 <template lang="html">
   <div>
     <div id="mobile">
-      <tc-header title="Fitness Planner" :autoBackground="true" />
       <tc-tabbar>
         <tc-tabbar-item routeName="home" icon="house" title="Start" />
         <tc-tabbar-item routeName="community" icon="users" title="Community" />
@@ -43,15 +42,7 @@
     </div>
 
     <div class="view">
-      <transition
-        name="fade"
-        mode="out-in"
-        @beforeLeave="beforeLeave"
-        @enter="enter"
-        @afterEnter="afterEnter"
-        >>
-        <router-view />
-      </transition>
+      <router-view />
     </div>
   </div>
 </template>
@@ -60,25 +51,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class App extends Vue {
-  public prevHeight = '0';
-
-  beforeLeave(element: HTMLElement) {
-    this.prevHeight = getComputedStyle(element).height;
-  }
-
-  enter(element: HTMLElement) {
-    const { height } = getComputedStyle(element);
-    element.style.height = this.prevHeight;
-    setTimeout(() => {
-      element.style.height = height;
-    });
-  }
-
-  afterEnter(element: HTMLElement) {
-    element.style.height = 'auto';
-  }
-}
+export default class App extends Vue {}
 </script>
 
 <style lang="scss">
@@ -121,16 +94,5 @@ a {
   @media #{$isMobile} {
     padding-bottom: calc(70px + env(safe-area-inset-bottom));
   }
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition-duration: 0.2s;
-  transition-property: opacity;
-  transition-timing-function: ease;
-}
-
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
 }
 </style>

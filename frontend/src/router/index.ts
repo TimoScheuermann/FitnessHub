@@ -51,7 +51,7 @@ const router = new VueRouter({
           }
         },
         {
-          path: '/friends',
+          path: 'friends',
           name: 'friends',
           component: () => import('@/views/profile/Friends.vue'),
           meta: {

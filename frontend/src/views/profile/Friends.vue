@@ -1,14 +1,23 @@
 <template>
   <div class="friends">
-    <tc-hero
+    <tc-header-button
+      slot="button"
       color="#fff"
-      gradient="linear-gradient(90deg, rgb(243, 114, 209) 0%,rgb(44, 19, 241) 100%);"
-    >
+      routeName="profile"
+      name="Profil"
+    />
+    <tc-hero :hasFixedHeader="false" :height="200">
+      <img
+        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+        slot="background"
+        alt=""
+      />
       <h1>Freunde</h1>
     </tc-hero>
+
     <div content>
       <fp-user-search v-model="modalOpened" @user="invite" />
-      <tc-headline title="Anfragen" />
+      <h1>Anfragen</h1>
 
       <tc-table>
         <template slot="head">
@@ -47,9 +56,10 @@
         </tc-tr>
       </tc-table>
 
-      <tc-headline title="Freunde">
+      <tl-flow horizontal="space-between">
+        <h1>Freunde</h1>
         <tc-link @click="modalOpened = true">Freund hinzufügen</tc-link>
-      </tc-headline>
+      </tl-flow>
       <tc-table>
         <template slot="head">
           <tc-th></tc-th>
@@ -128,9 +138,20 @@ export default class Friends extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.friends {
+.tc-hero {
+  img {
+    filter: brightness(60%);
+  }
   h1 {
     margin: 0px;
+    margin-top: env(safe-area-inset-top);
+    color: #fff;
   }
+}
+.tc-header-button {
+  position: absolute;
+  z-index: 10;
+  left: 5vw;
+  top: calc(20px + env(safe-area-inset-top));
 }
 </style>

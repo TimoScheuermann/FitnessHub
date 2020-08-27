@@ -1,58 +1,50 @@
 <template>
   <div class="login">
-    <tc-hero :dark="true">
+    <tc-hero :hasFixedHeader="false" :height="200">
       <img
         src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
         slot="background"
         alt=""
       />
-      <h1>Melde dich an</h1>
-      <h2>und werde Teil der Community</h2>
+      <div class="info">
+        <div class="title">Melde dich an</div>
+        <div class="subtitle">und werde Teil der Community</div>
+      </div>
     </tc-hero>
     <div content>
       <h1>Login</h1>
-      <tl-grid gap="30px 0px">
-        <tc-button
-          variant="filled"
-          background="#000"
-          color="#fff"
-          name="Sign in with Google"
+      <tc-list>
+        <tc-list-item
+          title="Sign in with Google"
           icon="google"
           @click="login('google')"
+          href="."
         />
-        <tc-button
-          variant="filled"
-          background="#000"
-          color="#fff"
-          name="Sign in with GitHub"
+        <tc-list-item
+          title="Sign in with GitHub"
           icon="github"
           @click="login('github')"
+          href="."
         />
-        <tc-button
-          variant="filled"
-          background="#000"
-          color="#fff"
-          name="Sign in with Adobe"
-          icon="adobe"
-          @click="login('adobe')"
-        />
-        <tc-button
-          variant="filled"
-          background="#000"
-          color="#fff"
-          name="Sign in with Amazon"
-          icon="amazon-a"
-          @click="login('amazon')"
-        />
-        <tc-button
-          variant="filled"
-          background="#000"
-          color="#fff"
-          name="Sign in with Steam"
+        <tc-list-item
+          title="Sign in with Steam"
           icon="steam"
           @click="login('steam')"
+          href="."
         />
-      </tl-grid>
+        <tc-list-item
+          title="Sign in with Adobe"
+          icon="adobe"
+          @click="login('adobe')"
+          href="."
+        />
+        <tc-list-item
+          title="Sign in with Amazon"
+          icon="amazon-a"
+          @click="login('amazon')"
+          href="."
+        />
+      </tc-list>
       <h1>Deine Vorteile</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti facere
@@ -78,10 +70,20 @@ export default class Login extends Vue {
 
 <style lang="scss" scoped>
 .tc-hero {
-  h1,
-  h2 {
-    margin: 2.5px 0;
+  img {
+    filter: brightness(60%);
+  }
+  .info {
+    margin-top: env(safe-area-inset-top);
+    color: #fff;
     text-align: center;
+    .title {
+      font-weight: 500;
+      font-size: 1.4em;
+    }
+    .subtitle {
+      font-size: 1.2em;
+    }
   }
 }
 </style>
