@@ -42,7 +42,8 @@ export interface IRecipe {
   readonly video: string;
   readonly image: string;
   readonly ingredients: IRecipeIngredient[];
-  readonly calories: number;
+  readonly nutrition: INutrition[];
+  readonly category: string;
 }
 export interface INutritionplan {
   _id: string;
