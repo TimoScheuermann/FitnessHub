@@ -29,3 +29,8 @@ export interface ITrainingUnit {
   readonly image: string;
   readonly affectedMuscles: string[];
 }
+export interface IRecipeIngredient {
+  readonly name: string;
+  readonly amount: string;
+  readonly unit: string;
+}
