@@ -11,9 +11,6 @@ export class Recipe extends Document {
   author: string;
 
   @Prop()
-  category: string;
-
-  @Prop()
   time: number;
 
   @Prop({
@@ -29,13 +26,7 @@ export class Recipe extends Document {
   ingredients: IRecipeIngredient[];
 
   @Prop()
-  name: string;
-
-  @Prop()
-  amount: string;
-
-  @Prop()
-  unit: string;
+  calories: number;
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

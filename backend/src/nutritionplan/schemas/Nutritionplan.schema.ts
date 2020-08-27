@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { INutritionDish } from '../interfaces/INutritionDish';
+import { IRecipe } from 'src/recipe/interfaces/IRecipe';
 
 @Schema()
 export class Nutritionplan extends Document {
@@ -11,13 +11,10 @@ export class Nutritionplan extends Document {
   author: string;
 
   @Prop()
-  category: string;
-
-  @Prop()
   time: number;
 
   @Prop()
-  dishes: INutritionDish[];
+  recipes: IRecipe[];
 }
 
 export const NutritionplanSchema = SchemaFactory.createForClass(Nutritionplan);

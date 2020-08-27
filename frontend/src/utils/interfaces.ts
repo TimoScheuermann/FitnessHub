@@ -34,3 +34,20 @@ export interface IRecipeIngredient {
   readonly amount: string;
   readonly unit: string;
 }
+export interface IRecipe {
+  _id?: string;
+  readonly title: string;
+  readonly author: string;
+  readonly time: number;
+  readonly video: string;
+  readonly image: string;
+  readonly ingredients: IRecipeIngredient[];
+  readonly calories: number;
+}
+export interface INutritionplan {
+  _id: string;
+  readonly title: string;
+  readonly author: string;
+  readonly time: number;
+  readonly recipes: IRecipe[];
+}
