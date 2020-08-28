@@ -18,31 +18,26 @@
           title="Sign in with Google"
           icon="google"
           @click="login('google')"
-          href="."
         />
         <tc-list-item
           title="Sign in with GitHub"
           icon="github"
           @click="login('github')"
-          href="."
         />
         <tc-list-item
           title="Sign in with Steam"
           icon="steam"
           @click="login('steam')"
-          href="."
         />
         <tc-list-item
           title="Sign in with Adobe"
           icon="adobe"
           @click="login('adobe')"
-          href="."
         />
         <tc-list-item
           title="Sign in with Amazon"
           icon="amazon-a"
           @click="login('amazon')"
-          href="."
         />
       </tc-list>
       <h1>Deine Vorteile</h1>

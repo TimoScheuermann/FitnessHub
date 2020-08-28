@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -13,68 +12,52 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import FPUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
-import { UserService } from 'src/user/user.service';
 import { FriendsService } from './friends.service';
-import { IFriendship } from './interfaces/IFriendship';
+import { IPendingFriendship } from './interfaces/IPendingFriendship';
 
 @Controller('friends')
 export class FriendsController {
-  constructor(
-    private readonly friendsService: FriendsService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly friendsService: FriendsService) {}
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getFriends(@FPUser() user: IUser): Promise<IUserInfo[]> {
-    const friends: string[] = await this.friendsService.getFriendsOf(user._id);
-    return Promise.all(
-      friends.map(async x => await this.userService.getUserInfoById(x)),
-    );
+    return this.friendsService.getFriendsOf(user._id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('invitations')
-  async getFriendInvitations(@FPUser() user: IUser): Promise<IFriendship[]> {
-    const data = await this.friendsService.getInvitations(user._id);
-    return Promise.all(
-      data.map(async x => {
-        return {
-          _id: x._id,
-          invitee: x.invitee,
-          target: x.target,
-          accepted: x.accepted,
-          inviteeUser: await this.userService.getUserInfoById(x.invitee),
-          targetUser: await this.userService.getUserInfoById(x.target),
-        };
-      }),
-    );
-  }
-
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @FriendIDParam('ids')
-  // @UseGuards(AuthGuard('jwt'), FriendsGuard)
-  // @Get('test/:id')
-  // d() {
-  //   return { a: 'YES' };
-  // }
-
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Post()
-  async inviteFriend(@FPUser() user, @Body() body: any): Promise<boolean> {
-    return this.friendsService.sendInvitation(user._id, body.targetId);
+  async getFriendInvitations(
+    @FPUser() user: IUser,
+  ): Promise<IPendingFriendship[]> {
+    return this.friendsService.getInvitations(user._id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Put()
-  async acceptFriend(@Body() body: any) {
-    return this.friendsService.acceptFriendship(body.friendshipId);
+  @Post('invite/:targetId')
+  async inviteFriend(
+    @FPUser() user,
+    @Param('targetId') targetId: string,
+  ): Promise<boolean> {
+    return this.friendsService.sendInvitation(user._id, targetId);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Put('accept/:friendshipId')
+  async acceptFriend(
+    @FPUser() user: IUser,
+    @Param('friendshipId') friendshipId: string,
+  ) {
+    return this.friendsService.acceptFriendship(user._id, friendshipId);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('deny/:friendshipId')
-  async denyFriend(@Param('friendshipId') friendshipId: string) {
-    return this.friendsService.denyFriendship(friendshipId);
+  async denyFriend(
+    @FPUser() user: IUser,
+    @Param('friendshipId') friendshipId: string,
+  ) {
+    return this.friendsService.denyFriendship(user._id, friendshipId);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

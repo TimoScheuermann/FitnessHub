@@ -6,5 +6,6 @@ export default Axios.create({
   headers: {
     Authorization: `Bearer ${getToken()}`
   },
+  // baseURL: 'http://localhost:3000/'
   baseURL: 'https://api.timos.design:3000/'
 });

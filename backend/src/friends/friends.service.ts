@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { IUserInfo } from 'src/user/interfaces/IUserInfo';
+import { UserService } from 'src/user/user.service';
 import { IFriendship } from './interfaces/IFriendship';
+import { IPendingFriendship } from './interfaces/IPendingFriendship';
 import { Friendship } from './schemas/Friendship.schema';
 
 @Injectable()
 export class FriendsService {
   constructor(
     @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
+    private userService: UserService,
   ) {}
 
   public async doesFriendshipExist(
@@ -31,7 +35,7 @@ export class FriendsService {
     }));
   }
 
-  public async getFriendsOf(id: string): Promise<string[]> {
+  public async getFriendsOf(id: string): Promise<IUserInfo[]> {
     const friends = await this.friendshipModel.find({
       $or: [
         {
@@ -44,9 +48,16 @@ export class FriendsService {
         },
       ],
     });
-    return friends
-      .map(x => x.toObject())
-      .map((x: IFriendship) => (x.invitee === id ? x.target : x.invitee));
+    return Promise.all(
+      friends
+        .map(x => x.toObject())
+        .map(
+          async (x: IFriendship) =>
+            await this.userService.getUserInfoById(
+              x.invitee === id ? x.target : x.invitee,
+            ),
+        ),
+    );
   }
 
   public async deleteFriendship(
@@ -68,9 +79,12 @@ export class FriendsService {
     return true;
   }
 
-  public async acceptFriendship(friendshipId: string): Promise<boolean> {
+  public async acceptFriendship(
+    targetId: string,
+    friendshipId: string,
+  ): Promise<boolean> {
     await this.friendshipModel.findOneAndUpdate(
-      { _id: friendshipId },
+      { _id: friendshipId, target: targetId },
       { $set: { accepted: true } },
     );
     return true;
@@ -95,8 +109,8 @@ export class FriendsService {
     }));
   }
 
-  public async getInvitations(user: string): Promise<Friendship[]> {
-    return this.friendshipModel.find({
+  public async getInvitations(user: string): Promise<IPendingFriendship[]> {
+    const friendships = await this.friendshipModel.find({
       $or: [
         {
           target: user,
@@ -108,6 +122,15 @@ export class FriendsService {
         },
       ],
     });
+    return Promise.all(
+      friendships.map(async (x: IFriendship) => {
+        return {
+          _id: x._id,
+          invitee: await this.userService.getUserInfoById(x.invitee),
+          target: await this.userService.getUserInfoById(x.target),
+        } as IPendingFriendship;
+      }),
+    );
   }
 
   public async sendInvitation(
@@ -125,8 +148,14 @@ export class FriendsService {
     return true;
   }
 
-  public async denyFriendship(friendshipId: string): Promise<boolean> {
-    await this.friendshipModel.findOneAndDelete({ _id: friendshipId });
+  public async denyFriendship(
+    targetId: string,
+    friendshipId: string,
+  ): Promise<boolean> {
+    await this.friendshipModel.findOneAndDelete({
+      _id: friendshipId,
+      target: targetId,
+    });
     return true;
   }
 }

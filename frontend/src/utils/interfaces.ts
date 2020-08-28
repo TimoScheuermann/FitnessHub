@@ -58,3 +58,9 @@ export interface INutrition {
   readonly amount: number;
   readonly unit: string;
 }
+
+export interface IPendingFriendship {
+  _id: string;
+  invitee: IUserInfo;
+  target: IUserInfo;
+}

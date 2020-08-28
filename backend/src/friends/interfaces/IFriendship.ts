@@ -1,9 +1,6 @@
-import { IUserInfo } from 'src/user/interfaces/IUserInfo';
-
 export interface IFriendship {
+  readonly _id: string;
   readonly accepted: boolean;
   readonly invitee: string;
   readonly target: string;
-  readonly inviteeUser?: IUserInfo;
-  readonly targetUser?: IUserInfo;
 }

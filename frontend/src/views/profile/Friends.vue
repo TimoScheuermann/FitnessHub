@@ -17,74 +17,71 @@
 
     <div content>
       <fp-user-search v-model="modalOpened" @user="invite" />
+
       <h1>Anfragen</h1>
 
-      <tc-table>
-        <template slot="head">
-          <tc-th></tc-th>
-          <tc-th>Username</tc-th>
-          <tc-th></tc-th>
-          <tc-th></tc-th>
-        </template>
-        <tc-tr v-for="u in invites" :key="u._id">
-          <template v-if="u.invitee === $store.getters.user._id">
-            <tc-td>
-              <fp-avatar :user="u.targetUser" size="tiny" />
-            </tc-td>
-            <tc-td>{{ u.targetUser.username }}</tc-td>
-            <tc-td>warte auf Antwort...</tc-td>
-            <tc-td>
-              <tc-link tfcolor="error">abbrechen</tc-link>
-            </tc-td>
-          </template>
-          <template v-else>
-            <tc-td>
-              <fp-avatar :user="u.inviteeUser" size="tiny" />
-            </tc-td>
-            <tc-td>{{ u.inviteeUser.username }}</tc-td>
-            <tc-td>
-              <tc-link tfcolor="success" @click="acceptInvite(u._id)">
-                annehmen
-              </tc-link>
-            </tc-td>
-            <tc-td>
-              <tc-link tfcolor="error" @click="denyInvite(u._id)">
-                ablehnen
-              </tc-link>
-            </tc-td>
-          </template>
-        </tc-tr>
-      </tc-table>
+      <div class="friend-list">
+        <div class="friend" v-for="i in invites" :key="i._id">
+          <tl-flow horizontal="space-between">
+            <template v-if="i.invitee._id === $store.getters.user._id">
+              <tl-flow>
+                <fp-avatar :user="i.target" />
+                <div class="name">{{ i.target.username }}</div>
+              </tl-flow>
+              <tl-flow>
+                <div class="pending">pending</div>
+                <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
+                  <i class="ti-cross" />
+                </tc-link>
+              </tl-flow>
+            </template>
+            <template v-else>
+              <tl-flow>
+                <fp-avatar :user="i.invitee" />
+                <div class="name">{{ i.invitee.username }}</div>
+              </tl-flow>
+              <tl-flow>
+                <tc-link tfcolor="success" @click="acceptInvite(i._id)">
+                  <i class="ti-checkmark" />
+                </tc-link>
+                <tc-link tfcolor="error" @click="denyInvite(i._id)">
+                  <i class="ti-cross" />
+                </tc-link>
+              </tl-flow>
+            </template>
+          </tl-flow>
+        </div>
+      </div>
 
       <tl-flow horizontal="space-between">
         <h1>Freunde</h1>
-        <tc-link @click="modalOpened = true">Freund hinzufügen</tc-link>
+        <tc-link @click="modalOpened = true">
+          <i class="ti-plus-inverted" /> Freund hinzufügen
+        </tc-link>
       </tl-flow>
-      <tc-table>
-        <template slot="head">
-          <tc-th></tc-th>
-          <tc-th>Username</tc-th>
-          <tc-th></tc-th>
-        </template>
-        <tc-tr v-for="u in friends" :key="u._id">
-          <tc-td>
-            <fp-avatar :user="u" size="tiny" />
-          </tc-td>
-          <tc-td>{{ u.username }}</tc-td>
-          <tc-td>
-            <tc-link tfcolor="error" @click="removeFriend(u._id)">
-              remove
-            </tc-link>
-          </tc-td>
-        </tc-tr>
-      </tc-table>
+
+      <div class="friend-list">
+        <div class="friend" v-for="f in friends" :key="f._id">
+          <tl-flow horizontal="space-between">
+            <tl-flow>
+              <fp-avatar :user="f" />
+              <div class="name">{{ f.username }}</div>
+            </tl-flow>
+            <tl-flow>
+              <tc-link tfcolor="error" @click="removeFriend(f._id)">
+                <i class="ti-trashcan-alt" />
+              </tc-link>
+            </tl-flow>
+          </tl-flow>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { IUserInfo } from '@/utils/interfaces';
+import { IUserInfo, IPendingFriendship } from '@/utils/interfaces';
 import axios from '@/utils/axios';
 import FPUserSearch from '@/components/shared/FP-UserSearch.vue';
 import FPAvatar from '@/components/shared/FP-Avatar.vue';
@@ -99,7 +96,7 @@ export default class Friends extends Vue {
   public modalOpened = false;
 
   public friends: IUserInfo[] = [];
-  public invites: IUserInfo[] = [];
+  public invites: IPendingFriendship[] = [];
 
   mounted() {
     this.loadFriends();
@@ -115,23 +112,23 @@ export default class Friends extends Vue {
   }
 
   public async invite(user: IUserInfo): Promise<void> {
-    await axios.post('friends', { targetId: user._id });
+    await axios.post('friends/invite/' + user._id);
     this.loadInvites();
   }
 
-  public async acceptInvite(id: string): Promise<void> {
-    await axios.put('friends', { friendshipId: id });
+  public async acceptInvite(friendshipId: string): Promise<void> {
+    await axios.put('friends/accept/' + friendshipId);
     this.loadInvites();
     this.loadFriends();
   }
 
-  public async denyInvite(id: string): Promise<void> {
-    await axios.delete('friends/deny/' + id);
+  public async denyInvite(friendshipId: string): Promise<void> {
+    await axios.delete('friends/deny/' + friendshipId);
     this.loadInvites();
   }
 
-  public async removeFriend(id: string): Promise<void> {
-    await axios.delete('friends/remove/' + id);
+  public async removeFriend(friendId: string): Promise<void> {
+    await axios.delete('friends/remove/' + friendId);
     this.loadFriends();
   }
 }
@@ -153,5 +150,32 @@ export default class Friends extends Vue {
   z-index: 10;
   left: 5vw;
   top: calc(20px + env(safe-area-inset-top));
+}
+.friend-list {
+  background: $paragraph;
+  padding: 0 10px;
+  border-radius: $border-radius;
+  .friend {
+    padding: 10px 0;
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(black, 0.1);
+    }
+    .tc-avatar,
+    .fp-avatar {
+      height: 30px;
+      width: 30px;
+    }
+    .name {
+      margin-left: 10px;
+      font-weight: 500;
+    }
+    .pending {
+      opacity: 0.6;
+      font-style: italic;
+    }
+    .tc-link:nth-child(2) {
+      margin-left: 10px;
+    }
+  }
 }
 </style>
