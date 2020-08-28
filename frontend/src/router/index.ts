@@ -1,4 +1,5 @@
 import EmptyRouter from '@/views-interim/EmptyRouter.vue';
+import ManagementInterim from '@/views-interim/ManagementInterim.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -56,6 +57,48 @@ const router = new VueRouter({
           component: () => import('@/views/profile/Friends.vue'),
           meta: {
             needsSignIn: true
+          }
+        }
+      ]
+    },
+    {
+      path: '/management',
+      component: ManagementInterim,
+      children: [
+        {
+          path: 'promote-user',
+          name: 'promoteUser',
+          component: () => import('@/views/management/PromoteUser.vue'),
+          meta: {
+            needsSignIn: true,
+            allowedGroups: ['admin']
+          }
+        },
+        {
+          path: 'submitted-exercises',
+          name: 'submittedExercises',
+          component: () => import('@/views/management/SubmittedExercises.vue'),
+          meta: {
+            needsSignIn: true,
+            allowedGroups: ['admin', 'moderator']
+          }
+        },
+        {
+          path: 'statistics',
+          name: 'statistics',
+          component: () => import('@/views/management/Statistics.vue'),
+          meta: {
+            needsSignIn: true,
+            allowedGroups: ['admin', 'moderator']
+          }
+        },
+        {
+          path: 'support-tickets',
+          name: 'supportTickets',
+          component: () => import('@/views/management/SupportTickets.vue'),
+          meta: {
+            needsSignIn: true,
+            allowedGroups: ['admin', 'moderator']
           }
         }
       ]

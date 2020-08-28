@@ -158,4 +158,8 @@ export class FriendsService {
     });
     return true;
   }
+
+  public async getTotalFriendships(): Promise<number> {
+    return this.friendshipModel.find().countDocuments();
+  }
 }

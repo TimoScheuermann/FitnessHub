@@ -64,3 +64,13 @@ export interface IPendingFriendship {
   invitee: IUserInfo;
   target: IUserInfo;
 }
+export interface IGeneralStatistics {
+  readonly users: number;
+  readonly friendships: number;
+  readonly workouts: number;
+  readonly exercises: number;
+}
+export interface ILoginProviderStatistic {
+  readonly provider: string;
+  readonly amount: number;
+}

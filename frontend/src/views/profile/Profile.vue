@@ -25,6 +25,32 @@
         <tc-list-item title="Workouts" icon="gym" />
         <tc-list-item title="Gesundheit" icon="heart" />
       </tc-list>
+      <div id="test" v-group.admin.moderator>
+        <h1>Management</h1>
+        <tc-list>
+          <tc-list-item
+            title="Support Tickets"
+            icon="ticket"
+            routeName="supportTickets"
+          />
+          <tc-list-item
+            title="Eingereichte Übungen"
+            icon="reply"
+            routeName="submittedExercises"
+          />
+          <tc-list-item
+            title="Statistik"
+            icon="chart-bar"
+            routeName="statistics"
+          />
+          <tc-list-item
+            v-group.admin
+            title="Promote User"
+            icon="user-shield"
+            routeName="promoteUser"
+          />
+        </tc-list>
+      </div>
     </div>
   </div>
 </template>

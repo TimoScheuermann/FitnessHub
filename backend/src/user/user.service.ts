@@ -99,4 +99,12 @@ export class UserService {
   public transformName(user: IUser): string {
     return [user.givenName, user.familyName].filter(x => !!x).join(' ');
   }
+
+  public async getTotalUsers(): Promise<number> {
+    return this.userModel.countDocuments();
+  }
+
+  public async getAmountByOAuth(provider: Provider): Promise<any> {
+    return this.userModel.find({ provider: provider }).countDocuments();
+  }
 }

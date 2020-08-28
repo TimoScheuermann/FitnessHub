@@ -14,5 +14,6 @@ import { Friendship, FriendshipSchema } from './schemas/Friendship.schema';
   ],
   providers: [FriendsService],
   controllers: [FriendsController],
+  exports: [FriendsService],
 })
 export class FriendsModule {}

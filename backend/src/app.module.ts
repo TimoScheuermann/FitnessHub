@@ -10,6 +10,8 @@ import { RecipeModule } from './recipe/recipe.module';
 import { NutritionplanService } from './nutritionplan/nutritionplan.service';
 import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
 import { FriendsModule } from './friends/friends.module';
+import { StatisticsModule } from './management/statistics/statistics.module';
+import { PromoteModule } from './management/promote/promote.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { FriendsModule } from './friends/friends.module';
     RecipeModule,
     NutritionplanModule,
     FriendsModule,
+    StatisticsModule,
+    PromoteModule,
   ],
   controllers: [AppController],
   providers: [NutritionplanService],

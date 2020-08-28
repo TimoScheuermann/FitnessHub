@@ -2,6 +2,7 @@ import * as TCComponents from 'tccomponents_vue';
 import 'tccomponents_vue/lib/tccomponents_vue.css';
 import Vue from 'vue';
 import { Route } from 'vue-router';
+import { VNode } from 'vue/types/umd';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -36,7 +37,32 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     return;
   }
 
+  if (to.meta.allowedGroups) {
+    if (
+      !store.getters.valid ||
+      !to.meta.allowedGroups.includes(store.getters.user.group.toLowerCase())
+    ) {
+      next(from);
+      return;
+    }
+  }
+
   next();
+});
+
+// eslint-disable-next-line
+Vue.directive('group', (el: HTMLElement, binding: any, vnode: VNode) => {
+  const showElement =
+    store.getters.valid &&
+    Object.keys(binding.modifiers).includes(
+      store.getters.user.group.toLowerCase()
+    );
+  if (!showElement) {
+    el.innerHTML = '';
+    setTimeout(() => {
+      el.remove();
+    });
+  }
 });
 
 new Vue({
