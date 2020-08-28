@@ -2,7 +2,6 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e82e9b04-0e9a-4c26-84ea-10b6c940d433/deploy-status)](https://app.netlify.com/sites/fitness-planner/deploys)
 [![Website Fitness Planner](https://img.shields.io/website-up-down-green-red/https/fitness-planner.timos.design.svg)]()
-[![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/kennethreitz)
 
 ## Links (alle https)
 
