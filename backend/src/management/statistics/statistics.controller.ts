@@ -16,6 +16,8 @@ export class StatisticsController {
     return this.statisticsService.getGeneralStatistics();
   }
 
+  @Roles(['admin', 'moderator'])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('/loginProvider')
   async getLoginProvider(): Promise<ILoginProviderStatistic[]> {
     return this.statisticsService.getLoginProvider();
