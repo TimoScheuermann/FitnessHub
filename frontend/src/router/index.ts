@@ -91,15 +91,6 @@ const router = new VueRouter({
             needsSignIn: true,
             allowedGroups: ['admin', 'moderator']
           }
-        },
-        {
-          path: 'support-tickets',
-          name: 'supportTickets',
-          component: () => import('@/views/management/SupportTickets.vue'),
-          meta: {
-            needsSignIn: true,
-            allowedGroups: ['admin', 'moderator']
-          }
         }
       ]
     },

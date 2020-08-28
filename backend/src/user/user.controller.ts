@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FPUser from 'src/auth/user.decorator';
 import { ITrainingplan } from 'src/trainingplan/interfaces/ITrainingplan';
 import { TrainingplanService } from 'src/trainingplan/trainingplan.service';
@@ -21,11 +21,6 @@ export class UserController {
     return true;
   }
 
-  @Get(':id')
-  async getUserDetails(@Param('id') id: string): Promise<IUserInfo> {
-    return this.userService.getUserInfoById(id);
-  }
-
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('plans')
   async getUsersPlan(@FPUser() user: IUser): Promise<ITrainingplan[]> {
@@ -35,5 +30,17 @@ export class UserController {
   @Post('search')
   async findUser(@Body() body: any): Promise<IUserInfo[]> {
     return this.userService.find(body.query);
+  }
+
+  @Roles(['admin'])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('moderators')
+  async getModerators(): Promise<IUserInfo[]> {
+    return this.userService.getModerators();
+  }
+
+  @Get(':id')
+  async getUserDetails(@Param('id') id: string): Promise<IUserInfo> {
+    return this.userService.getUserInfoById(id);
   }
 }

@@ -107,4 +107,39 @@ export class UserService {
   public async getAmountByOAuth(provider: Provider): Promise<any> {
     return this.userModel.find({ provider: provider }).countDocuments();
   }
+
+  public async promoteTo(
+    promoter: IUser,
+    id: string,
+    group: 'User' | 'Moderator',
+  ): Promise<void> {
+    await this.userModel.findOneAndUpdate(
+      { _id: id },
+      { $set: { group: group } },
+    );
+    const user = await this.getUserById(id);
+    console.log('User', user);
+    this.tgbotService.sendMessage(
+      `${this.transformName(promoter)} promoted ${this.transformName(
+        user,
+      )} to ${group}`,
+    );
+  }
+
+  public async getModerators(): Promise<IUserInfo[]> {
+    return (
+      await this.userModel.find({
+        group: 'Moderator',
+      })
+    )
+      .map(x => x.toObject())
+      .map((x: IUser) => {
+        return {
+          _id: x._id,
+          avatar: x.avatar,
+          username: this.transformName(x),
+        } as IUserInfo;
+      })
+      .sort((a, b) => a.username.localeCompare(b.username));
+  }
 }

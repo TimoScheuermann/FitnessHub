@@ -20,19 +20,22 @@
         <tc-list-item title="Abmelden" icon="logout" @click="signout" />
       </tc-list>
       <tc-list>
+        <tc-list-item
+          v-if="$store.getters.user.group !== 'User'"
+          icon="shield"
+          title="Gruppe"
+          :description="$store.getters.user.group"
+        />
         <tc-list-item title="Trainingspläne" icon="calendar-alt" />
         <tc-list-item title="Freunde" icon="users" routeName="friends" />
         <tc-list-item title="Workouts" icon="gym" />
         <tc-list-item title="Gesundheit" icon="heart" />
       </tc-list>
-      <div id="test" v-group.admin.moderator>
+      <!-- Profil Ende -->
+
+      <div v-group.admin.moderator>
         <h1>Management</h1>
         <tc-list>
-          <tc-list-item
-            title="Support Tickets"
-            icon="ticket"
-            routeName="supportTickets"
-          />
           <tc-list-item
             title="Eingereichte Übungen"
             icon="reply"
@@ -51,6 +54,12 @@
           />
         </tc-list>
       </div>
+      <!-- Management Ende -->
+
+      <div class="footer" @click="copyID">
+        <div>User ID</div>
+        <div>{{ $store.getters.user._id }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +68,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import FPAvatar from '@/components/shared/FP-Avatar.vue';
 import { signOut } from '@/utils/auth';
+import { copyToClipboard } from '@/utils/functions';
 
 @Component({
   components: {
@@ -76,8 +86,12 @@ export default class Profile extends Vue {
     return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
   }
 
-  public signout() {
+  public signout(): void {
     signOut();
+  }
+
+  public copyID(): void {
+    copyToClipboard(this.$store.getters.user._id);
   }
 }
 </script>
@@ -106,5 +120,12 @@ export default class Profile extends Vue {
 }
 .tc-list {
   margin-bottom: 20px;
+}
+.footer {
+  font-size: 12px;
+  div {
+    text-align: center;
+    opacity: 0.5;
+  }
 }
 </style>
