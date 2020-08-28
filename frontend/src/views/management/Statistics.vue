@@ -7,22 +7,22 @@
       </tl-flow>
       <tl-grid minWidth="100" v-if="generalStats">
         <tc-card class="stat" :rounded="true">
-          <i class="ti-users" />
+          <!-- <i class="ti-users" /> -->
           <div class="amount">{{ generalStats.users }}</div>
           <div class="name">Users</div>
         </tc-card>
         <tc-card class="stat" :rounded="true">
-          <i class="ti-heart" />
+          <!-- <i class="ti-heart" /> -->
           <div class="amount">{{ generalStats.friendships }}</div>
           <div class="name">Friendships</div>
         </tc-card>
         <tc-card class="stat" :rounded="true">
-          <i class="ti-calendar-alt" />
+          <!-- <i class="ti-calendar-alt" /> -->
           <div class="amount">{{ generalStats.workouts }}</div>
           <div class="name">Workouts</div>
         </tc-card>
         <tc-card class="stat" :rounded="true">
-          <i class="ti-gym" />
+          <!-- <i class="ti-gym" /> -->
           <div class="amount">{{ generalStats.exercises }}</div>
           <div class="name">Exercises</div>
         </tc-card>
@@ -81,7 +81,7 @@ export default class Statistics extends Vue {
     font-size: 2em;
   }
   .amount {
-    margin-top: 10px;
+    // margin-top: 10px;
     color: $primary;
     font-weight: bold;
     font-size: 2em;

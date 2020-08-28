@@ -1,79 +1,62 @@
 <template>
-  <div class="friends">
-    <tc-header-button
-      slot="button"
-      color="#fff"
-      routeName="profile"
-      name="Profil"
-    />
-    <tc-hero :hasFixedHeader="false" :height="200">
-      <img
-        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-        slot="background"
-        alt=""
-      />
-      <h1>Freunde</h1>
-    </tc-hero>
+  <div class="friends" content>
+    <fp-user-search v-model="modalOpened" @user="invite" />
 
-    <div content>
-      <fp-user-search v-model="modalOpened" @user="invite" />
+    <h1>Anfragen</h1>
 
-      <h1>Anfragen</h1>
-
-      <div class="friend-list">
-        <div class="friend" v-for="i in invites" :key="i._id">
-          <tl-flow horizontal="space-between">
-            <template v-if="i.invitee._id === $store.getters.user._id">
-              <tl-flow>
-                <fp-avatar :user="i.target" />
-                <div class="name">{{ i.target.username }}</div>
-              </tl-flow>
-              <tl-flow>
-                <div class="pending">pending</div>
-                <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
-                  <i class="ti-cross" />
-                </tc-link>
-              </tl-flow>
-            </template>
-            <template v-else>
-              <tl-flow>
-                <fp-avatar :user="i.invitee" />
-                <div class="name">{{ i.invitee.username }}</div>
-              </tl-flow>
-              <tl-flow>
-                <tc-link tfcolor="success" @click="acceptInvite(i._id)">
-                  <i class="ti-checkmark" />
-                </tc-link>
-                <tc-link tfcolor="error" @click="denyInvite(i._id)">
-                  <i class="ti-cross" />
-                </tc-link>
-              </tl-flow>
-            </template>
-          </tl-flow>
-        </div>
-      </div>
-
-      <tl-flow horizontal="space-between">
-        <h1>Freunde</h1>
-        <tc-link @click="modalOpened = true">
-          <i class="ti-plus-inverted" /> Freund hinzufügen
-        </tc-link>
-      </tl-flow>
-
-      <div class="friend-list">
-        <div class="friend" v-for="f in friends" :key="f._id">
-          <tl-flow horizontal="space-between">
+    <div class="friend-list">
+      <div class="friend" v-for="i in invites" :key="i._id">
+        <tl-flow horizontal="space-between">
+          <template v-if="i.invitee._id === $store.getters.user._id">
             <tl-flow>
-              <fp-avatar :user="f" />
-              <div class="name">{{ f.username }}</div>
+              <fp-avatar :user="i.target" />
+              <div class="name">{{ i.target.username }}</div>
             </tl-flow>
             <tl-flow>
-              <tc-link tfcolor="error" @click="removeFriend(f._id)">
-                <i class="ti-trashcan-alt" />
+              <div class="pending">pending</div>
+              <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
+                <i class="ti-cross" />
               </tc-link>
             </tl-flow>
+          </template>
+          <template v-else>
+            <tl-flow>
+              <fp-avatar :user="i.invitee" />
+              <div class="name">{{ i.invitee.username }}</div>
+            </tl-flow>
+            <tl-flow>
+              <tc-link tfcolor="success" @click="acceptInvite(i._id)">
+                <i class="ti-checkmark" />
+              </tc-link>
+              <tc-link tfcolor="error" @click="denyInvite(i._id)">
+                <i class="ti-cross" />
+              </tc-link>
+            </tl-flow>
+          </template>
+        </tl-flow>
+      </div>
+    </div>
+
+    <tl-flow horizontal="space-between">
+      <h1>Freunde</h1>
+      <tc-link @click="modalOpened = true">
+        <i class="ti-plus-inverted" /> Freund hinzufügen
+      </tc-link>
+    </tl-flow>
+
+    <div class="friend-list">
+      <div class="friend" v-for="f in friends" :key="f._id">
+        <tl-flow horizontal="space-between">
+          <tl-flow>
+            <fp-avatar :user="f" />
+            <div class="name">{{ f.username }}</div>
           </tl-flow>
-        </div>
+          <tl-flow>
+            <tc-link tfcolor="error" @click="removeFriend(f._id)">
+              <i class="ti-trashcan-alt" />
+            </tc-link>
+          </tl-flow>
+        </tl-flow>
       </div>
     </div>
   </div>
@@ -135,22 +118,6 @@ export default class Friends extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.tc-hero {
-  img {
-    filter: brightness(60%);
-  }
-  h1 {
-    margin: 0px;
-    margin-top: env(safe-area-inset-top);
-    color: #fff;
-  }
-}
-.tc-header-button {
-  position: absolute;
-  z-index: 10;
-  left: 5vw;
-  top: calc(20px + env(safe-area-inset-top));
-}
 .friend-list {
   background: $paragraph;
   padding: 0 10px;

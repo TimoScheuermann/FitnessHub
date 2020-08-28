@@ -1,5 +1,5 @@
-import EmptyRouter from '@/views-interim/EmptyRouter.vue';
 import ManagementInterim from '@/views-interim/ManagementInterim.vue';
+import ProfileInterim from '@/views-interim/ProfileInterim.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -41,7 +41,7 @@ const router = new VueRouter({
     },
     {
       path: '/profile',
-      component: EmptyRouter,
+      component: ProfileInterim,
       children: [
         {
           path: '',
@@ -55,6 +55,14 @@ const router = new VueRouter({
           path: 'friends',
           name: 'friends',
           component: () => import('@/views/profile/Friends.vue'),
+          meta: {
+            needsSignIn: true
+          }
+        },
+        {
+          path: 'inbox',
+          name: 'inbox',
+          component: () => import('@/views/profile/Inbox.vue'),
           meta: {
             needsSignIn: true
           }

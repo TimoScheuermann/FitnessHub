@@ -1,11 +1,12 @@
 <template>
   <div class="home">
-    <tc-hero :height="$store.getters.valid ? 150 : 0">
-      <h1>Welcome back,</h1>
-      <h2>{{ $store.getters.name || 'Champion' }}</h2>
-    </tc-hero>
+    <tc-hero></tc-hero>
     <div content>
-      <h1>Home</h1>
+      <template v-if="$store.getters.valid">
+        <h1>Welcome back,</h1>
+        <h2>{{ $store.getters.name || 'Champion' }}</h2>
+      </template>
+      <h1 v-else>Home</h1>
     </div>
   </div>
 </template>

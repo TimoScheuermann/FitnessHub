@@ -1,15 +1,12 @@
-<template lang="html">
+<template>
   <div>
     <div id="mobile">
       <tc-tabbar>
         <tc-tabbar-item routeName="home" icon="house" title="Start" />
         <tc-tabbar-item routeName="community" icon="users" title="Community" />
-        <tc-tabbar-item
-          v-if="$store.getters.valid"
-          routeName="profile"
-          icon="user"
-          title="Profil"
-        />
+        <tc-badge v-if="$store.getters.valid" :value="notifications">
+          <tc-tabbar-item routeName="profile" icon="user" title="Profil" />
+        </tc-badge>
         <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
         <tc-tabbar-item
           routeName="nutrition"
@@ -31,11 +28,9 @@
         />
         <tc-navbar-item routeName="search" icon="lens" name="Suche" />
         <template slot="actions">
-          <tc-button
-            v-if="$store.getters.valid"
-            name="Profil"
-            routeName="profile"
-          />
+          <tc-badge v-if="$store.getters.valid" :value="notifications">
+            <tc-button name="Profil" routeName="profile" />
+          </tc-badge>
           <tc-button v-else name="Profil" icon="user" routeName="login" />
         </template>
       </tc-navbar>
@@ -51,7 +46,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class App extends Vue {}
+export default class App extends Vue {
+  get notifications(): number {
+    return this.$store.state.notifications || 0;
+  }
+}
 </script>
 
 <style lang="scss">
