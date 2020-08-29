@@ -44,11 +44,18 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { ITotalMessages } from './utils/interfaces';
+import axios from './utils/axios';
 
 @Component
 export default class App extends Vue {
   get notifications(): number {
-    return this.$store.state.notifications || 0;
+    return this.$store.getters.totalNotifications;
+  }
+
+  async mounted() {
+    const notificaitons: ITotalMessages = (await axios.get('inbox/total')).data;
+    this.$store.commit('setNotifications', notificaitons);
   }
 }
 </script>

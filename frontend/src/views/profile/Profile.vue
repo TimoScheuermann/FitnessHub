@@ -11,16 +11,17 @@
         title="Gruppe"
         :description="$store.getters.user.group"
       />
-      <tc-badge value="" position="inside">
+      <tc-badge :value="$store.state.notifications.inbox" position="inside">
         <tc-list-item title="Inbox" icon="notification" routeName="inbox" />
       </tc-badge>
       <tc-list-item title="Trainingspläne" icon="calendar-alt" />
-      <tc-badge value="" position="inside">
+      <tc-badge :value="$store.state.notifications.friends" position="inside">
         <tc-list-item title="Freunde" icon="users" routeName="friends" />
       </tc-badge>
       <tc-list-item title="Workouts" icon="gym" />
       <tc-list-item title="Gesundheit" icon="heart" />
     </tc-list>
+
     <!-- Profil Ende -->
 
     <div v-group.admin.moderator>

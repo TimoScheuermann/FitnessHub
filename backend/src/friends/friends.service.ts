@@ -160,6 +160,12 @@ export class FriendsService {
   }
 
   public async getTotalFriendships(): Promise<number> {
-    return this.friendshipModel.find().countDocuments();
+    return this.friendshipModel.find({ accepted: true }).countDocuments();
+  }
+
+  public async getInvitationsCount(id: string): Promise<number> {
+    return await this.friendshipModel
+      .find({ target: id, accepted: false })
+      .countDocuments();
   }
 }

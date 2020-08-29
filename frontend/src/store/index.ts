@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { IUser } from '@/utils/interfaces';
+import { ITotalMessages, IUser } from '@/utils/interfaces';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -8,7 +8,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: {} as IUser,
-    userValidated: false
+    userValidated: false,
+    notifications: null as ITotalMessages | null
   },
   getters: {
     valid: (state: any): boolean => {
@@ -21,6 +22,15 @@ export default new Vuex.Store({
       return [state.user.givenName, state.user.familyName]
         .filter(x => !!x)
         .join(' ');
+    },
+    totalNotifications: (state: any): number => {
+      if (!state.notifications) {
+        return 0;
+      }
+      return (Object.values(state.notifications) as []).reduce(
+        (a, b) => a + b,
+        0
+      );
     }
   },
   mutations: {
@@ -31,6 +41,9 @@ export default new Vuex.Store({
     signIn(state: any, user: IUser) {
       state.user = user;
       state.userValidated = true;
+    },
+    setNotifications(state: any, notifications: ITotalMessages) {
+      state.notifications = notifications;
     }
   }
 });

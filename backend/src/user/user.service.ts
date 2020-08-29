@@ -14,6 +14,8 @@ export class UserService {
     private readonly tgbotService: TgbotService,
   ) {}
 
+  public FPUID = '5f4a1a372149ef521c108f4a';
+
   async userExists(provider: Provider, thirdPartyId: string): Promise<boolean> {
     const users = await this.userModel.findOne({
       provider: provider,
@@ -93,6 +95,7 @@ export class UserService {
           username: this.transformName(x),
         } as IUserInfo;
       })
+      .filter(x => x._id + '' !== this.FPUID)
       .sort((a, b) => a.username.localeCompare(b.username));
   }
 
@@ -113,17 +116,17 @@ export class UserService {
     id: string,
     group: 'User' | 'Moderator',
   ): Promise<void> {
-    await this.userModel.findOneAndUpdate(
-      { _id: id },
-      { $set: { group: group } },
-    );
     const user = await this.getUserById(id);
-    console.log('User', user);
-    this.tgbotService.sendMessage(
-      `${this.transformName(promoter)} promoted ${this.transformName(
-        user,
-      )} to ${group}`,
-    );
+    if (user) {
+      if (user.group !== 'Admin') {
+        user.update({ $set: { group: group } });
+        this.tgbotService.sendMessage(
+          `${this.transformName(promoter)} promoted ${this.transformName(
+            user,
+          )} to ${group}`,
+        );
+      }
+    }
   }
 
   public async getModerators(): Promise<IUserInfo[]> {
@@ -141,5 +144,11 @@ export class UserService {
         } as IUserInfo;
       })
       .sort((a, b) => a.username.localeCompare(b.username));
+  }
+
+  public async getEveryId(): Promise<string[]> {
+    return (await this.userModel.find())
+      .map(x => x._id)
+      .filter(x => x + '' !== this.FPUID);
   }
 }

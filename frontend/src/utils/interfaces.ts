@@ -74,3 +74,14 @@ export interface ILoginProviderStatistic {
   readonly provider: string;
   readonly amount: number;
 }
+export interface ITotalMessages {
+  readonly friends: number;
+  readonly inbox: number;
+}
+
+export interface IInbox {
+  readonly _id: string;
+  readonly date: number;
+  readonly from: IUserInfo;
+  readonly message: string;
+}

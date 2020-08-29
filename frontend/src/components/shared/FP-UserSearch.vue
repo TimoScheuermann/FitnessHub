@@ -46,12 +46,9 @@ export default class FPUserSearch extends Vue {
   @Watch('query')
   public async queryChanged(): Promise<void> {
     if (this.query.length > 0) {
-      const { data } = await axios.post(
-        'https://api.timos.design:3000/user/search',
-        {
-          query: this.query
-        }
-      );
+      const { data } = await axios.post('user/search', {
+        query: this.query
+      });
       this.results = data;
     }
   }

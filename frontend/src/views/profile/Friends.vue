@@ -101,12 +101,14 @@ export default class Friends extends Vue {
 
   public async acceptInvite(friendshipId: string): Promise<void> {
     await axios.put('friends/accept/' + friendshipId);
+    this.$store.state.notifications.friends--;
     this.loadInvites();
     this.loadFriends();
   }
 
   public async denyInvite(friendshipId: string): Promise<void> {
     await axios.delete('friends/deny/' + friendshipId);
+    this.$store.state.notifications.friends--;
     this.loadInvites();
   }
 
