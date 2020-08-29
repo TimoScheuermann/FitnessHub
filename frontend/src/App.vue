@@ -2,18 +2,14 @@
   <div>
     <div id="mobile">
       <tc-tabbar>
-        <tc-tabbar-item routeName="home" icon="house" title="Start" />
-        <tc-tabbar-item routeName="community" icon="users" title="Community" />
+        <tc-tabbar-item routeName="home" icon="house" />
+        <tc-tabbar-item routeName="community" icon="users" />
         <tc-badge v-if="$store.getters.valid" :value="notifications">
-          <tc-tabbar-item routeName="profile" icon="user" title="Profil" />
+          <tc-tabbar-item routeName="profile" icon="user" />
         </tc-badge>
-        <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
-        <tc-tabbar-item
-          routeName="nutrition"
-          icon="food-bowl"
-          title="Ernährung"
-        />
-        <tc-tabbar-item routeName="search" icon="lens" title="Suche" />
+        <tc-tabbar-item v-else routeName="login" icon="user" />
+        <tc-tabbar-item routeName="nutrition" icon="food-bowl" />
+        <tc-tabbar-item routeName="search" icon="lens" />
       </tc-tabbar>
     </div>
     <div id="desktop">
