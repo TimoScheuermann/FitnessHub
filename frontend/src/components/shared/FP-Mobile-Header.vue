@@ -4,9 +4,11 @@
     :class="{ enhancedVisibility: this.enhancedVisibility }"
   >
     <slot />
-    <div v-if="enhancedVisibility" class="fp-mobile-header--title">
-      {{ title }}
-    </div>
+    <transition name="fade">
+      <div v-if="enhancedVisibility" class="fp-mobile-header--title">
+        {{ title }}
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -38,7 +40,9 @@ export default class FPMobileHeader extends Vue {
   @media #{$isDesktop} {
     display: none;
   }
-  height: 50px;
+  // background: red;
+  min-height: 50px;
+  padding: 0 5vw;
   padding-top: env(safe-area-inset-top);
   display: flex;
   align-items: center;
@@ -47,7 +51,6 @@ export default class FPMobileHeader extends Vue {
   left: 0;
   right: 0;
   z-index: 900;
-  padding: 0 5vw;
   &--title {
     position: absolute;
     left: 50%;
@@ -68,5 +71,14 @@ export default class FPMobileHeader extends Vue {
     }
     @include backdrop-blur($background);
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  margin-top: -50px;
 }
 </style>
