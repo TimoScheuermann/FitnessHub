@@ -1,16 +1,17 @@
 <template>
   <div class="inbox" content>
     <tl-flow horizontal="space-between">
-      <h1>Health</h1>
+      <h1>Gewicht</h1>
       <tc-spinner v-if="!healthData" size="20" />
     </tl-flow>
 
     <template v-if="healthData">
-      <p>{{ healthData }}</p>
+      <fp-health-weight :data="healthData" />
+      <!-- <p>{{ healthData }}</p> -->
     </template>
 
-    <tc-input type="number" v-model="weight" :buttons="true" />
-    <tc-button @click="submitWeight" name="Submit weight" />
+    <!-- <tc-input type="number" v-model="weight" :buttons="true" />
+    <tc-button @click="submitWeight" name="Submit weight" /> -->
   </div>
 </template>
 
@@ -18,8 +19,13 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IHealth } from '@/utils/interfaces';
 import axios from '@/utils/axios';
+import FPHealthWeight from '@/components/health/FP-Health-Weight.vue';
 
-@Component
+@Component({
+  components: {
+    'fp-health-weight': FPHealthWeight
+  }
+})
 export default class Inbox extends Vue {
   public healthData: IHealth[] | null = null;
   public weight = 84;
