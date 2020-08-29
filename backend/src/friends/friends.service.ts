@@ -10,8 +10,8 @@ import { Friendship } from './schemas/Friendship.schema';
 @Injectable()
 export class FriendsService {
   constructor(
-    @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
     private userService: UserService,
+    @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
   ) {}
 
   public async doesFriendshipExist(

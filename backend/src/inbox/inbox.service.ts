@@ -11,8 +11,8 @@ import { Inbox } from './schemas/Inbox.schema';
 export class InboxService {
   constructor(
     @InjectModel(Inbox.name) private inboxModel: Model<Inbox>,
+    private readonly friendsService: FriendsService,
     private readonly userService: UserService,
-    private readonly friendsSevice: FriendsService,
   ) {}
 
   public async remove(toId: string, inboxId: string): Promise<void> {
@@ -51,7 +51,7 @@ export class InboxService {
   public async getTotalMessages(id: string): Promise<ITotalMessages> {
     return {
       inbox: await this.inboxModel.find({ to: id }).countDocuments(),
-      friends: await this.friendsSevice.getInvitationsCount(id),
+      friends: await this.friendsService.getInvitationsCount(id),
     };
   }
 }

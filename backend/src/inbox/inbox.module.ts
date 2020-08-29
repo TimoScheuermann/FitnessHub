@@ -14,5 +14,6 @@ import { Inbox, InboxSchema } from './schemas/Inbox.schema';
   ],
   providers: [InboxService],
   controllers: [InboxController],
+  exports: [InboxService],
 })
 export class InboxModule {}

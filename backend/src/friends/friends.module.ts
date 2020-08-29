@@ -7,10 +7,10 @@ import { Friendship, FriendshipSchema } from './schemas/Friendship.schema';
 
 @Module({
   imports: [
+    UserModule,
     MongooseModule.forFeature([
       { name: Friendship.name, schema: FriendshipSchema },
     ]),
-    UserModule,
   ],
   providers: [FriendsService],
   controllers: [FriendsController],

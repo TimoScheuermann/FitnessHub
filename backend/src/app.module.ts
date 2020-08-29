@@ -5,14 +5,14 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { ExerciseModule } from './exercise/exercise.module';
 import { FriendsModule } from './friends/friends.module';
+import { InboxModule } from './inbox/inbox.module';
 import { PromoteModule } from './management/promote/promote.module';
 import { StatisticsModule } from './management/statistics/statistics.module';
 import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
-import { NutritionplanService } from './nutritionplan/nutritionplan.service';
 import { RecipeModule } from './recipe/recipe.module';
 import { TgbotModule } from './tgbot/tgbot.module';
 import { UserModule } from './user/user.module';
-import { InboxModule } from './inbox/inbox.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -39,8 +39,8 @@ import { InboxModule } from './inbox/inbox.module';
     PromoteModule,
     ExerciseModule,
     InboxModule,
+    HealthModule,
   ],
   controllers: [AppController],
-  providers: [NutritionplanService],
 })
 export class AppModule {}

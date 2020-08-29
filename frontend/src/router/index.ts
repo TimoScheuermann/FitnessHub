@@ -48,7 +48,8 @@ const router = new VueRouter({
           name: 'profile',
           component: () => import('@/views/profile/Profile.vue'),
           meta: {
-            needsSignIn: true
+            needsSignIn: true,
+            title: 'Profil'
           }
         },
         {
@@ -56,7 +57,8 @@ const router = new VueRouter({
           name: 'friends',
           component: () => import('@/views/profile/Friends.vue'),
           meta: {
-            needsSignIn: true
+            needsSignIn: true,
+            title: 'Freunde'
           }
         },
         {
@@ -64,7 +66,17 @@ const router = new VueRouter({
           name: 'inbox',
           component: () => import('@/views/profile/Inbox.vue'),
           meta: {
-            needsSignIn: true
+            needsSignIn: true,
+            title: 'Inbox'
+          }
+        },
+        {
+          path: 'health',
+          name: 'health',
+          component: () => import('@/views/profile/Health.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Gesundheit'
           }
         }
       ]
@@ -79,7 +91,8 @@ const router = new VueRouter({
           component: () => import('@/views/management/PromoteUser.vue'),
           meta: {
             needsSignIn: true,
-            allowedGroups: ['admin']
+            allowedGroups: ['admin'],
+            title: 'Promote User'
           }
         },
         {
@@ -88,7 +101,8 @@ const router = new VueRouter({
           component: () => import('@/views/management/SubmittedExercises.vue'),
           meta: {
             needsSignIn: true,
-            allowedGroups: ['admin', 'moderator']
+            allowedGroups: ['admin', 'moderator'],
+            title: 'Eingereichte Übungen'
           }
         },
         {
@@ -97,7 +111,8 @@ const router = new VueRouter({
           component: () => import('@/views/management/Statistics.vue'),
           meta: {
             needsSignIn: true,
-            allowedGroups: ['admin', 'moderator']
+            allowedGroups: ['admin', 'moderator'],
+            title: 'Statistik'
           }
         }
       ]

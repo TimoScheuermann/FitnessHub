@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Provider } from 'src/auth/auth.service';
+import { Inbox } from 'src/inbox/schemas/Inbox.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from './interfaces/IUser';
 import { IUserInfo } from './interfaces/IUserInfo';
@@ -11,6 +12,7 @@ import { User } from './schemas/User.schema';
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Inbox.name) private inboxModel: Model<Inbox>,
     private readonly tgbotService: TgbotService,
   ) {}
 
@@ -43,6 +45,13 @@ export class UserService {
       this.tgbotService.sendMessage(
         `Ein neuer User hat sich angemeldet!\nName: ${user.givenName} ${user.familyName}`,
       );
+      await this.inboxModel.create({
+        date: new Date().getTime(),
+        from: this.FPUID,
+        message:
+          'Willkommen beim Fitness Planner! Danke, dass du der Community beigetreten bist.',
+        to: user._id,
+      });
       return user;
     }
   }

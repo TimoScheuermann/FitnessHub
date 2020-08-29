@@ -2,21 +2,25 @@
   <div>
     <div id="mobile">
       <tc-tabbar>
-        <tc-tabbar-item routeName="home" icon="house" />
-        <tc-tabbar-item routeName="community" icon="users" />
+        <tc-tabbar-item routeName="home" icon="house" title="Home" />
+        <tc-tabbar-item routeName="community" icon="users" title="Feed" />
         <tc-badge v-if="$store.getters.valid" :value="notifications">
-          <tc-tabbar-item routeName="profile" icon="user" />
+          <tc-tabbar-item routeName="profile" icon="user" title="Profil" />
         </tc-badge>
-        <tc-tabbar-item v-else routeName="login" icon="user" />
-        <tc-tabbar-item routeName="nutrition" icon="food-bowl" />
-        <tc-tabbar-item routeName="search" icon="lens" />
+        <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
+        <tc-tabbar-item
+          routeName="nutrition"
+          icon="food-bowl"
+          title="Ernährung"
+        />
+        <tc-tabbar-item routeName="search" icon="lens" title="Suche" />
       </tc-tabbar>
     </div>
     <div id="desktop">
       <tc-navbar>
         <b slot="logo"><i class="ti-gym" /> Fitness Planner</b>
-        <tc-navbar-item routeName="home" icon="house" name="Start" />
-        <tc-navbar-item routeName="community" icon="users" name="Community" />
+        <tc-navbar-item routeName="home" icon="house" name="Home" />
+        <tc-navbar-item routeName="community" icon="users" name="Feed" />
         <tc-navbar-item
           routeName="nutrition"
           icon="food-bowl"
@@ -95,6 +99,12 @@ a {
   }
   @media #{$isMobile} {
     padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+}
+.tc-tabbar {
+  .tc-badge {
+    flex: 1 1 0px;
+    margin: 0 2.5px;
   }
 }
 </style>

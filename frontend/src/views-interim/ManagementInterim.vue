@@ -41,10 +41,13 @@ export default class ManagementInterim extends Vue {
   }
 
   get title(): string {
-    return this.$route.path
-      .split('/')[2]
-      .split('-')
-      .join(' ');
+    return (
+      this.$route.meta.title ||
+      this.$route.path
+        .split('/')[2]
+        .split('-')
+        .join(' ')
+    );
   }
 }
 </script>

@@ -14,12 +14,16 @@
       <tc-badge :value="$store.state.notifications.inbox" position="inside">
         <tc-list-item title="Inbox" icon="notification" routeName="inbox" />
       </tc-badge>
-      <tc-list-item title="Trainingspläne" icon="calendar-alt" />
       <tc-badge :value="$store.state.notifications.friends" position="inside">
         <tc-list-item title="Freunde" icon="users" routeName="friends" />
       </tc-badge>
-      <tc-list-item title="Workouts" icon="gym" />
-      <tc-list-item title="Gesundheit" icon="heart" />
+      <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
+    </tc-list>
+
+    <tc-list>
+      <tc-list-item title="Trainingspläne" icon="calendar-alt" />
+      <tc-list-item title="Workouts" icon="list" />
+      <tc-list-item title="Übungen" icon="gym" />
     </tc-list>
 
     <!-- Profil Ende -->
