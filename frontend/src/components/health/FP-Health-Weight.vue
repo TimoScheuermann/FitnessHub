@@ -1,14 +1,16 @@
 <template>
   <div class="fp-health-weight">
-    <tc-segments>
+    <tc-segments v-model="selectedTime">
       <tc-segment-item title="D" />
       <tc-segment-item title="W" />
       <tc-segment-item title="M" />
       <tc-segment-item title="Y" />
     </tc-segments>
     <div class="head">
-      <div class="type">weight</div>
-      <div class="amount">84.4</div>
+      <div class="type">
+        {{ selectedTime === 0 ? 'gewicht' : 'durchschnitt' }}
+      </div>
+      <div class="amount">{{ amount }}</div>
       <div class="time">{{ now }}</div>
     </div>
     <template v-if="data">
@@ -19,7 +21,7 @@
       <span>Aktuelles Gewicht</span>
     </tl-flow>
     <tl-flow>
-      <tc-input :value="84.4" type="number" :buttons="true" />
+      <tc-input :value="current" type="number" :buttons="true" />
       <tc-button name="Speichern" variant="filled" />
     </tl-flow>
   </div>
@@ -61,12 +63,19 @@ export default class FPHealthWeight extends Vue {
     'November',
     'Dezember'
   ];
-
-  get now(): string {
-    const date: Date = new Date();
-    return `${this.days[date.getDay()]}, ${date.getDate()}. ${
-      this.months[date.getMonth() - 1]
-    } ${date.getFullYear()}`;
+  public selectedTime = 0;
+  public multis = [1, 7, 31, 364];
+  get options() {
+    return {
+      chart: { toolbar: { show: false } },
+      xaxis: {
+        type: 'datetime',
+        range: 1000 * 60 * 60 * 24 * this.multis[this.selectedTime],
+        max: new Date().getTime()
+      },
+      yaxis: { opposite: true },
+      colors: ['#08f']
+    };
   }
 
   public series = [
@@ -80,15 +89,30 @@ export default class FPHealthWeight extends Vue {
       })
     }
   ];
-  public options = {
-    chart: { toolbar: { show: false } },
-    xaxis: {
-      type: 'datetime',
-      range: 1000 * 60 * 60 * 5
-    },
-    yaxis: { opposite: true },
-    colors: ['#08f']
-  };
+
+  get now(): string {
+    const date: Date = new Date();
+    return `${this.days[date.getDay()]}, ${date.getDate()}. ${
+      this.months[date.getMonth() - 1]
+    } ${date.getFullYear()}`;
+  }
+
+  get current(): number {
+    return this.data.sort((a, b) => b.date - a.date)[0].value;
+  }
+  get amount(): number {
+    if (this.selectedTime === 0) {
+      return this.current;
+    }
+    const latest =
+      new Date().getTime() -
+      1000 * 60 * 60 * 24 * this.multis[this.selectedTime];
+    const sum = this.data
+      .filter(x => x.date >= latest)
+      .map(x => x.value)
+      .reduce((a, b) => a + b, 0);
+    return Math.round((sum / this.data.length) * 100) / 100;
+  }
 }
 </script>
 
