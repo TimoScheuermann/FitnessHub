@@ -22,7 +22,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-@Component
+import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
+
+@Component({
+  components: {
+    'fh-mobile-header': FHMobileHeader
+  }
+})
 export default class Nutrition extends Vue {}
 </script>
 
