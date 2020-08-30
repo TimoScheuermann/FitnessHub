@@ -12,32 +12,50 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/views/Home.vue')
+      component: () => import('@/views/Home.vue'),
+      meta: {
+        level: 0
+      }
     },
     {
       path: '/community',
       name: 'community',
-      component: () => import('@/views/Community.vue')
+      component: () => import('@/views/Community.vue'),
+      meta: {
+        level: 0
+      }
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/Login.vue')
+      component: () => import('@/views/Login.vue'),
+      meta: {
+        level: 0
+      }
     },
     {
       path: '/nutrition',
       name: 'nutrition',
-      component: () => import('@/views/Nutrition.vue')
+      component: () => import('@/views/Nutrition.vue'),
+      meta: {
+        level: 0
+      }
     },
     {
       path: '/training',
       name: 'training',
-      component: () => import('@/views/Training.vue')
+      component: () => import('@/views/Training.vue'),
+      meta: {
+        level: 0
+      }
     },
     {
       path: '/playground',
       name: 'playground',
-      component: () => import('@/views/Playground.vue')
+      component: () => import('@/views/Playground.vue'),
+      meta: {
+        level: 0
+      }
     },
     {
       path: '/profile',
@@ -49,7 +67,8 @@ const router = new VueRouter({
           component: () => import('@/views/profile/Profile.vue'),
           meta: {
             needsSignIn: true,
-            title: 'Profil'
+            title: 'Profil',
+            level: 0
           }
         },
         {
@@ -58,7 +77,8 @@ const router = new VueRouter({
           component: () => import('@/views/profile/Friends.vue'),
           meta: {
             needsSignIn: true,
-            title: 'Freunde'
+            title: 'Freunde',
+            level: 1
           }
         },
         {
@@ -67,7 +87,8 @@ const router = new VueRouter({
           component: () => import('@/views/profile/Inbox.vue'),
           meta: {
             needsSignIn: true,
-            title: 'Inbox'
+            title: 'Inbox',
+            level: 1
           }
         },
         {
@@ -76,7 +97,8 @@ const router = new VueRouter({
           component: () => import('@/views/profile/Health.vue'),
           meta: {
             needsSignIn: true,
-            title: 'Gesundheit'
+            title: 'Gesundheit',
+            level: 1
           }
         }
       ]
@@ -92,7 +114,8 @@ const router = new VueRouter({
           meta: {
             needsSignIn: true,
             allowedGroups: ['admin'],
-            title: 'Promote User'
+            title: 'Promote User',
+            level: 1
           }
         },
         {
@@ -102,7 +125,8 @@ const router = new VueRouter({
           meta: {
             needsSignIn: true,
             allowedGroups: ['admin', 'moderator'],
-            title: 'Eingereichte Übungen'
+            title: 'Eingereichte Übungen',
+            level: 1
           }
         },
         {
@@ -112,7 +136,8 @@ const router = new VueRouter({
           meta: {
             needsSignIn: true,
             allowedGroups: ['admin', 'moderator'],
-            title: 'Statistik'
+            title: 'Statistik',
+            level: 1
           }
         }
       ]

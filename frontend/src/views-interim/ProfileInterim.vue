@@ -28,7 +28,9 @@
         </div>
       </tl-flow>
     </tc-hero>
-    <router-view />
+    <transition :name="$store.getters.routeTransition">
+      <router-view class="route-view route-sub-view" />
+    </transition>
   </div>
 </template>
 
@@ -105,5 +107,8 @@ export default class ProfileInterim extends Vue {
       }
     }
   }
+}
+.route-sub-view {
+  width: 90vw;
 }
 </style>

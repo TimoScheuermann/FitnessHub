@@ -2,9 +2,16 @@
   <div class="friends" content>
     <fh-user-search v-model="modalOpened" @user="invite" />
 
-    <h1>Anfragen</h1>
+    <tl-flow horizontal="space-between">
+      <h1>Anfragen</h1>
+      <tc-spinner v-if="!invites" size="20" />
+    </tl-flow>
 
-    <div class="friend-list">
+    <p v-if="invites && invites.length === 0">
+      Du hast keine offenen Freundschaftsanfragen
+    </p>
+
+    <div class="friend-list" v-if="invites">
       <div class="friend" v-for="i in invites" :key="i._id">
         <tl-flow horizontal="space-between">
           <template v-if="i.invitee._id === $store.getters.user._id">
@@ -42,9 +49,15 @@
       <tc-link @click="modalOpened = true">
         <i class="ti-plus-inverted" /> Freund hinzufügen
       </tc-link>
+      <tc-spinner v-if="!friends" size="20" />
     </tl-flow>
 
-    <div class="friend-list">
+    <p v-if="friends && friends.length === 0">
+      Füge Freunde hinzu, um Neuigkeiten über ihre sportlichen Erfolge zu
+      erhalten
+    </p>
+
+    <div v-if="friends" class="friend-list">
       <div class="friend" v-for="f in friends" :key="f._id">
         <tl-flow horizontal="space-between">
           <tl-flow>
@@ -78,8 +91,8 @@ import FHAvatar from '@/components/shared/FH-Avatar.vue';
 export default class Friends extends Vue {
   public modalOpened = false;
 
-  public friends: IUserInfo[] = [];
-  public invites: IPendingFriendship[] = [];
+  public friends: IUserInfo[] | null = null;
+  public invites: IPendingFriendship[] | null = null;
 
   mounted() {
     this.loadFriends();

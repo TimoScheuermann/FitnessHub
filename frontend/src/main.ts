@@ -16,6 +16,13 @@ for (const component in TCComponents) {
 }
 
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
+  const toDepth = to.meta.level || 0;
+  const fromDepth = from.meta.level || 0;
+  store.commit(
+    'routeTransition',
+    toDepth < fromDepth ? 'slide-right' : 'slide-left'
+  );
+
   const possibleToken = to.query.fhToken as string;
   if (possibleToken) {
     persistLogin(possibleToken);

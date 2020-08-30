@@ -10,7 +10,8 @@ export default new Vuex.Store({
     user: {} as IUser,
     userValidated: false,
     notifications: null as ITotalMessages | null,
-    fixedHeader: false
+    fixedHeader: false,
+    routeTransition: 'slide-left'
   },
   getters: {
     valid: (state: any): boolean => {
@@ -28,13 +29,17 @@ export default new Vuex.Store({
       if (!state.notifications) {
         return 0;
       }
-      return (Object.values(state.notifications) as []).reduce(
+      const total = (Object.values(state.notifications) as []).reduce(
         (a, b) => a + b,
         0
       );
+      return Math.max(0, total);
     },
     fixedHeader: (state: any): boolean => {
       return state.fixedHeader;
+    },
+    routeTransition: (state: any): string => {
+      return state.routeTransition;
     }
   },
   mutations: {
@@ -51,6 +56,9 @@ export default new Vuex.Store({
     },
     fixedHeader(state: any, fixedHeader: boolean) {
       state.fixedHeader = fixedHeader;
+    },
+    routeTransition(state: any, trans: string) {
+      state.routeTransition = trans;
     }
   }
 });
