@@ -46,7 +46,15 @@ import { CreateRecipeDTO } from '@/utils/dtos';
   }
 })
 export default class Nutrition extends Vue {
-  public data: CreateRecipeDTO = {};
+  public data: CreateRecipeDTO = {
+    title: '',
+    time: 0,
+    video: '',
+    image: '',
+    ingredients: [],
+    nutrition: [],
+    category: ''
+  };
   public async addRecipe() {
     await axios.post('recipe', this.data);
   }
