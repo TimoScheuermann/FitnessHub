@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
@@ -24,5 +32,14 @@ export class HealthController {
     @Body() body,
   ): Promise<void> {
     this.healthService.addHealthData(user._id, type, body.value);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Delete(':id')
+  async deleteHealthDataFor(
+    @FHUser() user: IUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    this.healthService.deleteHealthData(user._id, id);
   }
 }

@@ -28,4 +28,11 @@ export class HealthService {
       date: { $gte: new Date().getTime() - 31557600000 },
     });
   }
+
+  public async deleteHealthData(userID: string, id: string): Promise<void> {
+    await this.healthModel.findOneAndDelete({
+      _id: id,
+      user: userID,
+    });
+  }
 }

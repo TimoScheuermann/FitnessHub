@@ -132,7 +132,7 @@ export default class FHHealthCard extends Vue {
               y: d.value
             };
           })
-          .sort((a, b) => b.y - a.y)
+          .sort((a, b) => b.x - a.x)
       }
     ];
   }
@@ -210,7 +210,7 @@ export default class FHHealthCard extends Vue {
     max-width: 100%;
     overflow: hidden;
     .tc-input {
-      max-width: calc(90vw - 140px);
+      max-width: calc(90vw - 150px);
     }
   }
   [loading] {
