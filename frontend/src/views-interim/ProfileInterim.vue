@@ -1,12 +1,12 @@
 <template>
   <div class="management-interim">
-    <fp-mobile-header :title="title || 'Profile'">
+    <fh-mobile-header :title="title || 'Profile'">
       <tc-header-button
         v-if="$route.name !== 'profile'"
         routeName="profile"
         name="Profil"
       />
-    </fp-mobile-header>
+    </fh-mobile-header>
 
     <tc-hero :hasFixedHeader="fixedHeader" :height="200">
       <img
@@ -17,7 +17,7 @@
       <h1 v-if="$route.name !== 'profile'">{{ title }}</h1>
 
       <tl-flow v-else>
-        <fp-avatar />
+        <fh-avatar />
         <div class="info">
           <div class="name">{{ name }}</div>
           <div class="date">Mitglied seit: {{ date }}</div>
@@ -30,13 +30,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import FPAvatar from '@/components/shared/FP-Avatar.vue';
-import FPMobileHeader from '@/components/shared/FP-Mobile-Header.vue';
+import FHAvatar from '@/components/shared/FH-Avatar.vue';
+import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
 
 @Component({
   components: {
-    'fp-avatar': FPAvatar,
-    'fp-mobile-header': FPMobileHeader
+    'fh-avatar': FHAvatar,
+    'fh-mobile-header': FHMobileHeader
   }
 })
 export default class ProfileInterim extends Vue {
@@ -89,7 +89,7 @@ export default class ProfileInterim extends Vue {
   }
   .tl-flow {
     margin-top: env(safe-area-inset-top);
-    .fp-avatar,
+
     .tc-avatar {
       transform: scale(0.8);
       margin: 5px;

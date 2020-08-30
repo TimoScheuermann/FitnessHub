@@ -12,7 +12,7 @@
       <div v-else class="inbox-items">
         <div class="inbox-item" v-for="i in inbox" :key="i._id">
           <tl-flow horizontal="start">
-            <fp-avatar :user="i.from" size="tiny" />
+            <fh-avatar :user="i.from" size="tiny" />
             <tl-flow flow="column" vertical="start" id="info">
               <div class="name">{{ i.from.username }}</div>
               <div class="date">{{ transformDate(i.date) }}</div>
@@ -34,11 +34,11 @@ import { Vue, Component } from 'vue-property-decorator';
 import { IInbox } from '@/utils/interfaces';
 import axios from '@/utils/axios';
 import { formatDate } from '@/utils/functions';
-import FPAvatar from '@/components/shared/FP-Avatar.vue';
+import FHAvatar from '@/components/shared/FH-Avatar.vue';
 
 @Component({
   components: {
-    'fp-avatar': FPAvatar
+    'fh-avatar': FHAvatar
   }
 })
 export default class Inbox extends Vue {

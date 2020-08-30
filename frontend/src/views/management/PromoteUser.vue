@@ -5,7 +5,7 @@
       <div class="moderator" v-for="f in moderators" :key="f._id">
         <tl-flow horizontal="space-between">
           <tl-flow>
-            <fp-avatar :user="f" />
+            <fh-avatar :user="f" />
             <div class="name">{{ f.username }}</div>
           </tl-flow>
           <tl-flow>
@@ -26,11 +26,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FPAvatar from '@/components/shared/FP-Avatar.vue';
+import FHAvatar from '@/components/shared/FH-Avatar.vue';
 
 @Component({
   components: {
-    'fp-avatar': FPAvatar
+    'fh-avatar': FHAvatar
   }
 })
 export default class PromoteUser extends Vue {
@@ -68,8 +68,7 @@ export default class PromoteUser extends Vue {
     &:not(:last-child) {
       border-bottom: 1px solid rgba(black, 0.1);
     }
-    .tc-avatar,
-    .fp-avatar {
+    .tc-avatar {
       height: 30px;
       width: 30px;
     }

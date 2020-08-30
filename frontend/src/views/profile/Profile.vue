@@ -60,15 +60,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import FPAvatar from '@/components/shared/FP-Avatar.vue';
 import { signOut } from '@/utils/auth';
 import { copyToClipboard } from '@/utils/functions';
 
-@Component({
-  components: {
-    'fp-avatar': FPAvatar
-  }
-})
+@Component
 export default class Profile extends Vue {
   public signout(): void {
     signOut();

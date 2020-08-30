@@ -3,7 +3,7 @@ import store from '@/store';
 import { IUser } from './interfaces';
 
 export function getToken(): string | null {
-  return localStorage.getItem('fitness-planner-auth');
+  return localStorage.getItem('fitnesshub-auth');
 }
 export function getUserFromJWT(): IUser {
   const base64Url = (getToken() || 'A.B.C').split('.')[1];
@@ -12,12 +12,12 @@ export function getUserFromJWT(): IUser {
 }
 
 export function signIn(provider = 'google') {
-  localStorage.removeItem('fitness-planner-auth');
+  localStorage.removeItem('fitnesshub-auth');
   window.location.replace('https://api.timos.design:3000/auth/' + provider);
 }
 
 export function signOut() {
-  localStorage.removeItem('fitness-planner-auth');
+  localStorage.removeItem('fitnesshub-auth');
   store.commit('signOut');
   router.push({ name: 'home' });
 }
@@ -43,5 +43,5 @@ export async function verfiyUser(): Promise<boolean> {
 }
 
 export function persistLogin(token: string): void {
-  localStorage.setItem('fitness-planner-auth', token);
+  localStorage.setItem('fitnesshub-auth', token);
 }

@@ -3,7 +3,7 @@
     <tc-input icon="lens" v-model="query" />
     <div class="found-users">
       <div class="user" v-for="u in results" :key="u._id" @click="selected(u)">
-        <fp-avatar size="tiny" :user="u" />
+        <fh-avatar size="tiny" :user="u" />
         <h3>{{ u.username }}</h3>
       </div>
     </div>
@@ -13,15 +13,15 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
-import FPAvatar from './FP-Avatar.vue';
+import FHAvatar from './FH-Avatar.vue';
 import axios from '@/utils/axios';
 
 @Component({
   components: {
-    'fp-avatar': FPAvatar
+    'fh-avatar': FHAvatar
   }
 })
-export default class FPUserSearch extends Vue {
+export default class FHUserSearch extends Vue {
   @Prop() value!: boolean;
 
   public results: IUserInfo[] = [];

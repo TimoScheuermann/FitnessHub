@@ -63,6 +63,7 @@ import {
   ILoginProviderStatistic
 } from '@/utils/interfaces';
 import axios from '@/utils/axios';
+
 @Component
 export default class Statistics extends Vue {
   public generalStats: IGeneralStatistics | null = null;

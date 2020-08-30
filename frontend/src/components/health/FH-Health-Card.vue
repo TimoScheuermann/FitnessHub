@@ -1,5 +1,5 @@
 <template>
-  <div class="fp-health-card">
+  <div class="fh-health-card">
     <template v-if="!healthData">
       <tl-flow flow="column" loading>
         <tc-spinner size="20" />
@@ -30,7 +30,7 @@
         </div>
         <div class="time">{{ now }}</div>
       </div>
-      <fp-chart
+      <fh-chart
         width="100%"
         height="250"
         type="line"
@@ -68,10 +68,10 @@ import axios from '@/utils/axios';
 
 @Component({
   components: {
-    'fp-chart': VueApexCharts
+    'fh-chart': VueApexCharts
   }
 })
-export default class FPHealthCard extends Vue {
+export default class FHHealthCard extends Vue {
   @Prop() healthData!: IHealth[] | null;
   @Prop({ default: 'weight' }) endpoint!: string;
   @Prop({ default: 'Gewicht' }) category!: string;
@@ -170,7 +170,7 @@ export default class FPHealthCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.fp-health-card {
+.fh-health-card {
   background: $paragraph;
   padding: 10px;
   border-radius: $border-radius;

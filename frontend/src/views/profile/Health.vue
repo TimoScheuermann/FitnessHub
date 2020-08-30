@@ -4,7 +4,7 @@
       <h1>Gewicht</h1>
       <tc-spinner v-if="!healthData" size="20" />
     </tl-flow>
-    <fp-health-card
+    <fh-health-card
       :healthData="getData('weight')"
       @reload="loadData"
       endpoint="weight"
@@ -17,7 +17,7 @@
       <h1>Größe</h1>
       <tc-spinner v-if="!healthData" size="20" />
     </tl-flow>
-    <fp-health-card
+    <fh-health-card
       :healthData="getData('height')"
       @reload="loadData"
       endpoint="height"
@@ -33,11 +33,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IHealth } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FPHealthCard from '@/components/health/FP-Health-Card.vue';
+import FHHealthCard from '@/components/health/FH-Health-Card.vue';
 
 @Component({
   components: {
-    'fp-health-card': FPHealthCard
+    'fh-health-card': FHHealthCard
   }
 })
 export default class Inbox extends Vue {

@@ -1,8 +1,8 @@
 <template>
   <div class="management-interim">
-    <fp-mobile-header :title="title">
+    <fh-mobile-header :title="title">
       <tc-header-button routeName="profile" name="Profil" />
-    </fp-mobile-header>
+    </fh-mobile-header>
     <tc-hero :hasFixedHeader="fixedHeader" :height="200">
       <img
         src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import FPMobileHeader from '@/components/shared/FP-Mobile-Header.vue';
+import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
 
 @Component({
   components: {
-    'fp-mobile-header': FPMobileHeader
+    'fh-mobile-header': FHMobileHeader
   }
 })
 export default class ManagementInterim extends Vue {
@@ -63,10 +63,4 @@ export default class ManagementInterim extends Vue {
     text-transform: capitalize;
   }
 }
-// .tc-header-button {
-//   position: absolute;
-//   z-index: 10;
-//   left: 5vw;
-//   top: calc(20px + env(safe-area-inset-top));
-// }
 </style>

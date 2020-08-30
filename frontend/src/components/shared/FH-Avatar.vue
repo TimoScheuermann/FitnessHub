@@ -1,6 +1,6 @@
 <template>
   <tc-avatar v-if="hasImage" :size="size" :src="user.avatar" />
-  <div class="fp-avatar" :class="'fp-avatar__' + size" v-else>
+  <div class="fh-avatar tc-avatar" :class="'fh-avatar__' + size" v-else>
     {{ text }}
   </div>
 </template>
@@ -11,7 +11,7 @@ import { IUser, IUserInfo } from '../../utils/interfaces';
 import store from '../../store';
 
 @Component
-export default class FPAvatar extends Vue {
+export default class FHAvatar extends Vue {
   @Prop({ default: 'small' }) size!: string; // tiny, small, medium, large
   @Prop({
     default: () => {
@@ -43,11 +43,11 @@ export default class FPAvatar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.fp-avatar,
+.fh-avatar,
 .tc-avatar {
   box-shadow: $shadow-light;
 }
-.fp-avatar {
+.fh-avatar {
   height: 100px;
   width: 100px;
   border-radius: 100px;
@@ -64,7 +64,7 @@ export default class FPAvatar extends Vue {
     tiny: 50px
   );
   @each $n, $s in $sizes {
-    &.fp-avatar__#{$n} {
+    &.fh-avatar__#{$n} {
       height: $s;
       width: $s;
       border-radius: $s;

@@ -18,7 +18,7 @@
     </div>
     <div id="desktop">
       <tc-navbar>
-        <b slot="logo"><i class="ti-gym" /> Fitness Planner</b>
+        <b slot="logo"><i class="ti-gym" /> FitnessHub</b>
         <tc-navbar-item routeName="home" icon="house" name="Home" />
         <tc-navbar-item routeName="community" icon="users" name="Feed" />
         <tc-navbar-item

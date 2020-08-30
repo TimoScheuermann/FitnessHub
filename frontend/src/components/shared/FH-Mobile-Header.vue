@@ -1,11 +1,11 @@
 <template>
   <div
-    class="fp-mobile-header"
+    class="fh-mobile-header"
     :class="{ enhancedVisibility: this.enhancedVisibility }"
   >
     <slot />
     <transition name="fade">
-      <div v-if="enhancedVisibility" class="fp-mobile-header--title">
+      <div v-if="enhancedVisibility" class="fh-mobile-header--title">
         {{ title }}
       </div>
     </transition>
@@ -14,8 +14,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+
 @Component
-export default class FPMobileHeader extends Vue {
+export default class FHMobileHeader extends Vue {
   @Prop() title!: string;
 
   public TRIGGER = 100;
@@ -36,7 +37,7 @@ export default class FPMobileHeader extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.fp-mobile-header {
+.fh-mobile-header {
   @media #{$isDesktop} {
     display: none;
   }

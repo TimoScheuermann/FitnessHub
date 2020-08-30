@@ -1,6 +1,6 @@
 <template>
   <div class="friends" content>
-    <fp-user-search v-model="modalOpened" @user="invite" />
+    <fh-user-search v-model="modalOpened" @user="invite" />
 
     <h1>Anfragen</h1>
 
@@ -9,7 +9,7 @@
         <tl-flow horizontal="space-between">
           <template v-if="i.invitee._id === $store.getters.user._id">
             <tl-flow>
-              <fp-avatar :user="i.target" />
+              <fh-avatar :user="i.target" />
               <div class="name">{{ i.target.username }}</div>
             </tl-flow>
             <tl-flow>
@@ -21,7 +21,7 @@
           </template>
           <template v-else>
             <tl-flow>
-              <fp-avatar :user="i.invitee" />
+              <fh-avatar :user="i.invitee" />
               <div class="name">{{ i.invitee.username }}</div>
             </tl-flow>
             <tl-flow>
@@ -48,7 +48,7 @@
       <div class="friend" v-for="f in friends" :key="f._id">
         <tl-flow horizontal="space-between">
           <tl-flow>
-            <fp-avatar :user="f" />
+            <fh-avatar :user="f" />
             <div class="name">{{ f.username }}</div>
           </tl-flow>
           <tl-flow>
@@ -66,13 +66,13 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo, IPendingFriendship } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FPUserSearch from '@/components/shared/FP-UserSearch.vue';
-import FPAvatar from '@/components/shared/FP-Avatar.vue';
+import FHUserSearch from '@/components/shared/FH-UserSearch.vue';
+import FHAvatar from '@/components/shared/FH-Avatar.vue';
 
 @Component({
   components: {
-    'fp-user-search': FPUserSearch,
-    'fp-avatar': FPAvatar
+    'fh-user-search': FHUserSearch,
+    'fh-avatar': FHAvatar
   }
 })
 export default class Friends extends Vue {
@@ -129,8 +129,7 @@ export default class Friends extends Vue {
     &:not(:last-child) {
       border-bottom: 1px solid rgba(black, 0.1);
     }
-    .tc-avatar,
-    .fp-avatar {
+    .tc-avatar {
       height: 30px;
       width: 30px;
     }
