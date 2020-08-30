@@ -6,6 +6,7 @@ import { Health } from './schemas/Health.schema';
 
 export enum HealthType {
   WEIGHT = 'weight',
+  HEIGHT = 'height',
 }
 
 @Injectable()
@@ -21,13 +22,10 @@ export class HealthService {
     });
   }
 
-  public async getAllHealthData(
-    userID: string,
-    timespan: number,
-  ): Promise<IHealth[]> {
+  public async getAllHealthData(userID: string): Promise<IHealth[]> {
     return this.healthModel.find({
       user: userID,
-      date: { $gte: new Date().getTime() - timespan },
+      date: { $gte: new Date().getTime() - 31557600000 },
     });
   }
 }

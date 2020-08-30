@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FPUser from 'src/auth/user.decorator';
@@ -20,11 +12,8 @@ export class HealthController {
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
-  async getAllHealthData(
-    @FPUser() user: IUser,
-    @Query('timespan') timespan = new Date().getTime(),
-  ): Promise<IHealth[]> {
-    return this.healthService.getAllHealthData(user._id, timespan);
+  async getAllHealthData(@FPUser() user: IUser): Promise<IHealth[]> {
+    return this.healthService.getAllHealthData(user._id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

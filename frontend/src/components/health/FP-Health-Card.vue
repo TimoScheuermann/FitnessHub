@@ -1,0 +1,239 @@
+<template>
+  <div class="fp-health-card">
+    <template v-if="!healthData">
+      <tl-flow flow="column" loading>
+        <tc-spinner size="20" />
+        <span class="info">Daten werden geladen</span>
+      </tl-flow>
+    </template>
+    <template v-else-if="healthData.length === 0">
+      <div class="no-data">
+        <div class="title">Es konnten keine Daten gefunden werden...</div>
+        <div class="subtitle">
+          Trage dein {{ currentHead }} ein, um deinen Verlauf zu tracken
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <tc-segments v-model="selectedTime">
+        <tc-segment-item title="T" />
+        <tc-segment-item title="W" />
+        <tc-segment-item title="M" />
+        <tc-segment-item title="J" />
+      </tc-segments>
+      <div class="head">
+        <div class="type">
+          {{ selectedTime === 0 ? category : 'durchschnitt' }}
+        </div>
+        <div class="amount">
+          {{ amount }}<span>{{ unit }}</span>
+        </div>
+        <div class="time">{{ now }}</div>
+      </div>
+      <fp-chart
+        width="100%"
+        height="250"
+        type="line"
+        :options="options"
+        :series="series"
+      />
+    </template>
+    <template v-if="healthData">
+      <div class="current">
+        <span>{{ currentHead }}</span> ({{ unit }})
+      </div>
+      <div class="add-data">
+        <div>
+          <tc-input
+            :step="step"
+            type="number"
+            :buttons="true"
+            v-model="currentInput"
+          />
+        </div>
+        <div>
+          <tc-button @click="submit" name="Speichern" variant="filled" />
+        </div>
+      </div>
+    </template>
+  </div>
+</template>
+
+<script lang="ts">
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import VueApexCharts from 'vue-apexcharts';
+import { IHealth } from '@/utils/interfaces';
+import { days, months, aDay, aWeek, aMonth, aYear } from '@/utils/constants';
+import axios from '@/utils/axios';
+
+@Component({
+  components: {
+    'fp-chart': VueApexCharts
+  }
+})
+export default class FPHealthCard extends Vue {
+  @Prop() healthData!: IHealth[] | null;
+  @Prop({ default: 'weight' }) endpoint!: string;
+  @Prop({ default: 'Gewicht' }) category!: string;
+  @Prop({ default: 'kg' }) unit!: string;
+  @Prop({ default: 'aktuelles Gewicht' }) currentHead!: string;
+  @Prop({ default: 0.1 }) step!: number;
+
+  public currentInput =
+    this.healthData && this.healthData.length > 0 ? this.current : 70;
+  public selectedTime = 1;
+  public multis = [aDay, aWeek, aMonth, aYear];
+
+  @Watch('healthData')
+  dataChanged() {
+    this.currentInput =
+      this.healthData && this.healthData.length > 0 ? this.current : 70;
+  }
+
+  get options() {
+    return {
+      chart: {
+        toolbar: { show: false },
+        parentHeightOffset: 0,
+        background: 'transparent',
+        fontFamily: 'inherit'
+      },
+      xaxis: {
+        type: 'datetime',
+        range: this.multis[this.selectedTime],
+        max: new Date().getTime()
+      },
+      yaxis: {
+        opposite: true,
+        tickAmount: 0.1,
+        forceNiceScale: true,
+        labels: { formatter: (value: string) => value + ' kg' }
+      },
+      colors: ['#08f'],
+      stroke: { lineCap: 'round', width: 4 },
+      markers: {
+        size: this.selectedTime < 2 ? 5 : 0,
+        strokeWidth: 3
+      },
+      tooltip: {
+        x: { format: 'dd. MMM yyyy' }
+      }
+    };
+  }
+
+  get series() {
+    return [
+      {
+        name: this.category,
+        data: (this.healthData || [])
+          .map(d => {
+            return {
+              x: d.date,
+              y: d.value
+            };
+          })
+          .sort((a, b) => b.y - a.y)
+      }
+    ];
+  }
+
+  get now(): string {
+    const date: Date = new Date();
+    return `${days[date.getDay()]}, ${date.getDate()}. ${
+      months[date.getMonth() - 1]
+    } ${date.getFullYear()}`;
+  }
+
+  get current(): number {
+    if (!this.healthData) return 70;
+    return this.healthData.sort((a, b) => b.date - a.date)[0].value;
+  }
+
+  get amount(): number {
+    if (!this.healthData) return -1;
+    if (this.selectedTime === 0) {
+      return this.current;
+    }
+    const latest = new Date().getTime() - this.multis[this.selectedTime];
+    const resultingData = this.healthData
+      .filter(x => x.date >= latest)
+      .map(x => x.value);
+    const sum = resultingData.reduce((a, b) => a + b, 0);
+    return Math.round((sum / resultingData.length) * 100) / 100;
+  }
+
+  async submit(): Promise<void> {
+    await axios.post('health/' + this.endpoint, { value: +this.currentInput });
+    this.$emit('reload');
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.fp-health-card {
+  background: $paragraph;
+  padding: 10px;
+  border-radius: $border-radius;
+  .head {
+    .type {
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0.5;
+    }
+    .amount {
+      font-size: 2em;
+      font-weight: bold;
+      span {
+        font-size: 20px;
+        opacity: 0.5;
+        margin-left: 3px;
+      }
+    }
+    .time {
+      font-weight: 600;
+      opacity: 0.75;
+    }
+  }
+  .current {
+    font-weight: 500;
+    opacity: 0.75;
+    margin: 5px;
+    font-size: 18px;
+    span {
+      text-transform: capitalize;
+    }
+  }
+  .add-data {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 0;
+    max-width: 100%;
+    overflow: hidden;
+    .tc-input {
+      max-width: calc(90vw - 140px);
+    }
+  }
+  [loading] {
+    margin: 10px;
+    opacity: 0.6;
+    .info {
+      margin-top: 10px;
+      font-weight: 500;
+    }
+  }
+  .no-data {
+    margin: 5px;
+    .title {
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+    .subtitle {
+      margin-top: 5px;
+      margin-bottom: 20px;
+    }
+  }
+}
+/deep/ .tc-segments--head__item {
+  padding: 0px !important;
+}
+</style>

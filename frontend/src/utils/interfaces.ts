@@ -87,8 +87,10 @@ export interface IInbox {
 }
 
 export enum HealthType {
-  WEIGHT = 'weight'
+  WEIGHT = 'weight',
+  HEIGHT = 'height'
 }
+
 export interface IHealth {
   readonly _id?: string;
   readonly type: HealthType;

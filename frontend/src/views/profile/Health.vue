@@ -4,14 +4,28 @@
       <h1>Gewicht</h1>
       <tc-spinner v-if="!healthData" size="20" />
     </tl-flow>
-
-    <template v-if="healthData">
-      <fp-health-weight :data="healthData" />
-      <!-- <p>{{ healthData }}</p> -->
-    </template>
-
-    <!-- <tc-input type="number" v-model="weight" :buttons="true" />
-    <tc-button @click="submitWeight" name="Submit weight" /> -->
+    <fp-health-card
+      :healthData="getData('weight')"
+      @reload="loadData"
+      endpoint="weight"
+      category="Gewicht"
+      unit="kg"
+      currentHead="aktuelles Gewicht"
+      :step="0.1"
+    />
+    <tl-flow horizontal="space-between">
+      <h1>Größe</h1>
+      <tc-spinner v-if="!healthData" size="20" />
+    </tl-flow>
+    <fp-health-card
+      :healthData="getData('height')"
+      @reload="loadData"
+      endpoint="height"
+      category="Größe"
+      unit="cm"
+      currentHead="aktuelle Größe"
+      :step="1"
+    />
   </div>
 </template>
 
@@ -19,16 +33,15 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IHealth } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FPHealthWeight from '@/components/health/FP-Health-Weight.vue';
+import FPHealthCard from '@/components/health/FP-Health-Card.vue';
 
 @Component({
   components: {
-    'fp-health-weight': FPHealthWeight
+    'fp-health-card': FPHealthCard
   }
 })
 export default class Inbox extends Vue {
   public healthData: IHealth[] | null = null;
-  public weight = 84;
 
   mounted(): void {
     this.loadData();
@@ -38,10 +51,9 @@ export default class Inbox extends Vue {
     this.healthData = (await axios.get('health')).data;
   }
 
-  async submitWeight(): Promise<void> {
-    console.log('submitting');
-    await axios.post('health/weight', { value: +this.weight });
-    this.loadData();
+  public getData(type = 'weight'): IHealth[] | null {
+    if (!this.healthData) return null;
+    return this.healthData.filter(x => x.type === type);
   }
 }
 </script>
