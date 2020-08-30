@@ -107,11 +107,11 @@ export default class FPHealthWeight extends Vue {
     const latest =
       new Date().getTime() -
       1000 * 60 * 60 * 24 * this.multis[this.selectedTime];
-    const sum = this.data
+    const resultingData = this.data
       .filter(x => x.date >= latest)
-      .map(x => x.value)
-      .reduce((a, b) => a + b, 0);
-    return Math.round((sum / this.data.length) * 100) / 100;
+      .map(x => x.value);
+    const sum = resultingData.reduce((a, b) => a + b, 0);
+    return Math.round((sum / resultingData.length) * 100) / 100;
   }
 }
 </script>
