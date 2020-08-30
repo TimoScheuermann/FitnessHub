@@ -16,7 +16,7 @@ for (const component in TCComponents) {
 }
 
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
-  const possibleToken = to.query.fpToken as string;
+  const possibleToken = to.query.fhToken as string;
   if (possibleToken) {
     persistLogin(possibleToken);
     window.location.replace(window.location.href.split('?')[0]);

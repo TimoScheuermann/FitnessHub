@@ -22,7 +22,7 @@ export class AuthService {
   ) {}
 
   public redirect(jwt: any, res: Response): void {
-    res.redirect(`${this.configService.get('REDIRECT')}?fpToken=${jwt}`);
+    res.redirect(`${this.configService.get('REDIRECT')}?fhToken=${jwt}`);
   }
 
   async validateOAuthLogin(u: IUser): Promise<string> {
