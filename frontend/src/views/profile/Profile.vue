@@ -55,6 +55,13 @@
       <div>User ID</div>
       <div>{{ $store.getters.user._id }}</div>
     </div>
+
+    <h1>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid ea a
+      blanditiis quis at quibusdam sapiente omnis alias, hic neque atque
+      officiis tenetur eligendi minus, facilis ratione consequatur quia
+      delectus!
+    </h1>
   </div>
 </template>
 

@@ -107,7 +107,7 @@ export default class FHHealthCard extends Vue {
         forceNiceScale: true,
         labels: { formatter: (value: string) => value + ' kg' }
       },
-      colors: ['#08f'],
+      colors: ['#25ca49'],
       stroke: { lineCap: 'round', width: 4 },
       markers: {
         size: this.selectedTime < 2 ? 5 : 0,

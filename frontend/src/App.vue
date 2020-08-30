@@ -2,38 +2,49 @@
   <div>
     <div id="mobile">
       <tc-tabbar>
-        <tc-tabbar-item routeName="home" icon="house" title="Home" />
-        <tc-tabbar-item routeName="community" icon="users" title="Feed" />
-        <tc-tabbar-item routeName="training" icon="gym" title="Training" />
         <tc-tabbar-item
+          tfcolor="success"
+          routeName="home"
+          icon="house"
+          title="Home"
+        />
+        <tc-tabbar-item
+          tfcolor="success"
+          routeName="community"
+          icon="users"
+          title="Feed"
+        />
+        <tc-tabbar-item
+          tfcolor="success"
+          routeName="training"
+          icon="gym"
+          title="Training"
+        />
+        <tc-tabbar-item
+          tfcolor="success"
           routeName="nutrition"
           icon="food-bowl"
           title="Ernährung"
         />
         <tc-badge v-if="$store.getters.valid" :value="notifications">
-          <tc-tabbar-item routeName="profile" icon="user" title="Profil" />
+          <tc-tabbar-item
+            tfcolor="success"
+            routeName="profile"
+            icon="user"
+            title="Profil"
+          />
         </tc-badge>
-        <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
+        <tc-tabbar-item
+          tfcolor="success"
+          v-else
+          routeName="login"
+          icon="user"
+          title="Profil"
+        />
       </tc-tabbar>
     </div>
     <div id="desktop">
-      <tc-navbar>
-        <b slot="logo"><i class="ti-gym" /> FitnessHub</b>
-        <tc-navbar-item routeName="home" icon="house" name="Home" />
-        <tc-navbar-item routeName="community" icon="users" name="Feed" />
-        <tc-navbar-item routeName="training" icon="gym" name="Training" />
-        <tc-navbar-item
-          routeName="nutrition"
-          icon="food-bowl"
-          name="Ernährung"
-        />
-        <template slot="actions">
-          <tc-badge v-if="$store.getters.valid" :value="notifications">
-            <tc-button name="Login" icon="login" routeName="profile" />
-          </tc-badge>
-          <tc-button v-else name="Profil" icon="user" routeName="login" />
-        </template>
-      </tc-navbar>
+      <fh-navbar />
     </div>
 
     <div class="view">
@@ -46,8 +57,13 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { ITotalMessages } from './utils/interfaces';
 import axios from './utils/axios';
+import FHNavbar from './components/global/FH-Navbar.vue';
 
-@Component
+@Component({
+  components: {
+    'fh-navbar': FHNavbar
+  }
+})
 export default class App extends Vue {
   public mq = window.matchMedia('(min-width: 851px)');
 
