@@ -1,4 +1,4 @@
-cd /root/Fitness-Planner/backend
+cd /root/FitnessHub/backend
 git stash
 git pull
 
