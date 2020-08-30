@@ -14,6 +14,9 @@ export class Nutritionplan extends Document {
   time: number;
 
   @Prop()
+  description: string;
+
+  @Prop()
   recipes: IRecipe[];
 }
 

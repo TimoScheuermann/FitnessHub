@@ -5,5 +5,6 @@ export interface INutritionplan {
   readonly title: string;
   readonly author: string;
   readonly time: number;
+  readonly description: string;
   readonly recipes: IRecipe[];
 }

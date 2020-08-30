@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { INutrition } from '../interfaces/INutrition';
 import { IRecipeIngredient } from '../interfaces/IRecipeIngredient';
 
 @Schema()
@@ -26,7 +27,7 @@ export class Recipe extends Document {
   ingredients: IRecipeIngredient[];
 
   @Prop()
-  calories: number;
+  nutrition: INutrition[];
 
   @Prop()
   category: string;
