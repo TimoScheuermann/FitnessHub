@@ -1,29 +1,42 @@
 <template>
   <div class="home">
-    <tc-hero></tc-hero>
+    <fh-mobile-header title="Home" />
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
+        slot="background"
+        alt=""
+      />
+      <h1 v-if="!$store.getters.valid"><i class="ti-gym"></i> FitnessHub</h1>
+      <h1 v-else>
+        Welcome back, {{ $store.getters.user.givenName }}
+        {{ $store.getters.user.familyName }}
+      </h1>
+    </tc-hero>
     <div content>
-      <template v-if="$store.getters.valid">
-        <h1>Welcome back,</h1>
-        <h2>{{ $store.getters.name || 'Champion' }}</h2>
-      </template>
-      <h1 v-else>Home</h1>
+      <h1>Title</h1>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
 
-@Component
+@Component({
+  components: {
+    'fh-mobile-header': FHMobileHeader
+  }
+})
 export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.tc-hero {
-  h1,
-  h2 {
-    margin: 2.5px 0;
-    text-align: center;
-  }
+.tc-hero img {
+  filter: brightness(60%);
 }
 </style>

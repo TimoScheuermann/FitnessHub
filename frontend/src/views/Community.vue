@@ -1,13 +1,19 @@
 <template>
   <div class="community">
-    <tc-hero :dark="true" tc-dark-container>
+    <fh-mobile-header title="Community" />
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
       <img
-        src="https://images.unsplash.com/photo-1580086319619-3ed498161c77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+        src="https://images.unsplash.com/photo-1580086319619-3ed498161c77?q=25"
         slot="background"
         alt=""
       />
       <h1>Community</h1>
     </tc-hero>
+
     <div content>
       <h1>Beiträge</h1>
     </div>
@@ -16,7 +22,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-@Component
+import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
+
+@Component({
+  components: {
+    'fh-mobile-header': FHMobileHeader
+  }
+})
 export default class Community extends Vue {}
 </script>
 

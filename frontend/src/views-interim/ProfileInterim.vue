@@ -8,9 +8,13 @@
       />
     </fh-mobile-header>
 
-    <tc-hero :hasFixedHeader="fixedHeader" :height="200">
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
       <img
-        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
         slot="background"
         alt=""
       />
@@ -84,7 +88,6 @@ export default class ProfileInterim extends Vue {
   h1 {
     margin: 0px;
     margin-top: env(safe-area-inset-top);
-    color: #fff;
     text-transform: capitalize;
   }
   .tl-flow {
@@ -96,7 +99,6 @@ export default class ProfileInterim extends Vue {
     }
     .info {
       margin: 5px;
-      color: #fff;
       .name {
         font-weight: 500;
         font-size: 1.2em;

@@ -30,9 +30,9 @@ const router = new VueRouter({
       component: () => import('@/views/Nutrition.vue')
     },
     {
-      path: '/search',
-      name: 'search',
-      component: () => import('@/views/Search.vue')
+      path: '/training',
+      name: 'training',
+      component: () => import('@/views/Training.vue')
     },
     {
       path: '/playground',

@@ -3,9 +3,13 @@
     <fh-mobile-header :title="title">
       <tc-header-button routeName="profile" name="Profil" />
     </fh-mobile-header>
-    <tc-hero :hasFixedHeader="fixedHeader" :height="200">
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
       <img
-        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
         slot="background"
         alt=""
       />
@@ -25,21 +29,6 @@ import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
   }
 })
 export default class ManagementInterim extends Vue {
-  public mq = window.matchMedia('(min-width: 851px)');
-  public fixedHeader = this.mq.matches;
-
-  mounted() {
-    this.mq.addListener(this.mediaListener);
-  }
-
-  beforeDestroy() {
-    this.mq.removeListener(this.mediaListener);
-  }
-
-  public mediaListener(event: MediaQueryListEvent): void {
-    this.fixedHeader = event && event.matches;
-  }
-
   get title(): string {
     return (
       this.$route.meta.title ||
@@ -59,7 +48,6 @@ export default class ManagementInterim extends Vue {
   h1 {
     margin: 0px;
     margin-top: env(safe-area-inset-top);
-    color: #fff;
     text-transform: capitalize;
   }
 }

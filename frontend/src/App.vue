@@ -4,16 +4,16 @@
       <tc-tabbar>
         <tc-tabbar-item routeName="home" icon="house" title="Home" />
         <tc-tabbar-item routeName="community" icon="users" title="Feed" />
-        <tc-badge v-if="$store.getters.valid" :value="notifications">
-          <tc-tabbar-item routeName="profile" icon="user" title="Profil" />
-        </tc-badge>
-        <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
+        <tc-tabbar-item routeName="training" icon="gym" title="Training" />
         <tc-tabbar-item
           routeName="nutrition"
           icon="food-bowl"
           title="Ernährung"
         />
-        <tc-tabbar-item routeName="search" icon="lens" title="Suche" />
+        <tc-badge v-if="$store.getters.valid" :value="notifications">
+          <tc-tabbar-item routeName="profile" icon="user" title="Profil" />
+        </tc-badge>
+        <tc-tabbar-item v-else routeName="login" icon="user" title="Profil" />
       </tc-tabbar>
     </div>
     <div id="desktop">
@@ -21,15 +21,15 @@
         <b slot="logo"><i class="ti-gym" /> FitnessHub</b>
         <tc-navbar-item routeName="home" icon="house" name="Home" />
         <tc-navbar-item routeName="community" icon="users" name="Feed" />
+        <tc-navbar-item routeName="training" icon="gym" name="Training" />
         <tc-navbar-item
           routeName="nutrition"
           icon="food-bowl"
           name="Ernährung"
         />
-        <tc-navbar-item routeName="search" icon="lens" name="Suche" />
         <template slot="actions">
           <tc-badge v-if="$store.getters.valid" :value="notifications">
-            <tc-button name="Profil" routeName="profile" />
+            <tc-button name="Login" icon="login" routeName="profile" />
           </tc-badge>
           <tc-button v-else name="Profil" icon="user" routeName="login" />
         </template>
@@ -49,6 +49,8 @@ import axios from './utils/axios';
 
 @Component
 export default class App extends Vue {
+  public mq = window.matchMedia('(min-width: 851px)');
+
   get notifications(): number {
     return this.$store.getters.totalNotifications;
   }
@@ -56,6 +58,15 @@ export default class App extends Vue {
   async mounted() {
     const notificaitons: ITotalMessages = (await axios.get('inbox/total')).data;
     this.$store.commit('setNotifications', notificaitons);
+    this.mq.addListener(this.mediaListener);
+  }
+
+  beforeDestroy() {
+    this.mq.removeListener(this.mediaListener);
+  }
+
+  public mediaListener(event: MediaQueryListEvent): void {
+    this.$store.commit('fixedHeader', event && event.matches);
   }
 }
 </script>

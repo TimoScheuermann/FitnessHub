@@ -51,9 +51,7 @@
             v-model="currentInput"
           />
         </div>
-        <div>
-          <tc-button @click="submit" name="Speichern" variant="filled" />
-        </div>
+        <tc-button @click="submit" name="Speichern" variant="filled" />
       </div>
     </template>
   </div>
@@ -205,14 +203,10 @@ export default class FHHealthCard extends Vue {
   }
   .add-data {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) minmax(100px, auto);
     grid-gap: 0;
-    max-width: 100%;
-    overflow: hidden;
-    .tc-input {
-      max-width: calc(90vw - 150px);
-    }
   }
+
   [loading] {
     margin: 10px;
     opacity: 0.6;
@@ -232,8 +226,5 @@ export default class FHHealthCard extends Vue {
       margin-bottom: 20px;
     }
   }
-}
-/deep/ .tc-segments--head__item {
-  padding: 0px !important;
 }
 </style>

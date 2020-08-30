@@ -51,7 +51,7 @@ export default class PromoteUser extends Vue {
   }
 
   public async addModerator(userId: string = this.inputValue) {
-    if (userId.length < 20) return;
+    if (userId.length < 5) return;
     await axios.post('promote/moderator/' + userId);
     this.loadModerators();
   }

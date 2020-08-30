@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     user: {} as IUser,
     userValidated: false,
-    notifications: null as ITotalMessages | null
+    notifications: null as ITotalMessages | null,
+    fixedHeader: false
   },
   getters: {
     valid: (state: any): boolean => {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
         (a, b) => a + b,
         0
       );
+    },
+    fixedHeader: (state: any): boolean => {
+      return state.fixedHeader;
     }
   },
   mutations: {
@@ -44,6 +48,9 @@ export default new Vuex.Store({
     },
     setNotifications(state: any, notifications: ITotalMessages) {
       state.notifications = notifications;
+    },
+    fixedHeader(state: any, fixedHeader: boolean) {
+      state.fixedHeader = fixedHeader;
     }
   }
 });
