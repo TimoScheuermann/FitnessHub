@@ -59,6 +59,7 @@ export default class App extends Vue {
     const notificaitons: ITotalMessages = (await axios.get('inbox/total')).data;
     this.$store.commit('setNotifications', notificaitons);
     this.mq.addListener(this.mediaListener);
+    this.$store.commit('fixedHeader', this.mq.matches);
   }
 
   beforeDestroy() {
