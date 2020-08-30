@@ -6,10 +6,10 @@ import { IRecipeIngredient } from '../interfaces/IRecipeIngredient';
 @Schema()
 export class Recipe extends Document {
   @Prop()
-  title: string;
+  author: string;
 
   @Prop()
-  author: string;
+  title: string;
 
   @Prop()
   time: number;
