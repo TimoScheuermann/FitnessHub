@@ -109,7 +109,7 @@ export default class Messages extends Vue {
   public getLatestMessageWith(id: string): IMessage {
     return this.messages
       .filter(x => x.to === id || x.from === id)
-      .sort((a, b) => a.date - b.date)[0];
+      .sort((a, b) => b.date - a.date)[0];
   }
 
   get chatPartners(): IUserInfo[] {
