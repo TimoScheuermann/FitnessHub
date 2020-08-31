@@ -31,6 +31,12 @@ export class RecipeController {
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get(':recipeId')
+  async getRecipeById(@Param('recipeId') recipeId: string): Promise<IRecipe> {
+    return this.recipeService.getRecipeById(recipeId);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   async addRecipe(
     @FHUser() user: IUser,
@@ -39,13 +45,12 @@ export class RecipeController {
     this.recipeService.addRecipe(user._id, createRecipe);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':recipeId')
   async deleteRecipe(
     @FHUser() user: IUser,
     @Param('recipeId') recipeId: string,
-  ) {
+  ): Promise<void> {
     return this.recipeService.deleteRecipe(user._id, recipeId);
   }
 }
