@@ -29,14 +29,10 @@ export class RecipeService {
     });
   }
 
-  public async deleteRecipe(
-    userId: string,
-    recipeId: string,
-  ): Promise<boolean> {
+  public async deleteRecipe(userId: string, recipeId: string): Promise<void> {
     await this.recipeModel.findOneAndDelete({
       author: userId,
-      target: recipeId,
+      _id: recipeId,
     });
-    return true;
   }
 }

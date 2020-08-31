@@ -39,8 +39,9 @@ export class RecipeController {
     this.recipeService.addRecipe(user._id, createRecipe);
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Delete('delete/:recipeId')
+  @Delete(':recipeId')
   async deleteRecipe(
     @FHUser() user: IUser,
     @Param('recipeId') recipeId: string,
