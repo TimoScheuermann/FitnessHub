@@ -114,6 +114,7 @@ export default class FHNotification extends Vue {
 .notification-enter,
 .notification-leave-to {
   margin-top: -30px;
+  transform: scale(0.9);
   opacity: 0;
 }
 </style>

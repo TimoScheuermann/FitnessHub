@@ -48,6 +48,7 @@
           icon="chart-bar"
           routeName="statistics"
         />
+        <tc-list-item v-group.admin title="Suspend User" icon="blocked" />
         <tc-list-item
           v-group.admin
           title="Promote User"

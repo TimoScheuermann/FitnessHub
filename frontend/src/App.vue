@@ -105,7 +105,7 @@ export default class App extends Vue {
     ) {
       if (message.type === 'message') {
         sendNotification({
-          title: getFriendName(message.from) + ' sagt:',
+          title: getFriendName(message.from),
           text: message.content,
           to: { name: 'chatroom', params: { id: message.from } },
           img: getFriendAvatar(message.from)
