@@ -42,7 +42,7 @@ export class RecipeController {
     @FHUser() user: IUser,
     @Body() createRecipe: CreateRecipeDTO,
   ): Promise<void> {
-    this.recipeService.addRecipe(user._id, createRecipe);
+    this.recipeService.addRecipe(user, createRecipe);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
