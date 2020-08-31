@@ -21,16 +21,8 @@ export class FriendsService {
     if (userA === userB) return true;
     return !!(await this.friendshipModel.findOne({
       $or: [
-        {
-          invitee: userA,
-          target: userB,
-          accepted: true,
-        },
-        {
-          invitee: userB,
-          target: userA,
-          accepted: true,
-        },
+        { invitee: userA, target: userB, accepted: true },
+        { invitee: userB, target: userA, accepted: true },
       ],
     }));
   }
@@ -38,14 +30,8 @@ export class FriendsService {
   public async getFriendsOf(id: string): Promise<IUserInfo[]> {
     const friends = await this.friendshipModel.find({
       $or: [
-        {
-          invitee: id,
-          accepted: true,
-        },
-        {
-          target: id,
-          accepted: true,
-        },
+        { invitee: id, accepted: true },
+        { target: id, accepted: true },
       ],
     });
     return Promise.all(
@@ -66,14 +52,8 @@ export class FriendsService {
   ): Promise<boolean> {
     await this.friendshipModel.findOneAndDelete({
       $or: [
-        {
-          invitee: userId,
-          target: friendId,
-        },
-        {
-          invitee: friendId,
-          target: userId,
-        },
+        { invitee: userId, target: friendId },
+        { invitee: friendId, target: userId },
       ],
     });
     return true;
@@ -85,7 +65,7 @@ export class FriendsService {
   ): Promise<boolean> {
     await this.friendshipModel.findOneAndUpdate(
       { _id: friendshipId, target: targetId },
-      { $set: { accepted: true } },
+      { $set: { accepted: true, since: new Date().getTime() } },
     );
     return true;
   }
@@ -97,14 +77,8 @@ export class FriendsService {
     if (invitee === target) return true;
     return !!(await this.friendshipModel.findOne({
       $or: [
-        {
-          invitee: invitee,
-          target: target,
-        },
-        {
-          invitee: target,
-          target: invitee,
-        },
+        { invitee: invitee, target: target },
+        { invitee: target, target: invitee },
       ],
     }));
   }
@@ -112,14 +86,8 @@ export class FriendsService {
   public async getInvitations(user: string): Promise<IPendingFriendship[]> {
     const friendships = await this.friendshipModel.find({
       $or: [
-        {
-          target: user,
-          accepted: false,
-        },
-        {
-          invitee: user,
-          accepted: false,
-        },
+        { target: user, accepted: false },
+        { invitee: user, accepted: false },
       ],
     });
     return Promise.all(
@@ -144,6 +112,7 @@ export class FriendsService {
       invitee: invitee,
       target: target,
       accepted: false,
+      since: 0,
     });
     return true;
   }
@@ -167,5 +136,17 @@ export class FriendsService {
     return await this.friendshipModel
       .find({ target: id, accepted: false })
       .countDocuments();
+  }
+
+  public async getFriendship(
+    userA: string,
+    userB: string,
+  ): Promise<IFriendship> {
+    return await this.friendshipModel.findOne({
+      $or: [
+        { invitee: userA, target: userB },
+        { invitee: userB, target: userA },
+      ],
+    });
   }
 }

@@ -1,13 +1,20 @@
+import io from 'socket.io-client';
 import * as TCComponents from 'tccomponents_vue';
 import 'tccomponents_vue/lib/tccomponents_vue.css';
 import Vue from 'vue';
 import { Route } from 'vue-router';
+import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
+import { backendURL } from './utils/constants';
+
+const socket = io(backendURL, { autoConnect: false });
+
+Vue.use(VueSocketIOExt, socket);
 
 Vue.config.productionTip = false;
 
@@ -32,6 +39,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
+    // socket.open(); TODO:
   }
 
   if (to.name === 'login' && store.getters.valid) {
@@ -73,6 +81,11 @@ Vue.directive('group', (el: HTMLElement, binding: any, vnode: VNode) => {
 });
 
 new Vue({
+  sockets: {
+    connect() {
+      socket.emit('join', getUserFromJWT()._id);
+    }
+  },
   router,
   store,
   render: h => h(App)

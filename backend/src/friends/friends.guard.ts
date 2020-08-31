@@ -2,7 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  SetMetadata,
+  SetMetadata
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
@@ -27,7 +27,6 @@ export class FriendsGuard implements CanActivate {
       context.getHandler(),
     );
 
-    console.log(friendIdParam);
     if (!friendIdParam) return false;
 
     const ctx = context.switchToHttp();

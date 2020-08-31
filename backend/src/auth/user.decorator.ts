@@ -1,6 +1,9 @@
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { IUser } from 'src/user/interfaces/IUser';
 
-const FHUser = createParamDecorator((data, req) => req.user as IUser);
+const FHUser = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user as IUser;
+});
 
 export default FHUser;

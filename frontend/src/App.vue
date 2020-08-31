@@ -58,6 +58,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { ITotalMessages } from './utils/interfaces';
 import axios from './utils/axios';
 import FHNavbar from './components/global/FH-Navbar.vue';
+import { Socket } from 'vue-socket.io-extended';
 
 @Component({
   components: {
@@ -76,6 +77,8 @@ export default class App extends Vue {
     this.$store.commit('setNotifications', notificaitons);
     this.mq.addListener(this.mediaListener);
     this.$store.commit('fixedHeader', this.mq.matches);
+
+    axios.get('message');
   }
 
   beforeDestroy() {
@@ -84,6 +87,11 @@ export default class App extends Vue {
 
   public mediaListener(event: MediaQueryListEvent): void {
     this.$store.commit('fixedHeader', event && event.matches);
+  }
+
+  @Socket('message')
+  messageReceived(message: string) {
+    console.log('Message', message);
   }
 }
 </script>

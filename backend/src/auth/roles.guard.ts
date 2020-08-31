@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { IUser } from 'src/user/interfaces/IUser';
 
-export const Roles = (roles: string[]) => SetMetadata('FPRoles', roles);
+export const Roles = (roles: string[]) => SetMetadata('FHRoles', roles);
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -19,7 +19,7 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const ctx = context.switchToHttp();
-    const roles = this.reflector.get<string[]>('FPRoles', context.getHandler());
+    const roles = this.reflector.get<string[]>('FHRoles', context.getHandler());
 
     if (!roles || !roles.length) {
       return true;

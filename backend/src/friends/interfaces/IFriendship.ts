@@ -3,4 +3,5 @@ export interface IFriendship {
   readonly accepted: boolean;
   readonly invitee: string;
   readonly target: string;
+  readonly since: number;
 }
