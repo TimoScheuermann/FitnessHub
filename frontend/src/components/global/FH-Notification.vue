@@ -82,12 +82,12 @@ export default class FHNotification extends Vue {
     left: 5vw;
     @media only screen and(max-width: 500px) {
       right: 5vw;
-      top: 5vw;
+      top: calc(5vw + env(safe-area-inset-top));
     }
     max-width: 500px;
 
     @media #{$isDesktop} {
-      top: 70px;
+      top: calc(70px + env(safe-area-inset-top));
     }
     padding: 10px;
     border-radius: $border-radius;
