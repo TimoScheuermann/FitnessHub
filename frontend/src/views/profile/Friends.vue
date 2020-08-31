@@ -91,43 +91,28 @@ import FHAvatar from '@/components/shared/FH-Avatar.vue';
 export default class Friends extends Vue {
   public modalOpened = false;
 
-  public friends: IUserInfo[] | null = null;
-  public invites: IPendingFriendship[] | null = null;
-
-  mounted() {
-    this.loadFriends();
-    this.loadInvites();
+  get friends(): IUserInfo[] {
+    return this.$store.getters.friends;
   }
 
-  async loadInvites() {
-    this.invites = (await axios.get('friends/invitations')).data;
-  }
-
-  async loadFriends() {
-    this.friends = (await axios.get('friends')).data;
+  get invites(): IPendingFriendship[] {
+    return this.$store.getters.friendRequests;
   }
 
   public async invite(user: IUserInfo): Promise<void> {
     await axios.post('friends/invite/' + user._id);
-    this.loadInvites();
   }
 
   public async acceptInvite(friendshipId: string): Promise<void> {
     await axios.put('friends/accept/' + friendshipId);
-    this.$store.state.notifications.friends--;
-    this.loadInvites();
-    this.loadFriends();
   }
 
   public async denyInvite(friendshipId: string): Promise<void> {
     await axios.delete('friends/deny/' + friendshipId);
-    this.$store.state.notifications.friends--;
-    this.loadInvites();
   }
 
   public async removeFriend(friendId: string): Promise<void> {
     await axios.delete('friends/remove/' + friendId);
-    this.loadFriends();
   }
 }
 </script>

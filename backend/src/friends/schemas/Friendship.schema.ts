@@ -11,9 +11,6 @@ export class Friendship extends Document {
 
   @Prop()
   target: string;
-
-  @Prop()
-  since: number;
 }
 
 export const FriendshipSchema = SchemaFactory.createForClass(Friendship);

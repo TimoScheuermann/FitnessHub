@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Provider } from 'src/auth/auth.service';
-import { Inbox } from 'src/inbox/schemas/Inbox.schema';
+import { Message } from 'src/message/schemas/Message.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from './interfaces/IUser';
 import { IUserInfo } from './interfaces/IUserInfo';
@@ -12,7 +12,7 @@ import { User } from './schemas/User.schema';
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(Inbox.name) private inboxModel: Model<Inbox>,
+    @InjectModel(Message.name) private messageModel: Model<Message>,
     private readonly tgbotService: TgbotService,
   ) {}
 
@@ -45,12 +45,14 @@ export class UserService {
       this.tgbotService.sendMessage(
         `Ein neuer User hat sich angemeldet!\nName: ${user.givenName} ${user.familyName}`,
       );
-      await this.inboxModel.create({
+      await this.messageModel.create({
         date: new Date().getTime(),
         from: this.FPUID,
-        message:
+        content:
           'Willkommen beim Fitness Planner! Danke, dass du der Community beigetreten bist.',
         to: user._id,
+        read: false,
+        type: 'message',
       });
       return user;
     }
@@ -96,7 +98,7 @@ export class UserService {
         })
         .limit(30)
     )
-      .map(x => x.toObject())
+      .map((x) => x.toObject())
       .map((x: IUser) => {
         return {
           _id: x._id,
@@ -104,12 +106,12 @@ export class UserService {
           username: this.transformName(x),
         } as IUserInfo;
       })
-      .filter(x => x._id + '' !== this.FPUID)
+      .filter((x) => x._id + '' !== this.FPUID)
       .sort((a, b) => a.username.localeCompare(b.username));
   }
 
   public transformName(user: IUser): string {
-    return [user.givenName, user.familyName].filter(x => !!x).join(' ');
+    return [user.givenName, user.familyName].filter((x) => !!x).join(' ');
   }
 
   public async getTotalUsers(): Promise<number> {
@@ -144,7 +146,7 @@ export class UserService {
         group: 'Moderator',
       })
     )
-      .map(x => x.toObject())
+      .map((x) => x.toObject())
       .map((x: IUser) => {
         return {
           _id: x._id,
@@ -157,7 +159,7 @@ export class UserService {
 
   public async getEveryId(): Promise<string[]> {
     return (await this.userModel.find())
-      .map(x => x._id)
-      .filter(x => x + '' !== this.FPUID);
+      .map((x) => x._id)
+      .filter((x) => x + '' !== this.FPUID);
   }
 }

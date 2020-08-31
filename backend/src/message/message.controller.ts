@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
@@ -27,5 +35,16 @@ export class MessageController {
     @Body() body: { message: string },
   ): Promise<void> {
     this.messageService.sendMessage(from._id, to, body.message);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @FriendIDParam('friendId')
+  @UseGuards(AuthGuard('jwt'), FriendsGuard)
+  @Put('markAsRead/:friendId')
+  async markAsRead(
+    @FHUser() user: IUser,
+    @Param('friendId') friendId: string,
+  ): Promise<void> {
+    this.messageService.markAsRead(user._id, friendId);
   }
 }

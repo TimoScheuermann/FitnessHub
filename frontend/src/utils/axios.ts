@@ -3,7 +3,7 @@ import { getToken } from './auth';
 import { backendURL } from './constants';
 
 export default Axios.create({
-  timeout: 2000,
+  timeout: 5000,
   headers: {
     Authorization: `Bearer ${getToken()}`
   },

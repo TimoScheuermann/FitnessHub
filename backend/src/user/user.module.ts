@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Inbox, InboxSchema } from 'src/inbox/schemas/Inbox.schema';
+import { Message, MessageSchema } from 'src/message/schemas/Message.schema';
 import { TgbotModule } from 'src/tgbot/tgbot.module';
 import { User, UserSchema } from './schemas/User.schema';
 import { UserController } from './user.controller';
@@ -11,7 +11,7 @@ import { UserService } from './user.service';
     TgbotModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: Inbox.name, schema: InboxSchema },
+      { name: Message.name, schema: MessageSchema },
     ]),
   ],
   providers: [UserService],

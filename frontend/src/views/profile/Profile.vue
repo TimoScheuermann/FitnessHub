@@ -18,7 +18,10 @@
           routeName="messages"
         />
       </tc-badge>
-      <tc-badge :value="getNotificationAmount('friends')" position="inside">
+      <tc-badge
+        :value="$store.getters.unansweredFriendRequests"
+        position="inside"
+      >
         <tc-list-item title="Freunde" icon="users" routeName="friends" />
       </tc-badge>
       <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
@@ -75,11 +78,6 @@ export default class Profile extends Vue {
 
   public copyID(): void {
     copyToClipboard(this.$store.getters.user._id);
-  }
-
-  public getNotificationAmount(): number {
-    return 0;
-    // return Math.max(0, this.$store.state.notifications[type]);
   }
 }
 </script>

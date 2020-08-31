@@ -1,3 +1,6 @@
+import store from '@/store';
+import { IFHNotification, IUserInfo } from './interfaces';
+
 export function copyToClipboard(data: string) {
   const el = document.createElement('textarea');
   el.value = data;
@@ -59,4 +62,24 @@ export function formatDate(time: any): string {
         return Math.floor(seconds / +format[2]) + ' ' + format[1] + ' ' + token;
     }
   return time;
+}
+
+export function sendNotification(notification: IFHNotification): void {
+  store.commit('sendNotification', notification);
+}
+
+export function getFriendName(id: string): string {
+  const friend = getFriend(id);
+  if (friend) return friend.username;
+  return 'FitnessHub';
+}
+
+export function getFriendAvatar(id: string): string | undefined {
+  const friend = getFriend(id);
+  if (friend) return friend.avatar;
+  return undefined;
+}
+
+export function getFriend(id: string): IUserInfo | undefined {
+  return (store.getters.friends as IUserInfo[]).filter(x => x._id === id)[0];
 }

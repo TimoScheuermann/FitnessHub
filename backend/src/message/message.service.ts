@@ -20,13 +20,19 @@ export class MessageService {
       userA,
       userB,
     );
-    return friendship.since + '';
+    return friendship._id;
   }
 
   public async getMessages(userID: string): Promise<IMessage[]> {
     return this.messageModel.find({
       $or: [{ from: userID }, { to: userID }],
     });
+  }
+  public async markAsRead(userId: string, friendId: string): Promise<void> {
+    await this.messageModel.updateMany(
+      { from: friendId, to: userId },
+      { $set: { read: true } },
+    );
   }
 
   public async sendMessage(
@@ -45,13 +51,6 @@ export class MessageService {
     });
 
     this.fhSocket.server.to(from).to(to).emit('message', createdMessage);
-    // TODO: encrypt data, send message via socket io to sender and receiver
-  }
-
-  public async ping() {
-    this.fhSocket.server.emit('message', 'global');
-    this.fhSocket.server
-      .to('5f4668c0e00c280e3a68c95c')
-      .emit('message', 'private');
+    // TODO: encrypt data
   }
 }

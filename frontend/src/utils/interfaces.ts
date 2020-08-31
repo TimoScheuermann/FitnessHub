@@ -88,6 +88,13 @@ export interface IMessage {
   readonly date: number;
   readonly from: string;
   readonly to: string;
-  readonly read: boolean;
+  read: boolean;
   readonly content: string;
+}
+
+export interface IFHNotification {
+  readonly img?: string;
+  readonly title: string;
+  text: string;
+  readonly to: object;
 }

@@ -36,10 +36,10 @@ export class FriendsController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('invite/:targetId')
   async inviteFriend(
-    @FHUser() user,
+    @FHUser() user: IUser,
     @Param('targetId') targetId: string,
-  ): Promise<boolean> {
-    return this.friendsService.sendInvitation(user._id, targetId);
+  ): Promise<void> {
+    this.friendsService.sendInvitation(user, targetId);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -47,8 +47,8 @@ export class FriendsController {
   async acceptFriend(
     @FHUser() user: IUser,
     @Param('friendshipId') friendshipId: string,
-  ) {
-    return this.friendsService.acceptFriendship(user._id, friendshipId);
+  ): Promise<void> {
+    this.friendsService.acceptFriendship(user, friendshipId);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -56,8 +56,8 @@ export class FriendsController {
   async denyFriend(
     @FHUser() user: IUser,
     @Param('friendshipId') friendshipId: string,
-  ) {
-    return this.friendsService.denyFriendship(user._id, friendshipId);
+  ): Promise<void> {
+    this.friendsService.denyFriendship(user._id, friendshipId);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -65,7 +65,7 @@ export class FriendsController {
   async removeFriend(
     @FHUser() user: IUser,
     @Param('friendId') friendId: string,
-  ) {
-    return this.friendsService.deleteFriendship(user._id, friendId);
+  ): Promise<void> {
+    this.friendsService.deleteFriendship(user._id, friendId);
   }
 }

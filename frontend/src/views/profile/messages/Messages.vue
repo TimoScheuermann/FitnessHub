@@ -2,12 +2,16 @@
   <div class="inbox" content>
     <tl-flow horizontal="space-between">
       <h1>Nachrichten</h1>
-      <tc-spinner v-if="loading" size="20" />
-      <tc-link v-else @click="modalOpened = true">neu</tc-link>
+      <tc-link @click="modalOpened = true">neu</tc-link>
     </tl-flow>
 
     <p v-if="messages.length === 0">Du hast noch keine Nachrichten</p>
-    <div v-else-if="messages" class="friend-list">
+    <transition-group
+      v-else-if="messages"
+      tag="div"
+      name="friend-list"
+      class="friend-list"
+    >
       <div
         class="friend"
         v-for="c in chatPartners"
@@ -29,7 +33,7 @@
           </div>
         </tl-flow>
       </div>
-    </div>
+    </transition-group>
 
     <tc-modal
       v-if="modalAvailable"
@@ -69,7 +73,6 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { formatDate } from '@/utils/functions';
 import FHAvatar from '@/components/shared/FH-Avatar.vue';
-import axios from '@/utils/axios';
 import { IMessage, IUserInfo } from '@/utils/interfaces';
 
 @Component({
@@ -78,7 +81,6 @@ import { IMessage, IUserInfo } from '@/utils/interfaces';
   }
 })
 export default class Messages extends Vue {
-  public loading = true;
   public modalOpened = false;
   public modalAvailable = false;
 
@@ -86,10 +88,6 @@ export default class Messages extends Vue {
     setTimeout(() => {
       this.modalAvailable = true;
     }, 700);
-
-    const messages: IMessage[] = (await axios.get('message')).data;
-    this.loading = false;
-    messages.forEach(x => this.$store.commit('addMessage', x));
   }
 
   public transformDate(date: number): string {
@@ -115,7 +113,7 @@ export default class Messages extends Vue {
   get chatPartners(): IUserInfo[] {
     const unique: string[] = [];
     this.messages
-      .sort((a, b) => a.date - b.date)
+      .sort((a, b) => b.date - a.date)
       .forEach(x => {
         const room = x.from === this.$store.getters.user._id ? x.to : x.from;
         if (!unique.includes(room)) {
@@ -137,8 +135,10 @@ export default class Messages extends Vue {
   background: $paragraph;
   padding: 0 10px;
   border-radius: $border-radius;
+  position: relative;
   .friend {
     padding: 10px 0;
+    cursor: pointer;
     &:not(:last-child) {
       border-bottom: 1px solid rgba(black, 0.1);
     }
@@ -154,5 +154,8 @@ export default class Messages extends Vue {
       }
     }
   }
+}
+.friend-list-move {
+  transition: transform 0.5s;
 }
 </style>

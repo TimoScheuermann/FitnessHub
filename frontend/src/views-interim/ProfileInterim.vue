@@ -1,5 +1,5 @@
 <template>
-  <div class="management-interim">
+  <div class="profile-interim">
     <fh-mobile-header :title="title || 'Profile'">
       <template v-if="$route.name !== 'profile'">
         <tc-header-button
@@ -7,7 +7,9 @@
           routeName="profile"
           name="Profil"
         />
-        <tc-header-button v-else routeName="messages" name="Nachrichten" />
+        <template v-else>
+          <tc-header-button routeName="messages" name="Nachrichten" />
+        </template>
       </template>
     </fh-mobile-header>
 
@@ -23,8 +25,8 @@
       />
       <template v-if="$route.name !== 'profile'">
         <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
-        <tl-flow v-else>
-          <fh-avatar :user="friend" />
+        <tl-flow v-else flow="column">
+          <fh-avatar size="small" :user="friend" />
           <div class="info">
             <div class="name">{{ friend.username }}</div>
           </div>
@@ -96,7 +98,7 @@ export default class ProfileInterim extends Vue {
 
   get date(): string {
     const date: Date = new Date(this.$store.getters.user.date);
-    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
   }
 }
 </script>

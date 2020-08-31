@@ -12,7 +12,7 @@ import store from './store';
 import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
 import axios from './utils/axios';
 import { backendURL } from './utils/constants';
-import { IMessage } from './utils/interfaces';
+import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
 
 const socket = io(backendURL, { autoConnect: false });
 
@@ -42,14 +42,19 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
-    // const notificaitons: ITotalMessages = (await axios.get('inbox/total')).data;
-    // store.commit('setNotifications', notificaitons);
-    axios.get('friends').then(res => {
-      store.commit('setFriends', res.data);
-    });
+
     axios.get('message').then(res => {
       res.data.forEach((x: IMessage) => store.commit('addMessage', x));
     });
+    axios.get('friends').then(res => {
+      res.data.forEach((x: IUserInfo) => store.commit('addFriend', x));
+    });
+    axios.get('friends/invitations').then(res => {
+      res.data.forEach((x: IPendingFriendship) =>
+        store.commit('addFriendRequest', x)
+      );
+    });
+
     socket.open();
   }
 

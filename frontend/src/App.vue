@@ -14,18 +14,6 @@
           icon="users"
           title="Feed"
         />
-        <tc-tabbar-item
-          tfcolor="success"
-          routeName="training"
-          icon="gym"
-          title="Training"
-        />
-        <tc-tabbar-item
-          tfcolor="success"
-          routeName="nutrition"
-          icon="food-bowl"
-          title="Ernährung"
-        />
         <tc-badge v-if="$store.getters.valid" :value="notifications">
           <tc-tabbar-item
             tfcolor="success"
@@ -41,6 +29,18 @@
           icon="user"
           title="Profil"
         />
+        <tc-tabbar-item
+          tfcolor="success"
+          routeName="training"
+          icon="gym"
+          title="Training"
+        />
+        <tc-tabbar-item
+          tfcolor="success"
+          routeName="nutrition"
+          icon="food-bowl"
+          title="Ernährung"
+        />
       </tc-tabbar>
     </div>
     <div id="desktop">
@@ -50,6 +50,8 @@
     <div class="view">
       <router-view />
     </div>
+
+    <fh-notification />
   </div>
 </template>
 
@@ -57,11 +59,18 @@
 import { Vue, Component } from 'vue-property-decorator';
 import FHNavbar from './components/global/FH-Navbar.vue';
 import { Socket } from 'vue-socket.io-extended';
-import { IMessage } from './utils/interfaces';
+import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
+import FHNotification from './components/global/FH-Notification.vue';
+import {
+  sendNotification,
+  getFriendName,
+  getFriendAvatar
+} from './utils/functions';
 
 @Component({
   components: {
-    'fh-navbar': FHNavbar
+    'fh-navbar': FHNavbar,
+    'fh-notification': FHNotification
   }
 })
 export default class App extends Vue {
@@ -87,6 +96,58 @@ export default class App extends Vue {
   @Socket('message')
   messageReceived(message: IMessage) {
     this.$store.commit('addMessage', message);
+    if (
+      message.from !== this.$store.getters.user._id &&
+      !(
+        this.$route.name === 'chatroom' &&
+        this.$route.params.id === message.from
+      )
+    ) {
+      if (message.type === 'message') {
+        sendNotification({
+          title: getFriendName(message.from) + ' sagt:',
+          text: message.content,
+          to: { name: 'chatroom', params: { id: message.from } },
+          img: getFriendAvatar(message.from)
+        });
+      }
+    }
+  }
+
+  @Socket('newFriendRequest')
+  newFriendRequest(request: IPendingFriendship) {
+    this.$store.commit('addFriendRequest', request);
+    if (request.invitee._id !== this.$store.getters.user._id) {
+      sendNotification({
+        title: 'Freundschaftsanfrage',
+        text: request.invitee.username + ' möchte dein Freund werden.',
+        to: { name: 'friends' },
+        img: request.invitee.avatar
+      });
+    }
+  }
+
+  @Socket('removeFriendRequest')
+  removeFriendRequest(id: string) {
+    this.$store.commit('removeFriendRequest', id);
+  }
+
+  @Socket('addFriend')
+  addFriend(friend: IUserInfo) {
+    this.$store.commit('addFriend', friend);
+    if (friend._id !== this.$store.getters.user._id) {
+      sendNotification({
+        title: 'Freundschaft',
+        text: 'mit ' + friend.username + ' geschlossen',
+        to: { name: 'friends' },
+        img: friend.avatar
+      });
+    }
+  }
+
+  @Socket('removeFriend')
+  removeFriend(id: string) {
+    this.$store.commit('removeFriend', id);
   }
 }
 </script>
@@ -139,9 +200,16 @@ a {
   }
 }
 
-.route-view {
-  position: absolute;
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+.view {
+  position: relative;
+  max-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  .route-view {
+    position: absolute;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  }
 }
 .slide-left-enter,
 .slide-right-leave-active {

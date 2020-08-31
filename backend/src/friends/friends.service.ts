@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { FHSocket } from 'src/FHSocket';
+import { IUser } from 'src/user/interfaces/IUser';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
 import { UserService } from 'src/user/user.service';
 import { IFriendship } from './interfaces/IFriendship';
@@ -11,6 +13,7 @@ import { Friendship } from './schemas/Friendship.schema';
 export class FriendsService {
   constructor(
     private userService: UserService,
+    private readonly fhSocket: FHSocket,
     @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
   ) {}
 
@@ -36,7 +39,7 @@ export class FriendsService {
     });
     return Promise.all(
       friends
-        .map(x => x.toObject())
+        .map((x) => x.toObject())
         .map(
           async (x: IFriendship) =>
             await this.userService.getUserInfoById(
@@ -49,25 +52,48 @@ export class FriendsService {
   public async deleteFriendship(
     userId: string,
     friendId: string,
-  ): Promise<boolean> {
-    await this.friendshipModel.findOneAndDelete({
-      $or: [
-        { invitee: userId, target: friendId },
-        { invitee: friendId, target: userId },
-      ],
-    });
-    return true;
+  ): Promise<void> {
+    const friendship: IFriendship = await this.friendshipModel.findOneAndDelete(
+      {
+        $or: [
+          { invitee: userId, target: friendId },
+          { invitee: friendId, target: userId },
+        ],
+      },
+    );
+    this.fhSocket.server.to(userId).emit('removeFriend', friendId);
+    this.fhSocket.server.to(friendId).emit('removeFriend', userId);
+    this.fhSocket.server
+      .to(friendId)
+      .to(userId)
+      .emit('removeFriendRequest', friendship._id);
   }
 
   public async acceptFriendship(
-    targetId: string,
+    user: IUser,
     friendshipId: string,
-  ): Promise<boolean> {
-    await this.friendshipModel.findOneAndUpdate(
-      { _id: friendshipId, target: targetId },
-      { $set: { accepted: true, since: new Date().getTime() } },
+  ): Promise<void> {
+    const friendship: IFriendship = await this.friendshipModel.findOneAndUpdate(
+      { _id: friendshipId, target: user._id },
+      { $set: { accepted: true } },
     );
-    return true;
+
+    this.fhSocket.server
+      .to(friendship.invitee)
+      .to(friendship.target)
+      .emit('removeFriendRequest', friendship._id);
+
+    const invitee: IUserInfo = await this.userService.getUserInfoById(
+      friendship.invitee,
+    );
+    const target: IUserInfo = {
+      _id: user._id,
+      username: this.userService.transformName(user),
+      avatar: user.avatar,
+    };
+
+    this.fhSocket.server.to(invitee._id).emit('addFriend', target);
+    this.fhSocket.server.to(target._id).emit('addFriend', invitee);
   }
 
   public async doesInvitationExist(
@@ -101,31 +127,43 @@ export class FriendsService {
     );
   }
 
-  public async sendInvitation(
-    invitee: string,
-    target: string,
-  ): Promise<boolean> {
-    if (await this.doesInvitationExist(invitee, target)) {
-      return false;
+  public async sendInvitation(invitee: IUser, target: string): Promise<void> {
+    if (await this.doesInvitationExist(invitee._id, target)) {
+      return;
     }
-    await this.friendshipModel.create({
-      invitee: invitee,
+    const friendship: IFriendship = await this.friendshipModel.create({
+      invitee: invitee._id,
       target: target,
       accepted: false,
-      since: 0,
     });
-    return true;
+
+    const pending: IPendingFriendship = {
+      _id: friendship._id,
+      invitee: {
+        _id: invitee._id,
+        avatar: invitee.avatar,
+        username: this.userService.transformName(invitee),
+      },
+      target: await this.userService.getUserInfoById(target),
+    };
+
+    this.fhSocket.server
+      .to(invitee._id)
+      .to(target)
+      .emit('newFriendRequest', pending);
   }
 
   public async denyFriendship(
     targetId: string,
     friendshipId: string,
-  ): Promise<boolean> {
-    await this.friendshipModel.findOneAndDelete({
-      _id: friendshipId,
-      target: targetId,
-    });
-    return true;
+  ): Promise<void> {
+    const friendship: IFriendship = await this.friendshipModel.findOneAndDelete(
+      { _id: friendshipId, target: targetId },
+    );
+    this.fhSocket.server
+      .to(friendship.target)
+      .to(friendship.invitee)
+      .emit('removeFriendRequest', friendship._id);
   }
 
   public async getTotalFriendships(): Promise<number> {
