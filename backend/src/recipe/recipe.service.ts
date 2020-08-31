@@ -28,4 +28,15 @@ export class RecipeService {
       ...createRecipe,
     });
   }
+
+  public async deleteRecipe(
+    userId: string,
+    recipeId: string,
+  ): Promise<boolean> {
+    await this.recipeModel.findOneAndDelete({
+      author: userId,
+      target: recipeId,
+    });
+    return true;
+  }
 }

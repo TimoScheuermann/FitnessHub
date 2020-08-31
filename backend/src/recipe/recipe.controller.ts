@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
@@ -29,5 +37,14 @@ export class RecipeController {
     @Body() createRecipe: CreateRecipeDTO,
   ): Promise<void> {
     this.recipeService.addRecipe(user._id, createRecipe);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Delete('delete/:recipeId')
+  async deleteRecipe(
+    @FHUser() user: IUser,
+    @Param('recipeId') recipeId: string,
+  ) {
+    return this.recipeService.deleteRecipe(user._id, recipeId);
   }
 }
