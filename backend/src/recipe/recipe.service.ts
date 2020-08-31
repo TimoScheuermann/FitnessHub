@@ -37,7 +37,7 @@ export class RecipeService {
       user.givenName +
         ' ' +
         user.familyName +
-        ' hat ein neues Rezept #' +
+        ' hat ein neues Rezept https://api.timos.design:3000/recipe/' +
         recipe._id +
         ' hinzugefügt.',
     );
