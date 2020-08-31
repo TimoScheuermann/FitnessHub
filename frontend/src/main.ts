@@ -10,7 +10,9 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
+import axios from './utils/axios';
 import { backendURL } from './utils/constants';
+import { IMessage } from './utils/interfaces';
 
 const socket = io(backendURL, { autoConnect: false });
 
@@ -32,6 +34,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   const possibleToken = to.query.fhToken as string;
   if (possibleToken) {
+    console.log('Found token');
     persistLogin(possibleToken);
     window.location.replace(window.location.href.split('?')[0]);
     return;
@@ -39,7 +42,15 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
-    // socket.open(); TODO:
+    // const notificaitons: ITotalMessages = (await axios.get('inbox/total')).data;
+    // store.commit('setNotifications', notificaitons);
+    axios.get('friends').then(res => {
+      store.commit('setFriends', res.data);
+    });
+    axios.get('message').then(res => {
+      res.data.forEach((x: IMessage) => store.commit('addMessage', x));
+    });
+    socket.open();
   }
 
   if (to.name === 'login' && store.getters.valid) {
@@ -54,8 +65,10 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (to.meta.allowedGroups) {
     if (
-      !store.getters.valid ||
-      !to.meta.allowedGroups.includes(store.getters.user.group.toLowerCase())
+      !(
+        store.getters.valid &&
+        to.meta.allowedGroups.includes(store.getters.user.group.toLowerCase())
+      )
     ) {
       next(from);
       return;

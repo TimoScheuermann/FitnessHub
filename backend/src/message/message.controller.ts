@@ -11,11 +11,6 @@ import { MessageService } from './message.service';
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
-  @Get('test')
-  test() {
-    this.messageService.ping();
-  }
-
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getMessages(@FHUser() user: IUser): Promise<IMessage[]> {
@@ -29,7 +24,7 @@ export class MessageController {
   async postMessage(
     @FHUser() from: IUser,
     @Param('to') to: string,
-    @Body() body,
+    @Body() body: { message: string },
   ): Promise<void> {
     this.messageService.sendMessage(from._id, to, body.message);
   }

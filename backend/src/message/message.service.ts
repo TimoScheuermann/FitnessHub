@@ -44,10 +44,7 @@ export class MessageService {
       read: false,
     });
 
-    this.fhSocket.server
-      .to(from)
-      .to(to)
-      .emit('message', createdMessage);
+    this.fhSocket.server.to(from).to(to).emit('message', createdMessage);
     // TODO: encrypt data, send message via socket io to sender and receiver
   }
 

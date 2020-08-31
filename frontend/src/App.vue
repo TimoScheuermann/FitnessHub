@@ -55,10 +55,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { ITotalMessages } from './utils/interfaces';
-import axios from './utils/axios';
 import FHNavbar from './components/global/FH-Navbar.vue';
 import { Socket } from 'vue-socket.io-extended';
+import { IMessage } from './utils/interfaces';
 
 @Component({
   components: {
@@ -73,12 +72,8 @@ export default class App extends Vue {
   }
 
   async mounted() {
-    const notificaitons: ITotalMessages = (await axios.get('inbox/total')).data;
-    this.$store.commit('setNotifications', notificaitons);
     this.mq.addListener(this.mediaListener);
     this.$store.commit('fixedHeader', this.mq.matches);
-
-    axios.get('message');
   }
 
   beforeDestroy() {
@@ -90,8 +85,8 @@ export default class App extends Vue {
   }
 
   @Socket('message')
-  messageReceived(message: string) {
-    console.log('Message', message);
+  messageReceived(message: IMessage) {
+    this.$store.commit('addMessage', message);
   }
 }
 </script>

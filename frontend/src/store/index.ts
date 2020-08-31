@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { ITotalMessages, IUser } from '@/utils/interfaces';
+import { IMessage, ITotalMessages, IUser, IUserInfo } from '@/utils/interfaces';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -11,7 +11,9 @@ export default new Vuex.Store({
     userValidated: false,
     notifications: null as ITotalMessages | null,
     fixedHeader: false,
-    routeTransition: 'slide-left'
+    routeTransition: 'slide-left',
+    messages: [] as IMessage[],
+    friends: [] as IUserInfo[]
   },
   getters: {
     valid: (state: any): boolean => {
@@ -40,6 +42,15 @@ export default new Vuex.Store({
     },
     routeTransition: (state: any): string => {
       return state.routeTransition;
+    },
+    messages: (state: any): IMessage[] => {
+      return state.messages;
+    },
+    unreadMessages: (state: any): number => {
+      return (state.messages as IMessage[]).filter(x => !x.read).length;
+    },
+    friends: (state: any): IUserInfo[] => {
+      return state.friends;
     }
   },
   mutations: {
@@ -59,6 +70,16 @@ export default new Vuex.Store({
     },
     routeTransition(state: any, trans: string) {
       state.routeTransition = trans;
+    },
+    addMessage(state: any, message: IMessage) {
+      if (
+        (state.messages as IMessage[]).filter(x => x._id === message._id)
+          .length === 0
+      )
+        state.messages.push(message);
+    },
+    setFriends(state: any, friends: IUserInfo[]) {
+      state.friends = friends;
     }
   }
 });

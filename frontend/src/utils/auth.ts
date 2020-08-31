@@ -38,7 +38,11 @@ export async function verfiyUser(): Promise<boolean> {
     options
   ).then(res => res.json());
 
-  if (res.error) return false;
+  if (res.statusCode && res.statusCode === 401) {
+    localStorage.removeItem('fitnesshub-auth');
+    store.commit('signOut');
+    return false;
+  }
   return true;
 }
 

@@ -82,13 +82,23 @@ const router = new VueRouter({
           }
         },
         {
-          path: 'inbox',
-          name: 'inbox',
-          component: () => import('@/views/profile/Inbox.vue'),
+          path: 'messages',
+          name: 'messages',
+          component: () => import('@/views/profile/messages/Messages.vue'),
           meta: {
             needsSignIn: true,
-            title: 'Inbox',
+            title: 'Nachrichten',
             level: 1
+          }
+        },
+        {
+          path: 'messages/:id',
+          name: 'chatroom',
+          component: () => import('@/views/profile/messages/Chatroom.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Nachrichten',
+            level: 2
           }
         },
         {

@@ -14,7 +14,6 @@ export class InboxController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getInbox(@FHUser() user: IUser): Promise<IInbox[]> {
-
     return this.inboxService.getInbox(user._id);
   }
 
@@ -29,7 +28,10 @@ export class InboxController {
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('total')
-  async getTotalMessages(@FHUser() user: IUser, @Req() req): Promise<ITotalMessages> {
+  async getTotalMessages(
+    @FHUser() user: IUser,
+    @Req() req,
+  ): Promise<ITotalMessages> {
     return this.inboxService.getTotalMessages(user._id);
   }
 }

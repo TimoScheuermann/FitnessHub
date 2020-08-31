@@ -1,11 +1,14 @@
 <template>
   <div class="management-interim">
     <fh-mobile-header :title="title || 'Profile'">
-      <tc-header-button
-        v-if="$route.name !== 'profile'"
-        routeName="profile"
-        name="Profil"
-      />
+      <template v-if="$route.name !== 'profile'">
+        <tc-header-button
+          v-if="$route.name !== 'chatroom'"
+          routeName="profile"
+          name="Profil"
+        />
+        <tc-header-button v-else routeName="messages" name="Nachrichten" />
+      </template>
     </fh-mobile-header>
 
     <tc-hero
@@ -18,7 +21,15 @@
         slot="background"
         alt=""
       />
-      <h1 v-if="$route.name !== 'profile'">{{ title }}</h1>
+      <template v-if="$route.name !== 'profile'">
+        <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
+        <tl-flow v-else>
+          <fh-avatar :user="friend" />
+          <div class="info">
+            <div class="name">{{ friend.username }}</div>
+          </div>
+        </tl-flow>
+      </template>
 
       <tl-flow v-else>
         <fh-avatar />
@@ -38,6 +49,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import FHAvatar from '@/components/shared/FH-Avatar.vue';
 import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
+import { IUserInfo } from '@/utils/interfaces';
 
 @Component({
   components: {
@@ -69,6 +81,12 @@ export default class ProfileInterim extends Vue {
         .split('-')
         .join(' ')
     );
+  }
+
+  get friend(): IUserInfo {
+    return this.$store.getters.friends.filter(
+      (x: IUserInfo) => x._id === this.$route.params.id
+    )[0];
   }
 
   get name(): string {

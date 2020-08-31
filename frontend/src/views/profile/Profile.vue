@@ -11,8 +11,12 @@
         title="Gruppe"
         :description="$store.getters.user.group"
       />
-      <tc-badge :value="getNotificationAmount('inbox')" position="inside">
-        <tc-list-item title="Inbox" icon="notification" routeName="inbox" />
+      <tc-badge :value="$store.getters.unreadMessages" position="inside">
+        <tc-list-item
+          title="Nachrichten"
+          icon="chat-bubbles"
+          routeName="messages"
+        />
       </tc-badge>
       <tc-badge :value="getNotificationAmount('friends')" position="inside">
         <tc-list-item title="Freunde" icon="users" routeName="friends" />
@@ -73,8 +77,9 @@ export default class Profile extends Vue {
     copyToClipboard(this.$store.getters.user._id);
   }
 
-  public getNotificationAmount(type: string): number {
-    return Math.max(0, this.$store.state.notifications[type]);
+  public getNotificationAmount(): number {
+    return 0;
+    // return Math.max(0, this.$store.state.notifications[type]);
   }
 }
 </script>
