@@ -29,10 +29,21 @@ export class RecipeService {
     user: IUser,
     createRecipe: CreateRecipeDTO,
   ): Promise<void> {
+    if (
+      [createRecipe.category, createRecipe.title, createRecipe.image].filter(
+        (x) => x.length === 0,
+      ).length > 0
+    ) {
+      return;
+    }
+    if (!createRecipe.time || createRecipe.time <= 0) {
+      return;
+    }
     const recipe = await this.recipeModel.create({
       author: user._id,
       ...createRecipe,
     });
+
     this.tgbotService.sendMessage(
       user.givenName +
         ' ' +
