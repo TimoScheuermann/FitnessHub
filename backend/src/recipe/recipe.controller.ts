@@ -30,7 +30,6 @@ export class RecipeController {
     return this.recipeService.getAllRecipesOf(user._id);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get(':recipeId')
   async getRecipeById(@Param('recipeId') recipeId: string): Promise<IRecipe> {
     return this.recipeService.getRecipeById(recipeId);
