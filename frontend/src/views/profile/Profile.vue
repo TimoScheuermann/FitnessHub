@@ -11,6 +11,7 @@
         title="Gruppe"
         :description="$store.getters.user.group"
       />
+      <tc-list-item title="Einstellung" icon="settings" />
       <tc-badge :value="$store.getters.unreadMessages" position="inside">
         <tc-list-item
           title="Nachrichten"
