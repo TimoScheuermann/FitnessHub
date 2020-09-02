@@ -14,7 +14,7 @@
         />
         <tc-list-item
           title="Einstellungen"
-          icon="settings"
+          icon="wrench"
           routeName="settings"
         />
         <tc-badge :value="$store.getters.unreadMessages" position="inside">

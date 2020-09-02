@@ -1,16 +1,19 @@
 <template>
   <div class="profile-interim">
-    <fh-mobile-header :title="title || 'Profile'">
-      <template v-if="$route.name !== 'profile'">
-        <tc-header-button
-          v-if="$route.name !== 'chatroom'"
-          routeName="profile"
-          name="Profil"
-        />
-        <template v-else>
-          <tc-header-button routeName="messages" name="Nachrichten" />
-        </template>
-      </template>
+    <fh-mobile-header v-if="$route.name === 'chatroom'">
+      <tc-header-button routeName="messages" name="Nachrichten" />
+      <tl-flow class="chat-partner" slot="right">
+        <div class="name">{{ friend.username }}</div>
+        <fh-avatar :user="friend" />
+      </tl-flow>
+    </fh-mobile-header>
+
+    <fh-mobile-header v-else :title="title || 'Profile'">
+      <tc-header-button
+        v-if="$route.name !== 'profile'"
+        routeName="profile"
+        name="Profil"
+      />
     </fh-mobile-header>
 
     <tc-hero
@@ -123,6 +126,19 @@ export default class ProfileInterim extends Vue {
         font-size: 1.2em;
       }
     }
+  }
+}
+.chat-partner {
+  .tc-avatar {
+    margin-left: 10px;
+    height: 30px;
+    width: 30px;
+  }
+  .name {
+    max-width: calc(90vw - 150px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }
 

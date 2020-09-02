@@ -1,26 +1,29 @@
 <template>
   <div class="chatroom" content>
-    <tl-flow>
-      <p>Beginn des Chats...</p>
+    <tl-flow v-if="messages.length === 0">
+      <p><em>Beginn des Chats...</em></p>
     </tl-flow>
 
-    <div class="messages">
+    <transition-group v-else name="message-list" tag="div" class="messages">
       <div
+        v-for="(m, i) in messages"
+        :key="m._id"
         class="message"
-        v-for="m in messages"
-        :key="m.id"
         :class="{
           received: m.to === $store.getters.user._id,
           dark: $store.getters.darkmode
         }"
         :style="'--pcolor:' + $store.state.primaryColor"
       >
-        <div class="content">
-          {{ m.content }}
-        </div>
-        <div class="date">{{ transformDate(m.date) }}</div>
+        <tc-divider
+          v-if="displayDate(i)"
+          :dark="$store.getters.darkmode"
+          :name="transformDate(m.date)"
+        />
+        <div class="content">{{ m.content }}</div>
       </div>
-    </div>
+    </transition-group>
+
     <div class="newMessage" :class="{ dark: $store.getters.darkmode }">
       <form @submit.prevent="sendMessage">
         <tc-input
@@ -37,8 +40,9 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { IMessage } from '@/utils/interfaces';
-import { formatDate } from '@/utils/functions';
+import { formatTimeForMessage } from '@/utils/functions';
 import axios from '@/utils/axios';
+import { aMinute } from '@/utils/constants';
 
 @Component
 export default class Chatroom extends Vue {
@@ -49,6 +53,11 @@ export default class Chatroom extends Vue {
   }
 
   get messages(): IMessage[] {
+    window.scrollTo(0, document.body.scrollHeight);
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 100);
+
     return (this.$store.getters.messages as IMessage[])
       .filter(x => x.from === this.partnerId || x.to === this.partnerId)
       .sort((a, b) => a.date - b.date);
@@ -59,7 +68,18 @@ export default class Chatroom extends Vue {
   }
 
   public transformDate(timestamp: number): string {
-    return formatDate(timestamp);
+    return formatTimeForMessage(timestamp);
+  }
+
+  public displayDate(messageNumber: number): boolean {
+    if (messageNumber === 0) return true;
+    if (this.messages.length > messageNumber + 1) {
+      const next = this.messages[messageNumber + 1];
+      const current = this.messages[messageNumber];
+      if (next.date - current.date > aMinute) return true;
+      return false;
+    }
+    return true;
   }
 
   public async sendMessage(): Promise<void> {
@@ -75,43 +95,45 @@ export default class Chatroom extends Vue {
 
 <style lang="scss" scoped>
 .chatroom {
-  max-height: calc(100vh - env(safe-area-inset-bottom) - 270px - 50px);
-  @media #{$isDesktop} {
-    max-height: calc(100vh - env(safe-area-inset-bottom) - 270px);
-  }
-  @include custom-scrollbar__light();
-  overflow: auto;
-
   .messages {
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    max-width: 800px;
+    left: 50%;
+    transform: translateX(-50%);
     padding-bottom: 50px;
+
     .message {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      width: fit-content;
-      background: var(--pcolor);
-      color: #fff;
-      align-self: flex-end;
-      &.received {
-        background: $paragraph;
-        color: $color;
-        align-self: flex-start;
-        &.dark {
-          color: $color_dark;
-          background: $paragraph_dark;
-        }
+      .content {
+        padding: 5px 10px;
+        background: $success;
+        width: fit-content;
+        align-self: flex-end;
+        box-shadow: $shadow-light;
+        border-radius: $border-radius;
+        max-width: 75%;
+        margin-bottom: 10px;
       }
-      margin-bottom: 10px;
-      padding: 5px 10px;
-      border-radius: $border-radius;
-      .date {
-        opacity: 0.7;
+      &:not(.received) .content {
+        color: #fff;
+      }
+
+      &.received .content {
+        align-self: flex-start;
+        background: $paragraph;
+      }
+      &.received.dark .content {
+        background: $paragraph_dark;
+      }
+      .tc-divider {
+        margin: 20px 0 10px;
+        opacity: 0.4;
         font-size: 13px;
       }
     }
   }
+
   .newMessage {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(70px, auto);
@@ -120,7 +142,7 @@ export default class Chatroom extends Vue {
     &.dark {
       background: $paragraph_dark;
     }
-    padding: 10px;
+    padding: 10px 5vw;
     position: fixed;
     bottom: calc(50px + env(safe-area-inset-bottom));
     @media #{$isDesktop} {
@@ -132,5 +154,14 @@ export default class Chatroom extends Vue {
     margin-top: 10px;
     box-shadow: $shadow;
   }
+}
+
+.message-list-enter-active,
+.message-list-leave-active {
+  transition: all 1s ease;
+}
+.message-list-enter, .message-list-leave-to /* .message-list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>

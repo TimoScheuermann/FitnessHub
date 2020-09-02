@@ -1,4 +1,5 @@
 import store from '@/store';
+import { aHour } from './constants';
 import { IFHNotification, IUserInfo } from './interfaces';
 
 export function copyToClipboard(data: string) {
@@ -62,6 +63,25 @@ export function formatDate(time: any): string {
         return Math.floor(seconds / +format[2]) + ' ' + format[1] + ' ' + token;
     }
   return time;
+}
+
+export function formatTimeForMessage(timestamp: number): string {
+  if (new Date().getTime() - timestamp < 3 * aHour)
+    return formatDate(timestamp);
+  return [
+    { weekday: 'short' },
+    { day: 'numeric' },
+    { month: 'short' },
+    { hour: 'numeric', hour12: false },
+    { minute: 'numeric' }
+  ]
+    .map(x => new Intl.DateTimeFormat(undefined, x).format(timestamp))
+    .map(
+      (x, i) =>
+        (i === 4 ? (+x < 10 ? '0' + x : x) : x) +
+        (i === 2 ? ', ' : i === 3 ? ':' : ' ')
+    )
+    .join('');
 }
 
 export function sendNotification(notification: IFHNotification): void {

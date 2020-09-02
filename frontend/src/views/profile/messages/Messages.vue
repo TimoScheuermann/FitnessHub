@@ -1,5 +1,5 @@
 <template>
-  <div class="inbox" content>
+  <div class="messages" content>
     <tl-flow horizontal="space-between">
       <h1>Nachrichten</h1>
       <tc-link @click="modalOpened = true" :color="$store.state.primaryColor"
@@ -55,8 +55,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { formatDate } from '@/utils/functions';
+import { formatDate, formatTimeForMessage } from '@/utils/functions';
 import { IMessage, IUserInfo } from '@/utils/interfaces';
+import { aHour, aDay, days } from '@/utils/constants';
 
 @Component
 export default class Messages extends Vue {
@@ -70,6 +71,8 @@ export default class Messages extends Vue {
   }
 
   public transformDate(date: number): string {
+    if (new Date().getTime() - date > aDay)
+      return days[new Date(date).getDay()];
     return formatDate(date);
   }
 

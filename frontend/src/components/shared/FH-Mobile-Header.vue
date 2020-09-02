@@ -13,6 +13,11 @@
         {{ title }}
       </div>
     </transition>
+    <transition name="fade">
+      <div v-if="enhancedVisibility" class="fh-mobile-header--right">
+        <slot name="right" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -55,6 +60,7 @@ export default class FHMobileHeader extends Vue {
   left: 0;
   right: 0;
   z-index: 900;
+  &.dark &--right,
   &.dark &--title {
     color: $color_dark;
   }
@@ -66,6 +72,10 @@ export default class FHMobileHeader extends Vue {
     color: $color;
     font-size: 1.2em;
     text-transform: capitalize;
+  }
+  &--right {
+    position: absolute;
+    right: 5vw;
   }
   .tc-header-button {
     color: #fff;
