@@ -95,6 +95,6 @@ export interface IMessage {
 export interface IFHNotification {
   readonly img?: string;
   readonly title: string;
-  text: string;
-  readonly to: object;
+  readonly text: string;
+  readonly to?: object;
 }

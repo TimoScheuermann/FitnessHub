@@ -1,8 +1,8 @@
 <template>
-  <div class="fh-health-card">
+  <div class="fh-health-card" :class="{ dark: $store.getters.darkmode }">
     <template v-if="!healthData">
       <tl-flow flow="column" loading>
-        <tc-spinner size="20" />
+        <tc-spinner :dark="$store.getters.darkmode" size="20" />
         <span class="info">Daten werden geladen</span>
       </tl-flow>
     </template>
@@ -15,7 +15,7 @@
       </div>
     </template>
     <template v-else>
-      <tc-segments v-model="selectedTime">
+      <tc-segments v-model="selectedTime" :dark="$store.getters.darkmode">
         <tc-segment-item title="T" />
         <tc-segment-item title="W" />
         <tc-segment-item title="M" />
@@ -45,6 +45,7 @@
       <div class="add-data">
         <div>
           <tc-input
+            :dark="$store.getters.darkmode"
             :step="step"
             type="number"
             :buttons="true"
@@ -94,6 +95,7 @@ export default class FHHealthCard extends Vue {
         toolbar: { show: false },
         parentHeightOffset: 0,
         background: 'transparent',
+        foreColor: this.$store.getters.darkmode && '#fff',
         fontFamily: 'inherit'
       },
       xaxis: {
@@ -105,7 +107,7 @@ export default class FHHealthCard extends Vue {
         opposite: true,
         tickAmount: 0.1,
         forceNiceScale: true,
-        labels: { formatter: (value: string) => value + ' kg' }
+        labels: { formatter: (value: string) => value + ' ' + this.unit }
       },
       colors: ['#25ca49'],
       stroke: { lineCap: 'round', width: 4 },
@@ -170,6 +172,9 @@ export default class FHHealthCard extends Vue {
 <style lang="scss" scoped>
 .fh-health-card {
   background: $paragraph;
+  &.dark {
+    background: $paragraph_dark;
+  }
   padding: 10px;
   border-radius: $border-radius;
   .head {

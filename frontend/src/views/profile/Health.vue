@@ -4,7 +4,11 @@
       <div>
         <tl-flow horizontal="space-between">
           <h1>Gewicht</h1>
-          <tc-spinner v-if="!healthData" size="20" />
+          <tc-spinner
+            :dark="$store.getters.darkmode"
+            v-if="!healthData"
+            size="20"
+          />
         </tl-flow>
         <fh-health-card
           :healthData="getData('weight')"
@@ -19,7 +23,11 @@
       <div>
         <tl-flow horizontal="space-between">
           <h1>Größe</h1>
-          <tc-spinner v-if="!healthData" size="20" />
+          <tc-spinner
+            :dark="$store.getters.darkmode"
+            v-if="!healthData"
+            size="20"
+          />
         </tl-flow>
         <fh-health-card
           :healthData="getData('height')"

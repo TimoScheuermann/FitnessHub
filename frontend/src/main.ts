@@ -6,6 +6,10 @@ import { Route } from 'vue-router';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
 import App from './App.vue';
+import FHAvatar from './components/shared/FH-Avatar.vue';
+import FHMobileHeader from './components/shared/FH-Mobile-Header.vue';
+import FHUserList from './components/shared/user-list/FH-UserList.vue';
+import FHUserListItem from './components/shared/user-list/FH-UserListItem.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
@@ -15,8 +19,11 @@ import { backendURL } from './utils/constants';
 import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
 
 const socket = io(backendURL, { autoConnect: false });
-
 Vue.use(VueSocketIOExt, socket);
+Vue.component('fh-mobile-header', FHMobileHeader);
+Vue.component('fh-avatar', FHAvatar);
+Vue.component('fh-user-list', FHUserList);
+Vue.component('fh-user-list-item', FHUserListItem);
 
 Vue.config.productionTip = false;
 
@@ -34,10 +41,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   const possibleToken = to.query.fhToken as string;
   if (possibleToken) {
-    console.log('Found token');
     persistLogin(possibleToken);
-    window.location.replace(window.location.href.split('?')[0]);
-    return;
   }
 
   if (!store.getters.valid && (await verfiyUser())) {
@@ -59,8 +63,8 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   }
 
   if (to.name === 'login' && store.getters.valid) {
-    next({ name: 'profile' });
-    return;
+    // next({ name: 'profile' });
+    // return;
   }
 
   if (to.meta.needsSignIn && !store.getters.valid) {
@@ -78,6 +82,11 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
       next(from);
       return;
     }
+  }
+
+  if (possibleToken) {
+    next({ name: 'profile' });
+    return;
   }
 
   next();

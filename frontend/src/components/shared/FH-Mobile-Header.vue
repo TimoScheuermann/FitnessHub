@@ -1,7 +1,11 @@
 <template>
   <div
+    ref="FHMobileHeader"
     class="fh-mobile-header"
-    :class="{ enhancedVisibility: this.enhancedVisibility }"
+    :class="{
+      enhancedVisibility: this.enhancedVisibility,
+      dark: $store.getters.darkmode
+    }"
   >
     <slot />
     <transition name="fade">
@@ -52,6 +56,9 @@ export default class FHMobileHeader extends Vue {
   left: 0;
   right: 0;
   z-index: 900;
+  &.dark &--title {
+    color: $color_dark;
+  }
   &--title {
     position: absolute;
     left: 50%;
@@ -71,6 +78,9 @@ export default class FHMobileHeader extends Vue {
       color: $primary;
     }
     @include backdrop-blur($background);
+    &.dark {
+      @include backdrop-blur($background_dark);
+    }
   }
 }
 .fade-enter-active,

@@ -1,51 +1,47 @@
 <template>
   <div>
-    <div id="mobile">
-      <tc-tabbar>
+    <tc-tabbar id="mobile" :dark="$store.getters.darkmode">
+      <tc-tabbar-item
+        tfcolor="success"
+        routeName="home"
+        icon="house"
+        title="Home"
+      />
+      <tc-tabbar-item
+        tfcolor="success"
+        routeName="community"
+        icon="users"
+        title="Feed"
+      />
+      <tc-badge v-if="$store.getters.valid" :value="notifications">
         <tc-tabbar-item
           tfcolor="success"
-          routeName="home"
-          icon="house"
-          title="Home"
-        />
-        <tc-tabbar-item
-          tfcolor="success"
-          routeName="community"
-          icon="users"
-          title="Feed"
-        />
-        <tc-badge v-if="$store.getters.valid" :value="notifications">
-          <tc-tabbar-item
-            tfcolor="success"
-            routeName="profile"
-            icon="user"
-            title="Profil"
-          />
-        </tc-badge>
-        <tc-tabbar-item
-          tfcolor="success"
-          v-else
-          routeName="login"
+          routeName="profile"
           icon="user"
           title="Profil"
         />
-        <tc-tabbar-item
-          tfcolor="success"
-          routeName="training"
-          icon="gym"
-          title="Training"
-        />
-        <tc-tabbar-item
-          tfcolor="success"
-          routeName="nutrition"
-          icon="food-bowl"
-          title="Ernährung"
-        />
-      </tc-tabbar>
-    </div>
-    <div id="desktop">
-      <fh-navbar />
-    </div>
+      </tc-badge>
+      <tc-tabbar-item
+        tfcolor="success"
+        v-else
+        routeName="login"
+        icon="user"
+        title="Profil"
+      />
+      <tc-tabbar-item
+        tfcolor="success"
+        routeName="training"
+        icon="gym"
+        title="Training"
+      />
+      <tc-tabbar-item
+        tfcolor="success"
+        routeName="nutrition"
+        icon="food-bowl"
+        title="Ernährung"
+      />
+    </tc-tabbar>
+    <fh-navbar id="desktop" />
 
     <div class="view">
       <router-view />
@@ -74,23 +70,36 @@ import {
   }
 })
 export default class App extends Vue {
-  public mq = window.matchMedia('(min-width: 851px)');
+  public mqFixedHeader = window.matchMedia('(min-width: 851px)');
+  public mqDarkmode = window.matchMedia('(prefers-color-scheme: dark)');
 
   get notifications(): number {
     return this.$store.getters.totalNotifications;
   }
 
   async mounted() {
-    this.mq.addListener(this.mediaListener);
-    this.$store.commit('fixedHeader', this.mq.matches);
+    this.mqFixedHeader.addListener(this.mediaListenerHeader);
+    this.mqDarkmode.addListener(this.mediaListenerDarkmode);
+    this.$store.commit('fixedHeader', this.mqFixedHeader.matches);
+    this.$store.commit('darkmode', this.mqDarkmode.matches);
+    document.documentElement.classList[
+      this.mqDarkmode.matches ? 'add' : 'remove'
+    ]('dark');
   }
 
   beforeDestroy() {
-    this.mq.removeListener(this.mediaListener);
+    this.mqFixedHeader.removeListener(this.mediaListenerHeader);
+    this.mqDarkmode.removeListener(this.mediaListenerDarkmode);
   }
 
-  public mediaListener(event: MediaQueryListEvent): void {
+  public mediaListenerHeader(event: MediaQueryListEvent): void {
     this.$store.commit('fixedHeader', event && event.matches);
+  }
+  public mediaListenerDarkmode(event: MediaQueryListEvent): void {
+    const matches = event && event.matches;
+    document.documentElement.classList[matches ? 'add' : 'remove']('dark');
+    this.$store.commit('darkmode', matches);
+    this.$forceUpdate();
   }
 
   @Socket('message')
@@ -163,11 +172,18 @@ html {
 
   background: $background;
   color: $color;
+
+  &.dark {
+    background: $background_dark;
+    color: $color_dark;
+  }
 }
 
 body {
   margin: 0;
+  padding: 0;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 a {
@@ -202,15 +218,14 @@ a {
 
 .view {
   position: relative;
-  max-width: 100vw;
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-  .route-view {
-    position: absolute;
-    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-  }
 }
+.child-view {
+  position: absolute;
+  right: 0;
+  left: 0;
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
 .slide-left-enter,
 .slide-right-leave-active {
   opacity: 0;

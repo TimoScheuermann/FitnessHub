@@ -2,76 +2,62 @@
   <div class="friends" content>
     <fh-user-search v-model="modalOpened" @user="invite" />
 
-    <tl-flow horizontal="space-between">
-      <h1>Anfragen</h1>
-      <tc-spinner v-if="!invites" size="20" />
-    </tl-flow>
-
+    <h1>Anfragen</h1>
     <p v-if="invites && invites.length === 0">
       Du hast keine offenen Freundschaftsanfragen
     </p>
 
-    <div class="friend-list" v-if="invites">
-      <div class="friend" v-for="i in invites" :key="i._id">
-        <tl-flow horizontal="space-between">
-          <template v-if="i.invitee._id === $store.getters.user._id">
-            <tl-flow>
-              <fh-avatar :user="i.target" />
-              <div class="name">{{ i.target.username }}</div>
-            </tl-flow>
-            <tl-flow>
-              <div class="pending">pending</div>
-              <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
-                <i class="ti-cross" />
-              </tc-link>
-            </tl-flow>
-          </template>
-          <template v-else>
-            <tl-flow>
-              <fh-avatar :user="i.invitee" />
-              <div class="name">{{ i.invitee.username }}</div>
-            </tl-flow>
-            <tl-flow>
-              <tc-link tfcolor="success" @click="acceptInvite(i._id)">
-                <i class="ti-checkmark" />
-              </tc-link>
-              <tc-link tfcolor="error" @click="denyInvite(i._id)">
-                <i class="ti-cross" />
-              </tc-link>
-            </tl-flow>
-          </template>
-        </tl-flow>
-      </div>
-    </div>
+    <fh-user-list>
+      <fh-user-list-item
+        v-for="i in invites"
+        :key="i._id"
+        :user="getInvitedUser(i)"
+      >
+        {{ getInvitedUser(i).username }}
+        <template
+          v-if="i.invitee._id === $store.getters.user._id"
+          slot="action"
+        >
+          <tl-flow>
+            <div class="pending">pending</div>
+            <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
+              <i class="ti-cross" />
+            </tc-link>
+          </tl-flow>
+        </template>
+        <template v-else slot="action">
+          <tl-flow>
+            <tc-link tfcolor="success" @click="acceptInvite(i._id)">
+              <i class="ti-checkmark" />
+            </tc-link>
+            <tc-link tfcolor="error" @click="denyInvite(i._id)">
+              <i class="ti-cross" />
+            </tc-link>
+          </tl-flow>
+        </template>
+      </fh-user-list-item>
+    </fh-user-list>
 
     <tl-flow horizontal="space-between">
       <h1>Freunde</h1>
       <tc-link @click="modalOpened = true">
         <i class="ti-plus-inverted" /> Freund hinzufügen
       </tc-link>
-      <tc-spinner v-if="!friends" size="20" />
     </tl-flow>
 
-    <p v-if="friends && friends.length === 0">
+    <p v-if="friends.length === 0">
       Füge Freunde hinzu, um Neuigkeiten über ihre sportlichen Erfolge zu
       erhalten
     </p>
 
-    <div v-if="friends" class="friend-list">
-      <div class="friend" v-for="f in friends" :key="f._id">
-        <tl-flow horizontal="space-between">
-          <tl-flow>
-            <fh-avatar :user="f" />
-            <div class="name">{{ f.username }}</div>
-          </tl-flow>
-          <tl-flow>
-            <tc-link tfcolor="error" @click="removeFriend(f._id)">
-              <i class="ti-trashcan-alt" />
-            </tc-link>
-          </tl-flow>
-        </tl-flow>
-      </div>
-    </div>
+    <fh-user-list>
+      <fh-user-list-item v-for="f in friends" :key="f._id" :user="f">
+        {{ f.username }}
+        <tc-link slot="action" tfcolor="error" @click="removeFriend(f._id)">
+          <i class="ti-trashcan-alt" />
+        </tc-link>
+      </fh-user-list-item>
+    </fh-user-list>
   </div>
 </template>
 
@@ -80,12 +66,11 @@ import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo, IPendingFriendship } from '@/utils/interfaces';
 import axios from '@/utils/axios';
 import FHUserSearch from '@/components/shared/FH-UserSearch.vue';
-import FHAvatar from '@/components/shared/FH-Avatar.vue';
+import { sendNotification } from '@/utils/functions';
 
 @Component({
   components: {
-    'fh-user-search': FHUserSearch,
-    'fh-avatar': FHAvatar
+    'fh-user-search': FHUserSearch
   }
 })
 export default class Friends extends Vue {
@@ -99,7 +84,33 @@ export default class Friends extends Vue {
     return this.$store.getters.friendRequests;
   }
 
+  getInvitedUser(pf: IPendingFriendship): IUserInfo {
+    return pf.invitee._id === this.$store.getters.user._id
+      ? pf.target
+      : pf.invitee;
+  }
+
   public async invite(user: IUserInfo): Promise<void> {
+    if (this.friends.filter(x => x._id === user._id).length > 0) {
+      sendNotification({
+        title: '',
+        text: 'Du bist bereits mit ' + user.username + ' befreundet'
+      });
+      return;
+    }
+    if (this.invites.filter(x => x.target._id === user._id).length > 0) {
+      sendNotification({
+        title: '',
+        text: 'Du hast ' + user.username + ' bereits eingeladen'
+      });
+      return;
+    }
+    if (this.invites.filter(x => x.invitee._id === user._id).length > 0) {
+      this.acceptInvite(
+        this.invites.filter(x => x.invitee._id === user._id)[0]._id
+      );
+      return;
+    }
     await axios.post('friends/invite/' + user._id);
   }
 
@@ -118,30 +129,9 @@ export default class Friends extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.friend-list {
-  background: $paragraph;
-  padding: 0 10px;
-  border-radius: $border-radius;
-  .friend {
-    padding: 10px 0;
-    &:not(:last-child) {
-      border-bottom: 1px solid rgba(black, 0.1);
-    }
-    .tc-avatar {
-      height: 30px;
-      width: 30px;
-    }
-    .name {
-      margin-left: 10px;
-      font-weight: 500;
-    }
-    .pending {
-      opacity: 0.6;
-      font-style: italic;
-    }
-    .tc-link:nth-child(2) {
-      margin-left: 10px;
-    }
-  }
+.pending {
+  opacity: 0.6;
+  font-style: italic;
+  margin-right: 10px;
 }
 </style>

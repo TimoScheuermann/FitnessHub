@@ -23,42 +23,39 @@
         slot="background"
         alt=""
       />
-      <template v-if="$route.name !== 'profile'">
-        <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
-        <tl-flow v-else flow="column">
-          <fh-avatar size="small" :user="friend" />
+      <transition name="hero-anim" mode="out-in">
+        <template v-if="$route.name !== 'profile'">
+          <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
+          <tl-flow v-else flow="column">
+            <fh-avatar size="small" :user="friend" />
+            <div class="info">
+              <div class="name">{{ friend.username }}</div>
+            </div>
+          </tl-flow>
+        </template>
+
+        <tl-flow v-else>
+          <fh-avatar />
           <div class="info">
-            <div class="name">{{ friend.username }}</div>
+            <div class="name">{{ name }}</div>
+            <div class="date">Mitglied seit: {{ date }}</div>
           </div>
         </tl-flow>
-      </template>
-
-      <tl-flow v-else>
-        <fh-avatar />
-        <div class="info">
-          <div class="name">{{ name }}</div>
-          <div class="date">Mitglied seit: {{ date }}</div>
-        </div>
-      </tl-flow>
+      </transition>
     </tc-hero>
-    <transition :name="$store.getters.routeTransition">
-      <router-view class="route-view route-sub-view" />
-    </transition>
+    <div class="view">
+      <transition :name="$store.getters.routeTransition">
+        <router-view class="child-view" />
+      </transition>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import FHAvatar from '@/components/shared/FH-Avatar.vue';
-import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
 import { IUserInfo } from '@/utils/interfaces';
 
-@Component({
-  components: {
-    'fh-avatar': FHAvatar,
-    'fh-mobile-header': FHMobileHeader
-  }
-})
+@Component
 export default class ProfileInterim extends Vue {
   public mq = window.matchMedia('(min-width: 851px)');
   public fixedHeader = this.mq.matches;
@@ -128,7 +125,14 @@ export default class ProfileInterim extends Vue {
     }
   }
 }
-.route-sub-view {
-  width: 90vw;
+
+.hero-anim-enter-active,
+.hero-anim-leave-active {
+  transition: all 0.16s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.hero-anim-enter,
+.hero-anim-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
 }
 </style>

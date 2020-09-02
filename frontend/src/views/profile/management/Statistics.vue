@@ -3,25 +3,29 @@
     <div content>
       <tl-flow horizontal="space-between">
         <h1>General</h1>
-        <tc-spinner size="20" v-if="!generalStats" />
+        <tc-spinner
+          :dark="$store.getters.darkmode"
+          size="20"
+          v-if="!generalStats"
+        />
       </tl-flow>
-      <tl-grid minWidth="100" v-if="generalStats">
-        <tc-card class="stat" :rounded="true">
+      <tl-grid minWidth="150" v-if="generalStats">
+        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
           <!-- <i class="ti-users" /> -->
           <div class="amount">{{ generalStats.users }}</div>
           <div class="name">Users</div>
         </tc-card>
-        <tc-card class="stat" :rounded="true">
+        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
           <!-- <i class="ti-heart" /> -->
           <div class="amount">{{ generalStats.friendships }}</div>
           <div class="name">Friendships</div>
         </tc-card>
-        <tc-card class="stat" :rounded="true">
+        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
           <!-- <i class="ti-calendar-alt" /> -->
           <div class="amount">{{ generalStats.workouts }}</div>
           <div class="name">Workouts</div>
         </tc-card>
-        <tc-card class="stat" :rounded="true">
+        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
           <!-- <i class="ti-gym" /> -->
           <div class="amount">{{ generalStats.exercises }}</div>
           <div class="name">Exercises</div>
@@ -30,7 +34,11 @@
 
       <tl-flow horizontal="space-between">
         <h1>Login Provider</h1>
-        <tc-spinner size="20" v-if="!loginProvider" />
+        <tc-spinner
+          :dark="$store.getters.darkmode"
+          size="20"
+          v-if="!loginProvider"
+        />
       </tl-flow>
 
       <div class="login-provider" v-if="loginProvider && generalStats">
@@ -49,7 +57,10 @@
               }}%
             </div>
           </tl-flow>
-          <tc-progress :percent="(prov.amount / generalStats.users) * 100" />
+          <tc-progress
+            :dark="$store.getters.darkmode"
+            :percent="(prov.amount / generalStats.users) * 100"
+          />
         </div>
       </div>
     </div>

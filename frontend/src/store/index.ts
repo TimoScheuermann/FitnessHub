@@ -20,6 +20,7 @@ export default new Vuex.Store({
     userValidated: false,
     notifications: [] as IFHNotification[],
     fixedHeader: false,
+    darkmode: false,
     routeTransition: 'slide-left',
     messages: [] as IMessage[],
     friends: [] as IUserInfo[],
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     fixedHeader: (state: any): boolean => {
       return state.fixedHeader;
+    },
+    darkmode: (state: any): boolean => {
+      return state.darkmode;
     },
     routeTransition: (state: any): string => {
       return state.routeTransition;
@@ -84,6 +88,9 @@ export default new Vuex.Store({
     },
     fixedHeader(state: any, fixedHeader: boolean) {
       state.fixedHeader = fixedHeader;
+    },
+    darkmode(state: any, darkmode: boolean) {
+      state.darkmode = darkmode;
     },
     routeTransition(state: any, trans: string) {
       state.routeTransition = trans;

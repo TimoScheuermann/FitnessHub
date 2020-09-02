@@ -1,68 +1,79 @@
 <template>
-  <div class="profile" content>
-    <h1>Profil</h1>
-    <tc-list tfcolor="error">
-      <tc-list-item title="Abmelden" icon="logout" @click="signout" />
-    </tc-list>
-    <tc-list>
-      <tc-list-item
-        v-if="$store.getters.user.group !== 'User'"
-        icon="shield"
-        title="Gruppe"
-        :description="$store.getters.user.group"
-      />
-      <tc-list-item title="Einstellung" icon="settings" />
-      <tc-badge :value="$store.getters.unreadMessages" position="inside">
-        <tc-list-item
-          title="Nachrichten"
-          icon="chat-bubbles"
-          routeName="messages"
-        />
-      </tc-badge>
-      <tc-badge
-        :value="$store.getters.unansweredFriendRequests"
-        position="inside"
-      >
-        <tc-list-item title="Freunde" icon="users" routeName="friends" />
-      </tc-badge>
-      <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
-    </tc-list>
-
-    <tc-list>
-      <tc-list-item title="Trainingspläne" icon="calendar-alt" />
-      <tc-list-item title="Workouts" icon="list" />
-      <tc-list-item title="Übungen" icon="gym" />
-    </tc-list>
-
-    <!-- Profil Ende -->
-
-    <div v-group.admin.moderator>
-      <h1>Management</h1>
-      <tc-list>
-        <tc-list-item
-          title="Eingereichte Übungen"
-          icon="reply"
-          routeName="submittedExercises"
-        />
-        <tc-list-item
-          title="Statistik"
-          icon="chart-bar"
-          routeName="statistics"
-        />
-        <tc-list-item v-group.admin title="Suspend User" icon="blocked" />
-        <tc-list-item
-          v-group.admin
-          title="Promote User"
-          icon="user-shield"
-          routeName="promoteUser"
-        />
+  <div class="profile">
+    <div content>
+      <h1>Profil</h1>
+      <tc-list :dark="$store.getters.darkmode" tfcolor="error">
+        <tc-list-item title="Abmelden" icon="logout" @click="signout" />
       </tc-list>
-    </div>
-    <!-- Management Ende -->
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item
+          v-if="$store.getters.user.group !== 'User'"
+          icon="shield"
+          title="Gruppe"
+          :description="$store.getters.user.group"
+        />
+        <tc-list-item
+          title="Einstellungen"
+          icon="settings"
+          routeName="settings"
+        />
+        <tc-badge :value="$store.getters.unreadMessages" position="inside">
+          <tc-list-item
+            title="Nachrichten"
+            icon="chat-bubbles"
+            routeName="messages"
+          />
+        </tc-badge>
+        <tc-badge
+          :value="$store.getters.unansweredFriendRequests"
+          position="inside"
+        >
+          <tc-list-item title="Freunde" icon="users" routeName="friends" />
+        </tc-badge>
+        <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
+      </tc-list>
 
-    <div class="footer" @click="copyID">
-      <div>User ID</div>
-      <div>{{ $store.getters.user._id }}</div>
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item title="Trainingspläne" icon="calendar-alt" />
+        <tc-list-item title="Workouts" icon="list" />
+        <tc-list-item title="Übungen" icon="gym" />
+      </tc-list>
+
+      <!-- Profil Ende -->
+
+      <div v-group.admin.moderator>
+        <h1>Management</h1>
+        <tc-list :dark="$store.getters.darkmode">
+          <tc-list-item
+            title="Eingereichte Übungen"
+            icon="reply"
+            routeName="submittedExercises"
+          />
+          <tc-list-item
+            title="Statistik"
+            icon="chart-bar"
+            routeName="statistics"
+          />
+          <tc-list-item
+            v-group.admin
+            title="Suspend User"
+            icon="blocked"
+            routeName="suspendUser"
+          />
+          <tc-list-item
+            v-group.admin
+            title="Promote User"
+            icon="user-shield"
+            routeName="promoteUser"
+          />
+        </tc-list>
+      </div>
+      <!-- Management Ende -->
+
+      <div class="footer" @click="copyID">
+        <div>User ID</div>
+        <div>{{ $store.getters.user._id }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -80,6 +91,11 @@ export default class Profile extends Vue {
 
   public copyID(): void {
     copyToClipboard(this.$store.getters.user._id);
+  }
+
+  get date(): string {
+    const date: Date = new Date(this.$store.getters.user.date);
+    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
   }
 }
 </script>

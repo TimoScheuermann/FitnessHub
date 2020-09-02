@@ -4,7 +4,7 @@
       <div
         v-if="notification"
         class="notification-container"
-        :class="{ clickable: notification.to }"
+        :class="{ clickable: notification.to, dark: $store.getters.darkmode }"
         :key="notification.text"
         @click="goto"
       >
@@ -91,7 +91,11 @@ export default class FHNotification extends Vue {
     }
     padding: 10px;
     border-radius: $border-radius;
+
     @include backdrop-blur($paragraph);
+    &.dark {
+      @include backdrop-blur($paragraph_dark);
+    }
 
     display: grid;
     grid-template-columns: auto 1fr;

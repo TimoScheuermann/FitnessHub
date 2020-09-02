@@ -22,13 +22,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import FHMobileHeader from '@/components/shared/FH-Mobile-Header.vue';
 
-@Component({
-  components: {
-    'fh-mobile-header': FHMobileHeader
-  }
-})
+@Component
 export default class Community extends Vue {}
 </script>
 

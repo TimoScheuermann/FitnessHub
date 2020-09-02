@@ -1,4 +1,4 @@
-import ManagementInterim from '@/views-interim/ManagementInterim.vue';
+import EmptyRouter from '@/views-interim/EmptyRouter.vue';
 import ProfileInterim from '@/views-interim/ProfileInterim.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -110,45 +110,70 @@ const router = new VueRouter({
             title: 'Gesundheit',
             level: 1
           }
-        }
-      ]
-    },
-    {
-      path: '/management',
-      component: ManagementInterim,
-      children: [
+        },
         {
-          path: 'promote-user',
-          name: 'promoteUser',
-          component: () => import('@/views/management/PromoteUser.vue'),
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/views/profile/Settings.vue'),
           meta: {
             needsSignIn: true,
-            allowedGroups: ['admin'],
-            title: 'Promote User',
+            title: 'Einstellungen',
             level: 1
           }
         },
         {
-          path: 'submitted-exercises',
-          name: 'submittedExercises',
-          component: () => import('@/views/management/SubmittedExercises.vue'),
-          meta: {
-            needsSignIn: true,
-            allowedGroups: ['admin', 'moderator'],
-            title: 'Eingereichte Übungen',
-            level: 1
-          }
-        },
-        {
-          path: 'statistics',
-          name: 'statistics',
-          component: () => import('@/views/management/Statistics.vue'),
-          meta: {
-            needsSignIn: true,
-            allowedGroups: ['admin', 'moderator'],
-            title: 'Statistik',
-            level: 1
-          }
+          path: 'management',
+          component: EmptyRouter,
+          children: [
+            {
+              path: 'promote-user',
+              name: 'promoteUser',
+              component: () =>
+                import('@/views/profile/management/PromoteUser.vue'),
+              meta: {
+                needsSignIn: true,
+                allowedGroups: ['admin'],
+                title: 'Promote User',
+                level: 1
+              }
+            },
+            {
+              path: 'submitted-exercises',
+              name: 'submittedExercises',
+              component: () =>
+                import('@/views/profile/management/SubmittedExercises.vue'),
+              meta: {
+                needsSignIn: true,
+                allowedGroups: ['admin', 'moderator'],
+                title: 'Review',
+                level: 1
+              }
+            },
+            {
+              path: 'statistics',
+              name: 'statistics',
+              component: () =>
+                import('@/views/profile/management/Statistics.vue'),
+              meta: {
+                needsSignIn: true,
+                allowedGroups: ['admin', 'moderator'],
+                title: 'Statistik',
+                level: 1
+              }
+            },
+            {
+              path: 'suspend-user',
+              name: 'suspendUser',
+              component: () =>
+                import('@/views/profile/management/SuspendUser.vue'),
+              meta: {
+                needsSignIn: true,
+                allowedGroups: ['admin', 'moderator'],
+                title: 'Suspend User',
+                level: 1
+              }
+            }
+          ]
         }
       ]
     },

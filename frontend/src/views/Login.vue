@@ -13,7 +13,7 @@
     </tc-hero>
     <div content>
       <h1>Login</h1>
-      <tc-list>
+      <tc-list :dark="$store.getters.darkmode">
         <tc-list-item
           title="Sign in with Google"
           icon="google"

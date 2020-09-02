@@ -17,7 +17,7 @@
       </div>
     </div>
     <h1>Promote User</h1>
-    <tc-input v-model="inputValue" />
+    <tc-input :dark="$store.getters.darkmode" v-model="inputValue" />
     <tc-button name="Promote" variant="filled" @click="addModerator()" />
   </div>
 </template>
@@ -26,13 +26,8 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FHAvatar from '@/components/shared/FH-Avatar.vue';
 
-@Component({
-  components: {
-    'fh-avatar': FHAvatar
-  }
-})
+@Component
 export default class PromoteUser extends Vue {
   public moderators: IUserInfo[] = [];
   public inputValue = '';

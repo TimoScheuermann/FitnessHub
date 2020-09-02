@@ -1,13 +1,18 @@
 <template>
   <div class="chatroom" content>
-    <p>Beginn des Chats...</p>
+    <tl-flow>
+      <p>Beginn des Chats...</p>
+    </tl-flow>
 
     <div class="messages">
       <div
         class="message"
         v-for="m in messages"
         :key="m.id"
-        :class="{ received: m.to === $store.getters.user._id }"
+        :class="{
+          received: m.to === $store.getters.user._id,
+          dark: $store.getters.darkmode
+        }"
       >
         <div class="content">
           {{ m.content }}
@@ -15,9 +20,13 @@
         <div class="date">{{ transformDate(m.date) }}</div>
       </div>
     </div>
-    <div class="newMessage">
+    <div class="newMessage" :class="{ dark: $store.getters.darkmode }">
       <form @submit.prevent="sendMessage">
-        <tc-input pattern="*" v-model="newMessage" />
+        <tc-input
+          :dark="$store.getters.darkmode"
+          pattern="*"
+          v-model="newMessage"
+        />
       </form>
       <tc-button icon="reply" @click="sendMessage" variant="filled" />
     </div>
@@ -88,6 +97,10 @@ export default class Chatroom extends Vue {
         background: $paragraph;
         color: $color;
         align-self: flex-start;
+        &.dark {
+          color: $color_dark;
+          background: $paragraph_dark;
+        }
       }
       margin-bottom: 10px;
       padding: 5px 10px;
@@ -102,7 +115,10 @@ export default class Chatroom extends Vue {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(70px, auto);
     grid-gap: 0;
-    background: #fff;
+    background: $paragraph;
+    &.dark {
+      background: $paragraph_dark;
+    }
     padding: 10px;
     position: fixed;
     bottom: calc(50px + env(safe-area-inset-bottom));

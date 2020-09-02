@@ -1,11 +1,14 @@
 <template>
   <div
     class="fh-navbar"
-    :class="{ enhancedVisibility: this.enhancedVisibility }"
+    :class="{
+      enhancedVisibility: this.enhancedVisibility,
+      dark: $store.getters.darkmode
+    }"
   >
-    <div class="title">
+    <router-link :to="{ name: 'home' }" class="title">
       <b><i class="ti-gym" />FitnessHub</b>
-    </div>
+    </router-link>
     <tl-flow>
       <tc-navbar-item
         tfcolor="success"
@@ -88,6 +91,8 @@ export default class FHNavbar extends Vue {
   right: 0;
   z-index: 900;
   .title {
+    cursor: pointer;
+    color: inherit;
     font-weight: 600;
     font-size: 1.2em;
     i {
@@ -101,6 +106,10 @@ export default class FHNavbar extends Vue {
   &.enhancedVisibility {
     color: $color;
     @include backdrop-blur($background);
+    &.dark {
+      color: $color_dark;
+      @include backdrop-blur($background_dark);
+    }
   }
 }
 </style>
