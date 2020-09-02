@@ -128,15 +128,13 @@ export class UserService {
     group: 'User' | 'Moderator',
   ): Promise<void> {
     const user = await this.getUserById(id);
-    if (user) {
-      if (user.group !== 'Admin') {
-        user.update({ $set: { group: group } });
-        this.tgbotService.sendMessage(
-          `${this.transformName(promoter)} promoted ${this.transformName(
-            user,
-          )} to ${group}`,
-        );
-      }
+    if (user && user.group !== 'Admin') {
+      await user.update({ $set: { group: group } });
+      this.tgbotService.sendMessage(
+        `${this.transformName(promoter)} promoted ${this.transformName(
+          user,
+        )} to ${group}`,
+      );
     }
   }
 

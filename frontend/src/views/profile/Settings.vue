@@ -5,6 +5,15 @@
       <tc-list-item title="What ever" icon="lightbulb" :value="true" />
       <tc-list-item title="What ever" icon="lightbulb" :value="true" />
       <tc-list-item title="What ever" icon="lightbulb" :value="true" />
+      <fh-user-list-item :user="{}">
+        Primär Farbe
+        <tc-input
+          slot="action"
+          :dark="$store.getters.darkmode"
+          type="color"
+          v-model="$store.state.primaryColor"
+        />
+      </fh-user-list-item>
     </tc-list>
     <h1>Freunde</h1>
     <tc-list :dark="$store.getters.darkmode">

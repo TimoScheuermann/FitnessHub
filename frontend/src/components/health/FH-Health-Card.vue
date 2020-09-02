@@ -52,7 +52,12 @@
             v-model="currentInput"
           />
         </div>
-        <tc-button @click="submit" name="Speichern" variant="filled" />
+        <tc-button
+          :background="$store.state.primaryColor"
+          @click="submit"
+          name="Speichern"
+          variant="filled"
+        />
       </div>
     </template>
   </div>
@@ -109,12 +114,12 @@ export default class FHHealthCard extends Vue {
         forceNiceScale: true,
         labels: { formatter: (value: string) => value + ' ' + this.unit }
       },
-      colors: ['#25ca49'],
+      colors: [this.$store.state.primaryColor],
       stroke: { lineCap: 'round', width: 4 },
       markers: {
         size: this.selectedTime < 2 ? 5 : 0,
         strokeWidth: 3,
-        strokeColors: this.$store.getters.dark ? '#28292d' : '#fff'
+        strokeColors: this.$store.getters.darkmode ? '#28292d' : '#fff'
       },
       tooltip: {
         x: { format: 'dd. MMM yyyy' }

@@ -24,7 +24,8 @@ export default new Vuex.Store({
     routeTransition: 'slide-left',
     messages: [] as IMessage[],
     friends: [] as IUserInfo[],
-    friendRequests: [] as IPendingFriendship[]
+    friendRequests: [] as IPendingFriendship[],
+    primaryColor: '#25ca49'
   },
   getters: {
     valid: (state: any): boolean => {

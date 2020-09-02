@@ -8,7 +8,6 @@ import { ExerciseModule } from './exercise/exercise.module';
 import { FHSocket } from './FHSocket';
 import { FriendsModule } from './friends/friends.module';
 import { HealthModule } from './health/health.module';
-import { InboxModule } from './inbox/inbox.module';
 import { PromoteModule } from './management/promote/promote.module';
 import { StatisticsModule } from './management/statistics/statistics.module';
 import { MessageModule } from './message/message.module';
@@ -41,7 +40,6 @@ import { UserModule } from './user/user.module';
     StatisticsModule,
     PromoteModule,
     ExerciseModule,
-    InboxModule,
     HealthModule,
     MessageModule,
     FHSocket,

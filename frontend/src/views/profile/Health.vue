@@ -44,6 +44,7 @@
     <tc-button
       name="Datenquellen ansehen"
       variant="filled"
+      :background="$store.state.primaryColor"
       @click="modalOpened = true"
     />
 

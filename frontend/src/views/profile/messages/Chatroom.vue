@@ -13,6 +13,7 @@
           received: m.to === $store.getters.user._id,
           dark: $store.getters.darkmode
         }"
+        :style="'--pcolor:' + $store.state.primaryColor"
       >
         <div class="content">
           {{ m.content }}
@@ -90,7 +91,7 @@ export default class Chatroom extends Vue {
       flex-direction: column;
       align-items: flex-end;
       width: fit-content;
-      background: $success;
+      background: var(--pcolor);
       color: #fff;
       align-self: flex-end;
       &.received {

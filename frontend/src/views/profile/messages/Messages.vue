@@ -2,7 +2,9 @@
   <div class="inbox" content>
     <tl-flow horizontal="space-between">
       <h1>Nachrichten</h1>
-      <tc-link @click="modalOpened = true">neu</tc-link>
+      <tc-link @click="modalOpened = true" :color="$store.state.primaryColor"
+        >neu</tc-link
+      >
     </tl-flow>
 
     <p v-if="messages.length === 0">Du hast noch keine Nachrichten</p>

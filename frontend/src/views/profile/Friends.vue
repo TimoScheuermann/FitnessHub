@@ -40,7 +40,7 @@
 
     <tl-flow horizontal="space-between">
       <h1>Freunde</h1>
-      <tc-link @click="modalOpened = true">
+      <tc-link @click="modalOpened = true" :color="$store.state.primaryColor">
         <i class="ti-plus-inverted" /> Freund hinzufügen
       </tc-link>
     </tl-flow>

@@ -1,24 +1,24 @@
 <template>
   <div content class="promote-user">
     <h1>Moderators</h1>
-    <div class="moderator-list">
-      <div class="moderator" v-for="f in moderators" :key="f._id">
-        <tl-flow horizontal="space-between">
-          <tl-flow>
-            <fh-avatar :user="f" />
-            <div class="name">{{ f.username }}</div>
-          </tl-flow>
-          <tl-flow>
-            <tc-link tfcolor="error" @click="removeModerator(f._id)">
-              <i class="ti-trashcan-alt" />
-            </tc-link>
-          </tl-flow>
-        </tl-flow>
-      </div>
-    </div>
+
+    <fh-user-list>
+      <fh-user-list-item v-for="m in moderators" :key="m._id" :user="m">
+        {{ m.username }}
+        <tc-link slot="action" tfcolor="error" @click="removeModerator(m._id)">
+          <i class="ti-trashcan-alt" />
+        </tc-link>
+      </fh-user-list-item>
+    </fh-user-list>
+
     <h1>Promote User</h1>
     <tc-input :dark="$store.getters.darkmode" v-model="inputValue" />
-    <tc-button name="Promote" variant="filled" @click="addModerator()" />
+    <tc-button
+      :background="$store.state.primaryColor"
+      name="Promote"
+      variant="filled"
+      @click="addModerator()"
+    />
   </div>
 </template>
 
