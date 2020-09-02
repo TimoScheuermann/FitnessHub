@@ -63,8 +63,8 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   }
 
   if (to.name === 'login' && store.getters.valid) {
-    // next({ name: 'profile' });
-    // return;
+    next({ name: 'profile' });
+    return;
   }
 
   if (to.meta.needsSignIn && !store.getters.valid) {

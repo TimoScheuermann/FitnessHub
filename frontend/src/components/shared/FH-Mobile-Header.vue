@@ -45,7 +45,6 @@ export default class FHMobileHeader extends Vue {
   @media #{$isDesktop} {
     display: none;
   }
-  // background: red;
   min-height: 50px;
   padding: 0 5vw;
   padding-top: env(safe-area-inset-top);
