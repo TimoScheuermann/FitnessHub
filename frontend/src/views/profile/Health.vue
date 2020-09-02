@@ -47,16 +47,16 @@
       @click="modalOpened = true"
     />
 
-    <tc-modal v-model="modalOpened">
+    <tc-modal v-model="modalOpened" :dark="$store.getters.darkmode">
       <template slot="header">
         <h2>Datenquellen</h2>
-        <tc-segments v-model="selectedSource">
+        <tc-segments v-model="selectedSource" :dark="$store.getters.darkmode">
           <tc-segment-item title="Gewicht" />
           <tc-segment-item title="Größe" />
         </tc-segments>
       </template>
 
-      <tc-table>
+      <tc-table :dark="$store.getters.darkmode">
         <tc-tr
           v-for="hd in getData(selectedSource === 0 ? 'weight' : 'height')"
           :key="hd._id"

@@ -113,7 +113,8 @@ export default class FHHealthCard extends Vue {
       stroke: { lineCap: 'round', width: 4 },
       markers: {
         size: this.selectedTime < 2 ? 5 : 0,
-        strokeWidth: 3
+        strokeWidth: 3,
+        strokeColors: this.$store.getters.dark ? '#28292d' : '#fff'
       },
       tooltip: {
         x: { format: 'dd. MMM yyyy' }
