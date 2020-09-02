@@ -67,6 +67,13 @@
             routeName="promoteUser"
           />
         </tc-list>
+        <tc-list v-group.admin :dark="$store.getters.darkmode" tfcolor="alarm">
+          <tc-list-item
+            @click="toLocalhost"
+            title="Zurück zu localhost"
+            icon="share"
+          />
+        </tc-list>
       </div>
       <!-- Management Ende -->
 
@@ -96,6 +103,12 @@ export default class Profile extends Vue {
   get date(): string {
     const date: Date = new Date(this.$store.getters.user.date);
     return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+  }
+
+  public toLocalhost(): void {
+    window.location.href =
+      'http://localhost:8080?fhToken=' +
+      localStorage.getItem('fitnesshub-auth');
   }
 }
 </script>

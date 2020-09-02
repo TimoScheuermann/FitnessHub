@@ -1,6 +1,10 @@
 <template>
   <div>
-    <tc-tabbar id="mobile" :dark="$store.getters.darkmode">
+    <tc-tabbar
+      id="mobile"
+      :dark="$store.getters.darkmode"
+      :key="$store.getters.darkmode"
+    >
       <tc-tabbar-item
         tfcolor="success"
         routeName="home"
