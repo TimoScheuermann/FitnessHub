@@ -30,9 +30,11 @@ export class RecipeService {
     createRecipe: CreateRecipeDTO,
   ): Promise<void> {
     if (
-      [createRecipe.category, createRecipe.title, createRecipe.image].filter(
-        (x) => x.length === 0,
-      ).length > 0
+      [
+        createRecipe.category,
+        createRecipe.title,
+        createRecipe.thumbnail,
+      ].filter((x) => x.length === 0).length > 0
     ) {
       return;
     }
@@ -44,13 +46,13 @@ export class RecipeService {
       ...createRecipe,
     });
 
-    this.tgbotService.sendMessage(
-      user.givenName +
-        ' ' +
-        user.familyName +
-        ' hat ein neues Rezept https://api.timos.design:3000/recipe/' +
-        recipe._id +
-        ' hinzugefügt.',
+    const url = 'https://api.timos.design:3000/recipe/' + recipe._id;
+    this.tgbotService.sendURLMessage(
+      `<b>${this.transformName(
+        user,
+      )}</b> hat ein neues <a href='${url}'>Rezept</a> hinzugefügt`,
+      'Rezept online anschauen',
+      url,
     );
   }
 
@@ -65,5 +67,9 @@ export class RecipeService {
     return await this.recipeModel.findById({
       _id: recipeId,
     });
+  }
+
+  public transformName(user: IUser): string {
+    return [user.givenName, user.familyName].filter((x) => !!x).join(' ');
   }
 }

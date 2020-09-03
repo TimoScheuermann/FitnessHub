@@ -6,22 +6,19 @@ import { IRecipeIngredient } from '../interfaces/IRecipeIngredient';
 @Schema()
 export class Recipe extends Document {
   @Prop()
-  author: string;
+  title: string;
 
   @Prop()
-  title: string;
+  author: string;
 
   @Prop()
   time: number;
 
-  @Prop({
-    required: false,
-    default: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  })
-  video: string;
+  @Prop({ required: false })
+  video?: string;
 
   @Prop()
-  image: string;
+  thumbnail: string;
 
   @Prop()
   ingredients: IRecipeIngredient[];
@@ -30,7 +27,10 @@ export class Recipe extends Document {
   nutrition: INutrition[];
 
   @Prop()
-  category: string;
+  category: string[];
+
+  @Prop()
+  difficulty: number;
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

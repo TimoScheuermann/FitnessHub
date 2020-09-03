@@ -42,8 +42,10 @@ export class UserService {
         date: new Date().getTime(),
         group: 'User',
       });
+
       this.tgbotService.sendMessage(
-        `Ein neuer User hat sich angemeldet!\nName: ${user.givenName} ${user.familyName}`,
+        `Ein neuer User hat sich angemeldet!
+      <b>Name</b> ${this.transformName(user)}`,
       );
       await this.messageModel.create({
         date: new Date().getTime(),
@@ -131,10 +133,11 @@ export class UserService {
     const user = await this.getUserById(id);
     if (user && user.group !== 'Admin') {
       await user.update({ $set: { group: group } });
+
       this.tgbotService.sendMessage(
-        `${this.transformName(promoter)} promoted ${this.transformName(
+        `<b>${this.transformName(promoter)}</b> hat <b>${this.transformName(
           user,
-        )} to ${group}`,
+        )} zur Gruppe <b>${group}</b> hinzugefügt.`,
       );
     }
   }
@@ -193,10 +196,14 @@ export class UserService {
     const user = await this.getUserById(id);
     if (user) {
       await user.updateOne({ $set: { suspended: time } });
-      this.tgbotService.sendMessage(
-        `${this.transformName(suspender)} hat ${this.transformName(
+      this.tgbotService.sendURLMessage(
+        `<b>${this.transformName(suspender)}</b> hat ${this.transformName(
           user,
-        )} bis zum ${new Date(time)} gesperrt!`,
+        )} bis zum ${
+          new Date(time).toISOString().split('T').join(' ').split('Z')[0]
+        } gesperrt!`,
+        'Gesperrte Nutzer anzeigen',
+        'https://fitnesshub.app/profile/management/suspend-user',
       );
     }
   }
