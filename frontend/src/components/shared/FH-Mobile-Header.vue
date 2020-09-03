@@ -13,7 +13,7 @@
         {{ title }}
       </div>
     </transition>
-    <transition name="fade">
+    <transition name="fade2">
       <div v-if="enhancedVisibility" class="fh-mobile-header--right">
         <slot name="right" />
       </div>
@@ -100,5 +100,14 @@ export default class FHMobileHeader extends Vue {
 .fade-leave-to {
   opacity: 0;
   margin-top: -50px;
+}
+.fade2-enter-active,
+.fade2-leave-active {
+  transition: all 0.3s ease;
+}
+.fade2-enter,
+.fade2-leave-to {
+  opacity: 0;
+  margin-right: -50px;
 }
 </style>
