@@ -22,13 +22,29 @@ export class AuthService {
   ) {}
 
   public redirect(jwt: any, res: Response): void {
-    res.redirect(`${this.configService.get('REDIRECT')}?fhToken=${jwt}`);
+    if (jwt.suspended) {
+      res.redirect(
+        `${this.configService.get('REDIRECT')}profile/suspended?t=${
+          jwt.suspended
+        }`,
+      );
+    } else if (jwt.token) {
+      res.redirect(
+        `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
+      );
+    }
   }
 
-  async validateOAuthLogin(u: IUser): Promise<string> {
+  async validateOAuthLogin(u: IUser): Promise<any> {
     try {
       const user: IUser = await (await this.userService.signIn(u)).toObject();
-      return this.jwtService.sign(user);
+      if (user.suspended && user.suspended > new Date().getTime()) {
+        return { suspended: user.suspended };
+      } else {
+        console.log('Auto pardon ' + user._id);
+        await this.userService.pardonUser(user._id);
+      }
+      return { token: this.jwtService.sign(user) };
     } catch (error) {
       throw new InternalServerErrorException(
         'validateOAuthLogin',

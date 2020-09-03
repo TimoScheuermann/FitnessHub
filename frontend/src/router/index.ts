@@ -122,6 +122,15 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'suspended',
+          name: 'suspended',
+          component: () => import('@/views/profile/Suspended.vue'),
+          meta: {
+            title: 'Gesperrt',
+            level: 1
+          }
+        },
+        {
           path: 'management',
           component: EmptyRouter,
           children: [

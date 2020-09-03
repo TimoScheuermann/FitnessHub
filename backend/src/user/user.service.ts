@@ -155,9 +155,39 @@ export class UserService {
       .sort((a, b) => a.username.localeCompare(b.username));
   }
 
+  public async getSuspendedUser(): Promise<IUserInfo[]> {
+    return (
+      await this.userModel.find({
+        suspended: { $exists: true },
+      })
+    )
+      .map((x) => x.toObject())
+      .map((x: IUser) => {
+        return {
+          _id: x._id,
+          avatar: x.avatar,
+          username: this.transformName(x),
+          suspended: x.suspended,
+        } as IUserInfo;
+      })
+      .sort((a, b) => a.username.localeCompare(b.username));
+  }
+
   public async getEveryId(): Promise<string[]> {
     return (await this.userModel.find())
       .map((x) => x._id)
       .filter((x) => x + '' !== this.FPUID);
+  }
+
+  public async pardonUser(id: string): Promise<void> {
+    const user = await this.getUserById(id);
+    if (user) await user.updateOne({ $unset: { suspended: 0 } });
+  }
+
+  public async suspendUser(id: string, time: number): Promise<void> {
+    const user = await this.getUserById(id);
+    if (user) {
+      await user.updateOne({ $set: { suspended: time } });
+    }
   }
 }

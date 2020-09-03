@@ -24,6 +24,9 @@ export class User extends Document {
 
   @Prop()
   date: number;
+
+  @Prop({ required: false })
+  suspended?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

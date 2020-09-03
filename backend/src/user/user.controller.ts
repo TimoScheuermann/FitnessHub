@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import { IUserInfo } from './interfaces/IUserInfo';
@@ -24,6 +32,30 @@ export class UserController {
   @Get('moderators')
   async getModerators(): Promise<IUserInfo[]> {
     return this.userService.getModerators();
+  }
+
+  @Roles(['admin'])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('suspended')
+  async getSuspendedUsers(): Promise<IUserInfo[]> {
+    return this.userService.getSuspendedUser();
+  }
+
+  @Roles(['admin'])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('suspend/:id/:time')
+  async suspendUser(
+    @Param('id') userId: string,
+    @Param('time') time: number,
+  ): Promise<void> {
+    await this.userService.suspendUser(userId, time);
+  }
+
+  @Roles(['admin'])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Delete('suspend/:id')
+  async pardonUser(@Param('id') userId: string): Promise<void> {
+    await this.userService.pardonUser(userId);
   }
 
   @Get(':id')

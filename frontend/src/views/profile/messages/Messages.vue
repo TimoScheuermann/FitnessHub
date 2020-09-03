@@ -55,9 +55,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { formatDate, formatTimeForMessage } from '@/utils/functions';
+import { formatDate } from '@/utils/functions';
 import { IMessage, IUserInfo } from '@/utils/interfaces';
-import { aHour, aDay, days } from '@/utils/constants';
+import { aDay, days } from '@/utils/constants';
 
 @Component
 export default class Messages extends Vue {
