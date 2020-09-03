@@ -193,12 +193,9 @@ export class UserService {
     if (user) {
       await user.updateOne({ $set: { suspended: time } });
       this.tgbotService.sendMessage(
-        this.transformName(suspender) +
-          ' hat ' +
-          this.transformName(user) +
-          ' Account bis zum ' +
-          new Date().getTime() +
-          ' gesperrt!',
+        `${this.transformName(suspender)} hat ${this.transformName(
+          user,
+        )} bis zum ${new Date(time)} gesperrt!`,
       );
     }
   }
