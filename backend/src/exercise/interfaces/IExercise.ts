@@ -6,14 +6,18 @@ export interface IExercise {
   readonly updated: number;
 
   readonly title: string;
-  readonly description: string;
-  readonly affectedMuscles: string;
+  readonly affectedMuscles: string[];
+  readonly category: string[];
   readonly thumbnail: string;
-  readonly explanatoryVideo: string;
+  readonly explanatoryVideo?: string; // v
 
-  readonly time: number;
   readonly difficulty: number;
+  readonly warnings: string[];
   readonly steps: string[];
-  readonly sets: number;
-  readonly reps: number;
+
+  readonly time?: number;
+  readonly distance?: number;
+
+  readonly sets?: string; // v
+  readonly reps?: string; // v
 }

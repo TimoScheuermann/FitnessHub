@@ -61,6 +61,7 @@ export class UserService {
   async updateUser(u: IUser): Promise<void> {
     const user = await new this.userModel(u).toObject();
     delete user._id;
+    if (u._id === '5f47a68688e01f1eaa1881d9') delete user.avatar;
     await this.userModel.findByIdAndUpdate(u._id, user);
   }
 

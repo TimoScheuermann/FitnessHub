@@ -6,6 +6,7 @@ import { Health } from './schemas/Health.schema';
 
 export enum HealthType {
   WEIGHT = 'weight',
+  WATER = 'water',
   HEIGHT = 'height',
 }
 
@@ -13,7 +14,11 @@ export enum HealthType {
 export class HealthService {
   constructor(@InjectModel(Health.name) private healthModel: Model<Health>) {}
 
-  public async addHealthData(userID: string, type: HealthType, value: number) {
+  public async addHealthData(
+    userID: string,
+    type: HealthType,
+    value: number,
+  ): Promise<void> {
     await this.healthModel.create({
       date: new Date().getTime(),
       type: type,
