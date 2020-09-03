@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
+import FHUser from 'src/auth/user.decorator';
+import { IUser } from './interfaces/IUser';
 import { IUserInfo } from './interfaces/IUserInfo';
 import { UserService } from './user.service';
 
@@ -47,8 +49,9 @@ export class UserController {
   async suspendUser(
     @Param('id') userId: string,
     @Param('time') time: number,
+    @FHUser() suspender: IUser,
   ): Promise<void> {
-    await this.userService.suspendUser(userId, time);
+    await this.userService.suspendUser(suspender, userId, time);
   }
 
   @Roles(['admin'])

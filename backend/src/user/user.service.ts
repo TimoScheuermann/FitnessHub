@@ -58,10 +58,10 @@ export class UserService {
     }
   }
 
-  async updateUser(u: IUser) {
-    const user = new this.userModel(u).toObject();
+  async updateUser(u: IUser): Promise<void> {
+    const user = await new this.userModel(u).toObject();
     delete user._id;
-    this.userModel.findByIdAndUpdate(u._id, user);
+    await this.userModel.findByIdAndUpdate(u._id, user);
   }
 
   async getUserByOAuth(
@@ -184,10 +184,22 @@ export class UserService {
     if (user) await user.updateOne({ $unset: { suspended: 0 } });
   }
 
-  public async suspendUser(id: string, time: number): Promise<void> {
+  public async suspendUser(
+    suspender: IUser,
+    id: string,
+    time: number,
+  ): Promise<void> {
     const user = await this.getUserById(id);
     if (user) {
       await user.updateOne({ $set: { suspended: time } });
+      this.tgbotService.sendMessage(
+        this.transformName(suspender) +
+          ' hat ' +
+          this.transformName(user) +
+          ' Account bis zum ' +
+          new Date().getTime() +
+          ' gesperrt!',
+      );
     }
   }
 }

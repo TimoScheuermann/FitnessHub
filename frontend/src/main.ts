@@ -13,7 +13,12 @@ import FHUserListItem from './components/shared/user-list/FH-UserListItem.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
-import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
+import {
+  getToken,
+  getUserFromJWT,
+  persistLogin,
+  verfiyUser
+} from './utils/auth';
 import axios from './utils/axios';
 import { backendURL } from './utils/constants';
 import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
@@ -47,13 +52,16 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
 
-    axios.get('message').then(res => {
+    const options = {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    };
+    axios.get('message', options).then(res => {
       res.data.forEach((x: IMessage) => store.commit('addMessage', x));
     });
-    axios.get('friends').then(res => {
+    axios.get('friends', options).then(res => {
       res.data.forEach((x: IUserInfo) => store.commit('addFriend', x));
     });
-    axios.get('friends/invitations').then(res => {
+    axios.get('friends/invitations', options).then(res => {
       res.data.forEach((x: IPendingFriendship) =>
         store.commit('addFriendRequest', x)
       );
@@ -67,21 +75,25 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     return;
   }
 
+  if (to.name === 'profile' && !store.getters.valid) {
+    next({ name: 'login' });
+    return;
+  }
+
   if (to.meta.needsSignIn && !store.getters.valid) {
     next(from);
     return;
   }
 
-  if (to.meta.allowedGroups) {
-    if (
-      !(
-        store.getters.valid &&
-        to.meta.allowedGroups.includes(store.getters.user.group.toLowerCase())
-      )
-    ) {
-      next(from);
-      return;
-    }
+  if (
+    to.meta.allowedGroups &&
+    !(
+      store.getters.valid &&
+      to.meta.allowedGroups.includes(store.getters.user.group.toLowerCase())
+    )
+  ) {
+    next(from);
+    return;
   }
 
   if (possibleToken) {

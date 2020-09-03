@@ -39,7 +39,7 @@
 
         <tl-flow v-else>
           <fh-avatar />
-          <div class="info">
+          <div class="info" v-if="$store.getters.valid">
             <div class="name">{{ name }}</div>
             <div class="date">Mitglied seit: {{ date }}</div>
           </div>

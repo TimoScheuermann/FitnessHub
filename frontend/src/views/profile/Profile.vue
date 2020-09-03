@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <div content>
+    <div content v-if="$store.getters.valid">
       <h1>Profil</h1>
       <tc-list :dark="$store.getters.darkmode" tfcolor="error">
         <tc-list-item title="Abmelden" icon="logout" @click="signout" />
