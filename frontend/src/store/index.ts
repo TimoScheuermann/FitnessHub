@@ -25,7 +25,8 @@ export default new Vuex.Store({
     messages: [] as IMessage[],
     friends: [] as IUserInfo[],
     friendRequests: [] as IPendingFriendship[],
-    primaryColor: '#25ca49'
+    primaryColor: '#25ca49',
+    openRequests: 0
   },
   getters: {
     valid: (state: any): boolean => {
@@ -76,6 +77,9 @@ export default new Vuex.Store({
         (x: IFHNotification, i: number) => i !== 0
       );
       return not || null;
+    },
+    loading: (state: any): boolean => {
+      return state.openRequests !== 0;
     }
   },
   mutations: {

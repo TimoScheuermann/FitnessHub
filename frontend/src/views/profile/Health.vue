@@ -30,12 +30,12 @@
           />
         </tl-flow>
         <fh-health-card
-          :healthData="getData('height')"
+          :healthData="getData('water')"
           @reload="loadData"
-          endpoint="height"
-          category="Größe"
-          unit="cm"
-          currentHead="aktuelle Größe"
+          endpoint="water"
+          category="Liter"
+          unit="l"
+          currentHead="Weitere Liter"
           :step="1"
         />
       </div>
@@ -44,7 +44,7 @@
     <tc-button
       name="Datenquellen ansehen"
       variant="filled"
-      :background="$store.state.primaryColor"
+      tfbackground="success"
       @click="modalOpened = true"
     />
 

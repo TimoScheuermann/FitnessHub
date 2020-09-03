@@ -13,7 +13,6 @@
           received: m.to === $store.getters.user._id,
           dark: $store.getters.darkmode
         }"
-        :style="'--pcolor:' + $store.state.primaryColor"
       >
         <tc-divider
           v-if="displayDate(i)"
@@ -28,7 +27,7 @@
       <form @submit.prevent="sendMessage">
         <tc-input
           :dark="$store.getters.darkmode"
-          pattern="*"
+          pattern=".{0,}"
           v-model="newMessage"
         />
       </form>
@@ -42,7 +41,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { IMessage } from '@/utils/interfaces';
 import { formatTimeForMessage } from '@/utils/functions';
 import axios from '@/utils/axios';
-import { aMinute } from '@/utils/constants';
+import { aHour } from '@/utils/constants';
 
 @Component
 export default class Chatroom extends Vue {
@@ -76,7 +75,7 @@ export default class Chatroom extends Vue {
     if (this.messages.length > messageNumber + 1) {
       const next = this.messages[messageNumber + 1];
       const current = this.messages[messageNumber];
-      if (next.date - current.date > aMinute) return true;
+      if (next.date - current.date > aHour) return true;
       return false;
     }
     return true;
@@ -139,6 +138,8 @@ export default class Chatroom extends Vue {
     grid-template-columns: minmax(0, 1fr) minmax(70px, auto);
     grid-gap: 0;
     background: $paragraph;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+
     &.dark {
       background: $paragraph_dark;
     }
@@ -153,6 +154,18 @@ export default class Chatroom extends Vue {
     border-radius: $border-radius $border-radius 0 0;
     margin-top: 10px;
     box-shadow: $shadow;
+    animation: newMessageAnim 0.25s ease 0.5s both;
+  }
+
+  @keyframes newMessageAnim {
+    0% {
+      opacity: 0;
+      margin-bottom: -50px;
+    }
+    100% {
+      opacity: 1;
+      margin-bottom: 0;
+    }
   }
 }
 

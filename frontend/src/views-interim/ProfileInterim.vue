@@ -1,16 +1,28 @@
 <template>
   <div class="profile-interim">
-    <fh-mobile-header v-if="$route.name === 'chatroom'">
-      <tc-header-button routeName="messages" name="Nachrichten" />
-      <tl-flow class="chat-partner" slot="right">
+    <fh-mobile-header :title="title">
+      <router-link
+        v-if="$route.name === 'chatroom'"
+        class="chat-partner"
+        slot="right"
+        :to="{ name: 'friend', params: { id: friend._id } }"
+      >
         <div class="name">{{ friend.username }}</div>
         <fh-avatar :user="friend" />
-      </tl-flow>
-    </fh-mobile-header>
+      </router-link>
 
-    <fh-mobile-header v-else :title="title || 'Profile'">
       <tc-header-button
-        v-if="$route.name !== 'profile'"
+        v-if="$route.name === 'chatroom'"
+        name="Nachrichten"
+        routeName="messages"
+      />
+      <tc-header-button
+        v-else-if="$route.name === 'friend'"
+        name="Freunde"
+        routeName="friends"
+      />
+      <tc-header-button
+        v-else-if="$route.name !== 'profile'"
         routeName="profile"
         name="Profil"
       />
@@ -27,15 +39,32 @@
         alt=""
       />
       <transition name="hero-anim" mode="out-in">
-        <template v-if="$route.name !== 'profile'">
+        <template v-if="!['profile', 'friend'].includes($route.name)">
           <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
-          <tl-flow v-else flow="column">
-            <fh-avatar size="small" :user="friend" />
+          <tl-flow v-else>
+            <fh-avatar :user="friend" />
             <div class="info">
               <div class="name">{{ friend.username }}</div>
+              <tl-flow>
+                <tc-button
+                  name="Profil ansehen"
+                  variant="filled"
+                  background="#fff"
+                  color="#000"
+                  :to="{ name: 'friend', params: { id: friend._id } }"
+                />
+              </tl-flow>
             </div>
           </tl-flow>
         </template>
+
+        <tl-flow v-else-if="$route.name === 'friend'">
+          <fh-avatar :user="friend" />
+          <div class="info" v-if="$store.getters.valid">
+            <div class="name">{{ friend.username }}</div>
+            <div class="date">Mitglied seit: TODO:</div>
+          </div>
+        </tl-flow>
 
         <tl-flow v-else>
           <fh-avatar />
@@ -55,34 +84,22 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 
 @Component
 export default class ProfileInterim extends Vue {
-  public mq = window.matchMedia('(min-width: 851px)');
-  public fixedHeader = this.mq.matches;
-
-  mounted() {
-    this.mq.addListener(this.mediaListener);
+  @Watch('$route.name')
+  public routeNameChanged(to: string): void {
+    if (to === 'friend') {
+      // TODO: load user info
+    }
   }
 
-  beforeDestroy() {
-    this.mq.removeListener(this.mediaListener);
-  }
-
-  public mediaListener(event: MediaQueryListEvent): void {
-    this.fixedHeader = event && event.matches;
-  }
-
-  get title(): string {
-    return (
-      this.$route.meta.title ||
-      this.$route.path
-        .split('/')[2]
-        .split('-')
-        .join(' ')
-    );
+  get title(): string | undefined {
+    if (this.$route.name === 'friend') return this.friend.username;
+    if (this.$route.name === 'chatroom') return undefined;
+    return this.$route.meta.title;
   }
 
   get friend(): IUserInfo {
@@ -125,10 +142,16 @@ export default class ProfileInterim extends Vue {
         font-weight: 500;
         font-size: 1.2em;
       }
+      .tc-button {
+        margin-top: 10px;
+      }
     }
   }
 }
 .chat-partner {
+  display: flex;
+  align-items: center;
+  color: inherit;
   .tc-avatar {
     margin-left: 10px;
     height: 30px;

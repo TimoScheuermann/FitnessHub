@@ -1,33 +1,33 @@
 <template>
   <div class="messages" content>
-    <tl-flow horizontal="space-between">
-      <h1>Nachrichten</h1>
-      <tc-link @click="modalOpened = true" :color="$store.state.primaryColor"
-        >neu</tc-link
-      >
-    </tl-flow>
+    <div class="messages-wrapper">
+      <tl-flow horizontal="space-between">
+        <h1>Nachrichten</h1>
+        <tc-link @click="modalOpened = true" tfcolor="success">neu</tc-link>
+      </tl-flow>
 
-    <p v-if="messages.length === 0">Du hast noch keine Nachrichten</p>
+      <p v-if="messages.length === 0">Du hast noch keine Nachrichten</p>
 
-    <fh-user-list v-else-if="messages">
-      <fh-user-list-item
-        v-for="c in chatPartners"
-        :key="c._id"
-        @click="openChat(c._id)"
-        :user="c"
-      >
-        <div class="info">
-          <div class="name">{{ c.username }}</div>
-          <div class="message">
-            {{ getLatestMessageWith(c._id).content }}
+      <fh-user-list v-else-if="messages">
+        <fh-user-list-item
+          v-for="c in chatPartners"
+          :key="c._id"
+          @click="openChat(c._id)"
+          :user="c"
+        >
+          <div class="info">
+            <div class="name">{{ c.username }}</div>
+            <div class="message">
+              {{ getLatestMessageWith(c._id).content }}
+            </div>
           </div>
-        </div>
-        <div slot="action" class="date">
-          {{ transformDate(new Date(getLatestMessageWith(c._id).date)) }}
-          <i class="ti-circle" v-if="!latestMessageRead(c._id)" />
-        </div>
-      </fh-user-list-item>
-    </fh-user-list>
+          <div slot="action" class="date">
+            {{ transformDate(new Date(getLatestMessageWith(c._id).date)) }}
+            <i class="ti-circle" v-if="!latestMessageRead(c._id)" />
+          </div>
+        </fh-user-list-item>
+      </fh-user-list>
+    </div>
 
     <tc-modal
       v-if="modalAvailable"
@@ -124,7 +124,12 @@ export default class Messages extends Vue {
 .info {
   font-size: 14px;
   .name {
-    font-weight: 600;
+    font-weight: 700;
+    margin-top: 7.5px;
+  }
+  .message {
+    opacity: 0.7;
+    margin-bottom: 7.5px;
   }
 }
 .date {
@@ -133,5 +138,11 @@ export default class Messages extends Vue {
     color: $error;
     margin-left: 5px;
   }
+}
+.messages-wrapper {
+  position: relative;
+  max-width: 800px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

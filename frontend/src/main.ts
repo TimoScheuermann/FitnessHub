@@ -21,6 +21,7 @@ import {
 } from './utils/auth';
 import axios from './utils/axios';
 import { backendURL } from './utils/constants';
+import { getFriend } from './utils/functions';
 import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
 
 const socket = io(backendURL, { autoConnect: false });
@@ -83,6 +84,13 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   if (to.meta.needsSignIn && !store.getters.valid) {
     next(from);
     return;
+  }
+
+  if (to.name === 'chatroom' || to.name === 'friend') {
+    if (!getFriend(to.params.id)) {
+      next(from);
+      return;
+    }
   }
 
   if (

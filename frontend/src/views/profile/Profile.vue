@@ -5,75 +5,84 @@
       <tc-list :dark="$store.getters.darkmode" tfcolor="error">
         <tc-list-item title="Abmelden" icon="logout" @click="signout" />
       </tc-list>
-      <tc-list :dark="$store.getters.darkmode">
-        <tc-list-item
-          v-if="$store.getters.user.group !== 'User'"
-          icon="shield"
-          title="Gruppe"
-          :description="$store.getters.user.group"
-        />
-        <tc-list-item
-          title="Einstellungen"
-          icon="wrench"
-          routeName="settings"
-        />
-        <tc-badge :value="$store.getters.unreadMessages" position="inside">
-          <tc-list-item
-            title="Nachrichten"
-            icon="chat-bubbles"
-            routeName="messages"
-          />
-        </tc-badge>
-        <tc-badge
-          :value="$store.getters.unansweredFriendRequests"
-          position="inside"
-        >
-          <tc-list-item title="Freunde" icon="users" routeName="friends" />
-        </tc-badge>
-        <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
-      </tc-list>
 
-      <tc-list :dark="$store.getters.darkmode">
-        <tc-list-item title="Trainingspläne" icon="calendar-alt" />
-        <tc-list-item title="Workouts" icon="list" />
-        <tc-list-item title="Übungen" icon="gym" />
-      </tc-list>
+      <tl-grid gap="0px 20">
+        <tc-list :dark="$store.getters.darkmode">
+          <tc-list-item
+            v-if="$store.getters.user.group !== 'User'"
+            icon="shield"
+            title="Gruppe"
+            :description="$store.getters.user.group"
+          />
+          <tc-list-item
+            title="Einstellungen"
+            icon="wrench"
+            routeName="settings"
+          />
+          <tc-badge :value="$store.getters.unreadMessages" position="inside">
+            <tc-list-item
+              title="Nachrichten"
+              icon="chat-bubbles"
+              routeName="messages"
+            />
+          </tc-badge>
+          <tc-badge
+            :value="$store.getters.unansweredFriendRequests"
+            position="inside"
+          >
+            <tc-list-item title="Freunde" icon="users" routeName="friends" />
+          </tc-badge>
+          <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
+        </tc-list>
+
+        <div>
+          <tc-list :dark="$store.getters.darkmode">
+            <tc-list-item title="Trainingspläne" icon="calendar-alt" />
+            <tc-list-item title="Workouts" icon="list" />
+            <tc-list-item title="Übungen" icon="gym" />
+          </tc-list>
+        </div>
+      </tl-grid>
 
       <!-- Profil Ende -->
 
       <div v-group.admin.moderator>
         <h1>Management</h1>
-        <tc-list :dark="$store.getters.darkmode">
-          <tc-list-item
-            title="Eingereichte Übungen"
-            icon="reply"
-            routeName="submittedExercises"
-          />
-          <tc-list-item
-            title="Statistik"
-            icon="chart-bar"
-            routeName="statistics"
-          />
-          <tc-list-item
-            v-group.admin
-            title="Suspend User"
-            icon="blocked"
-            routeName="suspendUser"
-          />
-          <tc-list-item
-            v-group.admin
-            title="Promote User"
-            icon="user-shield"
-            routeName="promoteUser"
-          />
-        </tc-list>
-        <tc-list v-group.admin :dark="$store.getters.darkmode" tfcolor="alarm">
-          <tc-list-item
-            @click="toLocalhost"
-            title="Zurück zu localhost"
-            icon="share"
-          />
-        </tc-list>
+        <tl-grid gap="0px 20">
+          <tc-list :dark="$store.getters.darkmode">
+            <tc-list-item
+              title="Eingereichte Übungen"
+              icon="reply"
+              routeName="submittedExercises"
+            />
+            <tc-list-item
+              title="Statistik"
+              icon="chart-bar"
+              routeName="statistics"
+            />
+            <tc-list-item
+              v-group.admin
+              title="Suspend User"
+              icon="blocked"
+              routeName="suspendUser"
+            />
+            <tc-list-item
+              v-group.admin
+              title="Promote User"
+              icon="user-shield"
+              routeName="promoteUser"
+            />
+          </tc-list>
+          <div v-group.admin>
+            <tc-list :dark="$store.getters.darkmode" tfcolor="alarm">
+              <tc-list-item
+                @click="toLocalhost"
+                title="Zurück zu localhost"
+                icon="share"
+              />
+            </tc-list>
+          </div>
+        </tl-grid>
       </div>
       <!-- Management Ende -->
 

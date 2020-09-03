@@ -28,7 +28,7 @@
       />
       <tc-input
         :dark="$store.getters.darkmode"
-        v-model="data.image"
+        v-model="data.thumbnail"
         title="Bild-URL"
       />
       <tc-input
@@ -62,7 +62,7 @@ export default class Nutrition extends Vue {
     title: '',
     time: 0,
     video: '',
-    image: '',
+    thumbnail: '',
     ingredients: [],
     nutrition: [],
     category: ''

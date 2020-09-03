@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fitnesshub">
     <tc-tabbar
       id="mobile"
       :dark="$store.getters.darkmode"
@@ -48,10 +48,15 @@
     <fh-navbar id="desktop" />
 
     <div class="view">
-      <router-view />
+      <transition name="main-route">
+        <router-view class="child-view" />
+      </transition>
     </div>
-
     <fh-notification />
+
+    <div class="loading" v-if="$store.getters.loading">
+      <tc-spinner :dark="$store.getters.darkmode" />
+    </div>
   </div>
 </template>
 
@@ -239,5 +244,30 @@ a {
 .slide-right-enter {
   opacity: 0;
   transform: translate(-60px, 0);
+}
+
+.main-route-leave-active {
+  opacity: 0;
+  transform: scale(0.8);
+}
+.main-route-enter {
+  opacity: 0;
+  transform: scale(1.2);
+}
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999;
+  animation: appear 0.5s ease 0.5s both;
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 </style>

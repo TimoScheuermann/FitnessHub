@@ -1,4 +1,5 @@
 import EmptyRouter from '@/views-interim/EmptyRouter.vue';
+import LegalInterim from '@/views-interim/LegalInterim.vue';
 import ProfileInterim from '@/views-interim/ProfileInterim.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -74,11 +75,21 @@ const router = new VueRouter({
         {
           path: 'friends',
           name: 'friends',
-          component: () => import('@/views/profile/Friends.vue'),
+          component: () => import('@/views/profile/friends/Friends.vue'),
           meta: {
             needsSignIn: true,
             title: 'Freunde',
             level: 1
+          }
+        },
+        {
+          path: 'friends/:id',
+          name: 'friend',
+          component: () => import('@/views/profile/friends/FriendDetail.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Freunde',
+            level: 2
           }
         },
         {
@@ -187,10 +198,43 @@ const router = new VueRouter({
       ]
     },
     {
+      path: '/legal',
+      component: LegalInterim,
+      children: [
+        {
+          path: 'privacy',
+          name: 'privacy',
+          component: () => import('@/views/legal/PrivacyPolicy.vue'),
+          meta: {
+            title: 'Privacy Policy'
+          }
+        },
+        {
+          path: 'terms',
+          name: 'terms',
+          component: () => import('@/views/legal/TermsOfUse.vue'),
+          meta: {
+            title: 'Terms of Use'
+          }
+        },
+        {
+          path: 'impressum',
+          name: 'impressum',
+          component: () => import('@/views/legal/Impressum.vue'),
+          meta: {
+            title: 'Impressum'
+          }
+        },
+        {
+          path: '',
+          redirect: { name: 'home' }
+        }
+      ]
+    },
+    {
       path: '*',
       redirect: { name: 'home' }
     }
   ]
 });
-
 export default router;

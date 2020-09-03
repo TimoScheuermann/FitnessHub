@@ -2,62 +2,72 @@
   <div class="friends" content>
     <fh-user-search v-model="modalOpened" @user="invite" />
 
-    <h1>Anfragen</h1>
-    <p v-if="invites && invites.length === 0">
-      Du hast keine offenen Freundschaftsanfragen
-    </p>
+    <tl-grid gap="0">
+      <div>
+        <h1>Anfragen</h1>
+        <p v-if="invites && invites.length === 0">
+          Du hast keine offenen Freundschaftsanfragen
+        </p>
 
-    <fh-user-list>
-      <fh-user-list-item
-        v-for="i in invites"
-        :key="i._id"
-        :user="getInvitedUser(i)"
-      >
-        {{ getInvitedUser(i).username }}
-        <template
-          v-if="i.invitee._id === $store.getters.user._id"
-          slot="action"
-        >
-          <tl-flow>
-            <div class="pending">pending</div>
-            <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
-              <i class="ti-cross" />
+        <fh-user-list>
+          <fh-user-list-item
+            v-for="i in invites"
+            :key="i._id"
+            :user="getInvitedUser(i)"
+          >
+            {{ getInvitedUser(i).username }}
+            <template
+              v-if="i.invitee._id === $store.getters.user._id"
+              slot="action"
+            >
+              <tl-flow>
+                <div class="pending">pending</div>
+                <tc-link tfcolor="error" @click="removeFriend(i.target._id)">
+                  <i class="ti-cross" />
+                </tc-link>
+              </tl-flow>
+            </template>
+            <template v-else slot="action">
+              <tl-flow>
+                <tc-link tfcolor="success" @click="acceptInvite(i._id)">
+                  <i class="ti-checkmark" />
+                </tc-link>
+                <tc-link tfcolor="error" @click="denyInvite(i._id)">
+                  <i class="ti-cross" />
+                </tc-link>
+              </tl-flow>
+            </template>
+          </fh-user-list-item>
+        </fh-user-list>
+      </div>
+      <div>
+        <tl-flow horizontal="space-between">
+          <h1>Freunde</h1>
+          <tc-link @click="modalOpened = true" tfcolor="success">
+            <i class="ti-plus-inverted" /> Freund hinzufügen
+          </tc-link>
+        </tl-flow>
+
+        <p v-if="friends.length === 0">
+          Füge Freunde hinzu, um Neuigkeiten über ihre sportlichen Erfolge zu
+          erhalten
+        </p>
+
+        <fh-user-list>
+          <fh-user-list-item
+            v-for="f in friends"
+            :key="f._id"
+            :user="f"
+            :to="{ name: 'friend', params: { id: f._id } }"
+          >
+            {{ f.username }}
+            <tc-link slot="action" tfcolor="error" @click="removeFriend(f._id)">
+              <i class="ti-trashcan-alt" />
             </tc-link>
-          </tl-flow>
-        </template>
-        <template v-else slot="action">
-          <tl-flow>
-            <tc-link tfcolor="success" @click="acceptInvite(i._id)">
-              <i class="ti-checkmark" />
-            </tc-link>
-            <tc-link tfcolor="error" @click="denyInvite(i._id)">
-              <i class="ti-cross" />
-            </tc-link>
-          </tl-flow>
-        </template>
-      </fh-user-list-item>
-    </fh-user-list>
-
-    <tl-flow horizontal="space-between">
-      <h1>Freunde</h1>
-      <tc-link @click="modalOpened = true" :color="$store.state.primaryColor">
-        <i class="ti-plus-inverted" /> Freund hinzufügen
-      </tc-link>
-    </tl-flow>
-
-    <p v-if="friends.length === 0">
-      Füge Freunde hinzu, um Neuigkeiten über ihre sportlichen Erfolge zu
-      erhalten
-    </p>
-
-    <fh-user-list>
-      <fh-user-list-item v-for="f in friends" :key="f._id" :user="f">
-        {{ f.username }}
-        <tc-link slot="action" tfcolor="error" @click="removeFriend(f._id)">
-          <i class="ti-trashcan-alt" />
-        </tc-link>
-      </fh-user-list-item>
-    </fh-user-list>
+          </fh-user-list-item>
+        </fh-user-list>
+      </div>
+    </tl-grid>
   </div>
 </template>
 

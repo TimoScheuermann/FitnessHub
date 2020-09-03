@@ -1,7 +1,6 @@
 <template>
   <div content class="promote-user">
     <h1>Moderators</h1>
-
     <fh-user-list>
       <fh-user-list-item v-for="m in moderators" :key="m._id" :user="m">
         {{ m.username }}

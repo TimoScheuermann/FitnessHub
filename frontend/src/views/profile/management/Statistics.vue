@@ -93,7 +93,6 @@ export default class Statistics extends Vue {
     font-size: 2em;
   }
   .amount {
-    // margin-top: 10px;
     color: $primary;
     font-weight: bold;
     font-size: 2em;

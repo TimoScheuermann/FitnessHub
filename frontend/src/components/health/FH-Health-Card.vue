@@ -53,10 +53,11 @@
           />
         </div>
         <tc-button
-          :background="$store.state.primaryColor"
+          tfbackground="success"
           @click="submit"
           name="Speichern"
           variant="filled"
+          :disabled="$store.getters.loading"
         />
       </div>
     </template>
@@ -69,6 +70,7 @@ import VueApexCharts from 'vue-apexcharts';
 import { IHealth } from '@/utils/interfaces';
 import { days, months, aDay, aWeek, aMonth, aYear } from '@/utils/constants';
 import axios from '@/utils/axios';
+import { formatTimeForMessage } from '@/utils/functions';
 
 @Component({
   components: {
@@ -114,7 +116,7 @@ export default class FHHealthCard extends Vue {
         forceNiceScale: true,
         labels: { formatter: (value: string) => value + ' ' + this.unit }
       },
-      colors: [this.$store.state.primaryColor],
+      colors: ['#25ca49'],
       stroke: { lineCap: 'round', width: 4 },
       markers: {
         size: this.selectedTime < 2 ? 5 : 0,
@@ -123,7 +125,8 @@ export default class FHHealthCard extends Vue {
       },
       tooltip: {
         x: { format: 'dd. MMM yyyy' }
-      }
+      },
+      theme: { mode: this.$store.getters.darkmode ? 'dark' : 'light' }
     };
   }
 
@@ -145,9 +148,15 @@ export default class FHHealthCard extends Vue {
 
   get now(): string {
     const date: Date = new Date();
-    return `${days[date.getDay()]}, ${date.getDate()}. ${
-      months[date.getMonth() - 1]
+    const now = `${days[date.getDay()].substring(0, 2)}, ${date.getDate()}. ${
+      months[date.getMonth()]
     } ${date.getFullYear()}`;
+    if (this.selectedTime === 0) {
+      return now;
+    }
+    return `${formatTimeForMessage(
+      date.getTime() - this.multis[this.selectedTime]
+    )} - ${now}`;
   }
 
   get current(): number {
@@ -201,6 +210,7 @@ export default class FHHealthCard extends Vue {
     .time {
       font-weight: 600;
       opacity: 0.75;
+      font-size: 14px;
     }
   }
   .current {
