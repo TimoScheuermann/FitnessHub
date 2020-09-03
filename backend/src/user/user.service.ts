@@ -199,9 +199,7 @@ export class UserService {
       this.tgbotService.sendURLMessage(
         `<b>${this.transformName(suspender)}</b> hat ${this.transformName(
           user,
-        )} bis zum ${
-          new Date(time).toISOString().split('T').join(' ').split('Z')[0]
-        } gesperrt!`,
+        )} temporär gesperrt!`,
         'Gesperrte Nutzer anzeigen',
         'https://fitnesshub.app/profile/management/suspend-user',
       );
