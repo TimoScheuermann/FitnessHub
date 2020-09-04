@@ -62,7 +62,9 @@
           <fh-avatar :user="friend" />
           <div class="info" v-if="$store.getters.valid">
             <div class="name">{{ friend.username }}</div>
-            <div class="date">Mitglied seit: TODO:</div>
+            <div class="date" v-if="friendInfo">
+              Mitglied seit: {{ transformDate(friendInfo.memberSince) }}
+            </div>
           </div>
         </tl-flow>
 
@@ -70,14 +72,14 @@
           <fh-avatar />
           <div class="info" v-if="$store.getters.valid">
             <div class="name">{{ name }}</div>
-            <div class="date">Mitglied seit: {{ date }}</div>
+            <div class="date">Mitglied seit: {{ transformDate }}</div>
           </div>
         </tl-flow>
       </transition>
     </tc-hero>
     <div class="view">
       <transition :name="$store.getters.routeTransition">
-        <router-view class="child-view" />
+        <router-view class="child-view" :friendInfo="friendInfo" />
       </transition>
     </div>
   </div>
@@ -86,13 +88,19 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
+import axios from '@/utils/axios';
 
 @Component
 export default class ProfileInterim extends Vue {
+  public friendInfo: object | null = null;
+
   @Watch('$route.name')
   public routeNameChanged(to: string): void {
     if (to === 'friend') {
-      // TODO: load user info
+      this.friendInfo = null;
+      axios
+        .get('friends/info/' + this.$route.params.id)
+        .then(res => (this.friendInfo = res.data));
     }
   }
 
@@ -113,8 +121,8 @@ export default class ProfileInterim extends Vue {
     return [user.givenName, user.familyName].filter(x => !!x).join(' ');
   }
 
-  get date(): string {
-    const date: Date = new Date(this.$store.getters.user.date);
+  transformDate(timestamp = this.$store.getters.user.date): string {
+    const date = new Date(timestamp);
     return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
   }
 }

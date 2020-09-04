@@ -12,6 +12,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
+import { FriendIDParam, FriendsGuard } from './friends.guard';
 import { FriendsService } from './friends.service';
 import { IPendingFriendship } from './interfaces/IPendingFriendship';
 
@@ -23,6 +24,14 @@ export class FriendsController {
   @Get()
   async getFriends(@FHUser() user: IUser): Promise<IUserInfo[]> {
     return this.friendsService.getFriendsOf(user._id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @FriendIDParam('id')
+  @UseGuards(AuthGuard('jwt'), FriendsGuard)
+  @Get('info/:id')
+  async getFriendInfo(@Param('id') id: string): Promise<any> {
+    return this.friendsService.getFriendInformations(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

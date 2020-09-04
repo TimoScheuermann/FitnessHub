@@ -123,6 +123,16 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'achievements',
+          name: 'achievements',
+          component: () => import('@/views/profile/Achievements.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Erfolge',
+            level: 1
+          }
+        },
+        {
           path: 'settings',
           name: 'settings',
           component: () => import('@/views/profile/Settings.vue'),

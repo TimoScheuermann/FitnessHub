@@ -13,12 +13,7 @@ import FHUserListItem from './components/shared/user-list/FH-UserListItem.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
-import {
-  getToken,
-  getUserFromJWT,
-  persistLogin,
-  verfiyUser
-} from './utils/auth';
+import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
 import axios from './utils/axios';
 import { backendURL } from './utils/constants';
 import { getFriend } from './utils/functions';
@@ -52,17 +47,13 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
-
-    const options = {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    };
-    axios.get('message', options).then(res => {
+    axios.get('message').then(res => {
       res.data.forEach((x: IMessage) => store.commit('addMessage', x));
     });
-    axios.get('friends', options).then(res => {
+    axios.get('friends').then(res => {
       res.data.forEach((x: IUserInfo) => store.commit('addFriend', x));
     });
-    axios.get('friends/invitations', options).then(res => {
+    axios.get('friends/invitations').then(res => {
       res.data.forEach((x: IPendingFriendship) =>
         store.commit('addFriendRequest', x)
       );

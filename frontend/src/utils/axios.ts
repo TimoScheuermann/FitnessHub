@@ -8,16 +8,21 @@ const axios = Axios.create({
   baseURL: backendURL
 });
 
-axios.interceptors.request.use(config => {
-  if (process.env.NODE_ENV === 'development') {
-    console.info('✉️ ', config.method?.toUpperCase() + ' ' + config.url);
+axios.interceptors.request.use(
+  config => {
+    if (process.env.NODE_ENV === 'development') {
+      console.info('✉️ ', config.method?.toUpperCase() + ' ' + config.url);
+    }
+    config.headers = {
+      Authorization: `Bearer ${getToken()}`
+    };
+    store.state.openRequests++;
+    return config;
+  },
+  () => {
+    store.state.openRequests--;
   }
-  config.headers = {
-    Authorization: `Bearer ${getToken()}`
-  };
-  store.state.openRequests++;
-  return config;
-});
+);
 axios.interceptors.response.use(config => {
   store.state.openRequests--;
   return config;

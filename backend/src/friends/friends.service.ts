@@ -187,4 +187,11 @@ export class FriendsService {
       ],
     });
   }
+
+  public async getFriendInformations(id: string): Promise<any> {
+    const user: IUser = await this.userService.getUserById(id);
+    return {
+      memberSince: user.date,
+    };
+  }
 }
