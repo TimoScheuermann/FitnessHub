@@ -43,18 +43,16 @@
           <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
           <tl-flow v-else>
             <fh-avatar :user="friend" />
-            <div class="info">
+            <tl-flow flow="column" class="info">
               <div class="name">{{ friend.username }}</div>
-              <tl-flow>
-                <tc-button
-                  name="Profil ansehen"
-                  variant="filled"
-                  background="#fff"
-                  color="#000"
-                  :to="{ name: 'friend', params: { id: friend._id } }"
-                />
-              </tl-flow>
-            </div>
+              <tc-button
+                name="Profil ansehen"
+                variant="filled"
+                background="#fff"
+                color="#000"
+                :to="{ name: 'friend', params: { id: friend._id } }"
+              />
+            </tl-flow>
           </tl-flow>
         </template>
 
@@ -72,7 +70,7 @@
           <fh-avatar />
           <div class="info" v-if="$store.getters.valid">
             <div class="name">{{ name }}</div>
-            <div class="date">Mitglied seit: {{ transformDate }}</div>
+            <div class="date">Mitglied seit: {{ transformDate() }}</div>
           </div>
         </tl-flow>
       </transition>
