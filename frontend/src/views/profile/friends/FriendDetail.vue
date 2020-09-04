@@ -6,7 +6,7 @@
         title="Nachricht senden"
         :to="chatRoute"
       />
-      <tc-list-item icon="share" title="Herausfordern" />
+      <tc-list-item icon="trophy" title="Herausfordern" />
       <tc-list-item
         red
         icon="trashcan-alt"

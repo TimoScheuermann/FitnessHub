@@ -49,6 +49,7 @@ export default class FHMobileHeader extends Vue {
 .fh-mobile-header {
   @media #{$isDesktop} {
     display: none;
+    // top: calc(70px + env(safe-area-inset-top));
   }
   min-height: 50px;
   padding: 0 5vw;
@@ -83,12 +84,14 @@ export default class FHMobileHeader extends Vue {
   }
   transition: background 0.2s ease-in-out;
   &.enhancedVisibility {
-    .tc-header-button {
-      color: $primary;
-    }
-    @include backdrop-blur($background);
-    &.dark {
-      @include backdrop-blur($background_dark);
+    @media #{$isMobile} {
+      .tc-header-button {
+        color: $primary;
+      }
+      @include backdrop-blur($background);
+      &.dark {
+        @include backdrop-blur($background_dark);
+      }
     }
   }
 }

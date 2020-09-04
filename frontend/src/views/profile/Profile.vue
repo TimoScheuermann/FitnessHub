@@ -9,7 +9,6 @@
       <tl-grid gap="0px 20">
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
-            v-if="$store.getters.user.group !== 'User'"
             icon="shield"
             title="Gruppe"
             :description="$store.getters.user.group"
@@ -32,7 +31,11 @@
           >
             <tc-list-item title="Freunde" icon="users" routeName="friends" />
           </tc-badge>
-          <tc-list-item title="Gesundheit" icon="heart" routeName="health" />
+          <tc-list-item
+            title="Gesundheit"
+            icon="heartbeat"
+            routeName="health"
+          />
         </tc-list>
 
         <div>
@@ -42,9 +45,10 @@
             <tc-list-item title="Übungen" icon="gym" />
             <tc-list-item
               title="Erfolge"
-              icon="tiles-nine"
+              icon="star"
               routeName="achievements"
             />
+            <tc-list-item title="Herausforderungen" icon="trophy" />
           </tc-list>
         </div>
       </tl-grid>
