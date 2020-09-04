@@ -1,6 +1,6 @@
 <template>
   <div class="achievements" content>
-    <h1>Soon</h1>
+    <h1>Erreicht</h1>
   </div>
 </template>
 

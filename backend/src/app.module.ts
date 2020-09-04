@@ -15,6 +15,7 @@ import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { TgbotModule } from './tgbot/tgbot.module';
 import { UserModule } from './user/user.module';
+import { NetlifyModule } from './netlify/netlify.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { UserModule } from './user/user.module';
     HealthModule,
     MessageModule,
     FHSocket,
+    NetlifyModule,
   ],
   controllers: [AppController],
   providers: [FHSocket, AppService],
