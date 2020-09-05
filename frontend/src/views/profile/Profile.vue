@@ -32,7 +32,7 @@
             <tc-list-item title="Freunde" icon="users" routeName="friends" />
           </tc-badge>
           <tc-list-item
-            title="Gesundheit"
+            title="Highlights"
             icon="heartbeat"
             routeName="health"
           />
@@ -48,7 +48,11 @@
               icon="star"
               routeName="achievements"
             />
-            <tc-list-item title="Herausforderungen" icon="trophy" />
+            <tc-list-item
+              title="Herausforderungen"
+              icon="trophy"
+              description="bald"
+            />
           </tc-list>
         </div>
       </tl-grid>

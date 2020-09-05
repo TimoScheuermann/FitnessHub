@@ -72,6 +72,7 @@ export interface IInbox {
 
 export enum HealthType {
   WEIGHT = 'weight',
+  WATER = 'water',
   HEIGHT = 'height'
 }
 

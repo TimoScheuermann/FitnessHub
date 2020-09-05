@@ -62,7 +62,7 @@ $size: 40px;
   grid-template-columns: $size 1fr;
   grid-template-rows: minmax($size, 100%);
   border-radius: $border-radius;
-  transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out, transform 0.5s;
   cursor: pointer;
 
   &:hover {

@@ -1,5 +1,14 @@
 <template>
-  <div class="inbox" content>
+  <div class="health" content>
+    <h1>Wasser</h1>
+    <fh-health-water :healthData="waterData" />
+    <h1>Workouts</h1>
+    <fh-health-workout7 />
+    <br />
+    <fh-health-workout28 />
+
+    <h1>.</h1>
+    <tc-divider :dark="$store.getters.darkmode" name="OLD" />
     <tl-grid>
       <div>
         <tl-flow horizontal="space-between">
@@ -77,13 +86,19 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { IHealth } from '@/utils/interfaces';
+import { HealthType, IHealth } from '@/utils/interfaces';
 import axios from '@/utils/axios';
 import FHHealthCard from '@/components/health/FH-Health-Card.vue';
+import FHHealthWater from '@/components/health/FH-Health-Water.vue';
+import FHHealthWorkout7 from '@/components/health/FH-Health-Workout7.vue';
+import FHHealthWorkout28 from '@/components/health/FH-Health-Workout28.vue';
 
 @Component({
   components: {
-    'fh-health-card': FHHealthCard
+    'fh-health-card': FHHealthCard,
+    'fh-health-water': FHHealthWater,
+    'fh-health-workout7': FHHealthWorkout7,
+    'fh-health-workout28': FHHealthWorkout28
   }
 })
 export default class Inbox extends Vue {
@@ -97,6 +112,11 @@ export default class Inbox extends Vue {
 
   async loadData(): Promise<void> {
     this.healthData = (await axios.get('health')).data;
+  }
+
+  get waterData(): IHealth[] | null {
+    if (!this.healthData) return null;
+    return this.healthData.filter(x => x.type === HealthType.WATER);
   }
 
   async deleteData(id: string) {

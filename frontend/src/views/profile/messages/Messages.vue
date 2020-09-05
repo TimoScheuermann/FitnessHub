@@ -16,14 +16,18 @@
           :user="c"
         >
           <div class="info">
-            <div class="name">{{ c.username }}</div>
+            <div class="name">
+              <span v-if="unreadMessages(c._id) > 0">
+                ({{ unreadMessages(c._id) }})
+              </span>
+              {{ c.username }}
+            </div>
             <div class="message">
               {{ getLatestMessageWith(c._id).content }}
             </div>
           </div>
           <div slot="action" class="date">
             {{ transformDate(new Date(getLatestMessageWith(c._id).date)) }}
-            <i class="ti-circle" v-if="!latestMessageRead(c._id)" />
           </div>
         </fh-user-list-item>
       </fh-user-list>
@@ -80,12 +84,8 @@ export default class Messages extends Vue {
     return this.$store.getters.messages;
   }
 
-  public latestMessageRead(id: string): boolean {
-    const m = this.messages
-      .filter(x => x.from === id)
-      .sort((a, b) => b.date - a.date)[0];
-    if (m) return m.read;
-    return true;
+  public unreadMessages(id: string): number {
+    return this.messages.filter(x => x.from === id && !x.read).length;
   }
 
   public getFriendById(id: string): IUserInfo {
@@ -126,6 +126,9 @@ export default class Messages extends Vue {
   .name {
     font-weight: 700;
     margin-top: 7.5px;
+    span {
+      color: $error;
+    }
   }
   .message {
     opacity: 0.7;
@@ -133,11 +136,8 @@ export default class Messages extends Vue {
   }
 }
 .date {
-  font-style: italic;
-  i {
-    color: $error;
-    margin-left: 5px;
-  }
+  white-space: nowrap;
+  font-size: 14px;
 }
 .messages-wrapper {
   position: relative;

@@ -270,4 +270,13 @@ a {
     }
   }
 }
+
+.fh-health-card {
+  background: $paragraph;
+  @media (prefers-color-scheme: dark) {
+    background: $paragraph_dark;
+  }
+  padding: 10px;
+  border-radius: $border-radius;
+}
 </style>
