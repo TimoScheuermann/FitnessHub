@@ -2,9 +2,15 @@
   <div class="fh-health-card fh-health-workout28">
     <fh-health-head
       average="Workouts"
-      amount="28"
+      amount="27"
       unitShort=" in den letzten 4 Wochen"
     />
+    <tc-divider :dark="$store.getters.darkmode" />
+    <div class="workout-days">
+      <div class="day" v-for="d in dayNames" :key="d">
+        {{ d.substring(0, 2) }}
+      </div>
+    </div>
     <tc-divider :dark="$store.getters.darkmode" />
     <div class="workout-days">
       <div class="day" v-for="d in days" :key="d.date.getTime()">
@@ -15,10 +21,10 @@
           <div
             class="circle"
             :class="{
-              workedout: d.date.getDate() !== 2 && d.date.getDate() !== 6
+              workedout: d.date.getDate() % 4 !== 2
             }"
           >
-            {{ dayNames[d.date.getDay()].substring(0, 2) }}
+            {{ d.date.getDate() }}
           </div>
         </template>
         <div v-else />
@@ -38,21 +44,26 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout28 extends Vue {
-  public dayNames = days;
   public monthNames = months;
+
+  get dayNames(): string[] {
+    const dN = [...days];
+    dN.push(dN.shift() as string);
+    return dN;
+  }
 
   get days(): { show: boolean; date: Date }[] {
     const days = [];
     for (let i = 0; i < new Date().getDay(); i++) {
       days.push({ show: false, date: new Date(i) });
     }
-    for (let i = 27; i >= 0; i--) {
+    for (let i = 0; i < 28; i++) {
       days.push({
         show: true,
-        date: this.roundDate(new Date().getTime() - aDay * i)
+        date: this.roundDate(new Date().getTime() - aDay * (i - 1))
       });
     }
-    return days;
+    return days.sort((a, b) => a.date.getTime() - b.date.getTime());
   }
 
   public roundDate(timeStamp: number | Date): Date {
@@ -90,7 +101,10 @@ export default class FHHealthWorkout28 extends Vue {
         border-radius: $scale;
         display: grid;
         place-content: center;
-        background: $container_dark;
+        background: $container;
+        @media (prefers-color-scheme: dark) {
+          background: $container_dark;
+        }
         font-size: 12px;
         font-weight: bold;
 
@@ -99,10 +113,15 @@ export default class FHHealthWorkout28 extends Vue {
           color: #fff;
         }
       }
-      &:nth-child(3) {
+      &:last-child {
+        .circle {
+        }
         .circle:not(.workedout) {
           box-sizing: border-box;
-          border: 3px solid rgba(#fff, 0.1);
+          border: 3px solid rgba(#000, 0.1);
+          @media (prefers-color-scheme: dark) {
+            border-color: rgba(#fff, 0.1);
+          }
         }
       }
     }

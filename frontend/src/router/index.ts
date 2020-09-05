@@ -113,12 +113,12 @@ const router = new VueRouter({
           }
         },
         {
-          path: 'health',
-          name: 'health',
-          component: () => import('@/views/profile/Health.vue'),
+          path: 'highlights',
+          name: 'highlights',
+          component: () => import('@/views/profile/Highlights.vue'),
           meta: {
             needsSignIn: true,
-            title: 'Gesundheit',
+            title: 'Highlights',
             level: 1
           }
         },

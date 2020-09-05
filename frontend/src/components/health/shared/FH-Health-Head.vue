@@ -5,11 +5,12 @@
         <span v-if="timespan === 0">{{ unitLong }}</span>
         <span v-else>{{ average }}</span>
       </div>
-      <div class="currently">
+      <div class="currently" v-if="!description">
         <span class="amount">{{ amount }}</span>
         <span class="unit_short">{{ unitShort }}</span>
       </div>
       <div class="timespan" v-if="showSpan">{{ timespanText }}</div>
+      <div class="description" v-if="description">{{ description }}</div>
     </div>
   </div>
 </template>
@@ -26,6 +27,7 @@ export default class FHHealthHead extends Vue {
   @Prop({ default: 1 }) timespan!: number;
   @Prop({ default: 'durchschnitt' }) average!: string;
   @Prop({ default: false }) showSpan!: boolean;
+  @Prop({ required: false }) description!: string;
 
   public multis = [aDay, aWeek, 4 * aWeek, aYear];
 
@@ -62,10 +64,14 @@ export default class FHHealthHead extends Vue {
       margin-left: 3px;
     }
   }
-  .timespan {
+  .timespan,
+  .description {
     font-weight: 600;
     opacity: 0.75;
     font-size: 14px;
+  }
+  .description {
+    margin-top: 5px;
   }
 }
 </style>

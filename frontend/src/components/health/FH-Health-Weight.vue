@@ -1,5 +1,5 @@
 <template>
-  <div class="fh-health-card" :class="{ dark: $store.getters.darkmode }">
+  <div class="fh-health-card fh-health-weight">
     <template v-if="!healthData">
       <tl-flow flow="column" loading>
         <tc-spinner :dark="$store.getters.darkmode" size="20" />
@@ -10,7 +10,7 @@
       <div class="no-data">
         <div class="title">Es konnten keine Daten gefunden werden...</div>
         <div class="subtitle">
-          Trage dein {{ currentHead }} ein, um deinen Verlauf zu tracken
+          Trage dein aktuelles Gewicht ein, um deinen Verlauf zu tracken
         </div>
       </div>
     </template>
@@ -21,15 +21,13 @@
         <tc-segment-item title="M" />
         <tc-segment-item title="J" />
       </tc-segments>
-      <div class="head">
-        <div class="type">
-          {{ selectedTime === 0 ? category : 'durchschnitt' }}
-        </div>
-        <div class="amount">
-          {{ amount }}<span>{{ unit }}</span>
-        </div>
-        <div class="time">{{ now }}</div>
-      </div>
+      <fh-health-head
+        :timespan="selectedTime"
+        :showSpan="true"
+        unitLong="Gewicht"
+        unitShort="kg"
+        :amount="amount"
+      />
       <fh-chart
         width="100%"
         height="250"
@@ -39,26 +37,26 @@
       />
     </template>
     <template v-if="healthData">
-      <div class="current">
-        <span>{{ currentHead }}</span> ({{ unit }})
-      </div>
       <div class="add-data">
         <div>
           <tc-input
+            title="Aktuelles Gewicht (kg)"
             :dark="$store.getters.darkmode"
-            :step="step"
+            :step="0.1"
             type="number"
             :buttons="true"
             v-model="currentInput"
           />
         </div>
-        <tc-button
-          tfbackground="success"
-          @click="submit"
-          name="Speichern"
-          variant="filled"
-          :disabled="$store.getters.loading"
-        />
+        <tl-flow vertical="end">
+          <tc-button
+            tfbackground="success"
+            @click="submit"
+            name="Speichern"
+            variant="filled"
+            :disabled="$store.getters.loading"
+          />
+        </tl-flow>
       </div>
     </template>
   </div>
@@ -68,22 +66,18 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import VueApexCharts from 'vue-apexcharts';
 import { IHealth } from '@/utils/interfaces';
-import { days, months, aDay, aWeek, aMonth, aYear } from '@/utils/constants';
+import { aDay, aWeek, aMonth, aYear } from '@/utils/constants';
 import axios from '@/utils/axios';
-import { formatTimeForMessage } from '@/utils/functions';
+import FHHealthHead from './shared/FH-Health-Head.vue';
 
 @Component({
   components: {
-    'fh-chart': VueApexCharts
+    'fh-chart': VueApexCharts,
+    'fh-health-head': FHHealthHead
   }
 })
-export default class FHHealthCard extends Vue {
+export default class FHHealthWeight extends Vue {
   @Prop() healthData!: IHealth[] | null;
-  @Prop({ default: 'weight' }) endpoint!: string;
-  @Prop({ default: 'Gewicht' }) category!: string;
-  @Prop({ default: 'kg' }) unit!: string;
-  @Prop({ default: 'aktuelles Gewicht' }) currentHead!: string;
-  @Prop({ default: 0.1 }) step!: number;
 
   public currentInput =
     this.healthData && this.healthData.length > 0 ? this.current : 70;
@@ -114,7 +108,7 @@ export default class FHHealthCard extends Vue {
         opposite: true,
         tickAmount: 0.1,
         forceNiceScale: true,
-        labels: { formatter: (value: string) => value + ' ' + this.unit }
+        labels: { formatter: (value: string) => value + ' kg' }
       },
       colors: ['#25ca49'],
       stroke: { lineCap: 'round', width: 4 },
@@ -133,7 +127,7 @@ export default class FHHealthCard extends Vue {
   get series() {
     return [
       {
-        name: this.category,
+        name: 'Gewicht',
         data: (this.healthData || [])
           .map(d => {
             return {
@@ -144,19 +138,6 @@ export default class FHHealthCard extends Vue {
           .sort((a, b) => b.x - a.x)
       }
     ];
-  }
-
-  get now(): string {
-    const date: Date = new Date();
-    const now = `${days[date.getDay()].substring(0, 2)}, ${date.getDate()}. ${
-      months[date.getMonth()]
-    } ${date.getFullYear()}`;
-    if (this.selectedTime === 0) {
-      return now;
-    }
-    return `${formatTimeForMessage(
-      date.getTime() - this.multis[this.selectedTime]
-    )} - ${now}`;
   }
 
   get current(): number {
@@ -178,7 +159,7 @@ export default class FHHealthCard extends Vue {
   }
 
   async submit(): Promise<void> {
-    await axios.post('health/' + this.endpoint, { value: +this.currentInput });
+    await axios.post('health/weight', { value: +this.currentInput });
     this.$emit('reload');
   }
 }
@@ -186,12 +167,6 @@ export default class FHHealthCard extends Vue {
 
 <style lang="scss" scoped>
 .fh-health-card {
-  background: $paragraph;
-  &.dark {
-    background: $paragraph_dark;
-  }
-  padding: 10px;
-  border-radius: $border-radius;
   .head {
     .type {
       text-transform: uppercase;

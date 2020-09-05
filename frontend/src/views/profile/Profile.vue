@@ -34,7 +34,7 @@
           <tc-list-item
             title="Highlights"
             icon="heartbeat"
-            routeName="health"
+            routeName="highlights"
           />
         </tc-list>
 

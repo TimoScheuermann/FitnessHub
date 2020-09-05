@@ -67,7 +67,10 @@ export default class FHHealthWorkout7 extends Vue {
         border-radius: $scale;
         display: grid;
         place-content: center;
-        background: $container_dark;
+        background: $container;
+        @media (prefers-color-scheme: dark) {
+          background: $container_dark;
+        }
         font-size: 12px;
         font-weight: bold;
 
@@ -76,10 +79,13 @@ export default class FHHealthWorkout7 extends Vue {
           color: #fff;
         }
       }
-      &:nth-child(3) {
+      &:last-child {
         .circle:not(.workedout) {
           box-sizing: border-box;
-          border: 3px solid rgba(#fff, 0.1);
+          border: 3px solid rgba(#000, 0.1);
+          @media (prefers-color-scheme: dark) {
+            border-color: rgba(#fff, 0.1);
+          }
         }
       }
     }
