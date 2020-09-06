@@ -11,7 +11,6 @@ import { Socket } from 'vue-socket.io-extended';
 export default class MessageSocketManager extends Vue {
   @Socket('message')
   messageReceived(message: IMessage) {
-    // console.log('Message received', message.type);
     this.$store.commit('addMessage', message);
     if (
       message.from !== this.$store.getters.user._id &&

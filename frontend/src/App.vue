@@ -19,9 +19,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import FHNavbar from './components/global/FH-Navbar.vue';
-import SocketManager from '@/socketManager/SocketManager.mixin';
 import FHNotification from './components/global/FH-Notification.vue';
 import FHTabbar from './components/global/FH-Tabbar.vue';
+import MessageSocketManager from './socketManager/MessageSocket.manager';
+import FriendSocketManager from './socketManager/FriendSocket.manager';
+import HealthSocketManager from './socketManager/HealthSocket.manager';
+import ExerciseSocketManager from './socketManager/ExerciseSocket.manager';
 
 @Component({
   components: {
@@ -30,7 +33,12 @@ import FHTabbar from './components/global/FH-Tabbar.vue';
     'fh-notification': FHNotification
   }
 })
-export default class App extends Mixins(SocketManager) {
+export default class App extends Mixins(
+  FriendSocketManager,
+  MessageSocketManager,
+  HealthSocketManager,
+  ExerciseSocketManager
+) {
   public mqFixedHeader = window.matchMedia('(min-width: 851px)');
   public mqDarkmode = window.matchMedia('(prefers-color-scheme: dark)');
 
