@@ -5,22 +5,22 @@ import { Socket } from 'vue-socket.io-extended';
 @Component
 export default class ExerciseSocketManager extends Vue {
   @Socket('exercise')
-  exerciseChangedOrUpdated(data: IExercise) {
-    this.$store.commit('addExercise', data);
+  manageExercise(data: IExercise) {
+    this.$store.commit('manageExercise', data);
   }
 
   @Socket('exercise.remove')
   removeExercise(data: IExercise) {
-    this.$store.commit('removeExercise', data);
+    this.$store.commit('removeExercise', data._id);
   }
 
-  @Socket('exerciseSub.new')
-  addSubmission(data: IExercise) {
-    this.$store.commit('addSubmittedExercise', data);
+  @Socket('exerciseSubmission')
+  manageExerciseSubmission(data: IExercise) {
+    this.$store.commit('manageExerciseSubmission', data);
   }
 
-  @Socket('exerciseSub.remove')
-  removeSubmission(data: IExercise) {
-    this.$store.commit('removeSubmittedExercise', data);
+  @Socket('exerciseSubmission.remove')
+  removeExerciseSubmission(data: IExercise) {
+    this.$store.commit('removeExerciseSubmission', data._id);
   }
 }

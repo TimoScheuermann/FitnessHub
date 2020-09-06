@@ -49,12 +49,7 @@ export class ExerciseService {
       updated: -1,
       author: author._id,
     });
-
-    this.fhSocket.server.to(author._id).emit('exercise', exercise);
-    const ids = await this.userService.getAllIdsExceptUser();
-    const socket = this.fhSocket.server;
-    ids.forEach((x) => socket.to(x));
-    socket.emit('exerciseSub.new', exercise);
+    this.sendUpdateNotifications(exercise, false, false, false);
   }
 
   public async publishExercise(
@@ -62,84 +57,43 @@ export class ExerciseService {
     update: UpdateExerciseDTO,
     reviewer: IUser,
   ): Promise<void> {
-    await this.exerciseModel.findOne({ _id: id }).update({
-      $set: {
-        ...update,
-        reviewed: true,
-        reviewedBy: reviewer._id,
-      },
-    });
-
-    const exercise: IExercise = await this.getById(id);
-    if (exercise) {
-      console.log(exercise);
-      const ids = await this.userService.getAllIdsExceptUser();
-      const socket = this.fhSocket.server;
-      ids.forEach((x) => socket.to(x));
-      socket.emit('exerciseSub.remove', exercise);
-      this.fhSocket.server.to(exercise.author).emit('exercise', exercise);
-
-      await this.sendMessageAsFitnessHub(exercise.author, 'exercisePublish', {
-        id: exercise._id,
-        title: exercise.title,
-        by: reviewer,
-      });
-    }
-  }
-
-  public async acceptChange(
-    id: string,
-    reviewer: IUser,
-    // eslint-disable-next-line
-    update: any,
-  ): Promise<void> {
-    const exercise = await this.getById(id);
-    if (exercise) {
-      delete update._id;
-      delete update.author;
-      delete update.created;
-      await exercise.update({
-        $unset: { time: 1, distance: 1, sets: 1, reps: 1, editedData: 1 },
+    await this.exerciseModel.updateOne(
+      { _id: id },
+      {
         $set: {
           ...update,
           reviewed: true,
           reviewedBy: reviewer._id,
-          updated: new Date().getTime(),
         },
-      });
-      const ids = await this.userService.getAllIdsExceptUser();
-      const socket = this.fhSocket.server;
-      ids.forEach((x) => socket.to(x));
-      socket.emit('exerciseSub.remove', exercise);
-      this.fhSocket.server.to(exercise.author).emit('exercise', exercise);
-      await this.sendMessageAsFitnessHub(exercise.author, 'exerciseEdit', {
-        id: exercise._id,
-        title: exercise.title,
-        by: reviewer,
-      });
-    }
+      },
+    );
+
+    const exercise: IExercise = await this.getById(id);
+    this.sendUpdateNotifications(exercise, true, false, true);
+  }
+
+  public async rejectChanges(id: string): Promise<void> {
+    await this.exerciseModel.updateOne(
+      { _id: id },
+      { $unset: { editedData: 1 } },
+    );
+
+    const exercise: IExercise = await this.getById(id);
+    this.sendUpdateNotifications(exercise, false, false, true);
   }
 
   public async submitChange(
     id: string,
     update: UpdateExerciseDTO,
     author: IUser,
-  ): Promise<IExercise> {
-    const exercise = await this.exerciseModel.findOne({
-      _id: id,
-      author: author._id,
-    });
-    await exercise.update({
-      $set: { editedData: update },
-    });
-    return exercise;
-  }
-
-  public async rejectChange(id: string): Promise<void> {
-    await this.exerciseModel.findOneAndUpdate(
-      { _id: id },
-      { $unset: { editedData: 1 } },
+  ): Promise<void> {
+    await this.exerciseModel.updateOne(
+      { _id: id, author: author._id },
+      { $set: { editedData: update } },
     );
+
+    const exercise: IExercise = await this.getById(id);
+    this.sendUpdateNotifications(exercise, false, false, false);
   }
 
   public async deleteOwnExercise(id: string, user: IUser): Promise<void> {
@@ -147,20 +101,38 @@ export class ExerciseService {
       _id: id,
       author: user._id,
     });
-    this.broadcastDelete(exercise);
+    this.sendUpdateNotifications(exercise, false, true, true);
   }
 
   public async deleteExercise(id: string): Promise<void> {
     const exercise = await this.exerciseModel.findOneAndDelete({ _id: id });
-    this.broadcastDelete(exercise);
+    this.sendUpdateNotifications(exercise, false, true, true);
   }
 
-  private async broadcastDelete(exercise: Exercise): Promise<void> {
+  private async sendUpdateNotifications(
+    exercise: IExercise,
+    accepted: boolean,
+    removeLocaly: boolean,
+    removeSubmisison: boolean,
+  ) {
+    this.fhSocket.server
+      .to(exercise.author)
+      .emit('exercise' + (removeLocaly ? '.remove' : ''), exercise);
+
+    if (accepted) {
+      await this.sendMessageAsFitnessHub(exercise.author, 'exercisePublish', {
+        id: exercise._id,
+        title: exercise.title,
+      });
+    }
+
     const ids = await this.userService.getAllIdsExceptUser();
     const socket = this.fhSocket.server;
     ids.forEach((x) => socket.to(x));
-    socket.emit('exerciseSub.remove', exercise);
-    this.fhSocket.server.to(exercise.author).emit('exercise.remove', exercise);
+    socket.emit(
+      'exerciseSubmission' + (removeSubmisison ? '.remove' : ''),
+      exercise,
+    );
   }
 
   private async sendMessageAsFitnessHub(
@@ -177,7 +149,6 @@ export class ExerciseService {
       type: type,
       read: false,
     });
-
     this.fhSocket.server.to(to).emit('message', createdMessage);
   }
 }

@@ -64,11 +64,11 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
       );
     });
     axios.get('exercise/mine').then(res => {
-      res.data.forEach((x: IExercise) => store.commit('addExercise', x));
+      res.data.forEach((x: IExercise) => store.commit('manageExercise', x));
     });
     axios.get('exercise/submissions').then(res => {
       res.data.forEach((x: IExercise) =>
-        store.commit('addSubmittedExercise', x)
+        store.commit('manageExerciseSubmission', x)
       );
     });
 

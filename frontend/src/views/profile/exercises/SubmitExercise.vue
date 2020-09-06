@@ -241,10 +241,10 @@ export default class SubmitExercise extends Vue {
   public availableTimes: string[] = ['Sekunden', 'Minuten', 'Stunden'];
 
   public exercise: CreateExerciseDTO = {
-    title: '',
-    thumbnail: '',
+    title: 'a',
+    thumbnail: 'b',
     explanatoryVideo: '',
-    affectedMuscles: [],
+    affectedMuscles: ['d'],
     time: 20,
     distance: '5 km',
     sets: '',
@@ -263,7 +263,6 @@ export default class SubmitExercise extends Vue {
         ...to.editedData
       };
     }
-    console.log('to', to);
     if (to.reps) this.selectedCategorie = 0;
     if (to.time) this.selectedCategorie = 1;
     if (to.distance) this.selectedCategorie = 2;

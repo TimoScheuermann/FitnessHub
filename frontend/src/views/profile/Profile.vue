@@ -64,7 +64,7 @@
         <tl-grid gap="0px 20">
           <tc-list :dark="$store.getters.darkmode">
             <tc-badge
-              :value="$store.getters.exerciseSubmissions"
+              :value="$store.getters.exerciseSubmissions.length"
               position="inside"
             >
               <tc-list-item

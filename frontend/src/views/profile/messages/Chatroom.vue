@@ -1,5 +1,6 @@
 <template>
   <div class="chatroom" content>
+    <p>{{ messages }}</p>
     <tl-flow v-if="messages.length === 0">
       <p><em>Beginn des Chats...</em></p>
     </tl-flow>

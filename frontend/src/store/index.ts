@@ -30,7 +30,7 @@ export default new Vuex.Store({
     primaryColor: '#25ca49',
     openRequests: 0,
     exercises: [] as IExercise[],
-    submittedExercises: [] as IExercise[]
+    exerciseSubmissions: [] as IExercise[]
   },
   getters: {
     valid: (state: any): boolean => {
@@ -48,7 +48,7 @@ export default new Vuex.Store({
       return (
         getters.unreadMessages +
         getters.unansweredFriendRequests +
-        getters.exerciseSubmissions
+        getters.exerciseSubmissions.length
       );
     },
     fixedHeader: (state: any): boolean => {
@@ -92,13 +92,8 @@ export default new Vuex.Store({
     exercises: (state: any): IExercise[] => {
       return state.exercises;
     },
-    submittedExercises: (state: any): IExercise[] => {
-      return state.submittedExercises;
-    },
-    exerciseSubmissions: (state: any): number => {
-      return (state.submittedExercises as IExercise[]).filter(
-        x => !x.reviewed || x.editedData
-      ).length;
+    exerciseSubmissions: (state: any): IExercise[] => {
+      return state.exerciseSubmissions;
     }
   },
   mutations: {
@@ -183,26 +178,37 @@ export default new Vuex.Store({
       state.notifications.push(notification);
       EventBus.$emit('message');
     },
-    addExercise(state: any, exercise: IExercise) {
-      state.exercises = (state.exercises as IExercise[]).filter(
-        x => x._id !== exercise._id
-      );
-      state.exercises.push(exercise);
+    manageExercise(state: any, exercise: IExercise) {
+      let matched = false;
+      state.exercises = state.exercises.map((x: IExercise) => {
+        if (x._id === exercise._id) {
+          matched = true;
+          return exercise;
+        }
+        return x;
+      });
+
+      if (!matched) state.exercises.push(exercise);
     },
-    removeExercise(state: any, exercise: IExercise) {
-      state.exercises = (state.exercises as IExercise[]).filter(
-        x => x._id !== exercise._id
-      );
+    removeExercise(state: any, id: string) {
+      state.exercises = state.exercises.filter((x: IExercise) => x._id !== id);
     },
-    addSubmittedExercise(state: any, exercise: IExercise) {
-      state.submittedExercises = (state.submittedExercises as IExercise[]).filter(
-        x => x._id !== exercise._id
+    manageExerciseSubmission(state: any, exercise: IExercise) {
+      let matched = false;
+      state.exerciseSubmissions = state.exerciseSubmissions.map(
+        (x: IExercise) => {
+          if (x._id === exercise._id) {
+            matched = true;
+            return exercise;
+          }
+          return x;
+        }
       );
-      state.submittedExercises.push(exercise);
+      if (!matched) state.exerciseSubmissions.push(exercise);
     },
-    removeSubmittedExercise(state: any, exercise: IExercise) {
-      state.submittedExercises = (state.submittedExercises as IExercise[]).filter(
-        x => x._id !== exercise._id
+    removeExerciseSubmission(state: any, id: string) {
+      state.exerciseSubmissions = state.exerciseSubmissions.filter(
+        (x: IExercise) => x._id !== id
       );
     }
   }

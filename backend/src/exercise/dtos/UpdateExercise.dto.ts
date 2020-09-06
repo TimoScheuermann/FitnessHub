@@ -10,7 +10,7 @@ export class UpdateExerciseDTO {
 
   // Variable, depending on exercise
   readonly time?: number;
-  readonly distance?: number;
+  readonly distance?: string;
   readonly sets?: string;
   readonly reps?: string;
 }

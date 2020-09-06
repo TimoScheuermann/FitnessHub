@@ -77,7 +77,6 @@ export default class SuspendUser extends Vue {
 
   public async suspendUser() {
     if (this.selectedUser && this.date.length > 0) {
-      console.log('Suspending');
       await axios.post(
         'user/suspend/' +
           this.selectedUser._id +

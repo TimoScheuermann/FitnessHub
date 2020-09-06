@@ -30,6 +30,7 @@
     </tc-table>
 
     <tc-modal
+      v-if="mode.length > 0"
       title="Übung prüfen"
       :dark="$store.getters.darkmode"
       v-model="modalOpened"
@@ -55,7 +56,7 @@ import SubmitExercise from '../exercises/SubmitExercise.vue';
   }
 })
 export default class SubmittedExercises extends Vue {
-  public mode = 'publish';
+  public mode = '';
   public modalOpened = false;
   public selectedExercise: IExercise | null = null;
 
@@ -65,18 +66,23 @@ export default class SubmittedExercises extends Vue {
 
   public checkNew(exercise: IExercise) {
     this.mode = 'publish';
-    this.selectedExercise = exercise;
-    this.modalOpened = true;
+    this.open(exercise);
   }
 
   public checkEdit(exercise: IExercise) {
     this.mode = 'edit';
+    this.open(exercise);
+  }
+
+  private open(exercise: IExercise) {
     this.selectedExercise = exercise;
-    this.modalOpened = true;
+    setTimeout(() => {
+      this.modalOpened = true;
+    }, 100);
   }
 
   get submissions(): IExercise[] {
-    return this.$store.getters.submittedExercises;
+    return this.$store.getters.exerciseSubmissions;
   }
 
   get newSubmissions(): IExercise[] {

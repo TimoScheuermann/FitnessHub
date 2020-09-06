@@ -7,6 +7,7 @@
       <h1>Eingereicht - {{ exercises.length }}</h1>
       <tc-link tfcolor="success" routeName="submitExercise">neu</tc-link>
     </tl-flow>
+
     <tl-grid>
       <tc-revealer
         :title="'Veröffentlicht - ' + published.length"

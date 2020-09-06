@@ -59,7 +59,7 @@ export class ExerciseController {
     @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() update: UpdateExerciseDTO,
-  ): Promise<IExercise> {
+  ): Promise<void> {
     return this.exerciseService.submitChange(id, update, user);
   }
 
@@ -76,20 +76,9 @@ export class ExerciseController {
 
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Put('accept/:id')
-  async acceptChanges(
-    @FHUser() user: IUser,
-    @Param('id') id: string,
-    @Body() update: UpdateExerciseDTO,
-  ): Promise<void> {
-    this.exerciseService.acceptChange(id, user, update);
-  }
-
-  @Roles(['admin', 'moderator'])
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Put('reject/:id')
+  @Put('rejectChanges/:id')
   async rejectChanges(@Param('id') id: string): Promise<void> {
-    this.exerciseService.rejectChange(id);
+    this.exerciseService.rejectChanges(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

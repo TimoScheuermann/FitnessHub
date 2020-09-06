@@ -41,7 +41,6 @@ export class AuthService {
       if (user.suspended && user.suspended > new Date().getTime()) {
         return { suspended: user.suspended };
       } else {
-        console.log('Auto pardon ' + user._id);
         await this.userService.pardonUser(user._id);
       }
       return { token: this.jwtService.sign(user) };

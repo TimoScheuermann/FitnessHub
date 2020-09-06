@@ -47,7 +47,7 @@ export class Exercise extends Document {
   time?: number;
 
   @Prop({ required: false })
-  distance?: number;
+  distance?: string;
 
   @Prop({ required: false })
   sets?: string;
