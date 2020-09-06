@@ -143,6 +143,27 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'exercises',
+          name: 'exercises',
+          component: () => import('@/views/profile/exercises/Exercises.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Übungen',
+            level: 1
+          }
+        },
+        {
+          path: 'exercises/submit',
+          name: 'submitExercise',
+          component: () =>
+            import('@/views/profile/exercises/SubmitExercise.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Übung einreichen',
+            level: 2
+          }
+        },
+        {
           path: 'suspended',
           name: 'suspended',
           component: () => import('@/views/profile/Suspended.vue'),

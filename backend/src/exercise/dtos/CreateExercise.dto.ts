@@ -1,14 +1,4 @@
-import { UpdateExerciseDTO } from '../dtos/UpdateExercise.dto';
-
-export interface IExercise {
-  readonly _id?: string;
-  readonly author: string;
-  readonly reviewed: boolean;
-  readonly reviewedBy: string;
-  readonly created: number;
-  readonly updated: number;
-  readonly editedData?: UpdateExerciseDTO;
-
+export class CreateExerciseDTO {
   readonly title: string;
   readonly affectedMuscles: string[];
   readonly thumbnail: string;

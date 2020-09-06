@@ -47,4 +47,10 @@ export class MessageController {
   ): Promise<void> {
     this.messageService.markAsRead(user._id, friendId);
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Put('markBotAsRead')
+  async markBotAsRead(@FHUser() user: IUser): Promise<void> {
+    this.messageService.markAsRead(user._id, '5f4a1a372149ef521c108f4a');
+  }
 }

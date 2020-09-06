@@ -205,4 +205,11 @@ export class UserService {
       );
     }
   }
+
+  public async getAllIdsExceptUser(): Promise<string[]> {
+    const users = await this.userModel.find({
+      $or: [{ group: 'Moderator' }, { group: 'Admin' }],
+    });
+    return users.map((x) => x._id);
+  }
 }

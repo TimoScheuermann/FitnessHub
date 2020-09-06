@@ -1,8 +1,10 @@
 /* eslint-disable */
 import router from '@/router';
 import axios from '@/utils/axios';
+import { fhBotId } from '@/utils/constants';
 import { EventBus } from '@/utils/eventbus';
 import {
+  IExercise,
   IFHNotification,
   IMessage,
   IPendingFriendship,
@@ -26,7 +28,9 @@ export default new Vuex.Store({
     friends: [] as IUserInfo[],
     friendRequests: [] as IPendingFriendship[],
     primaryColor: '#25ca49',
-    openRequests: 0
+    openRequests: 0,
+    exercises: [] as IExercise[],
+    submittedExercises: [] as IExercise[]
   },
   getters: {
     valid: (state: any): boolean => {
@@ -41,7 +45,11 @@ export default new Vuex.Store({
         .join(' ');
     },
     totalNotifications: (state: any, getters: any): number => {
-      return getters.unreadMessages + getters.unansweredFriendRequests;
+      return (
+        getters.unreadMessages +
+        getters.unansweredFriendRequests +
+        getters.exerciseSubmissions
+      );
     },
     fixedHeader: (state: any): boolean => {
       return state.fixedHeader;
@@ -80,6 +88,17 @@ export default new Vuex.Store({
     },
     loading: (state: any): boolean => {
       return state.openRequests !== 0;
+    },
+    exercises: (state: any): IExercise[] => {
+      return state.exercises;
+    },
+    submittedExercises: (state: any): IExercise[] => {
+      return state.submittedExercises;
+    },
+    exerciseSubmissions: (state: any): number => {
+      return (state.submittedExercises as IExercise[]).filter(
+        x => !x.reviewed || x.editedData
+      ).length;
     }
   },
   mutations: {
@@ -100,12 +119,16 @@ export default new Vuex.Store({
     routeTransition(state: any, trans: string) {
       state.routeTransition = trans;
     },
-    addMessage(state: any, message: IMessage) {
+    async addMessage(state: any, message: IMessage) {
       if (
         router.currentRoute.name === 'chatroom' &&
         router.currentRoute.params.id === message.from
       ) {
-        axios.put('message/markAsRead/' + message.from);
+        if (message.from === fhBotId) {
+          await axios.put('message/markBotAsRead');
+        } else {
+          await axios.put('message/markAsRead/' + message.from);
+        }
         message.read = true;
       }
       if (
@@ -142,7 +165,7 @@ export default new Vuex.Store({
         x => x._id !== friendRequestId
       );
     },
-    markAsRead(state: any, fromId: string) {
+    async markAsRead(state: any, fromId: string) {
       state.messages = (state.messages as IMessage[]).map(x => {
         if (x.from !== fromId) return x;
         return {
@@ -150,11 +173,37 @@ export default new Vuex.Store({
           read: true
         };
       });
-      axios.put('message/markAsRead/' + fromId);
+      if (fromId === fhBotId) {
+        await axios.put('message/markBotAsRead');
+      } else {
+        await axios.put('message/markAsRead/' + fromId);
+      }
     },
     sendNotification(state: any, notification: IFHNotification) {
       state.notifications.push(notification);
       EventBus.$emit('message');
+    },
+    addExercise(state: any, exercise: IExercise) {
+      state.exercises = (state.exercises as IExercise[]).filter(
+        x => x._id !== exercise._id
+      );
+      state.exercises.push(exercise);
+    },
+    removeExercise(state: any, exercise: IExercise) {
+      state.exercises = (state.exercises as IExercise[]).filter(
+        x => x._id !== exercise._id
+      );
+    },
+    addSubmittedExercise(state: any, exercise: IExercise) {
+      state.submittedExercises = (state.submittedExercises as IExercise[]).filter(
+        x => x._id !== exercise._id
+      );
+      state.submittedExercises.push(exercise);
+    },
+    removeSubmittedExercise(state: any, exercise: IExercise) {
+      state.submittedExercises = (state.submittedExercises as IExercise[]).filter(
+        x => x._id !== exercise._id
+      );
     }
   }
 });

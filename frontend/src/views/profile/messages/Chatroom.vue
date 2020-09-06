@@ -19,11 +19,33 @@
           :dark="$store.getters.darkmode"
           :name="transformDate(m.date)"
         />
-        <div class="content">{{ m.content }}</div>
+
+        <div class="content" v-if="m.type === 'message'">{{ m.content }}</div>
+        <div
+          class="exercise-published"
+          v-else-if="m.type === 'exercisePublish'"
+        >
+          <div class="title">
+            Deine Übung: "{{ JSON.parse(m.content).title }}" wurde
+            veröffentlicht!
+          </div>
+          <tl-flow>
+            <tc-button
+              variant="opaque"
+              tfbackground="success"
+              name="Übung ansehen"
+              icon="gym"
+            />
+          </tl-flow>
+        </div>
       </div>
     </transition-group>
 
-    <div class="newMessage" :class="{ dark: $store.getters.darkmode }">
+    <div
+      class="newMessage"
+      v-if="!isBotPartner"
+      :class="{ dark: $store.getters.darkmode }"
+    >
       <form @submit.prevent="sendMessage">
         <tc-input
           :dark="$store.getters.darkmode"
@@ -41,11 +63,15 @@ import { Vue, Component } from 'vue-property-decorator';
 import { IMessage } from '@/utils/interfaces';
 import { formatTimeForMessage } from '@/utils/functions';
 import axios from '@/utils/axios';
-import { aHour } from '@/utils/constants';
+import { aHour, fhBotId } from '@/utils/constants';
 
 @Component
 export default class Chatroom extends Vue {
   public newMessage = '';
+
+  get isBotPartner(): boolean {
+    return this.partnerId === fhBotId;
+  }
 
   get partnerId(): string {
     return this.$route.params.id;
@@ -82,7 +108,7 @@ export default class Chatroom extends Vue {
   }
 
   public async sendMessage(): Promise<void> {
-    if (this.newMessage.length > 0) {
+    if (this.newMessage.length > 0 && !this.isBotPartner) {
       axios.post('message/' + this.partnerId, {
         message: this.newMessage
       });
@@ -113,6 +139,26 @@ export default class Chatroom extends Vue {
         border-radius: $border-radius;
         max-width: 75%;
         margin-bottom: 10px;
+      }
+      .exercise-published {
+        padding: 10px;
+
+        background: $paragraph_dark;
+        color: $color_dark;
+        @media (prefers-color-scheme: dark) {
+          background: rgba($paragraph, 0.25);
+          color: $color;
+        }
+        box-shadow: $shadow-light;
+        margin-top: 10px;
+        border-radius: $border-radius;
+        margin-bottom: 20px;
+        .title {
+          text-align: center;
+          font-size: 18px;
+          font-weight: 600;
+          margin: 3px;
+        }
       }
       &:not(.received) .content {
         color: #fff;

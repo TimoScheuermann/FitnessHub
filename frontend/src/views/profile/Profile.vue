@@ -42,7 +42,7 @@
           <tc-list :dark="$store.getters.darkmode">
             <tc-list-item title="Trainingspläne" icon="calendar-alt" />
             <tc-list-item title="Workouts" icon="list" />
-            <tc-list-item title="Übungen" icon="gym" />
+            <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
             <tc-list-item
               title="Erfolge"
               icon="star"
@@ -63,11 +63,16 @@
         <h1>Management</h1>
         <tl-grid gap="0px 20">
           <tc-list :dark="$store.getters.darkmode">
-            <tc-list-item
-              title="Eingereichte Übungen"
-              icon="reply"
-              routeName="submittedExercises"
-            />
+            <tc-badge
+              :value="$store.getters.exerciseSubmissions"
+              position="inside"
+            >
+              <tc-list-item
+                title="Eingereichte Übungen"
+                icon="reply"
+                routeName="submittedExercises"
+              />
+            </tc-badge>
             <tc-list-item
               title="Statistik"
               icon="chart-bar"

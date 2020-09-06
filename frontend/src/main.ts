@@ -15,9 +15,14 @@ import router from './router';
 import store from './store';
 import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
 import axios from './utils/axios';
-import { backendURL } from './utils/constants';
+import { backendURL, fhBotId } from './utils/constants';
 import { getFriend } from './utils/functions';
-import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
+import {
+  IExercise,
+  IMessage,
+  IPendingFriendship,
+  IUserInfo
+} from './utils/interfaces';
 
 const socket = io(backendURL, { autoConnect: false });
 Vue.use(VueSocketIOExt, socket);
@@ -58,6 +63,14 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
         store.commit('addFriendRequest', x)
       );
     });
+    axios.get('exercise/mine').then(res => {
+      res.data.forEach((x: IExercise) => store.commit('addExercise', x));
+    });
+    axios.get('exercise/submissions').then(res => {
+      res.data.forEach((x: IExercise) =>
+        store.commit('addSubmittedExercise', x)
+      );
+    });
 
     socket.open();
   }
@@ -78,6 +91,10 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   }
 
   if (to.name === 'chatroom' || to.name === 'friend') {
+    if (to.name === 'chatroom' && to.params.id === fhBotId) {
+      next();
+      return;
+    }
     if (!getFriend(to.params.id)) {
       next(from);
       return;

@@ -2,7 +2,7 @@
   <div class="profile-interim">
     <fh-mobile-header :title="title">
       <router-link
-        v-if="$route.name === 'chatroom'"
+        v-if="$route.name === 'chatroom' && friend"
         class="chat-partner"
         slot="right"
         :to="{ name: 'friend', params: { id: friend._id } }"
@@ -20,6 +20,11 @@
         v-else-if="$route.name === 'friend'"
         name="Freunde"
         routeName="friends"
+      />
+      <tc-header-button
+        v-else-if="$route.name === 'submitExercise'"
+        name="Übungen"
+        routeName="exercises"
       />
       <tc-header-button
         v-else-if="$route.name !== 'profile'"
@@ -41,7 +46,7 @@
       <transition name="hero-anim" mode="out-in">
         <template v-if="!['profile', 'friend'].includes($route.name)">
           <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>
-          <tl-flow v-else>
+          <tl-flow v-else-if="friend">
             <fh-avatar :user="friend" />
             <tl-flow flow="column" class="info">
               <div class="name">{{ friend.username }}</div>
@@ -54,9 +59,13 @@
               />
             </tl-flow>
           </tl-flow>
+          <tl-flow v-else>
+            <tc-avatar src="pwa/splash/apple-icon-180.jpg" />
+            <div class="name">Fitness Hub</div>
+          </tl-flow>
         </template>
 
-        <tl-flow v-else-if="$route.name === 'friend'">
+        <tl-flow v-else-if="$route.name === 'friend' && friend">
           <fh-avatar :user="friend" />
           <div class="info" v-if="$store.getters.valid">
             <div class="name">{{ friend.username }}</div>
@@ -87,10 +96,13 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 import axios from '@/utils/axios';
+import { getFriend } from '@/utils/functions';
+import { fhBotId } from '@/utils/constants';
 
 @Component
 export default class ProfileInterim extends Vue {
   public friendInfo: object | null = null;
+  public fhBotId: string = fhBotId;
 
   @Watch('$route.name')
   public routeNameChanged(to: string): void {
@@ -103,15 +115,16 @@ export default class ProfileInterim extends Vue {
   }
 
   get title(): string | undefined {
-    if (this.$route.name === 'friend') return this.friend.username;
+    if (this.$route.name === 'friend') {
+      if (this.friend) return this.friend.username;
+      return 'TODO:';
+    }
     if (this.$route.name === 'chatroom') return undefined;
     return this.$route.meta.title;
   }
 
-  get friend(): IUserInfo {
-    return this.$store.getters.friends.filter(
-      (x: IUserInfo) => x._id === this.$route.params.id
-    )[0];
+  get friend(): IUserInfo | undefined {
+    return getFriend(this.$route.params.id);
   }
 
   get name(): string {

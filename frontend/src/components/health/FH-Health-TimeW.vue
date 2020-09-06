@@ -37,7 +37,7 @@ export default class FHHealthTimeW extends Vue {
 
   get days(): string[] {
     return [...days, ...days]
-      .filter((x, i) => i >= new Date().getDay())
+      .filter((x, i) => i > new Date().getDay())
       .filter((x, i) => i < 7)
       .map(x => x.substring(0, 1));
   }

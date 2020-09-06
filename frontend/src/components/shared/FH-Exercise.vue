@@ -1,0 +1,107 @@
+<template>
+  <div class="fh-exercise" v-if="exercise">
+    <tc-magic-card
+      :title="exercise.title"
+      :subtitle="'Schwierigkeit: ' + exercise.difficulty + '/3'"
+      :src="exercise.thumbnail"
+      :dark="$store.getters.darkmode"
+    >
+      <div class="card-content">
+        <h3>Betroffene Muskeln</h3>
+        <div class="muscles">
+          <div class="muscle" v-for="m in exercise.affectedMuscles" :key="m">
+            {{ m }}
+          </div>
+        </div>
+        <h3>Volumen</h3>
+        <template v-if="exercise.reps">
+          <ul>
+            <li>Sätze: {{ exercise.sets }}</li>
+            <li>Wiederholungen: {{ exercise.reps }}</li>
+          </ul>
+        </template>
+        <template v-else-if="exercise.distance">
+          <ul>
+            <li>Strecke: {{ exercise.distance }}</li>
+          </ul>
+        </template>
+        <template v-else-if="exercise.time">
+          <ul>
+            <li>Dauer: {{ time }}</li>
+          </ul>
+        </template>
+        <template v-if="exercise.warnings.length > 0">
+          <h3>Hinweise</h3>
+          <ul>
+            <li v-for="h in exercise.warnings" :key="h">{{ h }}</li>
+          </ul>
+        </template>
+
+        <template v-if="exercise.steps.length > 0">
+          <h3>Ausführung</h3>
+          <tc-steps
+            :dark="$store.getters.darkmode"
+            direction="column"
+            :current="99"
+          >
+            <tc-step-item v-for="s in exercise.steps" :key="s" :title="s" />
+          </tc-steps>
+        </template>
+      </div>
+    </tc-magic-card>
+  </div>
+</template>
+
+<script lang="ts">
+import { IExercise } from '@/utils/interfaces';
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+@Component
+export default class FHExercise extends Vue {
+  @Prop() exercise!: IExercise;
+
+  get time(): string {
+    if (this.exercise) {
+      const time = this.exercise.time || 0;
+      const hours = Math.floor(time / 3600);
+      const minutes = Math.floor(time / 60) - hours * 60;
+      const seconds = time % 60;
+
+      const times = [];
+      if (hours > 0) times.push(hours + 'h');
+      if (minutes > 0) times.push(minutes + 'm');
+      if (seconds > 0) times.push(seconds + 's');
+      return times.join(' ');
+    }
+    return '';
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.fh-exercise {
+  // position: absolute;
+  .card-content {
+    padding: 0 5vw;
+    .muscles {
+      margin: 0 -3px;
+      .muscle {
+        padding: 5px 10px;
+        background: $container_dark;
+        border-radius: $border-radius;
+        display: inline-block;
+        margin: 3px;
+      }
+    }
+  }
+  .tc-magic-card /deep/ {
+    .description,
+    i {
+      color: #fff;
+    }
+    img {
+      filter: brightness(50%);
+    }
+  }
+}
+</style>

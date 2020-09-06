@@ -22,9 +22,13 @@
               </span>
               {{ c.username }}
             </div>
-            <div class="message">
+            <div
+              class="message"
+              v-if="getLatestMessageWith(c._id).type === 'message'"
+            >
               {{ getLatestMessageWith(c._id).content }}
             </div>
+            <div class="message" v-else>Neue Nachricht!</div>
           </div>
           <div slot="action" class="date">
             {{ transformDate(new Date(getLatestMessageWith(c._id).date)) }}
@@ -59,9 +63,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { formatDate } from '@/utils/functions';
+import { formatDate, getFriend } from '@/utils/functions';
 import { IMessage, IUserInfo } from '@/utils/interfaces';
-import { aDay, days } from '@/utils/constants';
+import { aDay, days, fhBotId } from '@/utils/constants';
 
 @Component
 export default class Messages extends Vue {
@@ -88,10 +92,8 @@ export default class Messages extends Vue {
     return this.messages.filter(x => x.from === id && !x.read).length;
   }
 
-  public getFriendById(id: string): IUserInfo {
-    return this.$store.getters.friends.filter(
-      (x: IUserInfo) => x._id === id
-    )[0];
+  public getFriendById(id: string): IUserInfo | undefined {
+    return getFriend(id);
   }
 
   public getLatestMessageWith(id: string): IMessage {
@@ -110,7 +112,19 @@ export default class Messages extends Vue {
           unique.push(room);
         }
       });
-    return unique.map(x => this.getFriendById(x));
+    return unique
+      .map(x => {
+        if (x === fhBotId) {
+          return {
+            _id: x,
+            username: 'FitnessHub',
+            avatar: 'pwa/splash/apple-icon-180.jpg'
+          };
+        }
+        return this.getFriendById(x);
+      })
+      .filter(x => !!x)
+      .map(x => x as IUserInfo);
   }
 
   public openChat(id: string) {

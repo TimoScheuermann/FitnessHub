@@ -1,133 +1,115 @@
 <template>
   <div class="fh-health-card fh-health-water">
-    <tc-segments :dark="$store.getters.darkmode" v-model="timespan">
-      <tc-segment-item title="T" />
-      <tc-segment-item title="W" />
-      <tc-segment-item title="M" />
-      <tc-segment-item title="Y" />
-    </tc-segments>
-    <fh-health-head :timespan="timespan" :showSpan="true" />
-    <fh-chart
-      ref="chart"
-      width="100%"
-      height="250"
-      type="bar"
-      :options="options"
-      :series="series"
-    />
+    <template v-if="!onlyToday">
+      <tc-segments :dark="$store.getters.darkmode" v-model="timespan">
+        <tc-segment-item title="T" />
+        <tc-segment-item title="W" />
+        <tc-segment-item title="M" />
+        <tc-segment-item title="Y" />
+      </tc-segments>
+      <fh-health-head
+        v-if="timespan !== 0"
+        :timespan="timespan"
+        :showSpan="true"
+      />
+      <template v-if="timespan > 0">
+        <br />
+        soon
+      </template>
+    </template>
+    <div class="water-only-today" v-if="timespan === 0">
+      <tl-flow horizontal="space-between">
+        <fh-health-head
+          :timespan="0"
+          :amount="today"
+          unitLong="Trinkometer"
+          :showSpan="true"
+        />
+        <div class="progress">
+          <tc-progress
+            tfcolor="success"
+            ringSize="80"
+            ringWidth="8"
+            type="ring"
+            :percent="Math.min(100, percentage)"
+            :dark="$store.getters.darkmode"
+          />
+          <div class="amount">{{ percentage }}%</div>
+        </div>
+      </tl-flow>
+
+      <div class="intakes">
+        <div class="intake" v-for="i in intakeValues" :key="i" @click="add(i)">
+          +{{ i }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { aDay, aHour, aMonth, aWeek, aYear } from '@/utils/constants';
-import { IHealth } from '@/utils/interfaces';
-import VueApexCharts from 'vue-apexcharts';
+import { aDay, aWeek, aYear } from '@/utils/constants';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHHealthHead from './shared/FH-Health-Head.vue';
 
 @Component({
   components: {
-    'fh-health-head': FHHealthHead,
-    'fh-chart': VueApexCharts
+    'fh-health-head': FHHealthHead
   }
 })
 export default class FHHealthWater extends Vue {
-  @Prop() healthData!: IHealth[] | null;
+  @Prop({ default: false }) onlyToday!: boolean;
 
-  public timespan = 1;
+  public timespan = 0;
   public multis = [aDay, aWeek, 4 * aWeek, aYear];
-  public ticks = [new Date().getHours(), 7, 7 * 4, 12];
-  public gaps = [aHour, aDay, aDay, aMonth];
+  public intakeValues = [0.25, 0.5, 0.75, 1];
+  public today = 2.5;
+  public recommend = 4;
 
-  get options() {
-    return {
-      chart: {
-        toolbar: { show: false },
-        parentHeightOffset: 0,
-        background: 'transparent',
-        foreColor: this.$store.getters.darkmode && '#fff',
-        fontFamily: 'inherit'
-      },
-      xaxis: {
-        type: 'datetime',
-        max: new Date().getTime(),
-        range: this.multis[this.timespan]
-      },
-      yaxis: {
-        opposite: true,
-        tickAmount: 0.1,
-        forceNiceScale: true,
-        labels: { formatter: (value: string) => value + ' l' }
-      },
-      colors: ['#25ca49'],
-      stroke: { lineCap: 'round', width: 4 },
-      markers: {
-        strokeWidth: 3,
-        strokeColors: this.$store.getters.darkmode ? '#28292d' : '#fff'
-      },
-      tooltip: {
-        x: {
-          format:
-            this.timespan === 0
-              ? 'HH U\\hr'
-              : this.timespan === 3
-              ? 'MMM yyyy'
-              : 'dd. MMM yyyy'
-        }
-      },
-      theme: { mode: this.$store.getters.darkmode ? 'dark' : 'light' }
-    };
+  get percentage(): number {
+    return (this.today / this.recommend) * 100;
   }
 
-  get series() {
-    return [
-      {
-        name: 'Wassermenge',
-        data: this.times.map(x => [x, Math.round(Math.random() * 30)])
-      }
-    ];
-  }
-
-  public getWaterAt(timeStamp: number): number {
-    if (!this.healthData) return 0;
-    return this.healthData
-      .filter(x => this.roundDate(x.date) === timeStamp)
-      .map(x => x.value)
-      .reduce((a, b) => a + b, 0);
-  }
-
-  get times(): number[] {
-    const t: number[] = [];
-    for (let i = this.ticks[this.timespan]; i >= 0; i--) {
-      if (this.timespan === 0) {
-        const now = new Date();
-        now.setHours(now.getHours() - i);
-        now.setMinutes(0);
-        now.setSeconds(0);
-        t.push(now.getTime());
-      } else {
-        if (i === this.ticks[this.timespan]) continue;
-        t.push(
-          this.roundDate(new Date().getTime() - this.gaps[this.timespan] * i)
-        );
-      }
-    }
-    return t;
-  }
-
-  public roundDate(timeStamp: number | Date): number {
-    if (typeof timeStamp !== 'number')
-      timeStamp = new Date(timeStamp).getTime();
-    timeStamp -= timeStamp % (24 * 60 * 60 * 1000); //subtract amount of time since midnight
-    timeStamp += new Date().getTimezoneOffset() * 60 * 1000; //add on the timezone offset
-    if (this.timespan === 3) {
-      const date = new Date(timeStamp);
-      date.setDate(1);
-      return date.getTime();
-    }
-    return timeStamp;
+  public add(amount: number) {
+    this.today += +amount;
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.fh-health-water {
+  .water-only-today {
+    .intakes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+      margin-top: 10px;
+      user-select: none;
+      .intake {
+        padding: 10px;
+        text-align: center;
+        border-radius: $border-radius;
+        background: $container_dark;
+        cursor: pointer;
+        font-weight: bold;
+        opacity: 0.7;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    .progress {
+      position: relative;
+      .amount {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.5;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+</style>

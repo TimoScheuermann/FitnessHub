@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FHSocket } from 'src/FHSocket';
+import { Message, MessageSchema } from 'src/message/schemas/Message.schema';
+import { UserModule } from 'src/user/user.module';
 import { ExerciseController } from './exercise.controller';
 import { ExerciseService } from './exercise.service';
 import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
@@ -8,9 +11,11 @@ import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
   imports: [
     MongooseModule.forFeature([
       { name: Exercise.name, schema: ExerciseSchema },
+      { name: Message.name, schema: MessageSchema },
     ]),
+    UserModule,
   ],
   controllers: [ExerciseController],
-  providers: [ExerciseService],
+  providers: [ExerciseService, FHSocket],
 })
 export class ExerciseModule {}

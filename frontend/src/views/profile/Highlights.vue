@@ -1,7 +1,9 @@
 <template>
   <div class="highlights" content>
     <h1>Gesundheit</h1>
-    <fh-health-water :healthData="waterData" />
+    <fh-health-water />
+    <br />
+    <fh-health-water :onlyToday="true" />
     <br />
     <fh-health-weight
       :healthData="getData('weight')"
