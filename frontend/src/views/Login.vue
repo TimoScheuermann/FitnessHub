@@ -40,6 +40,12 @@
           @click="login('amazon')"
         />
       </tc-list>
+      <p>
+        Mit einer Anmeldung akzeptierst du unsere
+        <tc-link routeName="terms">Nutzungsbedingungen</tc-link>. Was mit deinen
+        Daten passiert kannst du unter
+        <tc-link routeName="privacy">Privatsphäre</tc-link> nachlesen.
+      </p>
       <h1>Deine Vorteile</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti facere

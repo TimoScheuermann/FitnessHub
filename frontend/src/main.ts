@@ -102,6 +102,15 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   }
 
   if (
+    to.name === 'editExercise' &&
+    (store.getters.exercises as IExercise[]).filter(x => x._id === to.params.id)
+      .length !== 1
+  ) {
+    next({ name: 'exercises' });
+    return;
+  }
+
+  if (
     to.meta.allowedGroups &&
     !(
       store.getters.valid &&

@@ -6,21 +6,23 @@
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
-
     <url>
         <loc>https://fitnesshub.app/community</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
-
     <url>
         <loc>https://fitnesshub.app/training</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
-
     <url>
         <loc>https://fitnesshub.app/nutrition</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/login</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
@@ -30,19 +32,88 @@
         <priority>1</priority>
     </url>
     <url>
-        <loc>https://fitnesshub.app/profile/health</loc>
-        <changefreq>daily</changefreq>
-        <priority>1</priority>
-    </url>
-    <url>
         <loc>https://fitnesshub.app/profile/friends</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
     <url>
-        <loc>https://fitnesshub.app/profile/inbox</loc>
+        <loc>https://fitnesshub.app/profile/messages</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
-
+    <url>
+        <loc>https://fitnesshub.app/profile/highlights</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/achievments</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+        <url>
+            <loc>https://fitnesshub.app/profile/health</loc>
+            <changefreq>daily</changefreq>
+            <priority>1</priority>
+        </url>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/settings</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/exercises</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/exercises/submit</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/exercises/edit</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/suspended</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/management/promote-user</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/management/submitted-exercises</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/management/statistics</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/management/suspend-user</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/legal/privacy</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/legal/terms</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/legal/impressum</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
 </urlset>
