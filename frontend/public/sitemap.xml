@@ -50,11 +50,11 @@
         <loc>https://fitnesshub.app/profile/achievments</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
-        <url>
-            <loc>https://fitnesshub.app/profile/health</loc>
-            <changefreq>daily</changefreq>
-            <priority>1</priority>
-        </url>
+    </url>
+    <url>
+        <loc>https://fitnesshub.app/profile/health</loc>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
     </url>
     <url>
         <loc>https://fitnesshub.app/profile/settings</loc>
