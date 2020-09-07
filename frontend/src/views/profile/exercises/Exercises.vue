@@ -1,14 +1,14 @@
 <template>
   <div class="exercises" content>
-    <h1>Letzte Übungen</h1>
+    <h1>Historie</h1>
     <p>soon</p>
 
     <tl-flow horizontal="space-between">
-      <h1>Eingereicht - {{ exercises.length }}</h1>
+      <h1>Erstellte Übungen</h1>
       <tc-link tfcolor="success" routeName="submitExercise">neu</tc-link>
     </tl-flow>
 
-    <tl-grid>
+    <tl-grid gap="0px 30">
       <tc-revealer
         :title="'Veröffentlicht - ' + published.length"
         :dark="$store.getters.darkmode"
@@ -38,7 +38,11 @@
         v-if="edited.length > 0"
       >
         <tl-grid insideR>
-          <fh-exercise v-for="e in edited" :key="e._id" :exercise="e" />
+          <fh-exercise
+            v-for="e in edited"
+            :key="e._id"
+            :exercise="{ ...e, ...e.editedData }"
+          />
         </tl-grid>
       </tc-revealer>
     </tl-grid>

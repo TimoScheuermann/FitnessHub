@@ -13,7 +13,6 @@ import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
-import { UpdateExerciseDTO } from './dtos/UpdateExercise.dto';
 import { ExerciseService } from './exercise.service';
 import { IExercise } from './interfaces/IExercise';
 
@@ -58,18 +57,18 @@ export class ExerciseController {
   async updateExercise(
     @FHUser() user: IUser,
     @Param('id') id: string,
-    @Body() update: UpdateExerciseDTO,
+    @Body() update: CreateExerciseDTO,
   ): Promise<void> {
     return this.exerciseService.submitChange(id, update, user);
   }
 
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Post('publish/:id')
+  @Put('publish/:id')
   async publicExercise(
     @FHUser() user: IUser,
     @Param('id') id: string,
-    @Body() update: UpdateExerciseDTO,
+    @Body() update: CreateExerciseDTO,
   ): Promise<void> {
     this.exerciseService.publishExercise(id, update, user);
   }
@@ -81,18 +80,9 @@ export class ExerciseController {
     this.exerciseService.rejectChanges(id);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Delete(':id')
-  async deleteOwnExercise(
-    @Param('id') id: string,
-    @FHUser() user: IUser,
-  ): Promise<void> {
-    this.exerciseService.deleteOwnExercise(id, user);
-  }
-
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Delete('delete/:id')
+  @Delete(':id')
   async deleteExercise(@Param('id') id: string): Promise<void> {
     this.exerciseService.deleteExercise(id);
   }

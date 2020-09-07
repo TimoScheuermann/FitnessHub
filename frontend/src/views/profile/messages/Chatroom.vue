@@ -1,6 +1,5 @@
 <template>
   <div class="chatroom" content>
-    <p>{{ messages }}</p>
     <tl-flow v-if="messages.length === 0">
       <p><em>Beginn des Chats...</em></p>
     </tl-flow>
@@ -143,22 +142,26 @@ export default class Chatroom extends Vue {
       }
       .exercise-published {
         padding: 10px;
-
-        background: $paragraph_dark;
-        color: $color_dark;
+        border: 5px solid $paragraph;
+        box-sizing: border-box;
+        color: $color;
+        width: 80%;
+        align-self: center;
         @media (prefers-color-scheme: dark) {
-          background: rgba($paragraph, 0.25);
-          color: $color;
+          border-color: $paragraph_dark;
+          color: $color_dark;
         }
-        box-shadow: $shadow-light;
+        // box-shadow: $shadow-light;
         margin-top: 10px;
         border-radius: $border-radius;
         margin-bottom: 20px;
         .title {
           text-align: center;
-          font-size: 18px;
+
           font-weight: 600;
-          margin: 3px;
+          margin: 3px {
+            bottom: 8px;
+          }
         }
       }
       &:not(.received) .content {

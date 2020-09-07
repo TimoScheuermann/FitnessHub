@@ -26,6 +26,14 @@ export class UpdateExerciseDTO {
   readonly reps?: string;
 }
 export class CreateExerciseDTO {
+  _id?: string;
+  author?: string;
+  reviewed?: boolean;
+  reviewedBy?: string;
+  created?: number;
+  updated?: number;
+  editedData?: UpdateExerciseDTO;
+
   title!: string;
   affectedMuscles!: string[];
   thumbnail!: string;

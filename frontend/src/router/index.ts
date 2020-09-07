@@ -164,6 +164,16 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'exercises/edit/:id',
+          name: 'editExercise',
+          component: () => import('@/views/profile/exercises/EditExercise.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Übung bearbeiten',
+            level: 2
+          }
+        },
+        {
           path: 'suspended',
           name: 'suspended',
           component: () => import('@/views/profile/Suspended.vue'),

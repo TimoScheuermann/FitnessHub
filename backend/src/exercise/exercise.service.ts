@@ -60,6 +60,7 @@ export class ExerciseService {
     await this.exerciseModel.updateOne(
       { _id: id },
       {
+        $unset: { editedData: 1 },
         $set: {
           ...update,
           reviewed: true,
@@ -96,16 +97,8 @@ export class ExerciseService {
     this.sendUpdateNotifications(exercise, false, false, false);
   }
 
-  public async deleteOwnExercise(id: string, user: IUser): Promise<void> {
-    const exercise = await this.exerciseModel.findOneAndDelete({
-      _id: id,
-      author: user._id,
-    });
-    this.sendUpdateNotifications(exercise, false, true, true);
-  }
-
   public async deleteExercise(id: string): Promise<void> {
-    const exercise = await this.exerciseModel.findOneAndDelete({ _id: id });
+    const exercise = await this.exerciseModel.findOneAndDelete({ _id: id, reviewed: false });
     this.sendUpdateNotifications(exercise, false, true, true);
   }
 

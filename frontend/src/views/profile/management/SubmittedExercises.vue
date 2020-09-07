@@ -35,24 +35,25 @@
       :dark="$store.getters.darkmode"
       v-model="modalOpened"
     >
-      <submit-exercise
+      <fh-exercise-form
         @closeModal="modalOpened = false"
-        :exerciseEdit="selectedExercise"
-        :editMode="mode"
+        :key="selectedExercise._id"
+        :exerciseInput="selectedExercise"
+        :mode="mode"
       />
     </tc-modal>
   </div>
 </template>
 
 <script lang="ts">
+import FHExerciseForm from '@/components/exercise/FHExerciseForm.vue';
 import { formatDate } from '@/utils/functions';
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
-import SubmitExercise from '../exercises/SubmitExercise.vue';
 
 @Component({
   components: {
-    'submit-exercise': SubmitExercise
+    'fh-exercise-form': FHExerciseForm
   }
 })
 export default class SubmittedExercises extends Vue {
@@ -70,7 +71,7 @@ export default class SubmittedExercises extends Vue {
   }
 
   public checkEdit(exercise: IExercise) {
-    this.mode = 'edit';
+    this.mode = 'publishEdit';
     this.open(exercise);
   }
 

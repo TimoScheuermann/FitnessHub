@@ -47,6 +47,16 @@
             <tc-step-item v-for="s in exercise.steps" :key="s" :title="s" />
           </tc-steps>
         </template>
+
+        <tl-grid edit v-if="isAuthor">
+          <tc-button
+            variant="filled"
+            tfbackground="success"
+            name="Übung bearbeiten"
+            icon="tools"
+            :to="{ name: 'editExercise', params: { id: exercise._id } }"
+          />
+        </tl-grid>
       </div>
     </tc-magic-card>
   </div>
@@ -75,6 +85,13 @@ export default class FHExercise extends Vue {
     }
     return '';
   }
+
+  get isAuthor(): boolean {
+    return (
+      this.$store.getters.valid &&
+      this.exercise.author === this.$store.getters.user._id
+    );
+  }
 }
 </script>
 
@@ -102,6 +119,9 @@ export default class FHExercise extends Vue {
     img {
       filter: brightness(50%);
     }
+  }
+  .tl-grid[edit] {
+    margin-bottom: 20px;
   }
 }
 </style>
