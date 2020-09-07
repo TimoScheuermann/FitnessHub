@@ -4,48 +4,36 @@
     <p>soon</p>
 
     <tl-flow horizontal="space-between">
-      <h1>Erstellte Übungen</h1>
-      <tc-link tfcolor="success" routeName="submitExercise">neu</tc-link>
+      <h1>Meine</h1>
+      <tc-link tfcolor="success" routeName="submitExercise"
+        >Übung einreichen</tc-link
+      >
     </tl-flow>
 
-    <tl-grid gap="0px 30">
-      <tc-revealer
-        :title="'Veröffentlicht - ' + published.length"
-        :dark="$store.getters.darkmode"
-        highlight="success"
-        v-if="published.length > 0"
-      >
-        <tl-grid insideR>
-          <fh-exercise v-for="e in published" :key="e._id" :exercise="e" />
-        </tl-grid>
-      </tc-revealer>
-
-      <tc-revealer
-        :title="'Warten auf Veröffentlichung - ' + unpublished.length"
-        :dark="$store.getters.darkmode"
-        highlight="success"
-        v-if="unpublished.length > 0"
-      >
-        <tl-grid insideR>
-          <fh-exercise v-for="e in unpublished" :key="e._id" :exercise="e" />
-        </tl-grid>
-      </tc-revealer>
-
-      <tc-revealer
-        :title="'Änderungen werden geprüft - ' + edited.length"
-        :dark="$store.getters.darkmode"
-        highlight="success"
-        v-if="edited.length > 0"
-      >
-        <tl-grid insideR>
-          <fh-exercise
-            v-for="e in edited"
-            :key="e._id"
-            :exercise="{ ...e, ...e.editedData }"
-          />
-        </tl-grid>
-      </tc-revealer>
-    </tl-grid>
+    <template v-if="published.length > 0">
+      <tc-badge :value="published.length" position="inside">
+        <h3>Veröffentlicht</h3>
+      </tc-badge>
+      <div class="exercise-carousell">
+        <fh-exercise v-for="e in published" :key="e._id" :exercise="e" />
+      </div>
+    </template>
+    <template v-if="unpublished.length > 0">
+      <tc-badge :value="unpublished.length" position="inside">
+        <h3>Eingereicht</h3>
+      </tc-badge>
+      <div class="exercise-carousell">
+        <fh-exercise v-for="e in unpublished" :key="e._id" :exercise="e" />
+      </div>
+    </template>
+    <template v-if="edited.length > 0">
+      <tc-badge :value="edited.length" position="inside">
+        <h3>Änderungen</h3>
+      </tc-badge>
+      <div class="exercise-carousell">
+        <fh-exercise v-for="e in edited" :key="e._id" :exercise="e" />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -84,5 +72,21 @@ export default class Exercises extends Vue {
 }
 .tl-grid[insideR] {
   margin-top: 20px;
+}
+.exercise-carousell {
+  display: flex;
+  overflow-x: auto;
+
+  @include custom-scrollbar__light();
+  @media (prefers-color-scheme: dark) {
+    @include custom-scrollbar__dark();
+  }
+
+  .fh-exercise {
+    min-width: 250px;
+    &:not(:first-child) {
+      margin-left: 30px;
+    }
+  }
 }
 </style>

@@ -1,8 +1,6 @@
 <template>
   <div class="friends" content>
-    <fh-user-search v-model="modalOpened" @user="invite" />
-
-    <tl-grid gap="0">
+    <tl-grid gap="0px 20">
       <div>
         <h1>Anfragen</h1>
         <p v-if="invites && invites.length === 0">
@@ -43,7 +41,7 @@
       <div>
         <tl-flow horizontal="space-between">
           <h1>Freunde</h1>
-          <tc-link @click="modalOpened = true" tfcolor="success">
+          <tc-link @click="openUserSearch" tfcolor="success">
             <i class="ti-plus-inverted" /> Freund hinzufügen
           </tc-link>
         </tl-flow>
@@ -75,16 +73,20 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo, IPendingFriendship } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FHUserSearch from '@/components/shared/FH-UserSearch.vue';
 import { sendNotification } from '@/utils/functions';
+import { EventBus } from '@/utils/eventbus';
 
-@Component({
-  components: {
-    'fh-user-search': FHUserSearch
-  }
-})
+@Component
 export default class Friends extends Vue {
-  public modalOpened = false;
+  mounted() {
+    EventBus.$on('friends-us', (user: IUserInfo) => {
+      this.invite(user);
+    });
+  }
+
+  public openUserSearch(): void {
+    EventBus.$emit('usersearch', 'friends-us');
+  }
 
   get friends(): IUserInfo[] {
     return this.$store.getters.friends;

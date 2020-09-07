@@ -103,8 +103,12 @@ export default class FHExercise extends Vue {
     .muscles {
       margin: 0 -3px;
       .muscle {
-        padding: 5px 10px;
-        background: $container_dark;
+        padding: 2.5px 12.5px;
+        box-sizing: border-box;
+        border: 2px solid rgba($color, 0.25);
+        @media (prefers-color-scheme: dark) {
+          border-color: rgba($color_dark, 0.5);
+        }
         border-radius: $border-radius;
         display: inline-block;
         margin: 3px;

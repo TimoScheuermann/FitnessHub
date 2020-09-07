@@ -89,7 +89,11 @@ export default class FHHealthWater extends Vue {
         padding: 10px;
         text-align: center;
         border-radius: $border-radius;
-        background: $container_dark;
+        background: $container;
+        @media (prefers-color-scheme: dark) {
+          background: $container_dark;
+        }
+
         cursor: pointer;
         font-weight: bold;
         opacity: 0.7;
