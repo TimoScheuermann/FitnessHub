@@ -174,6 +174,15 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'workouts',
+          name: 'workouts',
+          component: () => import('@/views/profile/Workouts.vue'),
+          meta: {
+            title: 'Workouts',
+            level: 1
+          }
+        },
+        {
           path: 'suspended',
           name: 'suspended',
           component: () => import('@/views/profile/Suspended.vue'),
