@@ -34,13 +34,18 @@
         icon="food-bowl"
         name="Ernährung"
       />
-      <tc-navbar-item
+      <tc-badge
         v-if="$store.getters.valid"
-        tfcolor="success"
-        routeName="profile"
-        icon="user"
-        name="Profil"
-      />
+        :value="$store.getters.totalNotifications"
+        position="behind"
+      >
+        <tc-navbar-item
+          tfcolor="success"
+          routeName="profile"
+          icon="user"
+          name="Profil"
+        />
+      </tc-badge>
       <tc-navbar-item
         v-else
         tfcolor="success"

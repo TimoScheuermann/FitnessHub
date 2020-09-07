@@ -129,7 +129,7 @@
           @click="addWarning"
         />
 
-        <div class="title" v-if="exercise.warnings.length > 0">Schritte</div>
+        <div class="title" v-if="exercise.warnings.length > 0">Hinweise</div>
         <tc-table :dark="$store.getters.darkmode">
           <tc-tr v-for="(s, i) in exercise.warnings" :key="s">
             <tc-td>{{ i + 1 }}</tc-td>

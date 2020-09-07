@@ -16,7 +16,10 @@
       icon="users"
       title="Feed"
     />
-    <tc-badge v-if="$store.getters.valid" :value="notifications">
+    <tc-badge
+      v-if="$store.getters.valid"
+      :value="$store.getters.totalNotifications"
+    >
       <tc-tabbar-item
         tfcolor="success"
         routeName="profile"
@@ -50,11 +53,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class FHTabbar extends Vue {
-  get notifications(): number {
-    return this.$store.getters.totalNotifications;
-  }
-}
+export default class FHTabbar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
