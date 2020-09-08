@@ -14,12 +14,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import sortableDirective from '@/utils/draggableDirective';
 import { EventBus } from '@/utils/eventbus';
 import FHWorkoutList from '@/components/workout/FH-WorkoutList.vue';
 
 @Component({
-  directives: { sortableDirective },
   components: {
     'fh-workout-list': FHWorkoutList
   }

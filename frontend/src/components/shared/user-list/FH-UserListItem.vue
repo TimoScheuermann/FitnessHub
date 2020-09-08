@@ -65,6 +65,11 @@ $size: 40px;
   transition: background 0.2s ease-in-out, transform 0.5s;
   cursor: pointer;
 
+  background: $paragraph;
+  @media (prefers-color-scheme: dark) {
+    background: $paragraph_dark;
+  }
+
   &:hover {
     background: rgba(darken($paragraph, 15%), 0.5);
   }

@@ -182,6 +182,17 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'exercises/details/:id',
+          name: 'exercise-details',
+          component: () =>
+            import('@/views/profile/exercises/ExerciseDetails.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Informationen',
+            level: 2
+          }
+        },
+        {
           path: 'workouts',
           name: 'workouts',
           component: () => import('@/views/profile/workouts/Workouts.vue'),

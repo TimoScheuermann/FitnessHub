@@ -144,6 +144,15 @@
       </div>
 
       <div>
+        <h2>Kann zuhause ausgeführt werden?</h2>
+        <tc-checkbox
+          title="Für Home-Training geeignet"
+          :dark="$store.getters.darkmode"
+          tfbackground="success"
+        />
+      </div>
+
+      <div>
         <tl-flow horizontal="space-between">
           <h2>Schwierigkeit</h2>
           <div class="indicator" :diff="exercise.difficulty">

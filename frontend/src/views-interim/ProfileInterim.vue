@@ -22,6 +22,11 @@
         routeName="friends"
       />
       <tc-header-button
+        v-else-if="$route.name === 'exercise-details'"
+        name="Workouts"
+        routeName="workouts"
+      />
+      <tc-header-button
         v-else-if="['submitExercise', 'editExercise'].includes($route.name)"
         name="Übungen"
         routeName="exercises"

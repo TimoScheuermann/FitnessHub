@@ -24,5 +24,6 @@ export const muscles: string[] = [
   'Brust',
   'Brust (untere)',
   'Brust (obere)',
-  'Brust (seitlich)'
+  'Brust (seitlich)',
+  'Nacken'
 ].sort((a, b) => a.localeCompare(b));
