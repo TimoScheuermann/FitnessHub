@@ -41,7 +41,11 @@
         </tc-badge>
       </div>
       <div class="exercise-carousel">
-        <fh-exercise v-for="e in edited" :key="e._id" :exercise="e" />
+        <fh-exercise
+          v-for="e in edited"
+          :key="e._id"
+          :exercise="{ ...e, ...e.editedData }"
+        />
         <div class="ce" />
       </div>
     </template>
