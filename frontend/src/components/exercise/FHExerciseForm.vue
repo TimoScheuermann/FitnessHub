@@ -249,7 +249,7 @@ export default class FHExerciseForm extends Vue {
   public reps: MinMax = { min: 8, max: 12 };
   public sets: MinMax = { min: 4, max: 5 };
   public timeUnits = ['Sekunden', 'Minute(n)', 'Stunde(n)'];
-  public timeUnit = 'Minuten';
+  public timeUnit = 'Minuten(n)';
   public muscles: string[] = muscles;
   public categories: string[] = ['Gym', 'Zeit', 'Strecke'];
   public selectedCategorie = 0;
