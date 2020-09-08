@@ -9,7 +9,8 @@ import {
   IMessage,
   IPendingFriendship,
   IUser,
-  IUserInfo
+  IUserInfo,
+  IWorkout
 } from '@/utils/interfaces';
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -30,7 +31,8 @@ export default new Vuex.Store({
     primaryColor: '#25ca49',
     openRequests: 0,
     exercises: [] as IExercise[],
-    exerciseSubmissions: [] as IExercise[]
+    exerciseSubmissions: [] as IExercise[],
+    workouts: [] as IWorkout[]
   },
   getters: {
     valid: (state: any): boolean => {
@@ -94,6 +96,9 @@ export default new Vuex.Store({
     },
     exerciseSubmissions: (state: any): IExercise[] => {
       return state.exerciseSubmissions;
+    },
+    workouts: (state: any): IWorkout[] => {
+      return state.workouts;
     }
   },
   mutations: {
@@ -210,6 +215,20 @@ export default new Vuex.Store({
       state.exerciseSubmissions = state.exerciseSubmissions.filter(
         (x: IExercise) => x._id !== id
       );
+    },
+    manageWorkout(state: any, workout: IWorkout) {
+      let matched = false;
+      state.workouts = state.workouts.map((x: IWorkout) => {
+        if (x._id === workout._id) {
+          matched = true;
+          return workout;
+        }
+        return x;
+      });
+      if (!matched) state.workouts.push(workout);
+    },
+    removeWorkout(state: any, id: string) {
+      state.workouts = state.workouts.filter((x: IWorkout) => x._id !== id);
     }
   }
 });

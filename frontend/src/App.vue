@@ -4,6 +4,7 @@
     <fh-tabbar id="mobile" />
     <fh-notification />
     <fh-user-search />
+    <fh-add-to-workout />
 
     <div class="view">
       <transition name="main-route">
@@ -26,21 +27,25 @@ import MessageSocketManager from '@/socketManager/MessageSocket.manager';
 import FriendSocketManager from '@/socketManager/FriendSocket.manager';
 import HealthSocketManager from '@/socketManager/HealthSocket.manager';
 import ExerciseSocketManager from '@/socketManager/ExerciseSocket.manager';
+import WorkoutSocketManager from '@/socketManager/WorkoutSocket.manager';
 import FHUserSearch from './components/global/FH-User-Search.vue';
+import FHAddToWorkout from './components/global/FH-AddToWorkout.vue';
 
 @Component({
   components: {
     'fh-navbar': FHNavbar,
     'fh-tabbar': FHTabbar,
     'fh-notification': FHNotification,
-    'fh-user-search': FHUserSearch
+    'fh-user-search': FHUserSearch,
+    'fh-add-to-workout': FHAddToWorkout
   }
 })
 export default class App extends Mixins(
   FriendSocketManager,
   MessageSocketManager,
   HealthSocketManager,
-  ExerciseSocketManager
+  ExerciseSocketManager,
+  WorkoutSocketManager
 ) {
   public mqFixedHeader = window.matchMedia('(min-width: 851px)');
   public mqDarkmode = window.matchMedia('(prefers-color-scheme: dark)');

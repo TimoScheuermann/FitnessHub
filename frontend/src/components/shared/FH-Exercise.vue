@@ -1,11 +1,32 @@
 <template>
   <div class="fh-exercise" v-if="exercise">
-    <tc-magic-card
-      :title="exercise.title"
-      :subtitle="'Schwierigkeit: ' + exercise.difficulty + '/3'"
-      :src="exercise.thumbnail"
-      :dark="$store.getters.darkmode"
-    >
+    <tc-magic-card :src="exercise.thumbnail" :dark="$store.getters.darkmode">
+      <div class="card-thumbnail" slot="thumbnail">
+        <tl-flow flow="column" vertical="start">
+          <div class="indicator" :diff="exercise.difficulty">
+            <i
+              class="ti-circle"
+              v-for="(i, j) in Array(+exercise.difficulty)"
+              :key="j"
+            />
+          </div>
+          <div class="title">{{ exercise.title }}</div>
+        </tl-flow>
+      </div>
+      <div
+        class="add-to-workout"
+        v-if="$store.getters.valid && !isInATWModal"
+        slot="thumbnail"
+      >
+        <tc-button
+          variant="border"
+          name="Workout"
+          icon="plus"
+          color="#000"
+          background="#fff"
+          @click.stop="addToWorkout"
+        />
+      </div>
       <div class="card-content">
         <h3>Betroffene Muskeln</h3>
         <div class="muscles">
@@ -63,12 +84,14 @@
 </template>
 
 <script lang="ts">
+import { EventBus } from '@/utils/eventbus';
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHExercise extends Vue {
   @Prop() exercise!: IExercise;
+  @Prop({ default: false }) isInATWModal!: boolean;
 
   get time(): string {
     if (this.exercise) {
@@ -90,8 +113,13 @@ export default class FHExercise extends Vue {
     return (
       this.$store.getters.valid &&
       this.exercise.author === this.$store.getters.user._id &&
-      this.exercise.reviewed
+      this.exercise.reviewed &&
+      !this.isInATWModal
     );
+  }
+
+  public addToWorkout(): void {
+    EventBus.$emit('add-to-workout', this.exercise);
   }
 }
 </script>
@@ -127,6 +155,44 @@ export default class FHExercise extends Vue {
   }
   .tl-grid[edit] {
     margin-bottom: 20px;
+  }
+  .add-to-workout {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 7px;
+    .tc-button /deep/ i {
+      color: inherit;
+    }
+  }
+  .card-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    position: flex;
+    flex-direction: column;
+
+    .title {
+      margin: 5px 0;
+      font-weight: 500;
+      font-size: 1.3em;
+    }
+    .indicator {
+      &[diff='1'] {
+        color: $success;
+      }
+      &[diff='2'] {
+        color: $alarm;
+      }
+      &[diff='3'] {
+        color: $error;
+      }
+      i {
+        color: inherit;
+        margin-right: 5px;
+      }
+    }
   }
 }
 </style>

@@ -49,3 +49,7 @@ export class CreateExerciseDTO {
   sets?: string;
   reps?: string;
 }
+export class CreateWorkoutDTO {
+  title!: string;
+  exercises!: string[];
+}

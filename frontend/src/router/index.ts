@@ -184,9 +184,18 @@ const router = new VueRouter({
         {
           path: 'workouts',
           name: 'workouts',
-          component: () => import('@/views/profile/Workouts.vue'),
+          component: () => import('@/views/profile/workouts/Workouts.vue'),
           meta: {
             title: 'Workouts',
+            level: 1
+          }
+        },
+        {
+          path: 'edit/:id',
+          name: 'workout-edit',
+          component: () => import('@/views/profile/workouts/EditWorkout.vue'),
+          meta: {
+            title: 'Workout bearbeiten',
             level: 1
           }
         },

@@ -103,7 +103,7 @@ export interface IFHNotification {
 }
 
 export interface IExercise {
-  readonly _id?: string;
+  readonly _id: string;
   readonly author: string;
   readonly reviewed: boolean;
   readonly reviewedBy: string;
@@ -125,4 +125,31 @@ export interface IExercise {
   readonly distance?: string;
   readonly sets?: string;
   readonly reps?: string;
+}
+
+export interface IWorkout {
+  readonly _id?: string;
+  readonly author: string;
+  readonly title: string;
+  readonly exercises: IExerciseInfo[];
+}
+export interface IExerciseInfo {
+  readonly _id?: string;
+  readonly title: string;
+  readonly thumbnail: string;
+}
+export interface ISet {
+  readonly reps: number;
+  readonly weight: number;
+}
+
+export interface ICompletedExercise {
+  readonly _id?: string;
+  readonly exercise: string;
+  readonly author: string;
+  readonly start: number;
+  readonly end: number;
+
+  readonly sets?: ISet[];
+  readonly distance?: string;
 }

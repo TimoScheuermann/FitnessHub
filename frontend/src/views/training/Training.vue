@@ -14,7 +14,7 @@
       <h1>Training</h1>
     </tc-hero>
     <div content>
-      <h2>Was heute ansteht</h2>
+      <h1>Was heute ansteht</h1>
       <div class="cd-body">
         <div class="cd-media">
           <img
@@ -32,25 +32,36 @@
           </p>
         </div>
       </div>
-      <h2>Übungen der Woche</h2>
+      <h1>Übungen der Woche</h1>
       <div class="exercise-carousell">
-        <fh-exercise
-          class="fh-exercise"
-          v-for="ex in exercises"
-          :key="ex._id"
-          :exercise="ex"
-        ></fh-exercise>
+        <fh-exercise v-for="ex in exercises" :key="ex._id" :exercise="ex" />
         <div class="ce" />
       </div>
-      <h2>Betroffene Muskeln</h2>
-      <tl-grid>
-        <tc-list v-for="m in muscle" :key="m">
+      <h1>Betroffene Muskeln</h1>
+      <div class="muscles-mobile">
+        <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
+            v-for="m in muscles"
+            :key="m"
             :title="m"
-            :to="{ name: 'training-muscle', params: { muscle: m } }"
+            :to="{ name: 'traning-muscle', params: { muscle: m } }"
           />
         </tc-list>
-      </tl-grid>
+      </div>
+      <div class="muscles-desktop">
+        <tl-grid minWidth="200">
+          <tc-list
+            v-for="m in muscles"
+            :key="m"
+            :dark="$store.getters.darkmode"
+          >
+            <tc-list-item
+              :title="m"
+              :to="{ name: 'training-muscle', params: { muscle: m } }"
+            />
+          </tc-list>
+        </tl-grid>
+      </div>
 
       <!-- <div class="exercise-carousell">
         <tc-card class="fh-exercise muscle" v-for="m in muscle" :key="m" :title="m" />
@@ -69,7 +80,7 @@ import { muscles } from '../../utils/muscles';
 @Component({ components: { 'fh-exercise': FHExercise } })
 export default class Training extends Vue {
   private exercises: IExercise[] = [];
-  private muscle = muscles;
+  private muscles = muscles;
   async mounted() {
     this.exercises = (await axios.get('exercise')).data;
   }
@@ -144,6 +155,16 @@ export default class Training extends Vue {
     &:first-child {
       margin-left: 5vw;
     }
+  }
+}
+.muscles-mobile {
+  @media only screen and (min-width: 500px) {
+    display: none;
+  }
+}
+.muscles-desktop {
+  @media only screen and (max-width: 499px) {
+    display: none;
   }
 }
 </style>
