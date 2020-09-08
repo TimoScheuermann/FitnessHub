@@ -1,7 +1,11 @@
 <template>
   <div class="training">
     <fh-mobile-header title="Training" />
-    <tc-hero :dark="true" :hasFixedHeader="$store.getters.fixedHeader" :height="200">
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
       <img
         src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=25"
         slot="background"
@@ -20,18 +24,31 @@
           <h1 class="centered">Titel</h1>
         </div>
         <div class="cd-content">
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto quo facere voluptate esse ex sint veniam pariatur soluta tempora magnam id optio, culpa quos. Mollitia molestiae quod est illo aperiam!</p>
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto
+            quo facere voluptate esse ex sint veniam pariatur soluta tempora
+            magnam id optio, culpa quos. Mollitia molestiae quod est illo
+            aperiam!
+          </p>
         </div>
       </div>
       <h2>Übungen der Woche</h2>
       <div class="exercise-carousell">
-        <fh-exercise class="fh-exercise" v-for="ex in exercises" :key="ex._id" :exercise="ex"></fh-exercise>
+        <fh-exercise
+          class="fh-exercise"
+          v-for="ex in exercises"
+          :key="ex._id"
+          :exercise="ex"
+        ></fh-exercise>
         <div class="ce" />
       </div>
       <h2>Betroffene Muskeln</h2>
       <tl-grid>
         <tc-list v-for="m in muscle" :key="m">
-          <tc-list-item :title="m" :to="{name: 'training-muscle', params: {muscle: m}}" />
+          <tc-list-item
+            :title="m"
+            :to="{ name: 'training-muscle', params: { muscle: m } }"
+          />
         </tc-list>
       </tl-grid>
 
