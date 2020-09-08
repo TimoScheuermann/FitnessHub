@@ -1,51 +1,55 @@
 <template>
-  <div class="exercises" content>
-    <h1>Historie</h1>
-    <p>soon</p>
+  <div class="exercises">
+    <div sub-content>
+      <h1>Historie</h1>
+      <p>soon</p>
 
-    <tl-flow horizontal="space-between">
-      <h1>Erstellte Übungen</h1>
-      <tc-link tfcolor="success" routeName="submitExercise">neu</tc-link>
-    </tl-flow>
+      <tl-flow horizontal="space-between">
+        <h1>Meine</h1>
+        <tc-link tfcolor="success" routeName="submitExercise">
+          Übung einreichen
+        </tc-link>
+      </tl-flow>
+    </div>
 
-    <tl-grid gap="0px 30">
-      <tc-revealer
-        :title="'Veröffentlicht - ' + published.length"
-        :dark="$store.getters.darkmode"
-        highlight="success"
-        v-if="published.length > 0"
-      >
-        <tl-grid insideR>
-          <fh-exercise v-for="e in published" :key="e._id" :exercise="e" />
-        </tl-grid>
-      </tc-revealer>
-
-      <tc-revealer
-        :title="'Warten auf Veröffentlichung - ' + unpublished.length"
-        :dark="$store.getters.darkmode"
-        highlight="success"
-        v-if="unpublished.length > 0"
-      >
-        <tl-grid insideR>
-          <fh-exercise v-for="e in unpublished" :key="e._id" :exercise="e" />
-        </tl-grid>
-      </tc-revealer>
-
-      <tc-revealer
-        :title="'Änderungen werden geprüft - ' + edited.length"
-        :dark="$store.getters.darkmode"
-        highlight="success"
-        v-if="edited.length > 0"
-      >
-        <tl-grid insideR>
-          <fh-exercise
-            v-for="e in edited"
-            :key="e._id"
-            :exercise="{ ...e, ...e.editedData }"
-          />
-        </tl-grid>
-      </tc-revealer>
-    </tl-grid>
+    <template v-if="published.length > 0">
+      <div sub-content>
+        <tc-badge :value="published.length" position="inside">
+          <h3>Veröffentlicht</h3>
+        </tc-badge>
+      </div>
+      <div class="exercise-carousel">
+        <fh-exercise v-for="e in published" :key="e._id" :exercise="e" />
+        <div class="ce" />
+      </div>
+    </template>
+    <template v-if="unpublished.length > 0">
+      <div sub-content>
+        <tc-badge :value="unpublished.length" position="inside">
+          <h3>Eingereicht</h3>
+        </tc-badge>
+      </div>
+      <div class="exercise-carousel">
+        <fh-exercise v-for="e in unpublished" :key="e._id" :exercise="e" />
+        <div class="ce" />
+      </div>
+    </template>
+    <template v-if="edited.length > 0">
+      <div sub-content>
+        <tc-badge :value="edited.length" position="inside">
+          <h3>Änderungen</h3>
+        </tc-badge>
+      </div>
+      <div class="exercise-carousel">
+        <fh-exercise
+          v-for="e in edited"
+          :key="e._id"
+          :exercise="{ ...e, ...e.editedData }"
+        />
+        <div class="ce" />
+      </div>
+    </template>
+    <div class="spacer" />
   </div>
 </template>
 
@@ -76,13 +80,44 @@ export default class Exercises extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.tl-flow {
-  margin-top: 20px;
-  h1 {
-    margin: 0;
+h3 {
+  margin: 0;
+}
+
+.spacer {
+  height: calc(20px + env(safe-area-inset-bottom));
+  @media #{$isMobile} {
+    height: calc(70px + env(safe-area-inset-bottom));
   }
 }
-.tl-grid[insideR] {
+[sub-content] {
+  padding: 0 5vw;
+}
+
+.exercise-carousel {
   margin-top: 20px;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  @include custom-scrollbar__light();
+  @media (prefers-color-scheme: dark) {
+    @include custom-scrollbar__dark();
+  }
+
+  .ce {
+    flex-shrink: 0;
+    width: 5vw;
+  }
+  .fh-exercise {
+    width: 250px;
+    margin-left: 30px;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    &:first-child {
+      margin-left: 5vw;
+    }
+  }
 }
 </style>

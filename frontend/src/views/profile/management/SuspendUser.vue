@@ -17,7 +17,7 @@
 
     <tl-flow horizontal="space-between">
       <h1>User sperren</h1>
-      <tc-link @click="modalOpened = true">Wählen</tc-link>
+      <tc-link tfcolor="success" @click="openUserSearch">Wählen</tc-link>
     </tl-flow>
     <template v-if="selectedUser">
       <fh-user-list>
@@ -33,6 +33,7 @@
           v-model="date"
         />
         <tc-button
+          tfbackground="error"
           name="Sperren"
           icon="blocked"
           @click="suspendUser"
@@ -40,8 +41,6 @@
         />
       </tl-grid>
     </template>
-
-    <fh-user-search v-model="modalOpened" @user="u => (selectedUser = u)" />
   </div>
 </template>
 
@@ -49,21 +48,26 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FHUserSearch from '@/components/shared/FH-UserSearch.vue';
+import { EventBus } from '@/utils/eventbus';
 
-@Component({
-  components: {
-    'fh-user-search': FHUserSearch
-  }
-})
+@Component
 export default class SuspendUser extends Vue {
   public suspended: IUserInfo[] = [];
   public modalOpened = false;
   public date = '';
   public selectedUser: IUserInfo | null = null;
 
-  async mounted() {
-    await this.loadSuspendedUsers();
+  mounted() {
+    this.loadSuspendedUsers();
+
+    EventBus.$on(
+      'promoteUser-us',
+      (user: IUserInfo) => (this.selectedUser = user)
+    );
+  }
+
+  public openUserSearch(): void {
+    EventBus.$emit('usersearch', 'promoteUser-us');
   }
 
   public async loadSuspendedUsers(): Promise<void> {

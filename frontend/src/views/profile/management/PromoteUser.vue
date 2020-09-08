@@ -12,7 +12,7 @@
 
     <tl-flow horizontal="space-between">
       <h1>Promote User</h1>
-      <tc-link @click="modalOpened = true">Wählen</tc-link>
+      <tc-link tfcolor="success" @click="openUserSearch">Wählen</tc-link>
     </tl-flow>
     <template v-if="selectedUser">
       <fh-user-list>
@@ -20,15 +20,15 @@
           {{ selectedUser.username }}
         </fh-user-list-item>
       </fh-user-list>
+      <br />
       <tc-button
         name="Promote"
+        tfbackground="success"
         icon="user-shield"
         @click="addModerator"
         variant="filled"
       />
     </template>
-
-    <fh-user-search v-model="modalOpened" @user="u => (selectedUser = u)" />
   </div>
 </template>
 
@@ -36,13 +36,9 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 import axios from '@/utils/axios';
-import FHUserSearch from '@/components/shared/FH-UserSearch.vue';
+import { EventBus } from '@/utils/eventbus';
 
-@Component({
-  components: {
-    'fh-user-search': FHUserSearch
-  }
-})
+@Component
 export default class PromoteUser extends Vue {
   public moderators: IUserInfo[] = [];
   public modalOpened = false;
@@ -50,6 +46,14 @@ export default class PromoteUser extends Vue {
 
   mounted() {
     this.loadModerators();
+    EventBus.$on(
+      'promoteUser-us',
+      (user: IUserInfo) => (this.selectedUser = user)
+    );
+  }
+
+  public openUserSearch(): void {
+    EventBus.$emit('usersearch', 'promoteUser-us');
   }
 
   public async loadModerators(): Promise<void> {

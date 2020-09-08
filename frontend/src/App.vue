@@ -2,13 +2,14 @@
   <div class="fitnesshub">
     <fh-navbar id="desktop" />
     <fh-tabbar id="mobile" />
+    <fh-notification />
+    <fh-user-search />
 
     <div class="view">
       <transition name="main-route">
         <router-view class="child-view" />
       </transition>
     </div>
-    <fh-notification />
 
     <div class="loading" v-if="$store.getters.loading">
       <tc-spinner :dark="$store.getters.darkmode" />
@@ -18,19 +19,21 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import FHNavbar from './components/global/FH-Navbar.vue';
-import FHNotification from './components/global/FH-Notification.vue';
-import FHTabbar from './components/global/FH-Tabbar.vue';
-import MessageSocketManager from './socketManager/MessageSocket.manager';
-import FriendSocketManager from './socketManager/FriendSocket.manager';
-import HealthSocketManager from './socketManager/HealthSocket.manager';
-import ExerciseSocketManager from './socketManager/ExerciseSocket.manager';
+import FHNavbar from '@/components/global/FH-Navbar.vue';
+import FHNotification from '@/components/global/FH-Notification.vue';
+import FHTabbar from '@/components/global/FH-Tabbar.vue';
+import MessageSocketManager from '@/socketManager/MessageSocket.manager';
+import FriendSocketManager from '@/socketManager/FriendSocket.manager';
+import HealthSocketManager from '@/socketManager/HealthSocket.manager';
+import ExerciseSocketManager from '@/socketManager/ExerciseSocket.manager';
+import FHUserSearch from './components/global/FH-User-Search.vue';
 
 @Component({
   components: {
     'fh-navbar': FHNavbar,
     'fh-tabbar': FHTabbar,
-    'fh-notification': FHNotification
+    'fh-notification': FHNotification,
+    'fh-user-search': FHUserSearch
   }
 })
 export default class App extends Mixins(

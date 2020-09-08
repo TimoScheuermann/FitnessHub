@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
 import { Message } from 'src/message/schemas/Message.schema';
+import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { UserService } from 'src/user/user.service';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
@@ -15,6 +16,7 @@ export class ExerciseService {
   constructor(
     @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
+    private readonly tgbotService: TgbotService,
     private readonly fhSocket: FHSocket,
     private readonly userService: UserService,
   ) {}
@@ -57,10 +59,11 @@ export class ExerciseService {
     update: UpdateExerciseDTO,
     reviewer: IUser,
   ): Promise<void> {
+    delete (update as any).editedData;
     await this.exerciseModel.updateOne(
       { _id: id },
       {
-        $unset: { editedData: 1 },
+        $unset: { editedData: true },
         $set: {
           ...update,
           reviewed: true,
@@ -70,6 +73,12 @@ export class ExerciseService {
     );
 
     const exercise: IExercise = await this.getById(id);
+    this.tgbotService.sendMessage(
+      this.userService.transformName(reviewer) +
+        ' hat die Übung ' +
+        update.title +
+        ' veröffentlicht!',
+    );
     this.sendUpdateNotifications(exercise, true, false, true);
   }
 
@@ -90,7 +99,7 @@ export class ExerciseService {
   ): Promise<void> {
     await this.exerciseModel.updateOne(
       { _id: id, author: author._id },
-      { $set: { editedData: update } },
+      { $set: { editedData: update, updated: new Date().getTime() } },
     );
 
     const exercise: IExercise = await this.getById(id);
@@ -98,7 +107,10 @@ export class ExerciseService {
   }
 
   public async deleteExercise(id: string): Promise<void> {
-    const exercise = await this.exerciseModel.findOneAndDelete({ _id: id, reviewed: false });
+    const exercise = await this.exerciseModel.findOneAndDelete({
+      _id: id,
+      reviewed: false,
+    });
     this.sendUpdateNotifications(exercise, false, true, true);
   }
 
