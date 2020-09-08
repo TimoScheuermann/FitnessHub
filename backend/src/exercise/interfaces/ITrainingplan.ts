@@ -1,5 +1,5 @@
+import { IWorkout } from '../../workout/interfaces/IWorkout';
 import { IExercise } from './IExercise';
-import { IWorkout } from './IWorkout';
 
 export interface ITrainingplan {
   readonly _id?: string;
