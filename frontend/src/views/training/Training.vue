@@ -9,7 +9,7 @@
       <img
         src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=25"
         slot="background"
-        alt=""
+        alt
       />
       <h1>Training</h1>
     </tc-hero>
@@ -32,7 +32,7 @@
           </p>
         </div>
       </div>
-      <h2>Andere Übungen</h2>
+      <h2>Übungen der Woche</h2>
       <div class="exercise-carousell">
         <fh-exercise
           class="fh-exercise"
@@ -42,20 +42,34 @@
         ></fh-exercise>
         <div class="ce" />
       </div>
+      <h2>Betroffene Muskeln</h2>
+      <tl-grid>
+        <tc-list v-for="m in muscle" :key="m">
+          <tc-list-item
+            :title="m"
+            :to="{ name: 'training-muscle', params: { muscle: m } }"
+          />
+        </tc-list>
+      </tl-grid>
+
+      <!-- <div class="exercise-carousell">
+        <tc-card class="fh-exercise muscle" v-for="m in muscle" :key="m" :title="m" />
+      </div>-->
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { IExercise } from '../../../backend/src/exercise/interfaces/IExercise';
-import FHExercise from '../components/shared/FH-Exercise.vue';
-import axios from '../utils/axios';
+import { IExercise } from '../../../../backend/src/exercise/interfaces/IExercise';
+import FHExercise from '../../components/shared/FH-Exercise.vue';
+import axios from '../../utils/axios';
+import { muscles } from '../../utils/muscles';
 
 @Component({ components: { 'fh-exercise': FHExercise } })
 export default class Training extends Vue {
   private exercises: IExercise[] = [];
-
+  private muscle = muscles;
   async mounted() {
     this.exercises = (await axios.get('exercise')).data;
   }
@@ -111,6 +125,7 @@ export default class Training extends Vue {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  margin: 0 -5vw;
   @include custom-scrollbar__light();
   @media (prefers-color-scheme: dark) {
     @include custom-scrollbar__dark();
@@ -120,7 +135,8 @@ export default class Training extends Vue {
     width: 5vw;
   }
 
-  .fh-exercise {
+  .fh-exercise,
+  .tc-card {
     width: 250px;
     margin-left: 30px;
     scroll-snap-align: center;

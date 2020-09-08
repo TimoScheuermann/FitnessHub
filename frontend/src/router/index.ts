@@ -45,9 +45,17 @@ const router = new VueRouter({
     {
       path: '/training',
       name: 'training',
-      component: () => import('@/views/Training.vue'),
+      component: () => import('@/views/training/Training.vue'),
       meta: {
         level: 0
+      }
+    },
+    {
+      path: '/training/muscle/:muscle',
+      name: 'training-muscle',
+      component: () => import('@/views/training/Muscle.vue'),
+      meta: {
+        level: 1
       }
     },
     {
