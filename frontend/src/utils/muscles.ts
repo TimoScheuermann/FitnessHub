@@ -17,5 +17,8 @@ export const muscles: string[] = [
   'Schulter (vorne)',
   'Bauch (gerade)',
   'Bauch',
-  'Bauch (schräg)'
+  'Bauch (schräg)',
+  'Cardio',
+  'Ganzkörper',
+  'Rumpf'
 ].sort((a, b) => a.localeCompare(b));
