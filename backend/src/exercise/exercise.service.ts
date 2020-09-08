@@ -59,10 +59,11 @@ export class ExerciseService {
     update: UpdateExerciseDTO,
     reviewer: IUser,
   ): Promise<void> {
+    delete (update as any).editedData;
     await this.exerciseModel.updateOne(
       { _id: id },
       {
-        $unset: { editedData: 1 },
+        $unset: { editedData: true },
         $set: {
           ...update,
           reviewed: true,
