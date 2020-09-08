@@ -89,7 +89,8 @@ export default class FHExercise extends Vue {
   get isAuthor(): boolean {
     return (
       this.$store.getters.valid &&
-      this.exercise.author === this.$store.getters.user._id
+      this.exercise.author === this.$store.getters.user._id &&
+      this.exercise.reviewed
     );
   }
 }

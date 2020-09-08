@@ -1,28 +1,32 @@
 <template>
   <transition-group
-    class="fh-user-list"
+    class="fh-drag-list"
     tag="div"
-    name="user-list"
+    name="drag-list"
     :class="{ hasContent: $slots.default }"
   >
-    <slot />
+    <slot @positionChanged="positionChanged" />
   </transition-group>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+
 @Component
-export default class FHUserList extends Vue {}
+export default class FHDragList extends Vue {
+  public positionChanged(change: { from: number; to: number }): void {
+    this.$emit('move-item', change);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.fh-user-list {
+.fh-drag-list {
   &.hasContent {
     padding: 5px;
   }
   border-radius: $border-radius;
   background: $paragraph;
-
   @media (prefers-color-scheme: dark) {
     background: $paragraph_dark;
   }
