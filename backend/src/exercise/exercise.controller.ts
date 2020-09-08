@@ -13,6 +13,7 @@ import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
+import { FinishExerciseDTO } from './dtos/FinishExercise.dto';
 import { ExerciseService } from './exercise.service';
 import { IExercise } from './interfaces/IExercise';
 
@@ -31,6 +32,21 @@ export class ExerciseController {
     return this.exerciseService.getByAuthor(user._id);
   }
 
+  @Get('trending')
+  async getTrendingExercises(): Promise<IExercise[]> {
+    return this.exerciseService.getTrendingExercises();
+  }
+
+  @Get('muscle/:muscle')
+  async getByMuscle(@Param('muscle') muscle: string): Promise<IExercise[]> {
+    return this.exerciseService.getByMuscle(muscle);
+  }
+
+  @Get('find/:query')
+  async findExercise(@Param('query') query: string): Promise<IExercise[]> {
+    return this.exerciseService.find(query);
+  }
+
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('submissions')
@@ -41,6 +57,15 @@ export class ExerciseController {
   @Get(':id')
   async getById(@Param('id') id: string): Promise<IExercise> {
     return this.exerciseService.getById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('finished')
+  async exerciseFinished(
+    @FHUser() user: IUser,
+    @Body() finish: FinishExerciseDTO,
+  ): Promise<void> {
+    this.exerciseService.finished(user, finish);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

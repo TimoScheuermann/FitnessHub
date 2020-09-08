@@ -7,14 +7,18 @@ import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { UserService } from 'src/user/user.service';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
+import { FinishExerciseDTO } from './dtos/FinishExercise.dto';
 import { UpdateExerciseDTO } from './dtos/UpdateExercise.dto';
 import { IExercise } from './interfaces/IExercise';
+import { CompletedExercise } from './schemas/CompletedExercise.schema';
 import { Exercise } from './schemas/Exercise.schema';
 
 @Injectable()
 export class ExerciseService {
   constructor(
     @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
+    @InjectModel(CompletedExercise.name)
+    private completedExerciseModel: Model<CompletedExercise>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
     private readonly tgbotService: TgbotService,
     private readonly fhSocket: FHSocket,
@@ -31,12 +35,32 @@ export class ExerciseService {
       .limit(50);
   }
 
-  public async getById(id: string): Promise<Exercise> {
-    return await this.exerciseModel.findById({ _id: id });
+  public async getById(id: string): Promise<IExercise> {
+    return this.exerciseModel.findById({ _id: id });
+  }
+
+  public async getByMuscle(muscle: string): Promise<IExercise[]> {
+    return this.exerciseModel
+      .find({ affectedMuscles: { $all: [muscle] } })
+      .limit(50);
   }
 
   public async getByAuthor(author: string): Promise<IExercise[]> {
-    return await this.exerciseModel.find({ author: author });
+    return this.exerciseModel.find({ author: author });
+  }
+
+  public async find(query: string): Promise<IExercise[]> {
+    const reg = new RegExp(`${query}`, 'i');
+    return this.exerciseModel
+      .find({
+        $or: [
+          { title: reg },
+          { affectedMuscles: { $all: [reg] } },
+          { warnings: { $all: [reg] } },
+          { steps: { $all: [reg] } },
+        ],
+      })
+      .limit(50);
   }
 
   public async create(
@@ -155,5 +179,25 @@ export class ExerciseService {
       read: false,
     });
     this.fhSocket.server.to(to).emit('message', createdMessage);
+  }
+
+  public async finished(user: IUser, finish: FinishExerciseDTO): Promise<void> {
+    await this.completedExerciseModel.create({
+      author: user._id,
+      exercise: finish.exercise,
+      end: finish.end,
+      start: finish.start,
+      distance: finish.distance,
+      sets: finish.sets,
+    });
+    // TODO: Inform friends?
+  }
+
+  public async getTrendingExercises(): Promise<IExercise[]> {
+    const weekStart = new Date().getTime() - 1000 * 60 * 60 * 24 * 7; // a week before
+    const finished = await this.completedExerciseModel.distinct('exercise', {
+      start: { $gte: weekStart },
+    });
+    return Promise.all(finished.map(async (x) => await this.getById(x)));
   }
 }

@@ -6,6 +6,10 @@ import { TgbotModule } from 'src/tgbot/tgbot.module';
 import { UserModule } from 'src/user/user.module';
 import { ExerciseController } from './exercise.controller';
 import { ExerciseService } from './exercise.service';
+import {
+  CompletedExercise,
+  CompletedExerciseSchema,
+} from './schemas/CompletedExercise.schema';
 import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
 
 @Module({
@@ -13,6 +17,7 @@ import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
     MongooseModule.forFeature([
       { name: Exercise.name, schema: ExerciseSchema },
       { name: Message.name, schema: MessageSchema },
+      { name: CompletedExercise.name, schema: CompletedExerciseSchema },
     ]),
     UserModule,
     TgbotModule,

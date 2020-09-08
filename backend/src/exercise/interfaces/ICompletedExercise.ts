@@ -7,9 +7,9 @@ export interface ICompletedExercise {
   readonly _id?: string;
   readonly exercise: string;
   readonly author: string;
-  readonly date: number;
-  readonly time: number;
+  readonly start: number;
+  readonly end: number;
 
   readonly sets?: ISet[];
-  readonly distance?: number;
+  readonly distance?: string;
 }
