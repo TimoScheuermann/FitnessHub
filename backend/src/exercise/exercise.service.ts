@@ -73,12 +73,12 @@ export class ExerciseService {
     );
 
     const exercise: IExercise = await this.getById(id);
-    this.tgbotService.sendMessage(
-      this.userService.transformName(reviewer) +
-        ' hat die Übung ' +
-        update.title +
-        ' veröffentlicht!',
-    );
+    // this.tgbotService.sendMessage(
+    //   this.userService.transformName(reviewer) +
+    //     ' hat die Übung ' +
+    //     update.title +
+    //     ' veröffentlicht!',
+    // );
     this.sendUpdateNotifications(exercise, true, false, true);
   }
 

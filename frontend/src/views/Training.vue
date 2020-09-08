@@ -15,19 +15,32 @@
     </tc-hero>
     <div content>
       <h2>Was heute ansteht</h2>
-        <div class="cd-body" >
-          <div class="cd-media">
-          <img src="https://i.guim.co.uk/img/media/222de53fb94c892dd91a7d854f7cf9449cd682a1/0_33_2681_1608/master/2681.jpg?width=605&quality=45&auto=format&fit=max&dpr=2&s=efd558996357cc685aaca475677b6bb0" alt="Its Bill, Baby!">
+      <div class="cd-body">
+        <div class="cd-media">
+          <img
+            src="https://i.guim.co.uk/img/media/222de53fb94c892dd91a7d854f7cf9449cd682a1/0_33_2681_1608/master/2681.jpg?width=605&quality=45&auto=format&fit=max&dpr=2&s=efd558996357cc685aaca475677b6bb0"
+            alt="Its Bill, Baby!"
+          />
           <h1 class="centered">Titel</h1>
         </div>
         <div class="cd-content">
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto quo facere voluptate esse ex sint veniam pariatur soluta tempora magnam id optio, culpa quos. Mollitia molestiae quod est illo aperiam!</p>
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto
+            quo facere voluptate esse ex sint veniam pariatur soluta tempora
+            magnam id optio, culpa quos. Mollitia molestiae quod est illo
+            aperiam!
+          </p>
         </div>
       </div>
       <h2>Andere Übungen</h2>
       <div class="exercise-carousell">
-        <fh-exercise class="fh-exercise" v-for="ex in exercises" :key="ex._id" :exercise="ex"></fh-exercise>
-        <div class="ce"/>
+        <fh-exercise
+          class="fh-exercise"
+          v-for="ex in exercises"
+          :key="ex._id"
+          :exercise="ex"
+        ></fh-exercise>
+        <div class="ce" />
       </div>
     </div>
   </div>
@@ -38,20 +51,19 @@ import { Vue, Component } from 'vue-property-decorator';
 import { IExercise } from '../../../backend/src/exercise/interfaces/IExercise';
 import FHExercise from '../components/shared/FH-Exercise.vue';
 import axios from '../utils/axios';
-import { muscles } from '../utils/muscles';
 
-@Component({components:{"fh-exercise":FHExercise}})
+@Component({ components: { 'fh-exercise': FHExercise } })
 export default class Training extends Vue {
-  private exercises:IExercise[] = []
-  
-  async mounted(){
-    this.exercises = (await axios.get("exercise")).data 
+  private exercises: IExercise[] = [];
+
+  async mounted() {
+    this.exercises = (await axios.get('exercise')).data;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.cd-body{
+.cd-body {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -61,28 +73,28 @@ export default class Training extends Vue {
   background: $paragraph;
   box-shadow: $shadow;
   overflow: hidden;
-  @media (prefers-color-scheme: dark){
+  @media (prefers-color-scheme: dark) {
     background: $paragraph_dark;
   }
 }
-.cd-media{
+.cd-media {
   width: 100%;
   height: 100%;
-  color:white;
+  color: white;
   position: relative;
   overflow: hidden;
 }
-.cd-media > img{
+.cd-media > img {
   width: 100%;
   height: 80%;
   z-index: 1;
   filter: blur(3px);
   overflow: hidden;
 }
-.centered{
+.centered {
   z-index: 10;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -90,7 +102,7 @@ export default class Training extends Vue {
   justify-content: center;
   align-items: center;
 }
-.cd-content{
+.cd-content {
   margin: 1em;
   text-align: justify;
 }
@@ -103,7 +115,7 @@ export default class Training extends Vue {
   @media (prefers-color-scheme: dark) {
     @include custom-scrollbar__dark();
   }
-.ce {
+  .ce {
     flex-shrink: 0;
     width: 5vw;
   }
@@ -117,7 +129,5 @@ export default class Training extends Vue {
       margin-left: 5vw;
     }
   }
-
 }
-
 </style>

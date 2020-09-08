@@ -5,27 +5,40 @@
       <tc-link tfcolor="success" @click="newWorkout">neu</tc-link>
     </tl-flow>
     <br />
-    <fh-drag-list>
-      <fh-drag-list-item v-for="(l, i) in listItems" :key="l" :index="i">
-        {{ l }}
-      </fh-drag-list-item>
-    </fh-drag-list>
+    <tc-list :dark="$store.getters.darkmode">
+      <tc-list-item v-for="l in listItems" :key="l" :title="l" />
+    </tc-list>
   </div>
 </template>
 
 <script lang="ts">
-import FHDragListItem from '@/components/shared/drag-list/FH-Drag-List-Item.vue';
-import FHDragList from '@/components/shared/drag-list/FH-Drag-List.vue';
 import { Vue, Component } from 'vue-property-decorator';
+import sortableDirective from '@/utils/draggableDirective';
+import { Sortable } from '@shopify/draggable';
 
 @Component({
-  components: {
-    'fh-drag-list': FHDragList,
-    'fh-drag-list-item': FHDragListItem
-  }
+  directives: { sortableDirective }
 })
 export default class Workouts extends Vue {
   public listItems = ['Workout 1', 'Workout 2', 'Workout 3'];
+
+  mounted() {
+    console.log('Reload complete');
+    const sortable = new Sortable(document.querySelectorAll('.tc-list'), {
+      draggable: '.tc-list-item'
+    });
+    sortable.on(
+      'sortable:stop',
+      (e: { oldIndex: number; newIndex: number }) => {
+        const oldI = e.oldIndex;
+        const newI = e.newIndex;
+        const stored = this.listItems[newI];
+        this.listItems[newI] = this.listItems[oldI];
+        this.listItems[oldI] = stored;
+        this.$forceUpdate();
+      }
+    );
+  }
 
   public newWorkout(): void {
     //
