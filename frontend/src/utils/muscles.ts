@@ -1,15 +1,21 @@
 export const muscles: string[] = [
   'Trizeps',
   'Bizeps',
-  'Schulter (seite)',
-  'Lat',
+  'Schulter (seitlich)',
+  'Latissimus',
   'Abduktor',
   'Adduktor',
-  'Gesäßmuskel',
+  'Gluteus Maximus',
   'Waden',
+  'Deltamuskel',
+  'Quadrizeps',
   'Oberschenkel',
   'Trapezmuskel',
   'Unterer Rücken',
   'Schulter (hinten)',
-  'Schulter (vorne)'
+  'Schulter',
+  'Schulter (vorne)',
+  'Bauch (gerade)',
+  'Bauch',
+  'Bauch (schräg)'
 ].sort((a, b) => a.localeCompare(b));
