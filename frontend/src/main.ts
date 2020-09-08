@@ -23,6 +23,7 @@ import {
   IPendingFriendship,
   IUserInfo
 } from './utils/interfaces';
+import { muscles } from './utils/muscles';
 
 const socket = io(backendURL, { autoConnect: false });
 Vue.use(VueSocketIOExt, socket);
@@ -108,6 +109,15 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     ).length !== 1
   ) {
     next({ name: 'exercises' });
+    return;
+  }
+
+  if (
+    to.name === 'training-muscle' &&
+    muscles.filter(x => x.toLowerCase() === to.params.muscle.toLowerCase())
+      .length !== 1
+  ) {
+    next(from);
     return;
   }
 
