@@ -80,7 +80,7 @@ export default class App extends Mixins(
 <style lang="scss">
 html {
   font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Inter,
-    Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji,
+    Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji,
     Segoe UI Emoji, Segoe UI Symbol;
   scroll-behavior: smooth;
   text-rendering: auto;
