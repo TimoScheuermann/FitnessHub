@@ -1,11 +1,7 @@
 <template>
   <div class="home">
     <fh-mobile-header title="Home" />
-    <tc-hero
-      :dark="true"
-      :hasFixedHeader="$store.getters.fixedHeader"
-      :height="$store.getters.valid ? 100 : 200"
-    >
+    <tc-hero :dark="true" :hasFixedHeader="$store.getters.fixedHeader" :height="200">
       <img
         src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
         slot="background"
@@ -70,6 +66,7 @@ export default class Home extends Vue {
   }
   .info {
     margin: 5px;
+    margin-top: env(safe-area-inset-top);
     .welcomeMessage {
       font-weight: 500;
       font-size: 1.4em;

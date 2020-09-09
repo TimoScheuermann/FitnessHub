@@ -1,6 +1,6 @@
 <template>
   <div class="landing" content>
-    <tc-segments :dark="$store.getters.darkmode" :value="1">
+    <tc-segments :dark="$store.getters.darkmode">
       <tc-segment-item title="Timer">
         <fh-timer />
       </tc-segment-item>
