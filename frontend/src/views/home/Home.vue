@@ -1,15 +1,17 @@
 <template>
   <div class="home">
     <fh-mobile-header title="Home" />
-    <tc-hero :dark="true" :hasFixedHeader="$store.getters.fixedHeader" :height="200">
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
       <img
         src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
         slot="background"
         alt
       />
-      <h1 v-if="!$store.getters.valid">
-        <i class="ti-gym" /> FitnessHub
-      </h1>
+      <h1 v-if="!$store.getters.valid"><i class="ti-gym" /> FitnessHub</h1>
 
       <div class="info" v-if="$store.getters.valid">
         <div class="welcomeMessage">{{ returnWelcomeMessage }},</div>

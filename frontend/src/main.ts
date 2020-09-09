@@ -7,6 +7,7 @@ import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
 import App from './App.vue';
 import FHAvatar from './components/shared/FH-Avatar.vue';
+import FHCarousel from './components/shared/FH-Carousel.vue';
 import FHMobileHeader from './components/shared/FH-Mobile-Header.vue';
 import FHUserList from './components/shared/user-list/FH-UserList.vue';
 import FHUserListItem from './components/shared/user-list/FH-UserListItem.vue';
@@ -32,6 +33,7 @@ Vue.component('fh-mobile-header', FHMobileHeader);
 Vue.component('fh-avatar', FHAvatar);
 Vue.component('fh-user-list', FHUserList);
 Vue.component('fh-user-list-item', FHUserListItem);
+Vue.component('fh-carousel', FHCarousel);
 
 Vue.config.productionTip = false;
 

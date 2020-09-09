@@ -10,7 +10,13 @@
         :dark="$store.getters.darkmode"
       />
       <div class="fh-timer--inputs">
-        <input type="number" inputmode="numeric" min="0" @input="changeMinutes" v-model="minutes" />
+        <input
+          type="number"
+          inputmode="numeric"
+          min="0"
+          @input="changeMinutes"
+          v-model="minutes"
+        />
         <div>:</div>
         <input
           type="number"

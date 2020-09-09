@@ -8672,10 +8672,10 @@ tar@^2.0.0:
     fstream "^1.0.12"
     inherits "2"
 
-tccomponents_vue@^0.5.9:
-  version "0.5.9"
-  resolved "https://registry.yarnpkg.com/tccomponents_vue/-/tccomponents_vue-0.5.9.tgz#0853f922e3c751cc9bc8ce98d0722a7d0ff0b839"
-  integrity sha512-O++kXgDlmTiLpGhycem61ZVPZnjn+/J1FiHEjUNGD2BMj6mf/sBzX567TZlRThXNlpFkJTtQwY5BS/uDuA5IsQ==
+tccomponents_vue@^0.5.10:
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/tccomponents_vue/-/tccomponents_vue-0.5.10.tgz#0d2beeb8429f6e29dd5006bb30a0438db1fb2fb4"
+  integrity sha512-uFrNiaJGs/YgdyeLjMFY4HySlw7ESkA7ojQL/1aIqA5OjvRKuV4js/i6p5j7Vgo5nfmJCZaJy+T4pLrgxeJ2XQ==
   dependencies:
     core-js "^3.6.5"
     node-sass "^4.14.1"
