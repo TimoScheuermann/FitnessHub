@@ -44,6 +44,7 @@ export default class FHFeatureCard extends Vue {
     img {
       width: 100%;
       height: 100%;
+      max-height: 200px;
       object-fit: contain;
       object-position: center;
       filter: drop-shadow(4px 8px 10px rgba(#111, 0.2));
