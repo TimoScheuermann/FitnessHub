@@ -10,4 +10,6 @@ export class CreateRecipeDTO {
   readonly category: string[];
   readonly thumbnail: string;
   readonly difficulty: number;
+  readonly steps: string[];
+  readonly description: string;
 }
