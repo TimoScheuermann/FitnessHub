@@ -46,6 +46,7 @@ export default class FHFeatureCard extends Vue {
       height: 100%;
       object-fit: contain;
       object-position: center;
+      filter: drop-shadow(4px 8px 10px rgba(#111, 0.2));
     }
   }
 }

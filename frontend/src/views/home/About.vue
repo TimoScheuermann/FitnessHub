@@ -16,14 +16,24 @@
       für bestimmte Muskelgruppen gibt und wie sie richtig auszuführen sind.
     </p>
     <tl-grid>
-      <fh-feature-card title="Trainingspläne" image="later">
+      <fh-feature-card
+        title="Trainingspläne"
+        image="https://cdn2.pixstash.net/2020/09/10/1iAQb.png"
+      >
         Erstelle Trainingspläne, die deinen Trainingsalltag erleichtern.
       </fh-feature-card>
-      <fh-feature-card title="Übungen" image="later">
+      <fh-feature-card
+        title="Übungen"
+        image="https://cdn2.pixstash.net/2020/09/10/1iGh8.png"
+      >
         Kreiere Übungen, die du deinen Trainingsplänen hinzufügen kannst.
       </fh-feature-card>
     </tl-grid>
-    <fh-feature-card title="Timer / Stoppuhr" image="later" standalone="below">
+    <fh-feature-card
+      title="Timer / Stoppuhr"
+      image="https://cdn2.pixstash.net/2020/09/10/1iEZd.png"
+      standalone="below"
+    >
       Stelle dir einen Timer für deine Übung. Starte die Stoppuhr.
     </fh-feature-card>
     <h1>Ernährung</h1>
@@ -44,7 +54,10 @@
         Informiere dich über Ernährungstipps, die dir helfen, deinen Alltag
         gesünder zu gestalten.
       </fh-feature-card>
-      <fh-feature-card title="Trinkometer" image="later">
+      <fh-feature-card
+        title="Trinkometer"
+        image="https://cdn2.pixstash.net/2020/09/10/1iyE9.png"
+      >
         Stay hydrated!
       </fh-feature-card>
     </tl-grid>
@@ -62,10 +75,16 @@
       für die vergangene Woche oder den vergangenen Monat anzeigen lassen.
     </fh-feature-card>
     <tl-grid>
-      <fh-feature-card title="Vergleich" image="later">
+      <fh-feature-card
+        title="Vergleich"
+        image="https://cdn2.pixstash.net/2020/09/10/1izmW.png"
+      >
         Vergleiche die Trainingsdaten der aktuellen Woche mit der letzten Woche.
       </fh-feature-card>
-      <fh-feature-card title="Gewicht tracken" image="later">
+      <fh-feature-card
+        title="Gewicht tracken"
+        image="https://cdn2.pixstash.net/2020/09/10/1ig5h.png"
+      >
         Tracke dein Gewicht, um deinen Fortschritt zu verfolgen.
       </fh-feature-card>
     </tl-grid>
@@ -77,19 +96,29 @@
       beitragen.
     </p>
     <tl-grid>
-      <fh-feature-card title="Freunde hinzufügen" image="later">
+      <fh-feature-card
+        title="Freunde hinzufügen"
+        image="https://cdn2.pixstash.net/2020/09/10/1ipNB.png"
+      >
         Füge Freunde in deinem FitnessHub hinzu.
       </fh-feature-card>
       <fh-feature-card title="Challenges" image="later">
         Stelle deinen Freunden Herausforderungen, um motiviert zu bleiben.
       </fh-feature-card>
     </tl-grid>
+    <fh-feature-card
+      standalone="below"
+      title="Chat"
+      image="https://cdn2.pixstash.net/2020/09/10/1i9C5.png"
+    >
+      Chatte mit deinen Freunden live über FitnessHub.
+    </fh-feature-card>
     <tl-grid minWidth="200" standalone="below">
-      <fh-feature-card title="Profil ansehen" image="later">
+      <fh-feature-card
+        title="Profil ansehen"
+        image="https://cdn2.pixstash.net/2020/09/10/1iN0a.png"
+      >
         Sieh die Profile deiner Freunde an.
-      </fh-feature-card>
-      <fh-feature-card title="Chat" image="later">
-        Chatte mit deinen Freunden live über FitnessHub.
       </fh-feature-card>
       <fh-feature-card title="Teilen" image="later">
         Teile Übungen, Statistiken oder Erfolge mit deinen Freunden.
