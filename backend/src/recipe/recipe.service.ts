@@ -68,11 +68,12 @@ export class RecipeService {
 
   public async updateRecipe(
     id: string,
+    userId: string,
     updateRecipeDTO: UpdateRecipeDTO,
   ): Promise<void> {
     await this.recipeModel.updateOne(
-      { _id: id },
-      { $set: { editedData: updateRecipeDTO, updated: new Date().getTime() } },
+      { _id: id, author: userId },
+      { $set: { updateRecipeDTO, updated: new Date().getTime() } },
     );
   }
 

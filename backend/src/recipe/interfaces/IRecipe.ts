@@ -1,4 +1,3 @@
-import { UpdateRecipeDTO } from '../dtos/UpdateRecipe.dto';
 import { INutrition } from './INutrition';
 import { IRecipeIngredient } from './IRecipeIngredient';
 export interface IRecipe {
@@ -6,7 +5,6 @@ export interface IRecipe {
   readonly author: string;
   readonly created: number;
   readonly updated: number;
-  readonly editedData?: UpdateRecipeDTO;
 
   readonly title: string;
   readonly category: string[];

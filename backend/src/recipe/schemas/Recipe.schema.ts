@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UpdateRecipeDTO } from '../dtos/UpdateRecipe.dto';
 import { INutrition } from '../interfaces/INutrition';
 import { IRecipeIngredient } from '../interfaces/IRecipeIngredient';
 
@@ -14,9 +13,6 @@ export class Recipe extends Document {
 
   @Prop()
   updated: number;
-
-  @Prop()
-  editedData?: UpdateRecipeDTO;
 
   @Prop()
   title: string;

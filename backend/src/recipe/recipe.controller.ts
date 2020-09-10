@@ -49,10 +49,11 @@ export class RecipeController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('update/:id')
   async updateRecipe(
+    @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() update: UpdateRecipeDTO,
   ): Promise<void> {
-    return this.recipeService.updateRecipe(id, update);
+    return this.recipeService.updateRecipe(id, user._id, update);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
