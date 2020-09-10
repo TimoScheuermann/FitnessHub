@@ -109,6 +109,7 @@ export default new Vuex.Store({
     signIn(state: any, user: IUser) {
       state.user = user;
       state.userValidated = true;
+      state.user.familyName = user.familyName.split('Ã¼').join('ü');
     },
     fixedHeader(state: any, fixedHeader: boolean) {
       state.fixedHeader = fixedHeader;

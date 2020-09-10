@@ -1,6 +1,8 @@
 <template>
   <div class="fh-stopwatch">
-    <div class="fh-stopwatch--display">{{ display }}</div>
+    <div class="fh-stopwatch--display">
+      <div v-for="(l, i) in display" :key="i">{{ l }}</div>
+    </div>
     <div class="fh-stopwatch--buttons">
       <tc-button
         :disabled="state === 0"
@@ -46,6 +48,10 @@ export default class FHStopwatch extends Vue {
   public display = '00:00,00';
   public previousTime = 0;
 
+  destroyed() {
+    this.stop();
+  }
+
   public start() {
     this.timestamp = new Date().getTime();
     this.run();
@@ -88,7 +94,7 @@ export default class FHStopwatch extends Vue {
       }
       display += (minutes < 10 ? '0' : '') + minutes + ':';
       display += (seconds < 10 ? '0' : '') + seconds + ',';
-      display += (milliseconds + '').substring(0, 2);
+      display += (milliseconds + '00').substring(0, 2);
       this.display = display;
     }, 10);
   }
@@ -102,6 +108,14 @@ export default class FHStopwatch extends Vue {
   .fh-stopwatch--display {
     font-size: 3em;
     font-weight: 700;
+    display: inline-flex;
+    div {
+      width: 32px;
+      text-align: center;
+      &:nth-child(3n) {
+        width: 15px;
+      }
+    }
   }
   .fh-stopwatch--buttons {
     margin-top: 10px;

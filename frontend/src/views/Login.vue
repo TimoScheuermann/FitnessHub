@@ -40,21 +40,27 @@
           @click="login('amazon')"
         />
       </tc-list>
-      <p>
-        Mit einer Anmeldung akzeptierst du unsere
-        <tc-link tfcolor="success" routeName="terms"
-          >Nutzungsbedingungen</tc-link
-        >. Was mit deinen Daten passiert kannst du unter
-        <tc-link tfcolor="success" routeName="privacy">Privatsphäre</tc-link>
-        nachlesen.
-      </p>
       <h1>Deine Vorteile</h1>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti facere
-        reprehenderit hic officiis, nobis esse blanditiis adipisci similique
-        quaerat accusantium odio natus accusamus tenetur soluta inventore libero
-        placeat velit atque?
+        Wir bieten Dir ein Rund­um-sorglos-Paket an, das Deinen Einstieg in das
+        aktive Leben durch abwechslungsreiche Tipps, Trainings- und
+        Ernährungspläne deutlich erleichtert. Setze Dir Ziele und verfolge
+        täglich Deinen Fortschritt. Lass Dich durch die breite Vielfalt an
+        Übungen und Trainingsplänen inspirieren und motivieren. Teile jeden
+        Erfolg mit den Freunden und geh über Deine Grenzen hinaus. Tausche
+        Erfahrungen oder fordere Deine Freunde zu einer gemeinsamen Challenge
+        heraus. All das bietet Dir unsere App an – allerdings brauchen wir dafür
+        ein paar persönliche Daten von Dir – was damit passiert, kannst Du
+        genauer unter
+        <tc-link tfcolor="success" routeName="privacy">Privatsphäre</tc-link>
+        nachlesen. Melde Dich an und starte einen neuen gesünderen
+        Lebensabschnitt! Bitte beachte dabei, dass Du mit der Anmeldung unsere
+        <tc-link tfcolor="success" routeName="terms"
+          >Nutzungsbedingungen</tc-link
+        >
+        automatisch akzeptierst.
       </p>
+      <p>Viel Spaß, Schweiß und Erfolge wünscht Dir Dein Fitnesshub Team!</p>
     </div>
   </div>
 </template>
@@ -72,6 +78,10 @@ export default class Login extends Vue {
 </script>
 
 <style lang="scss" scoped>
+p {
+  text-align: justify;
+  hyphens: auto;
+}
 .tc-hero {
   img {
     filter: brightness(60%);

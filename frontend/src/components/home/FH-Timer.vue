@@ -80,6 +80,10 @@ export default class FHTimer extends Vue {
     return (this.currentTime / (this.saved[0] * 60 + this.saved[1])) * 100;
   }
 
+  destroyed() {
+    this.stop();
+  }
+
   public changeSeconds() {
     const numbers = (this.seconds + '0').split('');
     if (+numbers[0] > 6) {
