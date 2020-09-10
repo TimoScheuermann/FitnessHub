@@ -21,23 +21,40 @@ export interface IRecipeIngredient {
   readonly unit: string;
 }
 export interface IRecipe {
-  _id?: string;
+  readonly _id?: string;
   readonly title: string;
   readonly author: string;
   readonly time: number;
-  readonly video: string;
-  readonly image: string;
+  readonly video?: string;
+  readonly thumbnail: string;
   readonly ingredients: IRecipeIngredient[];
   readonly nutrition: INutrition[];
-  readonly category: string;
+  readonly category: string[];
+  readonly difficulty: number;
+  readonly steps: string[];
+  readonly description: string;
+}
+export interface INutritionplanDay {
+  breakfast: IRecipe;
+  lunch: IRecipe;
+  dinner: IRecipe;
+  snacks: IRecipe[];
 }
 export interface INutritionplan {
-  _id: string;
+  readonly _id?: string;
   readonly title: string;
   readonly author: string;
   readonly time: number;
   readonly description: string;
-  readonly recipes: IRecipe[];
+  readonly category: string;
+
+  readonly monday: INutritionplanDay;
+  readonly tuesday: INutritionplanDay;
+  readonly wednesday: INutritionplanDay;
+  readonly thursday: INutritionplanDay;
+  readonly friday: INutritionplanDay;
+  readonly saturday: INutritionplanDay;
+  readonly sunday: INutritionplanDay;
 }
 export interface INutrition {
   readonly title: string;
