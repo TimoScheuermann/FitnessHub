@@ -1,24 +1,34 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { UpdateRecipeDTO } from '../dtos/UpdateRecipe.dto';
 import { INutrition } from '../interfaces/INutrition';
 import { IRecipeIngredient } from '../interfaces/IRecipeIngredient';
 
 @Schema()
 export class Recipe extends Document {
   @Prop()
+  author: string;
+
+  @Prop()
+  created: number;
+
+  @Prop()
+  updated: number;
+
+  @Prop()
+  editedData?: UpdateRecipeDTO;
+
+  @Prop()
   title: string;
 
   @Prop()
-  author: string;
+  category: string[];
 
   @Prop()
   time: number;
 
-  @Prop({ required: false })
-  video?: string;
-
   @Prop()
-  thumbnail: string;
+  difficulty: number;
 
   @Prop()
   ingredients: IRecipeIngredient[];
@@ -27,16 +37,15 @@ export class Recipe extends Document {
   nutrition: INutrition[];
 
   @Prop()
-  category: string[];
-
-  @Prop()
-  difficulty: number;
+  thumbnail: string;
 
   @Prop()
   steps: string[];
 
   @Prop()
-  description: string;
-}
+  video?: string;
 
+  @Prop()
+  description?: string;
+}
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

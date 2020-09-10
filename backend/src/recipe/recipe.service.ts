@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
+import { UpdateRecipeDTO } from './dtos/UpdateRecipe.dto';
 import { IRecipe } from './interfaces/IRecipe';
 import { Recipe } from './schemas/Recipe.schema';
 
@@ -27,23 +28,32 @@ export class RecipeService {
 
   public async addRecipe(
     user: IUser,
-    createRecipe: CreateRecipeDTO,
+    createRecipeDTO: CreateRecipeDTO,
   ): Promise<void> {
     if (
       [
-        createRecipe.category,
-        createRecipe.title,
-        createRecipe.thumbnail,
+        createRecipeDTO.title,
+        createRecipeDTO.category,
+        createRecipeDTO.thumbnail,
+        createRecipeDTO.steps,
       ].filter((x) => x.length === 0).length > 0
     ) {
       return;
     }
-    if (!createRecipe.time || createRecipe.time <= 0) {
+    if (
+      !createRecipeDTO.time ||
+      createRecipeDTO.time <= 0 ||
+      !createRecipeDTO.nutrition ||
+      !createRecipeDTO.ingredients ||
+      !createRecipeDTO.difficulty
+    ) {
       return;
     }
     const recipe = await this.recipeModel.create({
+      ...createRecipeDTO,
+      created: new Date().getTime(),
+      updated: new Date().getTime(),
       author: user._id,
-      ...createRecipe,
     });
 
     const url = 'https://api.timos.design:3000/recipe/' + recipe._id;
@@ -53,6 +63,16 @@ export class RecipeService {
       )}</b> hat ein neues <a href='${url}'>Rezept</a> hinzugefügt`,
       'Rezept online anschauen',
       url,
+    );
+  }
+
+  public async updateRecipe(
+    id: string,
+    updateRecipeDTO: UpdateRecipeDTO,
+  ): Promise<void> {
+    await this.recipeModel.updateOne(
+      { _id: id },
+      { $set: { editedData: updateRecipeDTO, updated: new Date().getTime() } },
     );
   }
 

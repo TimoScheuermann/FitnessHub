@@ -1,11 +1,4 @@
-import { IRecipe } from 'src/recipe/interfaces/IRecipe';
-
-export interface INutritionplanDay {
-  breakfast: IRecipe;
-  lunch: IRecipe;
-  dinner: IRecipe;
-  snacks: IRecipe[];
-}
+import { INutritionplanDay } from './INutritionplanDay';
 
 export interface INutritionplan {
   readonly _id?: string;

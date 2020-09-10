@@ -12,6 +12,18 @@ export class CreateRecipeDTO {
   readonly steps!: string[];
   readonly description?: string;
 }
+export class UpdateRecipeDTO {
+  readonly title?: string;
+  readonly time?: number;
+  readonly video?: string;
+  readonly ingredients?: IRecipeIngredient[];
+  readonly nutrition?: INutrition[];
+  readonly category?: string[];
+  readonly thumbnail?: string;
+  readonly difficulty?: number;
+  readonly steps?: string[];
+  readonly description?: string;
+}
 export class UpdateExerciseDTO {
   readonly title?: string;
   readonly affectedMuscles?: string[];
