@@ -14,9 +14,4 @@ export class ChartsController {
   async getCharts(@FHUser() user: IUser): Promise<any> {
     return this.chatService.getCharts(user._id);
   }
-
-  @Get('test')
-  async getChartsTest(): Promise<any> {
-    return this.chatService.getCharts('5f4668c0e00c280e3a68c95c');
-  }
 }
