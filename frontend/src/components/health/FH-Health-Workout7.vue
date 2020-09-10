@@ -1,16 +1,15 @@
 <template>
   <div class="fh-health-card fh-health-workout7">
-    <fh-health-head average="Workouts" amount="5" unitShort=" von 7 Tagen" />
+    <fh-health-head
+      average="Workouts"
+      :amount="total"
+      unitShort=" von 7 Tagen"
+    />
     <tc-divider :dark="$store.getters.darkmode" />
     <div class="workout-days">
       <div class="day" v-for="(d, i) in days" :key="d.getTime()">
-        <div class="name">{{ dayNames[d.getDay()].substring(0, 2) }}</div>
-        <div
-          class="circle"
-          :class="{
-            workedout: $store.getters.chartWorkouts[((i + 7) % 7) + 21]
-          }"
-        >
+        <div class="name">{{ dayName(d) }}</div>
+        <div class="circle" :class="{ workedout: workoutedOut(i) }">
           {{ d.getDate() }}
         </div>
       </div>
@@ -29,22 +28,27 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout7 extends Vue {
-  public dayNames = days;
-
+  // Done
   get days(): Date[] {
-    const days = [];
-    for (let i = 6; i >= 0; i--) {
-      days.push(this.roundDate(new Date().getTime() - aDay * i));
-    }
-    return days;
+    const today = new Date().getTime();
+    return Array.from(
+      { length: 7 },
+      (x, i) => new Date(today - aDay * (6 - i))
+    );
   }
 
-  public roundDate(timeStamp: number | Date): Date {
-    if (typeof timeStamp !== 'number')
-      timeStamp = new Date(timeStamp).getTime();
-    timeStamp -= timeStamp % (24 * 60 * 60 * 1000); //subtract amount of time since midnight
-    timeStamp += new Date().getTimezoneOffset() * 60 * 1000; //add on the timezone offset
-    return new Date(timeStamp);
+  get total(): number {
+    return (this.$store.getters.chartWorkouts as number[]).filter(
+      (x, i) => i > 20 && x > 0
+    ).length;
+  }
+
+  public workoutedOut(index: number): boolean {
+    return this.$store.getters.chartWorkouts[index + 21];
+  }
+
+  public dayName(date: Date) {
+    return days[date.getDay()].substring(0, 2);
   }
 }
 </script>

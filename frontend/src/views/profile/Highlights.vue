@@ -3,15 +3,7 @@
     <h1>Gesundheit</h1>
     <fh-health-water />
     <br />
-    <fh-health-weight
-      :healthData="getData('weight')"
-      @reload="loadData"
-      endpoint="weight"
-      category="Gewicht"
-      unit="kg"
-      currentHead="aktuelles Gewicht"
-      :step="0.1"
-    />
+    <fh-health-weight :healthData="getData('weight')" />
     <!-- <fh-health-water :onlyToday="true" /> -->
     <h1>Wöchentlich</h1>
     <tl-grid>

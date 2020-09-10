@@ -31,6 +31,7 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthTimeW extends Vue {
+  // Done
   public height = 125;
 
   get times(): number[] {
@@ -63,6 +64,7 @@ export default class FHHealthTimeW extends Vue {
       height: (this.times[index] / Math.max(...this.times)) * this.height + 'px'
     };
   }
+
   get averageStyle(): Record<string, unknown> {
     return {
       bottom:

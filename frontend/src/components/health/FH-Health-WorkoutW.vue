@@ -26,6 +26,7 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkoutW extends Vue {
+  //  Done
   get thisWeek(): number {
     return this.getWorkoutAmount(21, 27);
   }

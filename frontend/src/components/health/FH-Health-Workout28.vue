@@ -2,7 +2,7 @@
   <div class="fh-health-card fh-health-workout28">
     <fh-health-head
       average="Workouts"
-      amount="27"
+      :amount="total"
       unitShort=" in den letzten 4 Wochen"
     />
     <tc-divider :dark="$store.getters.darkmode" />
@@ -13,23 +13,14 @@
     </div>
     <tc-divider :dark="$store.getters.darkmode" />
     <div class="workout-days">
-      <div class="day" v-for="(d, i) in days" :key="d.date.getTime()">
-        <template v-if="d.show">
-          <div class="name" v-if="d.date.getDate() === 1">
-            {{ monthNames[d.date.getMonth()].substring(0, 3) }}
-          </div>
-          <div
-            class="circle"
-            :class="{
-              workedout:
-                $store.getters.chartWorkouts[i - new Date().getDay()] > 0
-            }"
-          >
-            <!-- {{ i - new Date().getDay() }} -->
-            {{ d.date.getDate() }}
-          </div>
-        </template>
-        <div v-else />
+      <div class="skip" v-for="s in skips" :key="s" />
+      <div class="day" v-for="(d, i) in days" :key="d.getTime()">
+        <div class="name" v-if="d.getDate() === 1">
+          {{ monthNames[d.getMonth()].substring(0, 3) }}
+        </div>
+        <div class="circle" :class="{ workedout: workedOut(i) }">
+          {{ d.getDate() }}
+        </div>
       </div>
     </div>
   </div>
@@ -46,7 +37,9 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout28 extends Vue {
+  // Done
   public monthNames = months;
+  public skips = Array.from({ length: new Date().getDay() }, (x, i) => 's' + i);
 
   get dayNames(): string[] {
     const dN = [...days];
@@ -54,26 +47,21 @@ export default class FHHealthWorkout28 extends Vue {
     return dN;
   }
 
-  get days(): { show: boolean; date: Date }[] {
-    const days = [];
-    for (let i = 0; i < new Date().getDay(); i++) {
-      days.push({ show: false, date: new Date(i) });
-    }
-    for (let i = 0; i < 28; i++) {
-      days.push({
-        show: true,
-        date: this.roundDate(new Date().getTime() - aDay * i)
-      });
-    }
-    return days.sort((a, b) => a.date.getTime() - b.date.getTime());
+  get days(): Date[] {
+    const today = new Date().getTime();
+    return Array.from(
+      { length: 28 },
+      (x, i) => new Date(today - aDay * (27 - i))
+    );
   }
 
-  public roundDate(timeStamp: number | Date): Date {
-    if (typeof timeStamp !== 'number')
-      timeStamp = new Date(timeStamp).getTime();
-    timeStamp -= timeStamp % (24 * 60 * 60 * 1000); //subtract amount of time since midnight
-    timeStamp += new Date().getTimezoneOffset() * 60 * 1000; //add on the timezone offset
-    return new Date(timeStamp);
+  public workedOut(index: number) {
+    return this.$store.getters.chartWorkouts[index];
+  }
+
+  get total(): number {
+    return (this.$store.getters.chartWorkouts as number[]).filter(x => x > 0)
+      .length;
   }
 }
 </script>
@@ -116,8 +104,6 @@ export default class FHHealthWorkout28 extends Vue {
         }
       }
       &:last-child {
-        .circle {
-        }
         .circle:not(.workedout) {
           box-sizing: border-box;
           border: 3px solid rgba(#000, 0.1);

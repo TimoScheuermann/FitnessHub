@@ -46,6 +46,7 @@
             type="number"
             :buttons="true"
             v-model="currentInput"
+            @input="round"
           />
         </div>
         <tl-flow vertical="end">
@@ -88,6 +89,15 @@ export default class FHHealthWeight extends Vue {
   dataChanged() {
     this.currentInput =
       this.healthData && this.healthData.length > 0 ? this.current : 70;
+  }
+
+  public round() {
+    const split = (this.currentInput + '').split('.');
+    if (split.length > 1) {
+      this.currentInput = +(split[0] + '.' + (split[1] + '00').substring(0, 2));
+    } else {
+      this.currentInput = +split[0];
+    }
   }
 
   get options() {

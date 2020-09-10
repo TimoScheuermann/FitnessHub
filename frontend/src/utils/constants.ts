@@ -30,36 +30,6 @@ export const aWeek = 1000 * 60 * 60 * 24 * 7;
 export const aMonth = 1000 * 60 * 60 * 24 * 30.43;
 export const aYear = 1000 * 60 * 60 * 24 * 365;
 
-export const defaultChart = {
-  chart: {
-    toolbar: { show: false },
-    parentHeightOffset: 0,
-    background: 'transparent',
-    // foreColor: store.getters.darkmode && '#fff',
-    fontFamily: 'inherit'
-  },
-  xaxis: {
-    type: 'datetime',
-    max: new Date().getTime()
-  },
-  yaxis: {
-    opposite: true,
-    tickAmount: 0.1,
-    forceNiceScale: true
-  },
-  colors: ['#25ca49'],
-  stroke: { lineCap: 'round', width: 4 },
-  markers: {
-    strokeWidth: 3
-    // strokeColors: store.getters.darkmode ? '#28292d' : '#fff'
-  },
-  tooltip: {
-    x: { format: 'dd. MMM yyyy' }
-  },
-  theme: { mode: 'dark' }
-  // theme: { mode: store.getters.darkmode ? 'dark' : 'light' }
-};
-
 export const fhBotId = '5f4a1a372149ef521c108f4a';
 
 // export const backendURL = 'http://localhost:3000/';
