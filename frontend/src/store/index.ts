@@ -32,7 +32,9 @@ export default new Vuex.Store({
     openRequests: 0,
     exercises: [] as IExercise[],
     exerciseSubmissions: [] as IExercise[],
-    workouts: [] as IWorkout[]
+    workouts: [] as IWorkout[],
+    chartWorkouts: [],
+    chartTimes: []
   },
   getters: {
     valid: (state: any): boolean => {
@@ -99,6 +101,12 @@ export default new Vuex.Store({
     },
     workouts: (state: any): IWorkout[] => {
       return state.workouts;
+    },
+    chartWorkouts: (state: any): number[] => {
+      return state.chartWorkouts;
+    },
+    chartTimes: (state: any): number[] => {
+      return state.chartTimes;
     }
   },
   mutations: {
@@ -230,6 +238,17 @@ export default new Vuex.Store({
     },
     removeWorkout(state: any, id: string) {
       state.workouts = state.workouts.filter((x: IWorkout) => x._id !== id);
+    },
+    addWorkout(state: any, time: number) {
+      state.chartWorkouts[27]++;
+      state.chartTimes[27] += time;
+    },
+    setWorkoutCharts(
+      state: any,
+      data: { workouts: number[]; times: number[] }
+    ) {
+      state.chartWorkouts = data.workouts;
+      state.chartTimes = data.times;
     }
   }
 });

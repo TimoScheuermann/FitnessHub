@@ -183,7 +183,7 @@ export class ExerciseService {
 
   public async finished(user: IUser, finish: FinishExerciseDTO): Promise<void> {
     await this.completedExerciseModel.create({
-      author: user._id,
+      user: user._id,
       exercise: finish.exercise,
       end: finish.end,
       start: finish.start,
@@ -193,11 +193,15 @@ export class ExerciseService {
     // TODO: Inform friends?
   }
 
-  public async getTrendingExercises(): Promise<IExercise[]> {
+  public async getTrendingExercises(): Promise<any[]> {
     const weekStart = new Date().getTime() - 1000 * 60 * 60 * 24 * 7; // a week before
-    const finished = await this.completedExerciseModel.distinct('exercise', {
-      start: { $gte: weekStart },
-    });
-    return Promise.all(finished.map(async (x) => await this.getById(x)));
+    const finished = await this.completedExerciseModel
+      .aggregate([
+        { $match: { start: { $gte: weekStart } } },
+        { $sortByCount: '$exercise' },
+      ])
+      .sort({ count: -1 });
+
+    return Promise.all(finished.map(async (x) => await this.getById(x._id)));
   }
 }

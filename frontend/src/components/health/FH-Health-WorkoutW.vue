@@ -26,8 +26,18 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkoutW extends Vue {
-  public thisWeek = 10;
-  public lastWeek = 21;
+  get thisWeek(): number {
+    return this.getWorkoutAmount(21, 27);
+  }
+  get lastWeek(): number {
+    return this.getWorkoutAmount(14, 20);
+  }
+
+  getWorkoutAmount(start: number, end: number): number {
+    return (this.$store.getters.chartWorkouts as number[])
+      .filter((x, i) => i >= start && i <= end)
+      .reduce((a, b) => a + b, 0);
+  }
 
   get percOfMin(): string {
     return (

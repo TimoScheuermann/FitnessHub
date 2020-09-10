@@ -33,7 +33,7 @@ export class ExerciseController {
   }
 
   @Get('trending')
-  async getTrendingExercises(): Promise<IExercise[]> {
+  async getTrendingExercises(): Promise<any[]> {
     return this.exerciseService.getTrendingExercises();
   }
 

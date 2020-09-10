@@ -3,8 +3,6 @@
     <h1>Gesundheit</h1>
     <fh-health-water />
     <br />
-    <fh-health-water :onlyToday="true" />
-    <br />
     <fh-health-weight
       :healthData="getData('weight')"
       @reload="loadData"
@@ -14,14 +12,14 @@
       currentHead="aktuelles Gewicht"
       :step="0.1"
     />
+    <!-- <fh-health-water :onlyToday="true" /> -->
     <h1>Wöchentlich</h1>
-    <fh-health-time-w />
-    <br />
-    <fh-health-time-c />
-    <br />
-    <fh-health-workout7 />
-    <br />
-    <fh-health-workout-w />
+    <tl-grid>
+      <fh-health-time-w />
+      <fh-health-time-c />
+      <fh-health-workout7 />
+      <fh-health-workout-w />
+    </tl-grid>
     <h1>Monatlich</h1>
     <fh-health-workout28 />
   </div>

@@ -16,61 +16,15 @@
 
     <div content>
       <h1>Title</h1>
-      <tc-input
-        :dark="$store.getters.darkmode"
-        v-model="data.title"
-        title="Rezept Name"
-      />
-      <tc-input
-        :dark="$store.getters.darkmode"
-        v-model="data.time"
-        title="Dauer"
-      />
-      <tc-input
-        :dark="$store.getters.darkmode"
-        v-model="data.thumbnail"
-        title="Bild-URL"
-      />
-      <tc-input
-        :dark="$store.getters.darkmode"
-        v-model="data.video"
-        title="Video-URL"
-      />
-      <tc-select
-        :dark="$store.getters.darkmode"
-        v-model="data.category"
-        :title="'Kategorie'"
-        :values="['Low Carb', 'High Protein']"
-      />
-      <tc-button
-        name="Neues Rezept hinzufügen"
-        variant="filled"
-        @click="addRecipe"
-      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import axios from '@/utils/axios';
-import { CreateRecipeDTO } from '@/utils/dtos';
 
 @Component
-export default class Nutrition extends Vue {
-  public data: CreateRecipeDTO = {
-    title: '',
-    time: 0,
-    video: '',
-    thumbnail: '',
-    ingredients: [],
-    nutrition: [],
-    category: ''
-  };
-  public async addRecipe() {
-    await axios.post('recipe', this.data);
-  }
-}
+export default class Nutrition extends Vue {}
 </script>
 
 <style lang="scss" scoped>

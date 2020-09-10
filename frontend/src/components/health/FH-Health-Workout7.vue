@@ -3,11 +3,13 @@
     <fh-health-head average="Workouts" amount="5" unitShort=" von 7 Tagen" />
     <tc-divider :dark="$store.getters.darkmode" />
     <div class="workout-days">
-      <div class="day" v-for="d in days" :key="d.getTime()">
+      <div class="day" v-for="(d, i) in days" :key="d.getTime()">
         <div class="name">{{ dayNames[d.getDay()].substring(0, 2) }}</div>
         <div
           class="circle"
-          :class="{ workedout: d.getDay() !== 2 && d.getDay() !== 6 }"
+          :class="{
+            workedout: $store.getters.chartWorkouts[((i + 7) % 7) + 21]
+          }"
         >
           {{ d.getDate() }}
         </div>

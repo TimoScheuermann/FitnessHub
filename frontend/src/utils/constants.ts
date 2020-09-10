@@ -62,5 +62,5 @@ export const defaultChart = {
 
 export const fhBotId = '5f4a1a372149ef521c108f4a';
 
-// export const backendURL = 'http://localhost:3000/';
-export const backendURL = 'https://api.timos.design:3000/';
+export const backendURL = 'http://localhost:3000/';
+// export const backendURL = 'https://api.timos.design:3000/';

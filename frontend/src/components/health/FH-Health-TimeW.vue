@@ -1,7 +1,6 @@
 <template>
   <div class="fh-health-card fh-health-time-w">
     <fh-health-head average="Trainingszeit" :description="description" />
-    <!-- <tc-divider :dark="$store.getters.darkmode" /> -->
     <div class="time-container">
       <div class="average-text" :style="averageStyle">Durchschnitt</div>
       <div class="average-bar" :style="averageStyle" />
@@ -32,8 +31,13 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthTimeW extends Vue {
-  public times = [76, 0, 60, 140, 120, 187, 34];
   public height = 125;
+
+  get times(): number[] {
+    return (this.$store.getters.chartTimes as number[])
+      .filter((x, i) => i > 20)
+      .map(x => Math.floor(x / 60));
+  }
 
   get days(): string[] {
     return [...days, ...days]

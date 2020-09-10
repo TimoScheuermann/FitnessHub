@@ -6,7 +6,7 @@ export interface ISet {
 export interface ICompletedExercise {
   readonly _id?: string;
   readonly exercise: string;
-  readonly author: string;
+  readonly user: string;
   readonly start: number;
   readonly end: number;
 

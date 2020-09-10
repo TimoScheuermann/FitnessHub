@@ -73,6 +73,9 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     axios.get('workout').then(res => {
       res.data.forEach((x: IWorkout) => store.commit('manageWorkout', x));
     });
+    axios.get('charts').then(res => {
+      store.commit('setWorkoutCharts', res.data);
+    });
     if (['Admin', 'Moderator'].includes(store.getters.user.group)) {
       axios.get('exercise/submissions').then(res => {
         res.data.forEach((x: IExercise) =>

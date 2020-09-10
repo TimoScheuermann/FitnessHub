@@ -17,6 +17,7 @@ import { TgbotModule } from './tgbot/tgbot.module';
 import { UserModule } from './user/user.module';
 import { NetlifyModule } from './netlify/netlify.module';
 import { WorkoutModule } from './workout/workout.module';
+import { ChartsModule } from './charts/charts.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { WorkoutModule } from './workout/workout.module';
     FHSocket,
     NetlifyModule,
     WorkoutModule,
+    ChartsModule,
   ],
   controllers: [AppController],
   providers: [FHSocket, AppService],

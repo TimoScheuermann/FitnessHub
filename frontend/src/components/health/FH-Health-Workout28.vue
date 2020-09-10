@@ -13,7 +13,7 @@
     </div>
     <tc-divider :dark="$store.getters.darkmode" />
     <div class="workout-days">
-      <div class="day" v-for="d in days" :key="d.date.getTime()">
+      <div class="day" v-for="(d, i) in days" :key="d.date.getTime()">
         <template v-if="d.show">
           <div class="name" v-if="d.date.getDate() === 1">
             {{ monthNames[d.date.getMonth()].substring(0, 3) }}
@@ -21,9 +21,11 @@
           <div
             class="circle"
             :class="{
-              workedout: d.date.getDate() % 4 !== 2
+              workedout:
+                $store.getters.chartWorkouts[i - new Date().getDay()] > 0
             }"
           >
+            <!-- {{ i - new Date().getDay() }} -->
             {{ d.date.getDate() }}
           </div>
         </template>
@@ -60,7 +62,7 @@ export default class FHHealthWorkout28 extends Vue {
     for (let i = 0; i < 28; i++) {
       days.push({
         show: true,
-        date: this.roundDate(new Date().getTime() - aDay * (i - 1))
+        date: this.roundDate(new Date().getTime() - aDay * i)
       });
     }
     return days.sort((a, b) => a.date.getTime() - b.date.getTime());

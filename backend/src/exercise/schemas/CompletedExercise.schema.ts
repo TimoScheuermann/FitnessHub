@@ -8,7 +8,7 @@ export class CompletedExercise extends Document {
   exercise: string;
 
   @Prop()
-  author: string;
+  user: string;
 
   @Prop()
   start: number;
