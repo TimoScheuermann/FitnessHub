@@ -31,6 +31,12 @@ export class Recipe extends Document {
 
   @Prop()
   difficulty: number;
+
+  @Prop()
+  steps: string[];
+
+  @Prop()
+  description: string;
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

@@ -11,4 +11,6 @@ export interface IRecipe {
   readonly nutrition: INutrition[];
   readonly category: string[];
   readonly difficulty: number;
+  readonly steps: string[];
+  readonly description: string;
 }
