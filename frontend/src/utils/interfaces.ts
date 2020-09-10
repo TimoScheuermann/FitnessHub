@@ -1,4 +1,4 @@
-import { UpdateExerciseDTO } from './dtos';
+import { UpdateExerciseDTO, UpdateRecipeDTO } from './dtos';
 
 export interface IUser {
   readonly _id: string;
