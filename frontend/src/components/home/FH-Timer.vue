@@ -67,18 +67,13 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class FHTimer extends Vue {
   public minutes: number | string = '00';
-  public seconds: number | string = '00';
+  public seconds: number | string = '30';
   public timer = 0;
-  public currentTime = 0;
+  public goal = 0;
   public saved: number[] = [];
   public state = 0; // 0 = stop (not running), 1 = running, 2 = paused
-
-  get percentage(): number {
-    if (this.saved.length === 0) {
-      return 100;
-    }
-    return (this.currentTime / (this.saved[0] * 60 + this.saved[1])) * 100;
-  }
+  public remaining = 0;
+  public percentage = 100;
 
   destroyed() {
     this.stop();
@@ -101,7 +96,8 @@ export default class FHTimer extends Vue {
 
   public start() {
     this.saved = [+this.minutes, +this.seconds];
-    this.currentTime = +this.minutes * 60 + +this.seconds;
+    this.goal =
+      new Date().getTime() + (+this.minutes * 60 + +this.seconds) * 1000;
     this.run();
   }
 
@@ -113,27 +109,34 @@ export default class FHTimer extends Vue {
     this.saved = [];
     if (this.seconds <= 9) this.seconds = '0' + this.seconds;
     if (this.minutes <= 9) this.minutes = '0' + this.minutes;
+    this.percentage = 100;
   }
 
   public pause() {
     clearInterval(this.timer);
     this.timer = 0;
     this.state = 2;
+    this.remaining = this.goal - new Date().getTime();
   }
 
   public resume() {
+    this.goal = new Date().getTime() + this.remaining;
     this.run();
   }
 
   public run() {
     this.state = 1;
     this.timer = setInterval(() => {
-      if (this.currentTime > 0) {
-        this.currentTime--;
-        this.seconds = this.currentTime % 60;
-        this.minutes = Math.floor(this.currentTime / 60);
+      const remaining = new Date().getTime() - this.goal;
+      if (remaining < 0) {
+        const totalSeconds = Math.abs(Math.floor(remaining / 1000));
+        this.percentage =
+          (totalSeconds / (this.saved[0] * 60 + this.saved[1])) * 100;
+        this.seconds = totalSeconds % 60;
+        this.minutes = Math.floor(totalSeconds / 60);
         if (this.seconds <= 9) this.seconds = '0' + this.seconds;
         if (this.minutes <= 9) this.minutes = '0' + this.minutes;
+        // this.seconds = (this.seconds + '').substring(0, 2);
       } else {
         this.stop();
       }

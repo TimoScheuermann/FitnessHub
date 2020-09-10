@@ -2,8 +2,8 @@
   <div class="about" content>
     <h1>About</h1>
     <p>
-      FitnessHub ist eine Online-Oase für alle Sportenthusiasten, Profis und
-      Sportmuffel, die unabhängig von Ihrem Geschlecht, Alter und Fitnesslevel
+      FitnessHub ist eine Online-Oase für alle Sportenthusiasten, Sportmuffel
+      und Profis, die unabhängig von Ihrem Geschlecht, Alter und Fitnesslevel
       sich für ein gesundes, aktives und bewussteres Leben entscheiden wollen.
       Als eine Kombination aus Trainings- und Ernährungsapp, ermöglicht
       FitnessHub eine digitale und personalisierte Begleitung bei der Erreichung
@@ -20,7 +20,8 @@
         title="Trainingspläne"
         image="https://cdn2.pixstash.net/2020/09/10/1iAQb.png"
       >
-        Erstelle Trainingspläne, die deinen Trainingsalltag erleichtern.
+        Erstelle Trainingspläne, die dir helfen, dein Trainingsziel zu
+        erreichen.
       </fh-feature-card>
       <fh-feature-card
         title="Übungen"
@@ -39,12 +40,12 @@
     <h1>Ernährung</h1>
     <p>
       Die Ernährung spielt neben dem Training eine sehr große Rolle. Ausgewogene
-      und gesunde Ernährung sind elemntar zum Erreichen deines Trainingsziels.
+      und gesunde Ernährung sind elementar zum Erreichen deines Trainingsziels.
     </p>
     <tl-grid>
       <fh-feature-card title="Ernährungspläne" image="later">
-        Ernährungspläne geben dir eine Hilfesteillung beim Erreichen deiner
-        Ziele.
+        Ernährungspläne geben dir eine Hilfestellung beim Erreichen deiner
+        Traumfigur.
       </fh-feature-card>
       <fh-feature-card title="Kochrezepte" image="later">
         Finde Kochrezepte, die dein Training unterstützen und dir beim Abnehmen
@@ -79,7 +80,8 @@
         title="Vergleich"
         image="https://cdn2.pixstash.net/2020/09/10/1izmW.png"
       >
-        Vergleiche die Trainingsdaten der aktuellen Woche mit der letzten Woche.
+        Vergleiche die Trainingsdaten der aktuellen Woche mit denen der letzten
+        Woche.
       </fh-feature-card>
       <fh-feature-card
         title="Gewicht tracken"
