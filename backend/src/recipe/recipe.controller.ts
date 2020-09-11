@@ -38,9 +38,7 @@ export class RecipeController {
   }
 
   @Get('category/:category')
-  async getByCategory(
-    @Param('recipeCategory') category: string,
-  ): Promise<IRecipe[]> {
+  async getByCategory(@Param('category') category: string): Promise<IRecipe[]> {
     return this.recipeService.getByCategory(category);
   }
 
