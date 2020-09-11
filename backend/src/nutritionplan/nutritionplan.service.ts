@@ -80,7 +80,7 @@ export class NutritionplanService {
   ): Promise<void> {
     await this.nutritionplanModel.updateOne(
       { _id: id, author: userId },
-      { $set: { updateNutritionplanDTO, updated: new Date().getTime() } },
+      { $set: { ...updateNutritionplanDTO, updated: new Date().getTime() } },
     );
   }
 
