@@ -22,6 +22,7 @@ import {
   IExercise,
   IMessage,
   IPendingFriendship,
+  IRecipe,
   IUserInfo,
   IWorkout
 } from './utils/interfaces';
@@ -76,6 +77,13 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     });
     axios.get('charts').then(res => {
       store.commit('setWorkoutCharts', res.data);
+    });
+    axios.get('recipe/mine').then(res => {
+      res.data.forEach((x: IRecipe) => store.commit('addRecipe', x));
+    });
+    axios.get('recipe/liked').then(res => {
+      console.log(res.data);
+      res.data.forEach((x: IRecipe) => store.commit('addFavedRecipe', x));
     });
     if (['Admin', 'Moderator'].includes(store.getters.user.group)) {
       axios.get('exercise/submissions').then(res => {

@@ -21,7 +21,7 @@ export interface IRecipeIngredient {
   readonly unit: string;
 }
 export interface IRecipe {
-  readonly _id?: string;
+  readonly _id: string;
   readonly author: string;
   readonly created: number;
   readonly updated: number;

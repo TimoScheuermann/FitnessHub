@@ -1,5 +1,5 @@
 <template>
-  <div class="fh-carousel">
+  <div class="fh-carousel" ref="carousel">
     <slot />
     <div class="fh-carousel__spacer" />
   </div>
@@ -17,6 +17,7 @@ export default class FHCarousel extends Vue {}
   margin: 20px -5vw 0;
   display: flex;
   overflow-x: auto;
+
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 
@@ -24,7 +25,6 @@ export default class FHCarousel extends Vue {}
   @media (prefers-color-scheme: dark) {
     @include custom-scrollbar__dark();
   }
-
   .fh-carousel__spacer {
     flex-shrink: 0;
     width: 5vw;

@@ -8,6 +8,7 @@ import {
   IFHNotification,
   IMessage,
   IPendingFriendship,
+  IRecipe,
   IUser,
   IUserInfo,
   IWorkout
@@ -34,7 +35,9 @@ export default new Vuex.Store({
     exerciseSubmissions: [] as IExercise[],
     workouts: [] as IWorkout[],
     chartWorkouts: [],
-    chartTimes: []
+    chartTimes: [],
+    recipes: [] as IRecipe[],
+    favedRecipes: [] as IRecipe[]
   },
   getters: {
     valid: (state: any): boolean => {
@@ -107,6 +110,12 @@ export default new Vuex.Store({
     },
     chartTimes: (state: any): number[] => {
       return state.chartTimes;
+    },
+    recipes: (state: any): IRecipe[] => {
+      return state.recipes;
+    },
+    favedRecipes: (state: any): IRecipe[] => {
+      return state.favedRecipes;
     }
   },
   mutations: {
@@ -249,6 +258,36 @@ export default new Vuex.Store({
     ) {
       state.chartWorkouts = data.workouts;
       state.chartTimes = data.times;
+    },
+    addRecipe(state: any, recipe: IRecipe) {
+      let matched = false;
+      state.recipes = state.recipes.map((x: IRecipe) => {
+        if (x._id == recipe._id) {
+          matched = true;
+          return recipe;
+        }
+        return x;
+      });
+      if (!matched) state.recipes.push(recipe);
+    },
+    addFavedRecipe(state: any, recipe: IRecipe) {
+      let matched = false;
+      state.favedRecipes = state.favedRecipes.map((x: IRecipe) => {
+        if (x._id == recipe._id) {
+          matched = true;
+          return recipe;
+        }
+        return x;
+      });
+      if (!matched) state.favedRecipes.push(recipe);
+    },
+    removeRecipe(state: any, id: string) {
+      state.recipes = state.recipes.filter((x: IRecipe) => x._id !== id);
+    },
+    removeFavedRecipe(state: any, id: string) {
+      state.favedRecipes = state.favedRecipes.filter(
+        (x: IRecipe) => x._id !== id
+      );
     }
   }
 });

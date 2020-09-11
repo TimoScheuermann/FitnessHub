@@ -6,6 +6,7 @@ import { IUser } from 'src/user/interfaces/IUser';
 import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
 import { UpdateRecipeDTO } from './dtos/UpdateRecipe.dto';
 import { IRecipe } from './interfaces/IRecipe';
+import { LikedRecipe } from './schemas/LikedRecipe.schema';
 import { Recipe } from './schemas/Recipe.schema';
 
 @Injectable()
@@ -13,6 +14,8 @@ export class RecipeService {
   constructor(
     @InjectModel(Recipe.name)
     private recipeModel: Model<Recipe>,
+    @InjectModel(LikedRecipe.name)
+    private likedRecipeModel: Model<LikedRecipe>,
     private readonly tgbotService: TgbotService,
   ) {}
 
@@ -24,6 +27,18 @@ export class RecipeService {
     return this.recipeModel.find({
       author: author,
     });
+  }
+
+  public async getLatest(): Promise<IRecipe[]> {
+    return this.recipeModel.find().sort({ updated: -1 }).limit(10);
+  }
+
+  public async getBeloved(): Promise<IRecipe[]> {
+    const topTen = await this.likedRecipeModel
+      .aggregate([{ $unwind: '$recipes' }, { $sortByCount: '$recipes' }])
+      .sort({ count: -1 })
+      .limit(10);
+    return Promise.all(topTen.map((x) => this.getById(x._id)));
   }
 
   public async getById(id: string): Promise<IRecipe> {
@@ -43,7 +58,7 @@ export class RecipeService {
   public async addRecipe(
     user: IUser,
     createRecipeDTO: CreateRecipeDTO,
-  ): Promise<void> {
+  ): Promise<IRecipe> {
     if (
       [
         createRecipeDTO.title,
@@ -78,17 +93,19 @@ export class RecipeService {
       'Rezept online anschauen',
       url,
     );
+    return recipe;
   }
 
   public async updateRecipe(
     id: string,
     userId: string,
     updateRecipeDTO: UpdateRecipeDTO,
-  ): Promise<void> {
+  ): Promise<IRecipe> {
     await this.recipeModel.updateOne(
       { _id: id, author: userId },
-      { $set: { updateRecipeDTO, updated: new Date().getTime() } },
+      { $set: { ...updateRecipeDTO, updated: new Date().getTime() } },
     );
+    return this.getById(id);
   }
 
   public async deleteRecipe(userId: string, recipeId: string): Promise<void> {
@@ -96,6 +113,35 @@ export class RecipeService {
       author: userId,
       _id: recipeId,
     });
+    await this.likedRecipeModel.updateMany(
+      {},
+      { $pull: { recipes: recipeId } },
+    );
+  }
+
+  public async getLiked(userId: string): Promise<IRecipe[]> {
+    const likedObject = await this.likedRecipeModel.findOne(
+      { user: userId },
+      { recipes: 1, _id: 0 },
+    );
+    if (!likedObject) return [];
+    return Promise.all(
+      likedObject.recipes.map(async (x) => await this.getById(x)),
+    );
+  }
+
+  public async addLike(userId: string, recipe: string): Promise<void> {
+    await this.likedRecipeModel.updateOne(
+      { user: userId },
+      { $addToSet: { recipes: recipe } },
+      { upsert: true },
+    );
+  }
+  public async removeLike(userId: string, recipe: string): Promise<void> {
+    await this.likedRecipeModel.updateOne(
+      { user: userId },
+      { $pull: { recipes: recipe } },
+    );
   }
 
   public transformName(user: IUser): string {

@@ -81,20 +81,20 @@ export default class FHNotification extends Vue {
     position: fixed;
     left: 5vw;
     @media only screen and(max-width: 500px) {
+      top: calc(5vw + 50px + env(safe-area-inset-top));
       right: 5vw;
-      top: calc(5vw + env(safe-area-inset-top));
     }
     max-width: 500px;
 
-    @media #{$isDesktop} {
+    @media only screen and(min-width: 501px) {
       top: calc(70px + env(safe-area-inset-top));
     }
     padding: 10px;
     border-radius: $border-radius;
 
-    @include backdrop-blur($paragraph);
+    @include backdrop-blur($container);
     &.dark {
-      @include backdrop-blur($paragraph_dark);
+      @include backdrop-blur($container_dark);
     }
 
     display: grid;
@@ -119,6 +119,7 @@ export default class FHNotification extends Vue {
 .notification-leave-to {
   margin-top: -30px;
   transform: scale(0.9);
+  filter: blur(2px);
   opacity: 0;
 }
 </style>

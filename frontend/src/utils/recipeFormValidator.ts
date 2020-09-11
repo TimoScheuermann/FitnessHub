@@ -40,12 +40,7 @@ export function validate(recipe: CreateRecipeDTO): CreateRecipeDTO | null {
     notifiy('Schritt', 'Bitte füge mindestens einen Zubereitungsschritt hinzu');
     return null;
   }
-
-  const createObject: CreateRecipeDTO = {
-    ...recipe,
-    time: recipe.time * 60
-  };
-  return createObject;
+  return recipe;
 }
 
 export const defaultRecipe: CreateRecipeDTO = {

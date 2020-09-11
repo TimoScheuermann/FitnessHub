@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import FHExerciseForm from '@/components/exercise/FHExerciseForm.vue';
+import FHExerciseForm from '@/components/exercise/FH-ExerciseForm.vue';
 import { formatDate } from '@/utils/functions';
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';

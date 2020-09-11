@@ -1,5 +1,6 @@
 <template>
   <tc-magic-card
+    v-if="recipe"
     :dark="$store.getters.darkmode"
     :src="recipe.thumbnail"
     class="fh-recipe"
@@ -7,13 +8,20 @@
     <div class="card-thumbnail" slot="thumbnail">
       <div class="time">
         <i class="ti-clock-simple" />
-        <span>{{ Math.floor(recipe.time / 60) }} min</span>
+        <span>{{ recipe.time }} min</span>
       </div>
       <div class="title">{{ recipe.title }}</div>
     </div>
     <div class="fav-button" slot="thumbnail">
-      <tc-button icon="heart" variant="opaque" tfbackground="error" />
+      <tc-button
+        @click.stop="like"
+        icon="heart"
+        :variant="hasLiked ? 'filled' : 'opaque'"
+        tfbackground="error"
+        :disabled="$store.getters.loading"
+      />
     </div>
+
     <div class="card-content">
       <p v-if="recipe.description">{{ recipe.description }}</p>
       <h3>Kategorien</h3>
@@ -71,20 +79,56 @@
       >
         <tc-step-item v-for="s in recipe.steps" :key="s" :title="s" />
       </tc-steps>
+
+      <template v-if="isAuthor">
+        <tl-grid>
+          <tc-button
+            variant="filled"
+            name="Rezept bearbeiten"
+            tfbackground="success"
+            icon="pencil"
+            :to="{ name: 'editRecipe', params: { id: recipe._id } }"
+          />
+        </tl-grid>
+        <br />
+      </template>
     </div>
   </tc-magic-card>
 </template>
 
 <script lang="ts">
-import { sampleRecipe } from '@/utils/constants';
+import axios from '@/utils/axios';
+import { hasLikedRecipe } from '@/utils/functions';
 import { IRecipe } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHRecipe extends Vue {
+  @Prop() recipe!: IRecipe;
   public current = 0;
 
-  @Prop({ default: sampleRecipe }) recipe!: IRecipe;
+  get hasLiked(): boolean {
+    if (!this.recipe) return false;
+    return hasLikedRecipe(this.recipe._id);
+  }
+
+  public async like(): Promise<void> {
+    if (this.recipe) {
+      if (this.hasLiked) {
+        this.$store.commit('removeFavedRecipe', this.recipe._id);
+        await axios.delete('recipe/like/' + this.recipe._id);
+      } else {
+        this.$store.commit('addFavedRecipe', this.recipe);
+        await axios.put('recipe/like/' + this.recipe._id);
+      }
+    }
+  }
+
+  get isAuthor(): boolean {
+    if (!this.recipe) return false;
+    if (!this.$store.getters.valid) return false;
+    return this.recipe.author === this.$store.getters.user._id;
+  }
 }
 </script>
 
@@ -120,6 +164,7 @@ export default class FHRecipe extends Vue {
     bottom: 17px;
     right: 17px;
   }
+
   .card-content {
     padding: 0 5vw;
     h3[nutrition] {

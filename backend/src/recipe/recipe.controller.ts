@@ -32,9 +32,40 @@ export class RecipeController {
     return this.recipeService.getByAuthor(user._id);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('liked')
+  async getLiked(@FHUser() user: IUser): Promise<IRecipe[]> {
+    return this.recipeService.getLiked(user._id);
+  }
+
+  @Get('latest')
+  async getLatest(): Promise<IRecipe[]> {
+    return this.recipeService.getLatest();
+  }
+
+  @Get('beloved')
+  async getBeloved(): Promise<IRecipe[]> {
+    return this.recipeService.getBeloved();
+  }
+
   @Get(':id')
   async getById(@Param('id') id: string): Promise<IRecipe> {
     return this.recipeService.getById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Delete('like/:id')
+  async removeLike(
+    @FHUser() user: IUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    this.recipeService.removeLike(user._id, id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Put('like/:id')
+  async addLike(@FHUser() user: IUser, @Param('id') id: string): Promise<void> {
+    this.recipeService.addLike(user._id, id);
   }
 
   @Get('category/:category')
@@ -47,8 +78,8 @@ export class RecipeController {
   async addRecipe(
     @FHUser() user: IUser,
     @Body() createRecipe: CreateRecipeDTO,
-  ): Promise<void> {
-    this.recipeService.addRecipe(user, createRecipe);
+  ): Promise<IRecipe> {
+    return this.recipeService.addRecipe(user, createRecipe);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -57,7 +88,7 @@ export class RecipeController {
     @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() update: UpdateRecipeDTO,
-  ): Promise<void> {
+  ): Promise<IRecipe> {
     return this.recipeService.updateRecipe(id, user._id, update);
   }
 
@@ -67,6 +98,6 @@ export class RecipeController {
     @FHUser() user: IUser,
     @Param('id') id: string,
   ): Promise<void> {
-    return this.recipeService.deleteRecipe(user._id, id);
+    this.recipeService.deleteRecipe(user._id, id);
   }
 }

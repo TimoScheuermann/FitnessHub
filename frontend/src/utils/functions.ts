@@ -1,6 +1,6 @@
 import store from '@/store';
 import { aHour, days } from './constants';
-import { IFHNotification, IUserInfo } from './interfaces';
+import { IFHNotification, IRecipe, IUserInfo } from './interfaces';
 
 export function copyToClipboard(data: string) {
   const el = document.createElement('textarea');
@@ -105,4 +105,11 @@ export function getFriendAvatar(id: string): string | undefined {
 
 export function getFriend(id: string): IUserInfo | undefined {
   return (store.getters.friends as IUserInfo[]).filter(x => x._id === id)[0];
+}
+
+export function hasLikedRecipe(id: string): boolean {
+  return (
+    (store.getters.favedRecipes as IRecipe[]).filter(x => x._id === id).length >
+    0
+  );
 }

@@ -15,7 +15,7 @@
     >
       <img :src="categoryInfo.thumbnail" slot="background" alt="" />
       <transition name="hero-anim" mode="out-in">
-        <h1>{{ categoryInfo.title }}</h1>
+        <h1 :key="categoryInfo.title">{{ categoryInfo.title }}</h1>
       </transition>
     </tc-hero>
     <div class="view">
