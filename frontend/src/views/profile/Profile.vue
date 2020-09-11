@@ -40,7 +40,11 @@
 
         <div>
           <tc-list :dark="$store.getters.darkmode">
-            <tc-list-item title="Trainingspläne" icon="calendar-alt" />
+            <tc-list-item
+              title="Meine Rezepte"
+              icon="book-cook"
+              routeName="recipes"
+            />
             <tc-list-item title="Workouts" icon="list" routeName="workouts" />
             <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
             <tc-list-item

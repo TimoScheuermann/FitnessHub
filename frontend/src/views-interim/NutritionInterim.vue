@@ -1,0 +1,121 @@
+<template>
+  <div class="profile-interim">
+    <fh-mobile-header :title="categoryInfo.title">
+      <tc-header-button
+        v-if="$route.name !== 'nutrition'"
+        routeName="nutrition"
+        name="Ernährung"
+      />
+    </fh-mobile-header>
+
+    <tc-hero
+      :dark="true"
+      :hasFixedHeader="$store.getters.fixedHeader"
+      :height="200"
+    >
+      <img :src="categoryInfo.thumbnail" slot="background" alt="" />
+      <transition name="hero-anim" mode="out-in">
+        <h1>{{ categoryInfo.title }}</h1>
+      </transition>
+    </tc-hero>
+    <div class="view">
+      <template v-if="$route.name === 'nutrition-category'">
+        <div class="searchbar">
+          <tc-input
+            :dark="$store.getters.darkmode"
+            v-model="query"
+            icon="lens"
+            placeholder="Suche"
+          />
+        </div>
+        <div class="searchbar fixed" v-if="fixed">
+          <tc-input
+            :dark="$store.getters.darkmode"
+            v-model="query"
+            icon="lens"
+            placeholder="Suche"
+            :frosted="true"
+          />
+        </div>
+      </template>
+      <transition :name="$store.getters.routeTransition">
+        <router-view class="child-view" :query="query" />
+      </transition>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import { recipeCategories } from '@/utils/recipeCategories';
+
+@Component
+export default class ProfileInterim extends Vue {
+  public query = '';
+
+  public TRIGGER = 150;
+  public fixed = window.scrollY >= this.TRIGGER;
+
+  mounted() {
+    window.addEventListener('scroll', this.scrollListener);
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.scrollListener);
+  }
+
+  public scrollListener(): void {
+    this.fixed = window.scrollY >= this.TRIGGER;
+  }
+
+  get categoryInfo(): {
+    title: string;
+    thumbnail: string;
+  } {
+    if (this.$route.name === 'nutrition-category') {
+      const title = Object.keys(recipeCategories).filter(
+        x => x.toLowerCase() === this.$route.params.category.toLowerCase()
+      )[0];
+      return { title: title, thumbnail: recipeCategories[title] };
+    }
+    return {
+      title: 'Ernährung',
+      thumbnail:
+        'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?q=10&w=1080'
+    };
+  }
+}
+</script>
+<style lang="scss" scoped>
+.tc-hero {
+  img {
+    filter: brightness(60%);
+  }
+  h1 {
+    margin: 0px;
+    margin-top: env(safe-area-inset-top);
+    text-transform: capitalize;
+  }
+}
+.searchbar {
+  padding: 10px calc(5vw - 3px);
+  &.fixed {
+    position: fixed;
+    top: 50px;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    @include backdrop-blur($paragraph_dark);
+  }
+}
+
+.hero-anim-enter-active,
+.hero-anim-leave-active {
+  transition: all 0.16s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.hero-anim-enter,
+.hero-anim-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+</style>

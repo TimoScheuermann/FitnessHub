@@ -7,52 +7,23 @@
     }"
   >
     <router-link :to="{ name: 'home' }" class="title">
-      <b><i class="ti-gym" />FitnessHub</b>
+      <b>
+        <i class="ti-gym" />FitnessHub
+      </b>
     </router-link>
     <tl-flow>
-      <tc-navbar-item
-        tfcolor="success"
-        routeName="home"
-        icon="house"
-        name="Home"
-      />
-      <tc-navbar-item
-        tfcolor="success"
-        routeName="community"
-        icon="users"
-        name="Feed"
-      />
-      <tc-navbar-item
-        tfcolor="success"
-        routeName="training"
-        icon="gym"
-        name="Training"
-      />
-      <tc-navbar-item
-        tfcolor="success"
-        routeName="nutrition"
-        icon="food-bowl"
-        name="Ernährung"
-      />
+      <tc-navbar-item tfcolor="success" routeName="home" icon="house" name="Home" />
+      <tc-navbar-item tfcolor="success" routeName="community" icon="users" name="Feed" />
+      <tc-navbar-item tfcolor="success" routeName="training" icon="gym" name="Training" />
+      <tc-navbar-item tfcolor="success" routeName="nutrition" icon="apple-alt" name="Ernährung" />
       <tc-badge
         v-if="$store.getters.valid"
         :value="$store.getters.totalNotifications"
         position="behind"
       >
-        <tc-navbar-item
-          tfcolor="success"
-          routeName="profile"
-          icon="user"
-          name="Profil"
-        />
+        <tc-navbar-item tfcolor="success" routeName="profile" icon="user" name="Profil" />
       </tc-badge>
-      <tc-navbar-item
-        v-else
-        tfcolor="success"
-        routeName="login"
-        icon="login"
-        name="Login"
-      />
+      <tc-navbar-item v-else tfcolor="success" routeName="login" icon="login" name="Login" />
     </tl-flow>
   </div>
 </template>
