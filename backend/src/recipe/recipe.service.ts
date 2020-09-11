@@ -16,14 +16,28 @@ export class RecipeService {
     private readonly tgbotService: TgbotService,
   ) {}
 
-  public async getAllRecipesOf(userID: string): Promise<Recipe[]> {
+  public async getAll(): Promise<IRecipe[]> {
+    return this.recipeModel.find().limit(50);
+  }
+
+  public async getByAuthor(author: string): Promise<Recipe[]> {
     return this.recipeModel.find({
-      author: userID,
+      author: author,
     });
   }
 
-  public async getAllRecipes(): Promise<IRecipe[]> {
-    return this.recipeModel.find().limit(50);
+  public async getById(id: string): Promise<IRecipe> {
+    return await this.recipeModel.findById({
+      _id: id,
+    });
+  }
+
+  public async getByCategory(category: string): Promise<IRecipe[]> {
+    return await this.recipeModel
+      .find({
+        category: { $all: [category] },
+      })
+      .limit(50);
   }
 
   public async addRecipe(
@@ -80,12 +94,6 @@ export class RecipeService {
   public async deleteRecipe(userId: string, recipeId: string): Promise<void> {
     await this.recipeModel.findOneAndDelete({
       author: userId,
-      _id: recipeId,
-    });
-  }
-
-  public async getRecipeById(recipeId: string): Promise<IRecipe> {
-    return await this.recipeModel.findById({
       _id: recipeId,
     });
   }
