@@ -46,8 +46,11 @@ export interface INutritionplanDay {
 }
 export interface INutritionplan {
   readonly _id?: string;
-  readonly title: string;
   readonly author: string;
+  readonly created: number;
+  readonly updated: number;
+
+  readonly title: string;
   readonly time: number;
   readonly description: string;
   readonly category: string;

@@ -1,29 +1,60 @@
-import { INutrition, IRecipeIngredient } from './interfaces';
+import { INutrition, INutritionplanDay, IRecipeIngredient } from './interfaces';
 
 export class CreateRecipeDTO {
   readonly title!: string;
+  readonly category!: string[];
   readonly time!: number;
-  readonly video?: string;
+  readonly difficulty!: number;
   readonly ingredients!: IRecipeIngredient[];
   readonly nutrition!: INutrition[];
-  readonly category!: string[];
   readonly thumbnail!: string;
-  readonly difficulty!: number;
   readonly steps!: string[];
+
+  readonly video?: string;
   readonly description?: string;
 }
 export class UpdateRecipeDTO {
   readonly title?: string;
+  readonly category?: string[];
   readonly time?: number;
-  readonly video?: string;
+  readonly difficulty?: number;
   readonly ingredients?: IRecipeIngredient[];
   readonly nutrition?: INutrition[];
-  readonly category?: string[];
   readonly thumbnail?: string;
-  readonly difficulty?: number;
   readonly steps?: string[];
+
+  readonly video?: string;
   readonly description?: string;
 }
+export class CreateNutritionplanDTO {
+  readonly title!: string;
+  readonly time!: number;
+  readonly description!: string;
+  readonly category!: string;
+
+  readonly monday!: INutritionplanDay;
+  readonly tuesday!: INutritionplanDay;
+  readonly wednesday!: INutritionplanDay;
+  readonly thursday!: INutritionplanDay;
+  readonly friday!: INutritionplanDay;
+  readonly saturday!: INutritionplanDay;
+  readonly sunday!: INutritionplanDay;
+}
+export class UpdateNutritionplanDTO {
+  readonly title?: string;
+  readonly time?: number;
+  readonly description?: string;
+  readonly category?: string;
+
+  readonly monday?: INutritionplanDay;
+  readonly tuesday?: INutritionplanDay;
+  readonly wednesday?: INutritionplanDay;
+  readonly thursday?: INutritionplanDay;
+  readonly friday?: INutritionplanDay;
+  readonly saturday?: INutritionplanDay;
+  readonly sunday?: INutritionplanDay;
+}
+
 export class UpdateExerciseDTO {
   readonly title?: string;
   readonly affectedMuscles?: string[];

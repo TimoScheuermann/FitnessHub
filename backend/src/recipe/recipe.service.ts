@@ -20,7 +20,7 @@ export class RecipeService {
     return this.recipeModel.find().limit(50);
   }
 
-  public async getByAuthor(author: string): Promise<Recipe[]> {
+  public async getByAuthor(author: string): Promise<IRecipe[]> {
     return this.recipeModel.find({
       author: author,
     });

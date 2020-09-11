@@ -1,11 +1,6 @@
-import { INutritionplanDay } from './INutritionplanDay';
+import { INutritionplanDay } from '../interfaces/INutritionplanDay';
 
-export interface INutritionplan {
-  readonly _id?: string;
-  readonly author: string;
-  readonly created: number;
-  readonly updated: number;
-
+export class CreateNutritionplanDTO {
   readonly title: string;
   readonly time: number;
   readonly description: string;
