@@ -26,6 +26,7 @@ import {
   IWorkout
 } from './utils/interfaces';
 import { muscles } from './utils/muscles';
+import { recipeCategories } from './utils/recipeCategories';
 
 const socket = io(backendURL, { autoConnect: false });
 Vue.use(VueSocketIOExt, socket);
@@ -127,6 +128,16 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     to.name === 'training-muscle' &&
     muscles.filter(x => x.toLowerCase() === to.params.muscle.toLowerCase())
       .length !== 1
+  ) {
+    next(from);
+    return;
+  }
+
+  if (
+    to.name === 'nutrition-category' &&
+    Object.keys(recipeCategories).filter(
+      x => x.toLowerCase() === to.params.category.toLowerCase()
+    ).length !== 1
   ) {
     next(from);
     return;

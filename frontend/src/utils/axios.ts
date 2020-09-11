@@ -19,13 +19,20 @@ axios.interceptors.request.use(
     store.state.openRequests++;
     return config;
   },
-  () => {
+  error => {
     store.state.openRequests--;
+    return Promise.reject(error);
   }
 );
-axios.interceptors.response.use(config => {
-  store.state.openRequests--;
-  return config;
-});
+axios.interceptors.response.use(
+  config => {
+    store.state.openRequests--;
+    return config;
+  },
+  error => {
+    store.state.openRequests--;
+    return Promise.reject(error);
+  }
+);
 
 export default axios;

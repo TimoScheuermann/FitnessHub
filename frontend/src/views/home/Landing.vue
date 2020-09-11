@@ -10,7 +10,7 @@
     </tc-segments>
     <h1>Workout</h1>
     <tl-grid minWidth="100">
-      <router-link :to="{ name: 'training' }">
+      <router-link :to="{ name: 'training' }" @click.capture="() => {}">
         <tc-magic-card
           src="https://images.unsplash.com/photo-1539794830467-1f1755804d13?w=540&q=5"
           :dark="true"

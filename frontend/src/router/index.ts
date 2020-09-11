@@ -1,5 +1,6 @@
 import EmptyRouter from '@/views-interim/EmptyRouter.vue';
 import LegalInterim from '@/views-interim/LegalInterim.vue';
+import NutritionInterim from '@/views-interim/NutritionInterim.vue';
 import ProfileInterim from '@/views-interim/ProfileInterim.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -36,11 +37,25 @@ const router = new VueRouter({
     },
     {
       path: '/nutrition',
-      name: 'nutrition',
-      component: () => import('@/views/Nutrition.vue'),
-      meta: {
-        level: 0
-      }
+      component: NutritionInterim,
+      children: [
+        {
+          path: '',
+          name: 'nutrition',
+          component: () => import('@/views/nutrition/Nutrition.vue'),
+          meta: {
+            level: 0
+          }
+        },
+        {
+          path: '/category/:category',
+          name: 'nutrition-category',
+          component: () => import('@/views/nutrition/NutritionCategory.vue'),
+          meta: {
+            level: 1
+          }
+        }
+      ]
     },
     {
       path: '/training',
@@ -217,6 +232,36 @@ const router = new VueRouter({
           meta: {
             title: 'Gesperrt',
             level: 1
+          }
+        },
+        {
+          path: 'recipe',
+          name: 'recipes',
+          component: () => import('@/views/profile/recipe/Recipes.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Rezepte',
+            level: 1
+          }
+        },
+        {
+          path: 'recipe/submit',
+          name: 'submitRecipe',
+          component: () => import('@/views/profile/recipe/SubmitRecipe.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Rezept erstellen',
+            level: 2
+          }
+        },
+        {
+          path: 'recipe/edit/:id',
+          name: 'editRecipe',
+          component: () => import('@/views/profile/recipe/EditRecipe.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Rezept bearbeiten',
+            level: 2
           }
         },
         {

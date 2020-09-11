@@ -9,6 +9,7 @@
       kombinieren
     </p>
     <fh-workout-list :editbutton="true" v-else />
+    <h1>Trainingsplan</h1>
   </div>
 </template>
 
