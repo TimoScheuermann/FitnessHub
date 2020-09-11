@@ -12,12 +12,13 @@
       </div>
       <div class="title">{{ recipe.title }}</div>
     </div>
-    <div class="fav-button" slot="thumbnail">
+    <div class="fav-button" slot="thumbnail" v-if="$store.getters.valid">
       <tc-button
         @click.stop="like"
         icon="heart"
         :variant="hasLiked ? 'filled' : 'opaque'"
         tfbackground="error"
+        :name="hasLiked ? 'gefällt dir' : undefined"
         :disabled="$store.getters.loading"
       />
     </div>
@@ -137,11 +138,15 @@ export default class FHRecipe extends Vue {
   /deep/ img {
     filter: brightness(60%);
   }
+  /deep/ .tc-magic-card--thumbnail {
+    color: #fff;
+  }
   .card-thumbnail {
     position: absolute;
     top: 0px;
     left: 0px;
     padding: 20px;
+    color: #fff;
     .time {
       i {
         position: static;

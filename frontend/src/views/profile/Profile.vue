@@ -32,8 +32,8 @@
             <tc-list-item title="Freunde" icon="users" routeName="friends" />
           </tc-badge>
           <tc-list-item
-            title="Highlights"
-            icon="heartbeat"
+            title="Trainingsstatistik"
+            icon="chart-bar"
             routeName="highlights"
           />
         </tc-list>
@@ -45,7 +45,11 @@
               icon="book-cook"
               routeName="recipes"
             />
-            <tc-list-item title="Workouts" icon="list" routeName="workouts" />
+            <tc-list-item
+              title="Workouts"
+              icon="heartbeat"
+              routeName="workouts"
+            />
             <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
             <tc-list-item
               title="Erfolge"

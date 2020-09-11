@@ -330,7 +330,6 @@ export default class FHRecipeForm extends Vue {
     if (created) {
       axios.post('recipe', created).then(res => {
         this.$store.commit('addRecipe', res.data);
-        console.log(res.data);
         this.$router.push({ name: 'recipes' });
       });
     }
@@ -340,7 +339,6 @@ export default class FHRecipeForm extends Vue {
     const created = this.validateInput();
     if (this.recipeInput && created) {
       axios.put('recipe/update/' + this.recipeInput._id, created).then(res => {
-        console.log(res.data);
         this.$store.commit('addRecipe', res.data);
         this.$router.push({ name: 'recipes' });
       });

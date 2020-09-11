@@ -25,7 +25,6 @@ import FHNotification from '@/components/global/FH-Notification.vue';
 import FHTabbar from '@/components/global/FH-Tabbar.vue';
 import MessageSocketManager from '@/socketManager/MessageSocket.manager';
 import FriendSocketManager from '@/socketManager/FriendSocket.manager';
-import HealthSocketManager from '@/socketManager/HealthSocket.manager';
 import ExerciseSocketManager from '@/socketManager/ExerciseSocket.manager';
 import WorkoutSocketManager from '@/socketManager/WorkoutSocket.manager';
 import FHUserSearch from './components/global/FH-User-Search.vue';
@@ -43,7 +42,6 @@ import FHAddToWorkout from './components/global/FH-AddToWorkout.vue';
 export default class App extends Mixins(
   FriendSocketManager,
   MessageSocketManager,
-  HealthSocketManager,
   ExerciseSocketManager,
   WorkoutSocketManager
 ) {

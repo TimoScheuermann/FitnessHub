@@ -82,7 +82,6 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
       res.data.forEach((x: IRecipe) => store.commit('addRecipe', x));
     });
     axios.get('recipe/liked').then(res => {
-      console.log(res.data);
       res.data.forEach((x: IRecipe) => store.commit('addFavedRecipe', x));
     });
     if (['Admin', 'Moderator'].includes(store.getters.user.group)) {

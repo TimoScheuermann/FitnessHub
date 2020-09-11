@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import VueApexCharts from 'vue-apexcharts';
 import { IHealth } from '@/utils/interfaces';
 import { aDay, aWeek, aMonth, aYear } from '@/utils/constants';
@@ -78,17 +78,23 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWeight extends Vue {
-  @Prop() healthData!: IHealth[] | null;
-
-  public currentInput =
-    this.healthData && this.healthData.length > 0 ? this.current : 70;
+  public currentInput = 0;
   public selectedTime = 1;
   public multis = [aDay, aWeek, aMonth, aYear];
 
-  @Watch('healthData')
-  dataChanged() {
-    this.currentInput =
-      this.healthData && this.healthData.length > 0 ? this.current : 70;
+  mounted() {
+    if (!this.healthData) {
+      axios.get('health/weight').then(res => {
+        res.data.forEach((x: IHealth) => this.$store.commit('addWeight', x));
+        this.currentInput = this.current;
+      });
+    } else {
+      this.currentInput = this.current;
+    }
+  }
+
+  get healthData(): IHealth[] | null {
+    return this.$store.getters.weight;
   }
 
   public round() {
@@ -169,8 +175,9 @@ export default class FHHealthWeight extends Vue {
   }
 
   async submit(): Promise<void> {
-    await axios.post('health/weight', { value: +this.currentInput });
-    this.$emit('reload');
+    axios.post('health/weight', { amount: +this.currentInput }).then(res => {
+      this.$store.commit('addWeight', res.data);
+    });
   }
 }
 </script>

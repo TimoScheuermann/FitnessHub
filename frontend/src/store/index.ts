@@ -6,6 +6,7 @@ import { EventBus } from '@/utils/eventbus';
 import {
   IExercise,
   IFHNotification,
+  IHealth,
   IMessage,
   IPendingFriendship,
   IRecipe,
@@ -37,7 +38,9 @@ export default new Vuex.Store({
     chartWorkouts: [],
     chartTimes: [],
     recipes: [] as IRecipe[],
-    favedRecipes: [] as IRecipe[]
+    favedRecipes: [] as IRecipe[],
+    weight: null,
+    water: null
   },
   getters: {
     valid: (state: any): boolean => {
@@ -116,6 +119,12 @@ export default new Vuex.Store({
     },
     favedRecipes: (state: any): IRecipe[] => {
       return state.favedRecipes;
+    },
+    weight: (state: any): IHealth[] => {
+      return state.weight;
+    },
+    water: (state: any): IHealth[] => {
+      return state.water;
     }
   },
   mutations: {
@@ -288,6 +297,22 @@ export default new Vuex.Store({
       state.favedRecipes = state.favedRecipes.filter(
         (x: IRecipe) => x._id !== id
       );
+    },
+    addWeight(state: any, weight: IHealth) {
+      if (!state.weight) state.weight = [];
+      state.weight.push(weight);
+    },
+    addWater(state: any, water: IHealth) {
+      if (!state.water) state.water = [];
+      let matched = false;
+      state.water = state.water.map((x: IHealth) => {
+        if (x._id === water._id) {
+          matched = true;
+          return water;
+        }
+        return x;
+      });
+      if (!matched) state.water.push(water);
     }
   }
 });

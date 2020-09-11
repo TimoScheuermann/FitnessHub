@@ -357,7 +357,6 @@ export default class FHExerciseForm extends Vue {
   public async publishExercise(): Promise<void> {
     const created = this.validateInput();
     if (this.exerciseInput && created) {
-      console.log('publish');
       await axios.put('exercise/publish/' + this.exerciseInput._id, created);
       this.$emit('closeModal');
     }

@@ -14,23 +14,45 @@ export enum HealthType {
 export class HealthService {
   constructor(@InjectModel(Health.name) private healthModel: Model<Health>) {}
 
-  public async addHealthData(
-    userID: string,
+  public async getWaterData(userId: string): Promise<IHealth[]> {
+    return this.getDataOfType(userId, HealthType.WATER);
+  }
+
+  public async getWeightData(userId: string): Promise<IHealth[]> {
+    return this.getDataOfType(userId, HealthType.WEIGHT);
+  }
+
+  private async getDataOfType(
+    userId: string,
     type: HealthType,
-    value: number,
-  ): Promise<void> {
-    await this.healthModel.create({
-      date: new Date().getTime(),
+  ): Promise<IHealth[]> {
+    return this.healthModel.find({
+      user: userId,
       type: type,
-      user: userID,
-      value: value,
+      date: { $gte: new Date().getTime() - 31557600000 },
     });
   }
 
-  public async getAllHealthData(userID: string): Promise<IHealth[]> {
-    return this.healthModel.find({
-      user: userID,
-      date: { $gte: new Date().getTime() - 31557600000 },
+  public async addWater(userId: string, amount: number): Promise<IHealth> {
+    const date = new Date().setHours(0, 0, 0, 0);
+    await this.healthModel.updateOne(
+      { user: userId, type: HealthType.WATER, date: date },
+      { $inc: { value: amount } },
+      { upsert: true },
+    );
+    return await this.healthModel.findOne({
+      user: userId,
+      type: HealthType.WATER,
+      date: date,
+    });
+  }
+
+  public async addWeight(userId: string, amount: number): Promise<IHealth> {
+    return await this.healthModel.create({
+      date: new Date().getTime(),
+      type: HealthType.WEIGHT,
+      user: userId,
+      value: amount,
     });
   }
 
