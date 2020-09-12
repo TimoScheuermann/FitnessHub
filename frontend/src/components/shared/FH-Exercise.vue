@@ -177,6 +177,7 @@ export default class FHExercise extends Vue {
       margin: 5px 0;
       font-weight: 500;
       font-size: 1.3em;
+      color: #fff;
     }
     .indicator {
       &[diff='1'] {

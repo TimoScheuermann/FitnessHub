@@ -44,7 +44,7 @@
             v-for="m in muscles"
             :key="m"
             :title="m"
-            :to="{ name: 'traning-muscle', params: { muscle: m } }"
+            :to="{ name: 'training-muscle', params: { muscle: m } }"
           />
         </tc-list>
       </div>
