@@ -1,88 +1,92 @@
 <template>
-  <div class="training">
-    <fh-mobile-header title="Training" />
-    <tc-hero
-      :dark="true"
-      :hasFixedHeader="$store.getters.fixedHeader"
-      :height="200"
-    >
-      <img
-        src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=25"
-        slot="background"
-        alt
-      />
-      <h1>Training</h1>
-    </tc-hero>
-    <div content>
-      <h1>Was heute ansteht</h1>
-      <div class="cd-body">
-        <div class="cd-media">
-          <img
-            src="https://i.guim.co.uk/img/media/222de53fb94c892dd91a7d854f7cf9449cd682a1/0_33_2681_1608/master/2681.jpg?width=605&quality=45&auto=format&fit=max&dpr=2&s=efd558996357cc685aaca475677b6bb0"
-            alt="Its Bill, Baby!"
-          />
-          <h1 class="centered">Titel</h1>
-        </div>
-        <div class="cd-content">
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto
-            quo facere voluptate esse ex sint veniam pariatur soluta tempora
-            magnam id optio, culpa quos. Mollitia molestiae quod est illo
-            aperiam!
-          </p>
-        </div>
-      </div>
+  <div class="training" content>
+    <template v-if="trending">
       <h1>Übungen der Woche</h1>
-      <div class="exercise-carousell">
-        <fh-exercise v-for="ex in exercises" :key="ex._id" :exercise="ex" />
-        <div class="ce" />
-      </div>
-      <h1>Betroffene Muskeln</h1>
-      <div class="muscles-mobile">
-        <tc-list :dark="$store.getters.darkmode">
+      <fh-carousel>
+        <fh-exercise v-for="e in trending" :key="e._id" :exercise="e" />
+      </fh-carousel>
+    </template>
+
+    <tc-link
+      :to="{
+        name: 'workout-detail',
+        params: { id: '5f57ca73a012872d48451f52' }
+      }"
+      >tmp</tc-link
+    >
+
+    <template v-if="latestWorkouts">
+      <h1>Aktuelle Workouts</h1>
+      <fh-carousel>
+        <router-link
+          v-for="w in latestWorkouts"
+          :key="w._id"
+          :to="{ name: 'workout-detail', params: { id: w._id } }"
+        >
+          <fh-workout-preview :workout="w" />
+        </router-link>
+      </fh-carousel>
+    </template>
+
+    <h1>Betroffene Muskeln</h1>
+    <div class="muscles-mobile">
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item
+          v-for="m in muscles"
+          :key="m"
+          :title="m"
+          :to="{ name: 'traning-muscle', params: { muscle: m } }"
+        />
+      </tc-list>
+    </div>
+    <div class="muscles-desktop">
+      <tl-grid minWidth="200">
+        <tc-list v-for="m in muscles" :key="m" :dark="$store.getters.darkmode">
           <tc-list-item
-            v-for="m in muscles"
-            :key="m"
             :title="m"
-            :to="{ name: 'traning-muscle', params: { muscle: m } }"
+            :to="{ name: 'training-muscle', params: { muscle: m } }"
           />
         </tc-list>
-      </div>
-      <div class="muscles-desktop">
-        <tl-grid minWidth="200">
-          <tc-list
-            v-for="m in muscles"
-            :key="m"
-            :dark="$store.getters.darkmode"
-          >
-            <tc-list-item
-              :title="m"
-              :to="{ name: 'training-muscle', params: { muscle: m } }"
-            />
-          </tc-list>
-        </tl-grid>
-      </div>
-
-      <!-- <div class="exercise-carousell">
-        <tc-card class="fh-exercise muscle" v-for="m in muscle" :key="m" :title="m" />
-      </div>-->
+      </tl-grid>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { IExercise, IWorkout } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
-import { IExercise } from '../../../../backend/src/exercise/interfaces/IExercise';
-import FHExercise from '../../components/shared/FH-Exercise.vue';
-import axios from '../../utils/axios';
-import { muscles } from '../../utils/muscles';
+import FHExercise from '@/components/shared/FH-Exercise.vue';
+import axios from '@/utils/axios';
+import { muscles } from '@/utils/muscles';
+import FHWorkoutPreview from '@/components/workout/FH-WorkoutPreview.vue';
 
-@Component({ components: { 'fh-exercise': FHExercise } })
+@Component({
+  components: {
+    'fh-exercise': FHExercise,
+    'fh-workout-preview': FHWorkoutPreview
+  }
+})
 export default class Training extends Vue {
-  private exercises: IExercise[] = [];
   private muscles = muscles;
-  async mounted() {
-    this.exercises = (await axios.get('exercise')).data;
+
+  get trending(): IExercise[] | null {
+    return this.$store.state.trendingExercises;
+  }
+  get latestWorkouts(): IWorkout[] | null {
+    return this.$store.state.latestWorkouts;
+  }
+
+  mounted() {
+    if (!this.trending) {
+      axios.get('exercise/trending').then(res => {
+        this.$store.commit('setTrendingExercise', res.data);
+      });
+    }
+    if (!this.latestWorkouts) {
+      axios.get('workout/latest').then(res => {
+        this.$store.commit('setLatestWorkouts', res.data);
+      });
+    }
   }
 }
 </script>

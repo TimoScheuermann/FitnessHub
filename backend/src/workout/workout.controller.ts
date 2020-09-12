@@ -26,6 +26,16 @@ export class WorkoutController {
     return this.workoutService.getWorkouts(user);
   }
 
+  @Get('latest')
+  async getLatestWorkouts(): Promise<IWorkout[]> {
+    return this.workoutService.getLatestWorkouts();
+  }
+
+  @Get(':id')
+  async getById(@Param('id') id: string): Promise<IWorkout> {
+    return this.workoutService.getById(id);
+  }
+
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('')
   async createWorkout(

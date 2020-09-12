@@ -32,6 +32,11 @@
         routeName="exercises"
       />
       <tc-header-button
+        v-else-if="['submitRecipe', 'editRecipe'].includes($route.name)"
+        name="Rezepte"
+        routeName="recipes"
+      />
+      <tc-header-button
         v-else-if="$route.name !== 'profile'"
         routeName="profile"
         name="Profil"

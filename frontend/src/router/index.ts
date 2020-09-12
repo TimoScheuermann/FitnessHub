@@ -2,6 +2,7 @@ import EmptyRouter from '@/views-interim/EmptyRouter.vue';
 import LegalInterim from '@/views-interim/LegalInterim.vue';
 import NutritionInterim from '@/views-interim/NutritionInterim.vue';
 import ProfileInterim from '@/views-interim/ProfileInterim.vue';
+import TrainingInterim from '@/views-interim/TrainingInterim.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -48,7 +49,7 @@ const router = new VueRouter({
           }
         },
         {
-          path: '/category/:category',
+          path: 'category/:category',
           name: 'nutrition-category',
           component: () => import('@/views/nutrition/NutritionCategory.vue'),
           meta: {
@@ -59,19 +60,33 @@ const router = new VueRouter({
     },
     {
       path: '/training',
-      name: 'training',
-      component: () => import('@/views/training/Training.vue'),
-      meta: {
-        level: 0
-      }
-    },
-    {
-      path: '/training/muscle/:muscle',
-      name: 'training-muscle',
-      component: () => import('@/views/training/Muscle.vue'),
-      meta: {
-        level: 1
-      }
+      component: TrainingInterim,
+      children: [
+        {
+          path: '',
+          name: 'training',
+          component: () => import('@/views/training/Training.vue'),
+          meta: {
+            level: 0
+          }
+        },
+        {
+          path: 'muscle/:muscle',
+          name: 'training-muscle',
+          component: () => import('@/views/training/Muscle.vue'),
+          meta: {
+            level: 1
+          }
+        },
+        {
+          path: 'workout/:id',
+          name: 'workout-detail',
+          component: () => import('@/views/training/Workout.vue'),
+          meta: {
+            level: 2
+          }
+        }
+      ]
     },
     {
       path: '/playground',

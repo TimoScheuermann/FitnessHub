@@ -28,7 +28,6 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout7 extends Vue {
-  // Done
   get days(): Date[] {
     const today = new Date().getTime();
     return Array.from(
@@ -38,13 +37,13 @@ export default class FHHealthWorkout7 extends Vue {
   }
 
   get total(): number {
-    return (this.$store.getters.chartWorkouts as number[]).filter(
-      (x, i) => i > 20 && x > 0
+    return (this.$store.getters.chartWorkouts as number[][]).filter(
+      (x, i) => i > 20 && x.length > 0
     ).length;
   }
 
   public workoutedOut(index: number): boolean {
-    return this.$store.getters.chartWorkouts[index + 21];
+    return this.$store.getters.chartWorkouts[index + 21].length > 0;
   }
 
   public dayName(date: Date) {

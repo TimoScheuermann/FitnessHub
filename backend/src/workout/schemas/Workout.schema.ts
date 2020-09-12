@@ -11,6 +11,9 @@ export class Workout extends Document {
 
   @Prop()
   exercises: string[];
+
+  @Prop()
+  updated: number;
 }
 
 export const WorkoutSchema = SchemaFactory.createForClass(Workout);

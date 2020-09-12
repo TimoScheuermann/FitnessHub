@@ -20,7 +20,7 @@
       <div>
         <h1>Freunde</h1>
         <tc-list :dark="$store.getters.darkmode">
-          <tc-list-item title="Anfragen erhalten" icon="reply" :value="true" />
+          <tc-list-item title="Anfragen erhalten" icon="add" :value="true" />
           <tc-list-item
             title="Nachrichten erhalten"
             icon="chat-bubbles"
@@ -31,9 +31,17 @@
             icon="ghost"
             :value="true"
           />
-          <tc-list-item title="Gewicht teilen" icon="barometer" :value="true" />
+        </tc-list>
+        <h2>Teilen</h2>
+        <tc-list :dark="$store.getters.darkmode">
+          <tc-list-item title="Gewicht" icon="barometer" :value="true" />
           <tc-list-item title="Trinkometer" icon="bucket" :value="true" />
-          <tc-list-item title="Größe teilen" icon="arrows-v" :value="true" />
+          <tc-list-item title="Größe" icon="arrows-v" :value="true" />
+          <tc-list-item
+            title="Trainingsstatistik"
+            icon="heartbeat"
+            :value="true"
+          />
         </tc-list>
       </div>
     </tl-grid>

@@ -30,7 +30,12 @@
       <div class="card-content">
         <h3>Betroffene Muskeln</h3>
         <div class="muscles">
-          <div class="muscle" v-for="m in exercise.affectedMuscles" :key="m">
+          <div
+            class="muscle"
+            v-for="m in exercise.affectedMuscles"
+            :key="m"
+            @click="showTrainingsFor(m)"
+          >
             {{ m }}
           </div>
         </div>
@@ -116,6 +121,10 @@ export default class FHExercise extends Vue {
       this.exercise.reviewed &&
       !this.isInATWModal
     );
+  }
+
+  public showTrainingsFor(muscle: string) {
+    this.$router.push({ name: 'training-muscle', params: { muscle: muscle } });
   }
 
   public addToWorkout(): void {

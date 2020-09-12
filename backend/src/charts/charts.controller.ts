@@ -11,7 +11,7 @@ export class ChartsController {
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('')
-  async getCharts(@FHUser() user: IUser): Promise<any> {
+  async getCharts(@FHUser() user: IUser): Promise<number[][]> {
     return this.chatService.getCharts(user._id);
   }
 }

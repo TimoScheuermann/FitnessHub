@@ -35,9 +35,9 @@ export default class FHHealthTimeW extends Vue {
   public height = 125;
 
   get times(): number[] {
-    return (this.$store.getters.chartTimes as number[])
+    return (this.$store.getters.chartWorkouts as number[][])
       .filter((x, i) => i > 20)
-      .map(x => Math.floor(x / 60));
+      .map(x => Math.floor(x.reduce((a, b) => a + b, 0) / 60));
   }
 
   get days(): string[] {

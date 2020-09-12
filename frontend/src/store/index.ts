@@ -32,11 +32,12 @@ export default new Vuex.Store({
     friendRequests: [] as IPendingFriendship[],
     primaryColor: '#25ca49',
     openRequests: 0,
+    trendingExercises: null,
+    latestWorkouts: null,
     exercises: [] as IExercise[],
     exerciseSubmissions: [] as IExercise[],
     workouts: [] as IWorkout[],
-    chartWorkouts: [],
-    chartTimes: [],
+    chartWorkouts: Array.from({ length: 28 }, () => []),
     recipes: [] as IRecipe[],
     favedRecipes: [] as IRecipe[],
     weight: null,
@@ -111,9 +112,6 @@ export default new Vuex.Store({
     chartWorkouts: (state: any): number[] => {
       return state.chartWorkouts;
     },
-    chartTimes: (state: any): number[] => {
-      return state.chartTimes;
-    },
     recipes: (state: any): IRecipe[] => {
       return state.recipes;
     },
@@ -125,6 +123,12 @@ export default new Vuex.Store({
     },
     water: (state: any): IHealth[] => {
       return state.water;
+    },
+    trendingExercises: (state: any): IExercise[] | null => {
+      return state.trendingExercises;
+    },
+    latestWorkouts: (state: any): IWorkout[] | null => {
+      return state.latestWorkouts;
     }
   },
   mutations: {
@@ -261,12 +265,8 @@ export default new Vuex.Store({
       state.chartWorkouts[27]++;
       state.chartTimes[27] += time;
     },
-    setWorkoutCharts(
-      state: any,
-      data: { workouts: number[]; times: number[] }
-    ) {
-      state.chartWorkouts = data.workouts;
-      state.chartTimes = data.times;
+    setWorkoutCharts(state: any, data: number[][]) {
+      state.chartWorkouts = data;
     },
     addRecipe(state: any, recipe: IRecipe) {
       let matched = false;
@@ -313,6 +313,12 @@ export default new Vuex.Store({
         return x;
       });
       if (!matched) state.water.push(water);
+    },
+    setTrendingExercise(state: any, exercises: IExercise[]) {
+      state.trendingExercises = exercises;
+    },
+    setLatestWorkouts(state: any, workouts: IWorkout[]) {
+      state.latestWorkouts = workouts;
     }
   }
 });

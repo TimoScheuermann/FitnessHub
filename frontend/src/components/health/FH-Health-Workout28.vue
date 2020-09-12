@@ -37,7 +37,6 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout28 extends Vue {
-  // Done
   public monthNames = months;
   public skips = Array.from({ length: new Date().getDay() }, (x, i) => 's' + i);
 
@@ -56,12 +55,13 @@ export default class FHHealthWorkout28 extends Vue {
   }
 
   public workedOut(index: number) {
-    return this.$store.getters.chartWorkouts[index];
+    return this.$store.getters.chartWorkouts[index].length > 0;
   }
 
   get total(): number {
-    return (this.$store.getters.chartWorkouts as number[]).filter(x => x > 0)
-      .length;
+    return (this.$store.getters.chartWorkouts as number[][]).filter(
+      x => x.length > 0
+    ).length;
   }
 }
 </script>

@@ -1,24 +1,9 @@
 <template>
-  <div class="Muscle">
-    <fh-mobile-header :title="muscle" />
-    <tc-hero
-      :dark="true"
-      :hasFixedHeader="$store.getters.fixedHeader"
-      :height="200"
-    >
-      <img
-        src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=25"
-        slot="background"
-        alt
-      />
-      <h1>{{ muscle }}</h1>
-    </tc-hero>
-    <div content>
-      <h1>Übungen</h1>
-      <tl-grid>
-        <fh-exercise v-for="ex in exercises" :key="ex._id" :exercise="ex" />
-      </tl-grid>
-    </div>
+  <div class="Muscle" content>
+    <h1>Übungen</h1>
+    <tl-grid>
+      <fh-exercise v-for="ex in exercises" :key="ex._id" :exercise="ex" />
+    </tl-grid>
   </div>
 </template>
 

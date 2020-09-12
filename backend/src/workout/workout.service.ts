@@ -25,9 +25,35 @@ export class WorkoutService {
     return Promise.all(workouts.map(async (x) => this.mapWorkoutToInfo(x)));
   }
 
+  public async getLatestWorkouts(): Promise<IWorkout[]> {
+    const workouts: Workout[] = await this.workoutModel
+      .find({ updated: { $exists: true }, 'exercises.1': { $exists: true } })
+      .sort({ updated: -1 })
+      .limit(10);
+    return Promise.all(workouts.map(async (x) => this.mapWorkoutToInfo(x)));
+  }
+
+  public async getById(id: string): Promise<IWorkout> {
+    const workout = await this.workoutModel.findById(id);
+    if (workout) {
+      const exercises: IExerciseInfo[] = await Promise.all(
+        workout.exercises.map(async (x) => await this.getExerciseInfoById(x)),
+      );
+      return {
+        author: workout.author,
+        exercises: exercises,
+        title: workout.title,
+        updated: workout.updated,
+        _id: workout._id,
+      };
+    }
+    return null;
+  }
+
   private async mapWorkoutToInfo(workout: Workout): Promise<IWorkout> {
     return {
       _id: workout._id,
+      updated: workout.updated,
       author: workout.author,
       title: workout.title,
       exercises: await Promise.all(
@@ -46,6 +72,7 @@ export class WorkoutService {
       author: user._id,
       exercises: createWorkoutDTO.exercises,
       title: createWorkoutDTO.title,
+      updated: new Date().getTime(),
     });
     const info = await this.mapWorkoutToInfo(workout);
     this.fhSocket.server.to(user._id).emit('workout', info);
@@ -58,7 +85,13 @@ export class WorkoutService {
   ): Promise<void> {
     await this.workoutModel.updateOne(
       { author: user._id, _id: id },
-      { $set: { exercises: workoutDTO.exercises, title: workoutDTO.title } },
+      {
+        $set: {
+          exercises: workoutDTO.exercises,
+          title: workoutDTO.title,
+          updated: new Date().getTime(),
+        },
+      },
     );
     const workout = await this.workoutModel.findOne({
       _id: id,
