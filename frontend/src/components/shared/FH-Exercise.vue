@@ -1,16 +1,20 @@
 <template>
-  <div class="fh-exercise" v-if="exercise">
-    <tc-magic-card :src="exercise.thumbnail" :dark="$store.getters.darkmode">
+  <div class="fh-exercise">
+    <tc-magic-card
+      v-if="ex"
+      :src="ex.thumbnail"
+      :dark="$store.getters.darkmode"
+    >
       <div class="card-thumbnail" slot="thumbnail">
         <tl-flow flow="column" vertical="start">
-          <div class="indicator" :diff="exercise.difficulty">
+          <div class="indicator" :diff="ex.difficulty">
             <i
               class="ti-circle"
-              v-for="(i, j) in Array(+exercise.difficulty)"
+              v-for="(i, j) in Array(+ex.difficulty)"
               :key="j"
             />
           </div>
-          <div class="title">{{ exercise.title }}</div>
+          <div class="title">{{ ex.title }}</div>
         </tl-flow>
       </div>
       <div
@@ -19,6 +23,7 @@
         slot="thumbnail"
       >
         <tc-button
+          :disabled="$store.getters.loading"
           variant="border"
           name="Workout"
           icon="plus"
@@ -32,7 +37,7 @@
         <div class="muscles">
           <div
             class="muscle"
-            v-for="m in exercise.affectedMuscles"
+            v-for="m in ex.affectedMuscles"
             :key="m"
             @click="showTrainingsFor(m)"
           >
@@ -40,47 +45,48 @@
           </div>
         </div>
         <h3>Volumen</h3>
-        <template v-if="exercise.reps">
+        <template v-if="ex.reps">
           <ul>
-            <li>Sätze: {{ exercise.sets }}</li>
-            <li>Wiederholungen: {{ exercise.reps }}</li>
+            <li>Sätze: {{ ex.sets }}</li>
+            <li>Wiederholungen: {{ ex.reps }}</li>
           </ul>
         </template>
-        <template v-else-if="exercise.distance">
+        <template v-else-if="ex.distance">
           <ul>
-            <li>Strecke: {{ exercise.distance }}</li>
+            <li>Strecke: {{ ex.distance }}</li>
           </ul>
         </template>
-        <template v-else-if="exercise.time">
+        <template v-else-if="ex.time">
           <ul>
             <li>Dauer: {{ time }}</li>
           </ul>
         </template>
-        <template v-if="exercise.warnings.length > 0">
+        <template v-if="ex.warnings.length > 0">
           <h3>Hinweise</h3>
           <ul>
-            <li v-for="h in exercise.warnings" :key="h">{{ h }}</li>
+            <li v-for="h in ex.warnings" :key="h">{{ h }}</li>
           </ul>
         </template>
 
-        <template v-if="exercise.steps.length > 0">
+        <template v-if="ex.steps.length > 0">
           <h3>Ausführung</h3>
           <tc-steps
             :dark="$store.getters.darkmode"
             direction="column"
             :current="99"
           >
-            <tc-step-item v-for="s in exercise.steps" :key="s" :title="s" />
+            <tc-step-item v-for="s in ex.steps" :key="s" :title="s" />
           </tc-steps>
         </template>
 
         <tl-grid edit v-if="isAuthor">
           <tc-button
+            :disabled="$store.getters.loading"
             variant="filled"
             tfbackground="success"
             name="Übung bearbeiten"
             icon="tools"
-            :to="{ name: 'editExercise', params: { id: exercise._id } }"
+            :to="{ name: 'editExercise', params: { id: ex._id } }"
           />
         </tl-grid>
       </div>
@@ -89,6 +95,7 @@
 </template>
 
 <script lang="ts">
+import axios from '@/utils/axios';
 import { EventBus } from '@/utils/eventbus';
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
@@ -97,10 +104,21 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class FHExercise extends Vue {
   @Prop() exercise!: IExercise;
   @Prop({ default: false }) isInATWModal!: boolean;
+  @Prop() id!: string;
+
+  public ex: IExercise = this.exercise || null;
+
+  async mounted() {
+    if (!this.ex && this.id) {
+      const { data } = await axios.get('exercise/' + this.id);
+      this.ex = data;
+      this.$forceUpdate();
+    }
+  }
 
   get time(): string {
-    if (this.exercise) {
-      const time = this.exercise.time || 0;
+    if (this.ex) {
+      const time = this.ex.time || 0;
       const hours = Math.floor(time / 3600);
       const minutes = Math.floor(time / 60) - hours * 60;
       const seconds = time % 60;
@@ -117,8 +135,8 @@ export default class FHExercise extends Vue {
   get isAuthor(): boolean {
     return (
       this.$store.getters.valid &&
-      this.exercise.author === this.$store.getters.user._id &&
-      this.exercise.reviewed &&
+      this.ex.author === this.$store.getters.user._id &&
+      this.ex.reviewed &&
       !this.isInATWModal
     );
   }
@@ -128,14 +146,13 @@ export default class FHExercise extends Vue {
   }
 
   public addToWorkout(): void {
-    EventBus.$emit('add-to-workout', this.exercise);
+    EventBus.$emit('add-to-workout', this.ex);
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .fh-exercise {
-  // position: absolute;
   .card-content {
     padding: 0 5vw;
     .muscles {
@@ -144,12 +161,22 @@ export default class FHExercise extends Vue {
         padding: 2.5px 12.5px;
         box-sizing: border-box;
         border: 2px solid rgba($color, 0.25);
+        &:hover {
+          background: $color;
+          color: $color_dark;
+        }
         @media (prefers-color-scheme: dark) {
           border-color: rgba($color_dark, 0.5);
+          &:hover {
+            background: $color_dark;
+            color: $color;
+          }
         }
         border-radius: $border-radius;
         display: inline-block;
         margin: 3px;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
       }
     }
   }

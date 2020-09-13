@@ -1,19 +1,23 @@
 <template>
   <div class="training" content>
-    <template v-if="trending">
+    <fh-todays-workout />
+    <template v-if="trendingExercises">
       <h1>Übungen der Woche</h1>
       <fh-carousel>
-        <fh-exercise v-for="e in trending" :key="e._id" :exercise="e" />
+        <fh-exercise
+          v-for="e in trendingExercises"
+          :key="e._id"
+          :exercise="e"
+        />
       </fh-carousel>
     </template>
 
-    <tc-link
-      :to="{
-        name: 'workout-detail',
-        params: { id: '5f57ca73a012872d48451f52' }
-      }"
-      >tmp</tc-link
-    >
+    <template v-if="latestExercises">
+      <h1>Neueste Übungen</h1>
+      <fh-carousel>
+        <fh-exercise v-for="e in latestExercises" :key="e._id" :exercise="e" />
+      </fh-carousel>
+    </template>
 
     <template v-if="latestWorkouts">
       <h1>Aktuelle Workouts</h1>
@@ -35,7 +39,7 @@
           v-for="m in muscles"
           :key="m"
           :title="m"
-          :to="{ name: 'traning-muscle', params: { muscle: m } }"
+          :to="{ name: 'training-muscle', params: { muscle: m } }"
         />
       </tc-list>
     </div>
@@ -59,27 +63,38 @@ import FHExercise from '@/components/shared/FH-Exercise.vue';
 import axios from '@/utils/axios';
 import { muscles } from '@/utils/muscles';
 import FHWorkoutPreview from '@/components/workout/FH-WorkoutPreview.vue';
+import FHTodaysWorkout from '@/components/workout/FH-TodaysWorkout.vue';
 
 @Component({
   components: {
     'fh-exercise': FHExercise,
-    'fh-workout-preview': FHWorkoutPreview
+    'fh-workout-preview': FHWorkoutPreview,
+    'fh-todays-workout': FHTodaysWorkout
   }
 })
 export default class Training extends Vue {
   private muscles = muscles;
 
-  get trending(): IExercise[] | null {
+  get trendingExercises(): IExercise[] | null {
     return this.$store.state.trendingExercises;
   }
+  get latestExercises(): IExercise[] | null {
+    return this.$store.state.latestExercises;
+  }
+
   get latestWorkouts(): IWorkout[] | null {
     return this.$store.state.latestWorkouts;
   }
 
   mounted() {
-    if (!this.trending) {
+    if (!this.trendingExercises) {
       axios.get('exercise/trending').then(res => {
         this.$store.commit('setTrendingExercise', res.data);
+      });
+    }
+    if (!this.latestExercises) {
+      axios.get('exercise/latest').then(res => {
+        this.$store.commit('setLatestExercise', res.data);
       });
     }
     if (!this.latestWorkouts) {

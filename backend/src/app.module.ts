@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { ChartsModule } from './charts/charts.module';
 import { ExerciseModule } from './exercise/exercise.module';
 import { FHSocket } from './FHSocket';
 import { FriendsModule } from './friends/friends.module';
@@ -11,13 +12,13 @@ import { HealthModule } from './health/health.module';
 import { PromoteModule } from './management/promote/promote.module';
 import { StatisticsModule } from './management/statistics/statistics.module';
 import { MessageModule } from './message/message.module';
+import { NetlifyModule } from './netlify/netlify.module';
 import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { TgbotModule } from './tgbot/tgbot.module';
+import { TrainingplanModule } from './trainingplan/trainingplan.module';
 import { UserModule } from './user/user.module';
-import { NetlifyModule } from './netlify/netlify.module';
 import { WorkoutModule } from './workout/workout.module';
-import { ChartsModule } from './charts/charts.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { ChartsModule } from './charts/charts.module';
     NetlifyModule,
     WorkoutModule,
     ChartsModule,
+    TrainingplanModule,
   ],
   controllers: [AppController],
   providers: [FHSocket, AppService],

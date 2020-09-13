@@ -22,6 +22,7 @@
       </fh-user-list>
       <br />
       <tc-button
+        :disabled="$store.getters.loading"
         name="Promote"
         tfbackground="success"
         icon="user-shield"

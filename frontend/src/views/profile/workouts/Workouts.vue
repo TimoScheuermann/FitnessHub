@@ -8,8 +8,18 @@
       Du hast noch kein Workout erstellt. Erstelle eins, um Übungen zu
       kombinieren
     </p>
-    <fh-workout-list :editbutton="true" v-else />
+    <fh-workout-list :editbutton="true" @workout="openWorkout" v-else />
     <h1>Trainingsplan</h1>
+    <tl-grid>
+      <fh-todays-workout
+        v-for="(d, index) in daynames"
+        :key="d"
+        :offset="index"
+        :onlyPreview="true"
+        :day="d"
+        :spaceing="false"
+      />
+    </tl-grid>
   </div>
 </template>
 
@@ -17,17 +27,29 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { EventBus } from '@/utils/eventbus';
 import FHWorkoutList from '@/components/workout/FH-WorkoutList.vue';
+import { ITrainingplanFull, IWorkout } from '@/utils/interfaces';
+import { days } from '@/utils/constants';
+import FHTodaysWorkout from '@/components/workout/FH-TodaysWorkout.vue';
 
 @Component({
   components: {
-    'fh-workout-list': FHWorkoutList
+    'fh-workout-list': FHWorkoutList,
+    'fh-todays-workout': FHTodaysWorkout
   }
 })
 export default class Workouts extends Vue {
+  public daynames = days;
+
   public newWorkout(): void {
-    EventBus.$emit('add-to-workout', null);
+    EventBus.$emit('create-workout');
+  }
+
+  get trainingplan(): ITrainingplanFull | null {
+    return this.$store.getters.trainingplan;
+  }
+
+  public openWorkout(workout: IWorkout) {
+    this.$router.push({ name: 'workout-detail', params: { id: workout._id } });
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

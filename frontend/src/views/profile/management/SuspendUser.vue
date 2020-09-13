@@ -33,6 +33,7 @@
           v-model="date"
         />
         <tc-button
+          :disabled="$store.getters.loading"
           tfbackground="error"
           name="Sperren"
           icon="blocked"

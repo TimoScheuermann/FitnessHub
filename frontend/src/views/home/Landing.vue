@@ -18,7 +18,7 @@
           <div class="tile-title" slot="thumbnail">Starten</div>
         </tc-magic-card>
       </router-link>
-      <div @click.capture="createWorkout">
+      <div @click.capture.stop="createWorkout">
         <tc-magic-card
           src="https://images.unsplash.com/photo-1547919307-1ecb10702e6f?w=540&q=5"
           :dark="true"
@@ -43,9 +43,8 @@ import { Vue, Component } from 'vue-property-decorator';
   }
 })
 export default class Landing extends Vue {
-  public createWorkout(event: MouseEvent) {
-    event.stopPropagation();
-    EventBus.$emit('add-to-workout');
+  public createWorkout() {
+    EventBus.$emit('create-workout');
   }
 }
 </script>

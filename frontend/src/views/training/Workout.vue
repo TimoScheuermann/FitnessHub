@@ -13,28 +13,59 @@
     </div>
     <div v-else content>
       <h1>{{ workout.title }}</h1>
-      <p>soon</p>
+      <tl-grid>
+        <fh-exercise v-for="e in exercises" :key="e._id" :id="e._id" />
+      </tl-grid>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { IWorkout } from '@/utils/interfaces';
+import FHExercise from '@/components/shared/FH-Exercise.vue';
+import { IExerciseInfo, IWorkout } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component
+@Component({
+  components: {
+    'fh-exercise': FHExercise
+  }
+})
 export default class Workout extends Vue {
   @Prop() workout!: IWorkout | null;
+
+  get exercises(): IExerciseInfo[] {
+    if (!this.workout) return [];
+    return this.workout.exercises;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+@keyframes hero-anim {
+  from {
+    max-width: 0vw;
+  }
+  to {
+    max-width: 100vw;
+  }
+}
 .workout-hero {
-  height: calc(200px + env(safe-area-inset-top));
+  margin-top: -200px;
+  height: 200px;
+  @media #{$isDesktop} {
+    margin-top: -250px;
+    height: 250px;
+  }
+  .image-bar {
+    animation: hero-anim 1s ease-out 0.2s both;
+  }
+
   display: flex;
+  justify-content: center;
   position: relative;
   .title {
     position: absolute;
+    text-align: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

@@ -100,7 +100,12 @@
           :rows="5"
           v-model="stepInput"
         />
-        <tc-button tfbackground="success" name="Hinzufügen" @click="addStep" />
+        <tc-button
+          :disabled="$store.getters.loading"
+          tfbackground="success"
+          name="Hinzufügen"
+          @click="addStep"
+        />
 
         <div class="title" v-if="exercise.steps.length > 0">Schritte</div>
         <tc-table :dark="$store.getters.darkmode">
@@ -124,6 +129,7 @@
           v-model="warningInput"
         />
         <tc-button
+          :disabled="$store.getters.loading"
           tfbackground="success"
           name="Hinzufügen"
           @click="addWarning"
@@ -179,58 +185,58 @@
 
     <tl-grid class="buttons" gap="0px 20">
       <tc-button
+        :disabled="$store.getters.loading"
         v-if="mode === 'new'"
         variant="filled"
         tfbackground="success"
         name="Übung einreichen"
         icon="share"
         @click="submitForm"
-        :disabled="$store.getters.loading"
       />
       <tc-button
+        :disabled="$store.getters.loading"
         v-else-if="mode === 'edit'"
         variant="filled"
         tfbackground="success"
         name="Änderungen einreichen"
         icon="pencil"
         @click="submitChange"
-        :disabled="$store.getters.loading"
       />
       <template v-else-if="mode === 'publish'">
         <tc-button
+          :disabled="$store.getters.loading"
           variant="filled"
           tfbackground="success"
           name="Übung veröffentlichen"
           icon="globe"
           @click="publishExercise"
-          :disabled="$store.getters.loading"
         />
         <tc-button
+          :disabled="$store.getters.loading"
           variant="filled"
           tfbackground="error"
           name="Übung löschen"
           icon="trashcan-alt"
           @click="deleteExercise"
-          :disabled="$store.getters.loading"
         />
       </template>
 
       <template v-else-if="mode === 'publishEdit'">
         <tc-button
+          :disabled="$store.getters.loading"
           variant="filled"
           tfbackground="success"
           name="Änderungen übernehmen"
           icon="checkmark"
           @click="publishExercise"
-          :disabled="$store.getters.loading"
         />
         <tc-button
+          :disabled="$store.getters.loading"
           variant="filled"
           tfbackground="error"
           name="Änderungen verwerfen"
           icon="trashcan-alt"
           @click="rejectChanges"
-          :disabled="$store.getters.loading"
         />
       </template>
     </tl-grid>

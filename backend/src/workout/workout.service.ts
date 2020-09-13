@@ -5,6 +5,7 @@ import { IExercise } from 'src/exercise/interfaces/IExercise';
 import { IExerciseInfo } from 'src/exercise/interfaces/IExerciseInfo';
 import { Exercise } from 'src/exercise/schemas/Exercise.schema';
 import { FHSocket } from 'src/FHSocket';
+import { Trainingplan } from 'src/trainingplan/schemas/Trainingplan.schema';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateWorkoutDTO } from './dtos/CreateWorkout.dto';
 import { IWorkout } from './interfaces/IWorkout';
@@ -16,6 +17,8 @@ export class WorkoutService {
     private readonly fhSocket: FHSocket,
     @InjectModel(Workout.name) private workoutModel: Model<Workout>,
     @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
+    @InjectModel(Trainingplan.name)
+    private trainingplanModel: Model<Trainingplan>,
   ) {}
 
   public async getWorkouts(user: IUser): Promise<IWorkout[]> {
@@ -102,8 +105,16 @@ export class WorkoutService {
   }
 
   public async deleteWorkout(user: IUser, id: string): Promise<void> {
-    await this.workoutModel.deleteOne({ _id: id, author: user._id });
     this.fhSocket.server.to(user._id).emit('workout.remove', id);
+    await this.workoutModel.deleteOne({ _id: id, author: user._id });
+    for (let i = 0; i < 7; i++) {
+      const object = {};
+      object[i] = id;
+      await this.trainingplanModel.update(
+        { author: user._id, ...object },
+        { $unset: object },
+      );
+    }
   }
 
   public async getExerciseInfoById(id: string): Promise<IExerciseInfo> {

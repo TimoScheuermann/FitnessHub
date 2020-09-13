@@ -61,6 +61,7 @@
           />
         </tl-grid>
         <tc-button
+          :disabled="$store.getters.loading"
           name="Hinzufügen"
           tfbackground="success"
           @click="addIngredient"
@@ -104,6 +105,7 @@
           />
         </tl-grid>
         <tc-button
+          :disabled="$store.getters.loading"
           name="Hinzufügen"
           tfbackground="success"
           @click="addNutrition"
@@ -131,7 +133,12 @@
           :dark="$store.getters.darkmode"
           title="Schritt"
         />
-        <tc-button name="Hinzufügen" tfbackground="success" @click="addStep" />
+        <tc-button
+          :disabled="$store.getters.loading"
+          name="Hinzufügen"
+          tfbackground="success"
+          @click="addStep"
+        />
         <template v-if="recipe.steps.length > 0">
           <div class="title">Schritte</div>
           <tc-table :dark="$store.getters.darkmode">
@@ -186,30 +193,30 @@
 
     <div class="buttons">
       <tc-button
+        :disabled="$store.getters.loading"
         v-if="mode !== 'edit'"
         variant="filled"
         tfbackground="success"
         name="Veröffentlichen"
         icon="globe"
         @click="createRecipe"
-        :disabled="$store.getters.loading"
       />
       <template v-else>
         <tc-button
+          :disabled="$store.getters.loading"
           variant="filled"
           tfbackground="success"
           name="Änderungen speichern"
           icon="pencil"
           @click="updateRecipe"
-          :disabled="$store.getters.loading"
         />
         <tc-button
+          :disabled="$store.getters.loading"
           variant="filled"
           tfbackground="error"
           name="Rezept löschen"
           icon="trashcan-alt"
           @click="deleteRecipe"
-          :disabled="$store.getters.loading"
         />
       </template>
     </div>

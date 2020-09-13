@@ -10,6 +10,7 @@ import {
   IMessage,
   IPendingFriendship,
   IRecipe,
+  ITrainingplanFull,
   IUser,
   IUserInfo,
   IWorkout
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     primaryColor: '#25ca49',
     openRequests: 0,
     trendingExercises: null,
+    latestExercises: null,
     latestWorkouts: null,
     exercises: [] as IExercise[],
     exerciseSubmissions: [] as IExercise[],
@@ -41,7 +43,8 @@ export default new Vuex.Store({
     recipes: [] as IRecipe[],
     favedRecipes: [] as IRecipe[],
     weight: null,
-    water: null
+    water: null,
+    trainingplan: null
   },
   getters: {
     valid: (state: any): boolean => {
@@ -127,8 +130,14 @@ export default new Vuex.Store({
     trendingExercises: (state: any): IExercise[] | null => {
       return state.trendingExercises;
     },
+    latestExercises: (state: any): IExercise[] | null => {
+      return state.latestExercises;
+    },
     latestWorkouts: (state: any): IWorkout[] | null => {
       return state.latestWorkouts;
+    },
+    trainingplan: (state: any): ITrainingplanFull | null => {
+      return state.trainingplan;
     }
   },
   mutations: {
@@ -317,8 +326,14 @@ export default new Vuex.Store({
     setTrendingExercise(state: any, exercises: IExercise[]) {
       state.trendingExercises = exercises;
     },
+    setLatestExercise(state: any, exercises: IExercise[]) {
+      state.latestExercises = exercises;
+    },
     setLatestWorkouts(state: any, workouts: IWorkout[]) {
       state.latestWorkouts = workouts;
+    },
+    setTrainingplan(state: any, trainingplan: ITrainingplanFull) {
+      state.trainingplan = trainingplan;
     }
   }
 });

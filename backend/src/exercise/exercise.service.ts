@@ -97,12 +97,6 @@ export class ExerciseService {
     );
 
     const exercise: IExercise = await this.getById(id);
-    // this.tgbotService.sendMessage(
-    //   this.userService.transformName(reviewer) +
-    //     ' hat die Übung ' +
-    //     update.title +
-    //     ' veröffentlicht!',
-    // );
     this.sendUpdateNotifications(exercise, true, false, true);
   }
 
@@ -193,7 +187,7 @@ export class ExerciseService {
     // TODO: Inform friends?
   }
 
-  public async getTrendingExercises(): Promise<any[]> {
+  public async getTrendingExercises(): Promise<IExercise[]> {
     const weekStart = new Date().getTime() - 1000 * 60 * 60 * 24 * 7; // a week before
     const finished = await this.completedExerciseModel
       .aggregate([
@@ -203,5 +197,13 @@ export class ExerciseService {
       .sort({ count: -1 });
 
     return Promise.all(finished.map(async (x) => await this.getById(x._id)));
+  }
+
+  public async getLatestExercises(): Promise<IExercise[]> {
+    return await this.exerciseModel
+      .find()
+      .sort({ updated: -1, created: -1 })
+      .limit(10)
+      .sort({ updated: 1, created: 1 });
   }
 }

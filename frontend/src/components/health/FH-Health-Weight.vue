@@ -51,11 +51,11 @@
         </div>
         <tl-flow vertical="end">
           <tc-button
+            :disabled="$store.getters.loading"
             tfbackground="success"
             @click="submit"
             name="Speichern"
             variant="filled"
-            :disabled="$store.getters.loading"
           />
         </tl-flow>
       </div>

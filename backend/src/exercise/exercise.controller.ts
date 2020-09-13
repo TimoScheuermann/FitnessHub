@@ -37,6 +37,11 @@ export class ExerciseController {
     return this.exerciseService.getTrendingExercises();
   }
 
+  @Get('latest')
+  async getLatestExercises(): Promise<any[]> {
+    return this.exerciseService.getLatestExercises();
+  }
+
   @Get('muscle/:muscle')
   async getByMuscle(@Param('muscle') muscle: string): Promise<IExercise[]> {
     return this.exerciseService.getByMuscle(muscle);

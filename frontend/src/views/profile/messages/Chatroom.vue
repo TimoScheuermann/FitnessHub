@@ -31,6 +31,7 @@
           </div>
           <tl-flow>
             <tc-button
+              :disabled="$store.getters.loading"
               variant="opaque"
               tfbackground="success"
               name="Übung ansehen"

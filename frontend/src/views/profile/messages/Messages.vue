@@ -45,7 +45,12 @@
     >
       <tl-flow flow="column" v-if="$store.getters.friends.length === 0">
         Füge Freunde hinzu, um ihnen Nachrichten zu schicken.
-        <tc-button icon="users" name="Freund hinzufügen" routeName="friends" />
+        <tc-button
+          :disabled="$store.getters.loading"
+          icon="users"
+          name="Freund hinzufügen"
+          routeName="friends"
+        />
       </tl-flow>
       <fh-user-list v-else>
         <fh-user-list-item

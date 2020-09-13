@@ -14,12 +14,12 @@
     </div>
     <div class="fav-button" slot="thumbnail" v-if="$store.getters.valid">
       <tc-button
+        :disabled="$store.getters.loading"
         @click.stop="like"
         icon="heart"
         :variant="hasLiked ? 'filled' : 'opaque'"
         tfbackground="error"
         :name="hasLiked ? 'gefällt dir' : undefined"
-        :disabled="$store.getters.loading"
       />
     </div>
 
@@ -27,7 +27,12 @@
       <p v-if="recipe.description">{{ recipe.description }}</p>
       <h3>Kategorien</h3>
       <div class="categories">
-        <div class="category" v-for="c in recipe.category" :key="c">
+        <div
+          class="category"
+          v-for="c in recipe.category"
+          :key="c"
+          @click="showRecipesOf(c)"
+        >
           {{ c }}
         </div>
       </div>
@@ -84,6 +89,7 @@
       <template v-if="isAuthor">
         <tl-grid>
           <tc-button
+            :disabled="$store.getters.loading"
             variant="filled"
             name="Rezept bearbeiten"
             tfbackground="success"
@@ -129,6 +135,13 @@ export default class FHRecipe extends Vue {
     if (!this.recipe) return false;
     if (!this.$store.getters.valid) return false;
     return this.recipe.author === this.$store.getters.user._id;
+  }
+
+  public showRecipesOf(category: string) {
+    this.$router.push({
+      name: 'nutrition-category',
+      params: { category: category }
+    });
   }
 }
 </script>
@@ -190,12 +203,22 @@ export default class FHRecipe extends Vue {
         padding: 2.5px 12.5px;
         box-sizing: border-box;
         border: 2px solid rgba($color, 0.25);
+        &:hover {
+          background: $color;
+          color: $color_dark;
+        }
         @media (prefers-color-scheme: dark) {
           border-color: rgba($color_dark, 0.5);
+          &:hover {
+            background: $color_dark;
+            color: $color;
+          }
         }
         border-radius: $border-radius;
         display: inline-block;
         margin: 3px;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
       }
     }
     .difficulty {

@@ -9,7 +9,6 @@
     </fh-mobile-header>
 
     <tc-hero
-      v-if="$route.name !== 'workout-detail'"
       :dark="true"
       :hasFixedHeader="$store.getters.fixedHeader"
       :height="200"

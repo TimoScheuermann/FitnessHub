@@ -5,6 +5,8 @@
     <fh-notification />
     <fh-user-search />
     <fh-add-to-workout />
+    <fh-create-workout />
+    <fh-edit-trainingplan />
 
     <div class="view">
       <transition name="main-route">
@@ -29,6 +31,8 @@ import ExerciseSocketManager from '@/socketManager/ExerciseSocket.manager';
 import WorkoutSocketManager from '@/socketManager/WorkoutSocket.manager';
 import FHUserSearch from './components/global/FH-User-Search.vue';
 import FHAddToWorkout from './components/global/FH-AddToWorkout.vue';
+import FHEditTrainingplan from './components/workout/FH-EditTrainingplan.vue';
+import FHCreateWorkout from './components/global/FH-CreateWorkout.vue';
 
 @Component({
   components: {
@@ -36,7 +40,9 @@ import FHAddToWorkout from './components/global/FH-AddToWorkout.vue';
     'fh-tabbar': FHTabbar,
     'fh-notification': FHNotification,
     'fh-user-search': FHUserSearch,
-    'fh-add-to-workout': FHAddToWorkout
+    'fh-add-to-workout': FHAddToWorkout,
+    'fh-create-workout': FHCreateWorkout,
+    'fh-edit-trainingplan': FHEditTrainingplan
   }
 })
 export default class App extends Mixins(
@@ -128,6 +134,14 @@ a {
     flex: 1 1 0px;
     margin: 0 2.5px;
   }
+}
+.tc-magic-card .tc-magic-card--background,
+.tc-magic-card /deep/ .tc-magic-card--background {
+  z-index: 995 !important;
+}
+.tc-magic-card .tc-magic-card--card,
+.tc-magic-card /deep/ .tc-magic-card--card {
+  z-index: 996 !important;
 }
 
 .view {

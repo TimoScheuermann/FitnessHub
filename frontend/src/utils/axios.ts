@@ -4,7 +4,7 @@ import { getToken } from './auth';
 import { backendURL } from './constants';
 
 const axios = Axios.create({
-  timeout: 5000,
+  timeout: 10000,
   baseURL: backendURL
 });
 
