@@ -82,6 +82,11 @@ export default class App extends Mixins(
 </script>
 
 <style lang="scss">
+.test {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 html {
   font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Inter,
     Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji,

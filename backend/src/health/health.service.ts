@@ -21,6 +21,18 @@ export class HealthService {
   public async getWeightData(userId: string): Promise<IHealth[]> {
     return this.getDataOfType(userId, HealthType.WEIGHT);
   }
+  public async getCurrentWeight(userId: string): Promise<number> {
+    const data = await this.healthModel
+      .find({ user: userId, type: HealthType.WEIGHT })
+      .sort({ date: -1 })
+      .limit(1);
+    if (!data || data.length == 0) return -1;
+    return data[0].value;
+  }
+
+  public async getHeightData(userId: string): Promise<IHealth> {
+    return this.healthModel.findOne({ user: userId, type: HealthType.HEIGHT });
+  }
 
   private async getDataOfType(
     userId: string,
@@ -54,6 +66,14 @@ export class HealthService {
       user: userId,
       value: amount,
     });
+  }
+
+  public async setHeight(userId: string, amount: number): Promise<void> {
+    await this.healthModel.updateOne(
+      { user: userId, type: HealthType.HEIGHT },
+      { $set: { value: amount, date: new Date().getTime() } },
+      { upsert: true },
+    );
   }
 
   public async deleteHealthData(userID: string, id: string): Promise<void> {

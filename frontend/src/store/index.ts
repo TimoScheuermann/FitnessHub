@@ -37,6 +37,7 @@ export default new Vuex.Store({
     latestExercises: null,
     latestWorkouts: null,
     exercises: [] as IExercise[],
+    recentExercises: [] as IExercise[],
     exerciseSubmissions: [] as IExercise[],
     workouts: [] as IWorkout[],
     chartWorkouts: Array.from({ length: 28 }, () => []),
@@ -44,7 +45,8 @@ export default new Vuex.Store({
     favedRecipes: [] as IRecipe[],
     weight: null,
     water: null,
-    trainingplan: null
+    trainingplan: null,
+    height: null
   },
   getters: {
     valid: (state: any): boolean => {
@@ -106,6 +108,9 @@ export default new Vuex.Store({
     exercises: (state: any): IExercise[] => {
       return state.exercises;
     },
+    recentExercises: (state: any): IExercise[] => {
+      return state.recentExercises;
+    },
     exerciseSubmissions: (state: any): IExercise[] => {
       return state.exerciseSubmissions;
     },
@@ -121,8 +126,16 @@ export default new Vuex.Store({
     favedRecipes: (state: any): IRecipe[] => {
       return state.favedRecipes;
     },
+    currentWeight: (state: any): number => {
+      return ((state.weight || []) as IHealth[]).sort(
+        (a, b) => a.date - b.date
+      )[0].value;
+    },
     weight: (state: any): IHealth[] => {
       return state.weight;
+    },
+    height: (state: any): number => {
+      return state.height;
     },
     water: (state: any): IHealth[] => {
       return state.water;
@@ -311,6 +324,9 @@ export default new Vuex.Store({
       if (!state.weight) state.weight = [];
       state.weight.push(weight);
     },
+    setHeight(state: any, height: number) {
+      state.height = height || null;
+    },
     addWater(state: any, water: IHealth) {
       if (!state.water) state.water = [];
       let matched = false;
@@ -334,6 +350,12 @@ export default new Vuex.Store({
     },
     setTrainingplan(state: any, trainingplan: ITrainingplanFull) {
       state.trainingplan = trainingplan;
+    },
+    addRecentExercise(state: any, exercise: IExercise) {
+      state.recentExercises.unshift(exercise);
+      state.recentExercises = (state.recentExercises as IExercise[]).filter(
+        (x, i) => i < 10
+      );
     }
   }
 });

@@ -32,6 +32,12 @@ export class ExerciseController {
     return this.exerciseService.getByAuthor(user._id);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('recent')
+  async getRecent(@FHUser() user: IUser): Promise<IExercise[]> {
+    return this.exerciseService.getRecent(user._id);
+  }
+
   @Get('trending')
   async getTrendingExercises(): Promise<any[]> {
     return this.exerciseService.getTrendingExercises();

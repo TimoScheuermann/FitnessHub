@@ -2,23 +2,22 @@
   <div class="edit-workout" content v-if="workout">
     <h1>Name</h1>
     <tc-input v-model="workout.title" :dark="$store.getters.darkmode" />
-    <tl-flow horizontal="space-between">
-      <h1>Übungen</h1>
-      <tl-flow flow="column" vertical="end">
-        <tc-checkbox
-          v-model="deleteMode"
-          :dark="$store.getters.darkmode"
-          @input="arrangeMode = false"
-          title="löschen"
-        />
-        <tc-checkbox
-          v-model="arrangeMode"
-          :dark="$store.getters.darkmode"
-          @input="deleteMode = false"
-          title="verschieben"
-        />
-      </tl-flow>
+    <h1>Übungen</h1>
+    <tl-flow horizontal="start">
+      <tc-checkbox
+        v-model="deleteMode"
+        :dark="$store.getters.darkmode"
+        @input="arrangeMode = false"
+        title="Übungen entfernen"
+      />
+      <tc-checkbox
+        v-model="arrangeMode"
+        :dark="$store.getters.darkmode"
+        @input="deleteMode = false"
+        title="Reihenfolge ändern"
+      />
     </tl-flow>
+    <br />
     <tc-list :dark="$store.getters.darkmode">
       <tc-list-item
         v-for="(e, index) in workout.exercises"
@@ -26,13 +25,10 @@
         :user="{ username: e.title }"
         :class="{ deleteMode: deleteMode, drag: arrangeMode }"
         :title="e.title"
-        :icon="deleteMode ? 'trashcan-alt' : 'align-justify'"
-        @click="handleClick(index)"
-        :to="
-          deleteMode
-            ? undefined
-            : { name: 'exercise-details', params: { id: e._id } }
+        :icon="
+          deleteMode ? 'trashcan-alt' : arrangeMode ? 'align-justify' : 'gym'
         "
+        @click="handleClick(index)"
       />
     </tc-list>
   </div>

@@ -49,6 +49,14 @@ export class ExerciseService {
     return this.exerciseModel.find({ author: author });
   }
 
+  public async getRecent(userId: string): Promise<IExercise[]> {
+    const recent = await this.completedExerciseModel
+      .find({ user: userId })
+      .sort({ start: -1 })
+      .limit(10);
+    return Promise.all(recent.map(async (x) => await this.getById(x.exercise)));
+  }
+
   public async find(query: string): Promise<IExercise[]> {
     const reg = new RegExp(`${query}`, 'i');
     return this.exerciseModel

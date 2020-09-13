@@ -17,7 +17,8 @@ const router = new VueRouter({
       name: 'home',
       component: () => import('@/views/home/Home.vue'),
       meta: {
-        level: 0
+        level: 0,
+        title: 'Home'
       }
     },
     {
@@ -25,7 +26,8 @@ const router = new VueRouter({
       name: 'community',
       component: () => import('@/views/Community.vue'),
       meta: {
-        level: 0
+        level: 0,
+        title: 'Community'
       }
     },
     {
@@ -33,7 +35,8 @@ const router = new VueRouter({
       name: 'login',
       component: () => import('@/views/Login.vue'),
       meta: {
-        level: 0
+        level: 0,
+        title: 'Login'
       }
     },
     {
@@ -45,7 +48,8 @@ const router = new VueRouter({
           name: 'nutrition',
           component: () => import('@/views/nutrition/Nutrition.vue'),
           meta: {
-            level: 0
+            level: 0,
+            title: 'Ernährung'
           }
         },
         {
@@ -53,7 +57,8 @@ const router = new VueRouter({
           name: 'nutrition-category',
           component: () => import('@/views/nutrition/NutritionCategory.vue'),
           meta: {
-            level: 1
+            level: 1,
+            titleIndex: -1
           }
         }
       ]
@@ -67,7 +72,8 @@ const router = new VueRouter({
           name: 'training',
           component: () => import('@/views/training/Training.vue'),
           meta: {
-            level: 0
+            level: 0,
+            title: 'Training'
           }
         },
         {
@@ -75,7 +81,8 @@ const router = new VueRouter({
           name: 'training-muscle',
           component: () => import('@/views/training/Muscle.vue'),
           meta: {
-            level: 1
+            level: 1,
+            titleIndex: -1
           }
         },
         {
@@ -83,18 +90,11 @@ const router = new VueRouter({
           name: 'workout-detail',
           component: () => import('@/views/training/Workout.vue'),
           meta: {
-            level: 2
+            level: 2,
+            title: 'Workout'
           }
         }
       ]
-    },
-    {
-      path: '/playground',
-      name: 'playground',
-      component: () => import('@/views/Playground.vue'),
-      meta: {
-        level: 0
-      }
     },
     {
       path: '/profile',

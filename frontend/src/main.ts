@@ -72,6 +72,9 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     axios.get('exercise/mine').then(res => {
       res.data.forEach((x: IExercise) => store.commit('manageExercise', x));
     });
+    axios.get('exercise/recent').then(res => {
+      res.data.forEach((x: IExercise) => store.commit('addRecentExercise', x));
+    });
     axios.get('workout').then(res => {
       res.data.forEach((x: IWorkout) => store.commit('manageWorkout', x));
     });
@@ -86,6 +89,9 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     });
     axios.get('trainingplan/full').then(res => {
       store.commit('setTrainingplan', res.data);
+    });
+    axios.get('health/height').then(res => {
+      if (res.data) store.commit('setHeight', res.data.value);
     });
     if (['Admin', 'Moderator'].includes(store.getters.user.group)) {
       axios.get('exercise/submissions').then(res => {
@@ -130,7 +136,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
       x => x._id === to.params.id && x.reviewed
     ).length !== 1
   ) {
-    next({ name: 'exercises' });
+    next(from);
     return;
   }
 
@@ -168,7 +174,6 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     next({ name: 'profile' });
     return;
   }
-
   next();
 });
 

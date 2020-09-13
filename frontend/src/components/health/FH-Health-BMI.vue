@@ -1,5 +1,5 @@
 <template>
-  <div class="fh-health-card fh-health-weight">
+  <div class="fh-health-card fh-health-bmi">
     <template v-if="!healthData">
       <tl-flow flow="column" loading>
         <tc-spinner :dark="$store.getters.darkmode" size="20" />
@@ -10,25 +10,38 @@
       <div class="no-data">
         <div class="title">Es konnten keine Daten gefunden werden...</div>
         <div class="subtitle">
-          Trage dein aktuelles Gewicht ein, um deinen Verlauf zu tracken
+          Trage dein aktuelles Gewicht ein, um deinen Verlauf deines BMI zu
+          tracken
         </div>
       </div>
     </template>
-    <template v-else>
+    <template v-else-if="height">
       <tc-segments v-model="selectedTime" :dark="$store.getters.darkmode">
         <tc-segment-item title="T" />
         <tc-segment-item title="W" />
         <tc-segment-item title="M" />
         <tc-segment-item title="J" />
       </tc-segments>
-      <fh-health-head
-        :timespan="selectedTime"
-        :showSpan="true"
-        unitLong="Gewicht"
-        unitShort="kg"
-        :amount="amount"
-      />
+      <tl-flow horizontal="space-between">
+        <fh-health-head
+          :timespan="selectedTime"
+          :showSpan="true"
+          unitLong="BMI"
+          unitShort=""
+          :amount="amount"
+        />
+        <tc-tooltip
+          v-if="selectedTime === 0"
+          position="left"
+          tooltip="Was ist der BMI"
+        >
+          <div class="help-button" @click="showBMIInfo">
+            <i class="ti-question-circle"></i>
+          </div>
+        </tc-tooltip>
+      </tl-flow>
       <fh-chart
+        v-if="selectedTime !== 0"
         width="100%"
         height="250"
         type="line"
@@ -36,17 +49,16 @@
         :series="series"
       />
     </template>
-    <template v-if="healthData">
+    <template>
       <div class="add-data">
         <div>
           <tc-input
-            title="Aktuelles Gewicht (kg)"
+            title="Aktuelle Größe (cm)"
             :dark="$store.getters.darkmode"
-            :step="0.1"
+            :step="1"
             type="number"
             :buttons="true"
             v-model="currentInput"
-            @input="round"
           />
         </div>
         <tl-flow vertical="end">
@@ -77,33 +89,27 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
     'fh-health-head': FHHealthHead
   }
 })
-export default class FHHealthWeight extends Vue {
+export default class FHHealthBMI extends Vue {
   public currentInput = 0;
-  public selectedTime = 1;
+  public selectedTime = 0;
   public multis = [aDay, aWeek, aMonth, aYear];
 
   mounted() {
     if (!this.healthData) {
       axios.get('health/weight').then(res => {
         res.data.forEach((x: IHealth) => this.$store.commit('addWeight', x));
-        this.currentInput = this.current;
       });
-    } else {
-      this.currentInput = this.current;
     }
+    this.currentInput = this.height || 180;
   }
 
+  get height(): number | null {
+    const height = this.$store.getters.height;
+    if (!height || height < 0) return null;
+    return height;
+  }
   get healthData(): IHealth[] | null {
     return this.$store.getters.weight;
-  }
-
-  public round() {
-    const split = (this.currentInput + '').split('.');
-    if (split.length > 1) {
-      this.currentInput = +(split[0] + '.' + (split[1] + '00').substring(0, 2));
-    } else {
-      this.currentInput = +split[0];
-    }
   }
 
   get options() {
@@ -122,9 +128,10 @@ export default class FHHealthWeight extends Vue {
       },
       yaxis: {
         opposite: true,
-        tickAmount: 0.1,
-        forceNiceScale: true,
-        labels: { formatter: (value: string) => value + ' kg' }
+        min: 10,
+        tickAmount: 5,
+        max: 40,
+        labels: { formatter: (value: string) => value + ' BMI' }
       },
       colors: ['#25ca49'],
       stroke: { lineCap: 'round', width: 4 },
@@ -136,7 +143,33 @@ export default class FHHealthWeight extends Vue {
       tooltip: {
         x: { format: 'dd. MMM yyyy' }
       },
-      theme: { mode: this.$store.getters.darkmode ? 'dark' : 'light' }
+      theme: { mode: this.$store.getters.darkmode ? 'dark' : 'light' },
+      annotations: {
+        yaxis: [
+          {
+            y: 20,
+            y2: 25,
+            borderColor: '#08f',
+            borderWidth: 2,
+            strokeDashArray: 0,
+            fillColor: '#08f',
+            opacity: 0.2,
+            label: {
+              borderWidth: 0,
+              text: 'Normalgewicht',
+              position: 'left',
+              offsetX: 80,
+              offsetY: 50,
+              style: {
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#08f',
+                background: 'transparent'
+              }
+            }
+          }
+        ]
+      }
     };
   }
 
@@ -148,7 +181,7 @@ export default class FHHealthWeight extends Vue {
           .map(d => {
             return {
               x: d.date,
-              y: d.value
+              y: this.calcBMI(d.value)
             };
           })
           .sort((a, b) => b.x - a.x)
@@ -156,9 +189,15 @@ export default class FHHealthWeight extends Vue {
     ];
   }
 
+  public calcBMI(value: number, height: number | null = this.height): number {
+    if (!this.height) return 0;
+    return Math.round((value / Math.pow((height || 1.8) / 100, 2)) * 10) / 10;
+  }
+
   get current(): number {
-    if (!this.healthData) return 70;
-    return this.healthData.sort((a, b) => b.date - a.date)[0].value;
+    if (!this.healthData) return 21;
+    const weight = this.healthData.sort((a, b) => b.date - a.date)[0].value;
+    return this.calcBMI(weight);
   }
 
   get amount(): number {
@@ -174,16 +213,28 @@ export default class FHHealthWeight extends Vue {
     return Math.round((sum / resultingData.length) * 100) / 100;
   }
 
-  async submit(): Promise<void> {
-    axios.post('health/weight', { amount: +this.currentInput }).then(res => {
-      this.$store.commit('addWeight', res.data);
-    });
+  public async submit(): Promise<void> {
+    await axios.post('health/height', { amount: +this.currentInput });
+    this.$store.commit('setHeight', +this.currentInput);
+  }
+
+  public showBMIInfo(): void {
+    window.open('https://www.bmi-rechner.net/#artikel', '_blank');
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .fh-health-card {
+  .help-button {
+    font-size: 1.3em;
+    opacity: 0.7;
+    transition: 0.2s ease-in-out;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
   .add-data {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(100px, auto);

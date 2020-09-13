@@ -1,5 +1,5 @@
 <template>
-  <tl-grid class="fh-workout-list" gap="10px 20">
+  <tl-grid class="fh-workout-list" gap="10px 20" arrangement="auto-fill">
     <div
       class="workout"
       v-for="w in workouts"

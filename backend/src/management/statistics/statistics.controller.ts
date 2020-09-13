@@ -12,7 +12,7 @@ export class StatisticsController {
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('/general')
-  async getGeneralStatistics(): Promise<IGeneralStatistics> {
+  async getGeneralStatistics(): Promise<IGeneralStatistics[]> {
     return this.statisticsService.getGeneralStatistics();
   }
 

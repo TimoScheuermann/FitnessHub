@@ -1,10 +1,17 @@
 <template>
   <div class="highlights" content>
     <h1>Gesundheit</h1>
-    <fh-health-water />
-    <br />
-    <fh-health-weight />
-    <!-- <fh-health-water :onlyToday="true" /> -->
+    <tl-grid>
+      <div>
+        <fh-health-water />
+      </div>
+      <div>
+        <fh-health-bmi />
+      </div>
+      <div>
+        <fh-health-weight />
+      </div>
+    </tl-grid>
     <h1>Wöchentlich</h1>
     <tl-grid>
       <fh-health-time-w />
@@ -26,10 +33,12 @@ import FHHealthWorkoutW from '@/components/health/FH-Health-WorkoutW.vue';
 import FHHealthTimeW from '@/components/health/FH-Health-TimeW.vue';
 import FHHealthTimeC from '@/components/health/FH-Health-TimeC.vue';
 import FHHealthWeight from '@/components/health/FH-Health-Weight.vue';
+import FHHealthBMI from '@/components/health/FH-Health-BMI.vue';
 
 @Component({
   components: {
     'fh-health-weight': FHHealthWeight,
+    'fh-health-bmi': FHHealthBMI,
     'fh-health-water': FHHealthWater,
     'fh-health-workout7': FHHealthWorkout7,
     'fh-health-workout28': FHHealthWorkout28,

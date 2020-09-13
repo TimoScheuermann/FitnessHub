@@ -1,6 +1,4 @@
 export interface IGeneralStatistics {
-  readonly users: number;
-  readonly friendships: number;
-  readonly workouts: number;
-  readonly exercises: number;
+  readonly title: string;
+  readonly amount: number;
 }

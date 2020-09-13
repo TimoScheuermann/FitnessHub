@@ -9,27 +9,16 @@
           v-if="!generalStats"
         />
       </tl-flow>
-      <tl-grid minWidth="150" v-if="generalStats">
-        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
-          <!-- <i class="ti-users" /> -->
-          <div class="amount">{{ generalStats.users }}</div>
-          <div class="name">Users</div>
-        </tc-card>
-        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
-          <!-- <i class="ti-heart" /> -->
-          <div class="amount">{{ generalStats.friendships }}</div>
-          <div class="name">Friendships</div>
-        </tc-card>
-        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
-          <!-- <i class="ti-calendar-alt" /> -->
-          <div class="amount">{{ generalStats.workouts }}</div>
-          <div class="name">Workouts</div>
-        </tc-card>
-        <tc-card :dark="$store.getters.darkmode" class="stat" :rounded="true">
-          <!-- <i class="ti-gym" /> -->
-          <div class="amount">{{ generalStats.exercises }}</div>
-          <div class="name">Exercises</div>
-        </tc-card>
+      <tl-grid gap="20" v-if="generalStats">
+        <tl-flow
+          v-for="s in generalStats"
+          :key="s.title"
+          horizontal="space-between"
+          class="general-stat"
+        >
+          <div class="amount">{{ s.amount }}</div>
+          <div class="name">{{ s.title }}</div>
+        </tl-flow>
       </tl-grid>
 
       <tl-flow horizontal="space-between">
@@ -53,13 +42,14 @@
             </div>
             <div class="percent">
               {{
-                Math.round((prov.amount / generalStats.users) * 10000) / 100
+                Math.round((prov.amount / generalStats[0].amount) * 10000) /
+                  100
               }}%
             </div>
           </tl-flow>
           <tc-progress
             :dark="$store.getters.darkmode"
-            :percent="(prov.amount / generalStats.users) * 100"
+            :percent="(prov.amount / generalStats[0].amount) * 100"
           />
         </div>
       </div>
@@ -77,7 +67,7 @@ import axios from '@/utils/axios';
 
 @Component
 export default class Statistics extends Vue {
-  public generalStats: IGeneralStatistics | null = null;
+  public generalStats: IGeneralStatistics[] | null = null;
   public loginProvider: ILoginProviderStatistic[] | null = null;
 
   async mounted() {
@@ -88,17 +78,22 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.stat {
-  i {
-    font-size: 2em;
+.general-stat {
+  background: $paragraph;
+  padding: 10px 20px;
+  border-radius: $border-radius;
+  @media (prefers-color-scheme: dark) {
+    background: $paragraph_dark;
   }
   .amount {
     color: $primary;
     font-weight: bold;
-    font-size: 2em;
+    font-size: 1.3em;
   }
   .name {
     font-weight: 500;
+    white-space: pre;
+    word-wrap: break-word;
   }
 }
 .login-provider {

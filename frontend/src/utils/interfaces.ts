@@ -75,10 +75,8 @@ export interface IPendingFriendship {
   target: IUserInfo;
 }
 export interface IGeneralStatistics {
-  readonly users: number;
-  readonly friendships: number;
-  readonly workouts: number;
-  readonly exercises: number;
+  readonly title: number;
+  readonly amount: number;
 }
 export interface ILoginProviderStatistic {
   readonly provider: string;

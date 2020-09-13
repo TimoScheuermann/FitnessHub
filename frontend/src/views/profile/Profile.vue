@@ -46,7 +46,7 @@
               routeName="recipes"
             />
             <tc-list-item
-              title="Workouts"
+              title="Workouts & Trainingsplan"
               icon="heartbeat"
               routeName="workouts"
             />

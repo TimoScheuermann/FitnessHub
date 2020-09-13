@@ -25,9 +25,21 @@ export class HealthController {
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('currentWeight')
+  async getCurrentWeight(@FHUser() user: IUser): Promise<number> {
+    return this.healthService.getCurrentWeight(user._id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('water')
   async getWater(@FHUser() user: IUser): Promise<IHealth[]> {
     return this.healthService.getWaterData(user._id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('height')
+  async getHeight(@FHUser() user: IUser): Promise<IHealth> {
+    return this.healthService.getHeightData(user._id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -46,6 +58,15 @@ export class HealthController {
     @Body() body: { amount: number },
   ): Promise<IHealth> {
     return this.healthService.addWater(user._id, body.amount);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('height')
+  async setHeight(
+    @FHUser() user: IUser,
+    @Body() body: { amount: number },
+  ): Promise<void> {
+    this.healthService.setHeight(user._id, body.amount);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

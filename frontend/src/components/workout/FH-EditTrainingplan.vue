@@ -2,8 +2,8 @@
   <tc-modal
     class="fh-edit-trainingplan"
     v-model="modalOpened"
-    title="Traingsplan"
-    :subtitle="day + ' bearbeiten'"
+    title="Traingsplan bearbeiten"
+    :subtitle="day"
     :dark="$store.getters.darkmode"
   >
     <div class="current" v-if="trainingplan">
@@ -17,9 +17,8 @@
         <div class="title">Aktuelles Workout</div>
         <fh-workout-list :showOnly="trainingplan.id" />
       </template>
-      <!-- <p>{{ trainingplan.id.startsWith("ex_") }}</p> -->
     </div>
-    <h1>Übung / Workout setzen</h1>
+    <h1>Traingseinheit</h1>
     <h2>Übung suchen</h2>
     <fh-exercise-search :timestamp="index" @exercise="useExercise" />
     <h2>Workouts</h2>

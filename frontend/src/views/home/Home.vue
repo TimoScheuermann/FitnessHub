@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <fh-mobile-header title="Home" />
+    <fh-mobile-header :title="$store.getters.valid ? 'Home' : 'FitnessHub'" />
     <tc-hero
       :dark="true"
       :hasFixedHeader="$store.getters.fixedHeader"
