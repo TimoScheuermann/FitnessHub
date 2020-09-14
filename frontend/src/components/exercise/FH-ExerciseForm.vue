@@ -18,14 +18,17 @@
           v-model="exercise.explanatoryVideo"
           :dark="$store.getters.darkmode"
         />
-        <tc-select
-          title="Betroffene Muskeln"
-          v-model="exercise.affectedMuscles"
-          :values="muscles"
-          :multiple="true"
-          placeholder="Wähle mind. einen Muskel"
-          :dark="$store.getters.darkmode"
-        />
+        <div>
+          <div class="title">Betroffene Muskeln</div>
+          <tc-select
+            @selectedItems="m => (exercise.affectedMuscles = m)"
+            :multiple="true"
+            placeholder="Wähle mind. einen Muskel"
+            :dark="$store.getters.darkmode"
+          >
+            <tc-select-item v-for="m in muscles" :key="m" :title="m" />
+          </tc-select>
+        </div>
       </div>
       <div>
         <h1>Kategorie</h1>
@@ -76,10 +79,11 @@
             />
             <div class="mid"></div>
             <tc-select
-              :values="timeUnits"
-              v-model="timeUnit"
+              @selectedItems="s => (timeUnit = s[0])"
               :dark="$store.getters.darkmode"
-            />
+            >
+              <tc-select-item v-for="u in timeUnits" :key="u" :title="u" />
+            </tc-select>
           </div>
         </template>
         <template v-else-if="selectedCategorie === 2">
@@ -264,7 +268,7 @@ export default class FHExerciseForm extends Vue {
   public reps: MinMax = { min: 8, max: 12 };
   public sets: MinMax = { min: 4, max: 5 };
   public timeUnits = ['Sekunden', 'Minute(n)', 'Stunde(n)'];
-  public timeUnit = 'Minuten(n)';
+  public timeUnit: string | null = null;
   public muscles: string[] = muscles;
   public categories: string[] = ['Gym', 'Zeit', 'Strecke'];
   public selectedCategorie = 0;
@@ -390,9 +394,6 @@ export default class FHExerciseForm extends Vue {
     font-weight: bold;
     display: grid;
     place-content: center;
-  }
-  .tc-select.tc-select__hasHead {
-    margin-top: 3px;
   }
 }
 /deep/ textarea {

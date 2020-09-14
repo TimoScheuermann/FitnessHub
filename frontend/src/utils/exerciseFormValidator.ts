@@ -16,7 +16,7 @@ export function validate(
   setsMax: number,
   repsMin: number,
   repsMax: number,
-  timeUnit: string
+  timeUnit: string | null
 ): CreateExerciseDTO | null {
   if (exercise.title.length === 0) {
     notifiy('Name', 'Bitte trage einen Namen für die Übung ein');
@@ -47,7 +47,7 @@ export function validate(
     }
   }
   if (selectedCategorie === 1) {
-    if (timeUnit.length === 0) {
+    if (!timeUnit) {
       notifiy('Zeiteinheit', 'Bitte wähle eine Zeiteinheit aus');
       return null;
     }

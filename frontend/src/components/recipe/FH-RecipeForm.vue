@@ -21,14 +21,17 @@
         v-model="recipe.video"
         :dark="$store.getters.darkmode"
       />
-      <tc-select
-        title="Kategorie"
-        v-model="recipe.category"
-        :values="categories"
-        :multiple="true"
-        placeholder="Wähle mind. eine Kategorie"
-        :dark="$store.getters.darkmode"
-      />
+      <div>
+        <div class="title">Kategorie</div>
+        <tc-select
+          @selectedItems="c => (recipe.category = c)"
+          :multiple="true"
+          placeholder="Wähle mind. eine Kategorie"
+          :dark="$store.getters.darkmode"
+        >
+          <tc-select-item v-for="c in categories" :key="c" :title="c" />
+        </tc-select>
+      </div>
       <tc-input
         title="Zeit (min)"
         v-model="recipe.time"
