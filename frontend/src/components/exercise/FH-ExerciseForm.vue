@@ -26,7 +26,12 @@
             placeholder="Wähle mind. einen Muskel"
             :dark="$store.getters.darkmode"
           >
-            <tc-select-item v-for="m in muscles" :key="m" :title="m" />
+            <tc-select-item
+              v-for="m in muscles"
+              :defaultSelected="exercise.affectedMuscles.includes(m)"
+              :key="m"
+              :title="m"
+            />
           </tc-select>
         </div>
       </div>
@@ -384,7 +389,7 @@ export default class FHExerciseForm extends Vue {
 .title {
   font-weight: 700;
   white-space: nowrap;
-  margin: 10px 0;
+  margin: 10px 0 2px;
   margin-left: 8px;
 }
 .gym-min-max {

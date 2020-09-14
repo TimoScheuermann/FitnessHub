@@ -29,7 +29,12 @@
           placeholder="Wähle mind. eine Kategorie"
           :dark="$store.getters.darkmode"
         >
-          <tc-select-item v-for="c in categories" :key="c" :title="c" />
+          <tc-select-item
+            v-for="c in categories"
+            :defaultSelected="recipe.category.includes(c)"
+            :key="c"
+            :title="c"
+          />
         </tc-select>
       </div>
       <tc-input
@@ -239,7 +244,7 @@ export default class FHRecipeForm extends Vue {
   @Prop({ default: 'new' }) mode!: 'new' | 'edit';
   @Prop() recipeInput!: IRecipe;
 
-  public recipe: CreateRecipeDTO = defaultRecipe;
+  public recipe: CreateRecipeDTO = this.recipeInput || defaultRecipe;
   public ingredientInput: IRecipeIngredient = {
     name: '',
     amount: '',
@@ -253,20 +258,9 @@ export default class FHRecipeForm extends Vue {
   public stepInput = '';
 
   @Watch('recipeInput')
-  mounted() {
+  recipeInputChanged() {
     if (this.recipeInput) {
-      this.recipe = {
-        title: this.recipeInput.title,
-        category: this.recipeInput.category,
-        time: this.recipeInput.time,
-        difficulty: this.recipeInput.difficulty,
-        ingredients: this.recipeInput.ingredients,
-        nutrition: this.recipeInput.nutrition,
-        thumbnail: this.recipeInput.thumbnail,
-        steps: this.recipeInput.steps,
-        video: this.recipeInput.video,
-        description: this.recipeInput.description
-      };
+      this.recipe = this.recipeInput;
     }
   }
 
@@ -370,7 +364,7 @@ export default class FHRecipeForm extends Vue {
 .title {
   font-weight: 700;
   white-space: nowrap;
-  margin: 10px 0;
+  margin: 10px 0 2px;
   margin-left: 8px;
 }
 

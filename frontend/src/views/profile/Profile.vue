@@ -86,6 +86,7 @@
               icon="chart-bar"
               routeName="statistics"
             />
+            <tc-list-item title="Variablen" icon="gears" description="bald" />
             <tc-list-item
               v-group.admin
               title="Suspend User"

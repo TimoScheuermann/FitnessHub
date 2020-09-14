@@ -45,7 +45,6 @@ export default class ProfileInterim extends Vue {
     if (to === 'workout-detail') {
       this.workout = null;
       const id = this.$route.params.id;
-      // console.log("Latest", this.$store.getters.latestWor)
       this.workout = (this.$store.getters.latestWorkouts || []).filter(
         (x: IWorkout) => x._id === id
       )[0];
@@ -60,18 +59,20 @@ export default class ProfileInterim extends Vue {
     thumbnail: string;
   } {
     let title = 'Training';
+    let thumbnail = '1549060279-7e168fcee0c2';
     if (this.$route.name === 'training-muscle') {
       title = muscles.filter(
         x => x.toLowerCase() === this.$route.params.muscle.toLowerCase()
       )[0];
-    }
-    if (this.$route.name === 'workout-detail' && this.workout) {
+    } else if (this.$route.name === 'training-wiki') {
+      title = 'Trainings Wiki';
+      thumbnail = '1571019614242-c5c5dee9f50b';
+    } else if (this.$route.name === 'workout-detail' && this.workout) {
       title = this.workout.title;
     }
     return {
       title: title,
-      thumbnail:
-        'https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=5&w=1080'
+      thumbnail: `https://images.unsplash.com/photo-${thumbnail}?w=1080&q=5`
     };
   }
 }

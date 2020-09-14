@@ -20,6 +20,10 @@ export default class EditRecipe extends Vue {
       x => x._id === this.$route.params.id
     )[0];
   }
+
+  mounted() {
+    console.log(this.recipe);
+  }
 }
 </script>
 
