@@ -123,6 +123,8 @@ export class WorkoutService {
       _id: exercise._id,
       thumbnail: exercise.thumbnail,
       title: exercise.title,
+      difficulty: exercise.difficulty,
+      affectedMuscles: exercise.affectedMuscles,
     };
   }
 }

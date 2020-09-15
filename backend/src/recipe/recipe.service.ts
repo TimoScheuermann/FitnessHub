@@ -42,9 +42,7 @@ export class RecipeService {
   }
 
   public async getById(id: string): Promise<IRecipe> {
-    return await this.recipeModel.findById({
-      _id: id,
-    });
+    return this.recipeModel.findById({ _id: id });
   }
 
   public async getByCategory(category: string): Promise<IRecipe[]> {

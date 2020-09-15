@@ -7,6 +7,10 @@
     <fh-add-to-workout />
     <fh-create-workout />
     <fh-edit-trainingplan />
+    <fh-run-workout />
+    <fh-modal-exercise-details />
+    <fh-modal-recipe-details />
+    <fh-modal-workout-details />
 
     <div class="view">
       <transition name="main-route">
@@ -33,6 +37,10 @@ import FHUserSearch from './components/global/FH-User-Search.vue';
 import FHAddToWorkout from './components/global/FH-AddToWorkout.vue';
 import FHEditTrainingplan from './components/workout/FH-EditTrainingplan.vue';
 import FHCreateWorkout from './components/global/FH-CreateWorkout.vue';
+import FHRunWorkout from './components/workout/FH-RunWorkouts.vue';
+import FHModalExerciseDetails from './components/globalModals/FH-Modal-ExerciseDetails.vue';
+import FHModalRecipeDetails from './components/globalModals/FH-Modal-RecipeDetails.vue';
+import FHModalWorkoutDetails from './components/globalModals/FH-Modal-WorkoutDetails.vue';
 
 @Component({
   components: {
@@ -42,7 +50,11 @@ import FHCreateWorkout from './components/global/FH-CreateWorkout.vue';
     'fh-user-search': FHUserSearch,
     'fh-add-to-workout': FHAddToWorkout,
     'fh-create-workout': FHCreateWorkout,
-    'fh-edit-trainingplan': FHEditTrainingplan
+    'fh-edit-trainingplan': FHEditTrainingplan,
+    'fh-run-workout': FHRunWorkout,
+    'fh-modal-exercise-details': FHModalExerciseDetails,
+    'fh-modal-recipe-details': FHModalRecipeDetails,
+    'fh-modal-workout-details': FHModalWorkoutDetails
   }
 })
 export default class App extends Mixins(

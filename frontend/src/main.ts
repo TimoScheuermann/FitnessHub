@@ -17,6 +17,7 @@ import store from './store';
 import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
 import axios from './utils/axios';
 import { backendURL, fhBotId } from './utils/constants';
+import { EventBus } from './utils/eventbus';
 import { getFriend } from './utils/functions';
 import {
   IExercise,
@@ -174,6 +175,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     next({ name: 'profile' });
     return;
   }
+  EventBus.$emit('modals-close');
   next();
 });
 
