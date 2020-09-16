@@ -12,7 +12,7 @@
       <tc-spinner size="20" :dark="$store.getters.darkmode" />
     </div>
     <div v-else content>
-      <h1>{{ workout.title }}</h1>
+      <h1>Übungen</h1>
       <tl-grid>
         <fh-exercise v-for="e in exercises" :key="e._id" :id="e._id" />
       </tl-grid>
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import FHExercise from '@/components/shared/FH-Exercise.vue';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import { IExerciseInfo, IWorkout } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 

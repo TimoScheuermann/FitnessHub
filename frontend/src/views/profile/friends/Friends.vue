@@ -85,7 +85,7 @@ export default class Friends extends Vue {
   }
 
   public openUserSearch(): void {
-    EventBus.$emit('usersearch', 'friends-us');
+    EventBus.$emit('modal-user-search', 'friends-us');
   }
 
   get friends(): IUserInfo[] {

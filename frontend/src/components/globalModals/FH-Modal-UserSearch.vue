@@ -1,6 +1,6 @@
 <template>
   <tc-modal
-    v-if="display"
+    class="fh-modal-user-search"
     :dark="$store.getters.darkmode"
     title="Finde einen Champion"
     v-model="modalOpened"
@@ -25,24 +25,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { IUserInfo } from '@/utils/interfaces';
 import axios from '@/utils/axios';
 import { EventBus } from '@/utils/eventbus';
+import FHModalMixin from './FHModal.mixin';
 
 @Component
-export default class FHUserSearch extends Vue {
+export default class FHModalUserSearch extends Mixins(FHModalMixin) {
   public results: IUserInfo[] = [];
   public query = '';
-  public display = false;
-  public modalOpened = false;
   public returnSocket = '';
 
   mounted() {
-    setTimeout(() => {
-      this.display = true;
-    }, 500);
-    EventBus.$on('usersearch', (returnSocket: string) => {
+    EventBus.$on('modal-user-search', (returnSocket: string) => {
       this.returnSocket = returnSocket;
       this.modalOpened = true;
     });
@@ -50,7 +46,7 @@ export default class FHUserSearch extends Vue {
 
   public selected(selected: IUserInfo): void {
     EventBus.$emit(this.returnSocket, selected);
-    this.modalOpened = false;
+    this.close();
   }
 
   public async search(): Promise<void> {
@@ -65,10 +61,12 @@ export default class FHUserSearch extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.fh-user-list {
-  margin-top: 20px;
-  @media #{$isDesktop} {
-    margin-bottom: 20px;
+.fh-modal-user-search {
+  .fh-user-list {
+    margin-top: 20px;
+    @media #{$isDesktop} {
+      margin-bottom: 20px;
+    }
   }
 }
 </style>

@@ -4,6 +4,7 @@
       <h1>Trinkometer</h1>
       <fh-health-water :onlyToday="true" />
     </template>
+
     <h1>Kategorien</h1>
     <fh-carousel>
       <router-link
@@ -34,7 +35,9 @@
         <fh-recipe v-for="r in latestRecipes" :key="r._id" :recipe="r" />
       </fh-carousel>
     </template>
+
     <h1>Ernährungspläne</h1>
+    <p>soon</p>
   </div>
 </template>
 

@@ -22,7 +22,7 @@ export default class FHExerciseATWButton extends Vue {
 
   public addToWorkout(): void {
     EventBus.$emit('modals-close');
-    EventBus.$emit('add-to-workout', this.info);
+    EventBus.$emit('modal-add-to-workout', this.info);
   }
 }
 </script>

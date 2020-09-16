@@ -59,6 +59,15 @@ const router = new VueRouter({
           meta: {
             level: 1
           }
+        },
+        {
+          path: 'wiki',
+          name: 'nutrition-wiki',
+          component: () => import('@/views/nutrition/NutritionWiki.vue'),
+          meta: {
+            level: 1,
+            title: 'Wiki'
+          }
         }
       ]
     },
@@ -78,15 +87,15 @@ const router = new VueRouter({
         {
           path: 'muscle/:muscle',
           name: 'training-muscle',
-          component: () => import('@/views/training/Muscle.vue'),
+          component: () => import('@/views/training/TrainingMuscle.vue'),
           meta: {
             level: 1
           }
         },
         {
           path: 'workout/:id',
-          name: 'workout-detail',
-          component: () => import('@/views/training/Workout.vue'),
+          name: 'training-workout',
+          component: () => import('@/views/training/TrainingWorkout.vue'),
           meta: {
             level: 2,
             title: 'Workout'

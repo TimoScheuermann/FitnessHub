@@ -41,7 +41,7 @@ export default class Workouts extends Vue {
   public daynames = days;
 
   public newWorkout(): void {
-    EventBus.$emit('create-workout');
+    EventBus.$emit('modal-create-workout');
   }
 
   get trainingplan(): ITrainingplanFull | null {
@@ -50,7 +50,7 @@ export default class Workouts extends Vue {
 
   public openWorkout(workout: IWorkout) {
     EventBus.$emit('modal-workout-details', workout._id);
-    // this.$router.push({ name: 'workout-detail', params: { id: workout._id } });
+    // this.$router.push({ name: 'training-workout', params: { id: workout._id } });
   }
 }
 </script>

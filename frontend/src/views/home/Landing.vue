@@ -44,7 +44,7 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class Landing extends Vue {
   public createWorkout() {
-    EventBus.$emit('create-workout');
+    EventBus.$emit('modal-create-workout');
   }
 }
 </script>

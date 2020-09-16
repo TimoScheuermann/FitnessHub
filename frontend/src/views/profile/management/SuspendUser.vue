@@ -68,7 +68,7 @@ export default class SuspendUser extends Vue {
   }
 
   public openUserSearch(): void {
-    EventBus.$emit('usersearch', 'promoteUser-us');
+    EventBus.$emit('modal-user-search', 'promoteUser-us');
   }
 
   public async loadSuspendedUsers(): Promise<void> {

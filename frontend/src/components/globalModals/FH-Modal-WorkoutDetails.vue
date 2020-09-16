@@ -67,9 +67,9 @@ export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
         this.modalReturn = modalReturn;
       }
     );
-    setTimeout(() => {
-      this.open('5f5e5a521cd04741df5ca246');
-    }, 500);
+    // setTimeout(() => {
+    //   this.open('5f5e5a521cd04741df5ca246');
+    // }, 500);
   }
 
   get title(): string | null {

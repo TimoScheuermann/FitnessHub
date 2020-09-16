@@ -93,6 +93,13 @@ export default class FHPropertyDetailsRecipe extends Vue {
     if (!this.$store.getters.valid) return false;
     return this.recipe.author === this.$store.getters.user._id;
   }
+
+  public showRecipesOf(category: string) {
+    this.$router.push({
+      name: 'nutrition-category',
+      params: { category: category }
+    });
+  }
 }
 </script>
 

@@ -54,7 +54,7 @@ export default class PromoteUser extends Vue {
   }
 
   public openUserSearch(): void {
-    EventBus.$emit('usersearch', 'promoteUser-us');
+    EventBus.$emit('modal-user-search', 'promoteUser-us');
   }
 
   public async loadModerators(): Promise<void> {

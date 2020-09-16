@@ -1,7 +1,7 @@
 <template>
   <div class="training" content>
     <fh-todays-workout />
-    <template v-if="trendingExercises">
+    <template v-if="trendingExercises && trendingExercises.length > 0">
       <h1>Übungen der Woche</h1>
       <fh-carousel>
         <fh-exercise
@@ -12,20 +12,20 @@
       </fh-carousel>
     </template>
 
-    <template v-if="latestExercises">
+    <template v-if="latestExercises && latestExercises.length > 0">
       <h1>Neueste Übungen</h1>
       <fh-carousel>
         <fh-exercise v-for="e in latestExercises" :key="e._id" :exercise="e" />
       </fh-carousel>
     </template>
 
-    <template v-if="latestWorkouts">
+    <template v-if="latestWorkouts && latestWorkouts.length > 0">
       <h1>Aktuelle Workouts</h1>
       <fh-carousel>
         <router-link
           v-for="w in latestWorkouts"
           :key="w._id"
-          :to="{ name: 'workout-detail', params: { id: w._id } }"
+          :to="{ name: 'training-workout', params: { id: w._id } }"
         >
           <fh-workout-preview :workout="w" />
         </router-link>
@@ -59,11 +59,11 @@
 <script lang="ts">
 import { IExercise, IWorkout } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
-import FHExercise from '@/components/shared/FH-Exercise.vue';
 import axios from '@/utils/axios';
 import { muscles } from '@/utils/muscles';
 import FHWorkoutPreview from '@/components/workout/FH-WorkoutPreview.vue';
 import FHTodaysWorkout from '@/components/workout/FH-TodaysWorkout.vue';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 
 @Component({
   components: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="Muscle" content>
+  <div class="training-muscle" content>
     <h1>Übungen</h1>
     <tl-grid>
       <fh-exercise v-for="ex in exercises" :key="ex._id" :exercise="ex" />
@@ -10,11 +10,11 @@
 <script lang="ts">
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
-import FHExercise from '@/components/shared/FH-Exercise.vue';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import axios from '@/utils/axios';
 
 @Component({ components: { 'fh-exercise': FHExercise } })
-export default class Muscle extends Vue {
+export default class TrainingMuscle extends Vue {
   private exercises: IExercise[] = [];
 
   async mounted() {
@@ -26,5 +26,3 @@ export default class Muscle extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

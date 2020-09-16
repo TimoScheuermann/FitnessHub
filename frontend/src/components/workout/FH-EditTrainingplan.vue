@@ -59,7 +59,7 @@ import { EventBus } from '@/utils/eventbus';
 import { IExercise, ITrainingplanFull, IWorkout } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 import FHExerciseSearch from '../exercise/FH-ExerciseSearch.vue';
-import FHExercise from '../shared/FH-Exercise.vue';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import FHWorkoutList from './FH-WorkoutList.vue';
 
 @Component({
@@ -92,8 +92,8 @@ export default class FHEditTrainingplan extends Vue {
   }
 
   public createWorkout() {
-    EventBus.$emit('create-workout');
-    EventBus.$emit('create-workout-return', {
+    EventBus.$emit('modal-create-workout');
+    EventBus.$emit('modal-create-workout-return', {
       event: 'edit-trainingplan',
       data: this.index
     });

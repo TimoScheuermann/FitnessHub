@@ -42,7 +42,7 @@ export default class ProfileInterim extends Vue {
 
   @Watch('$route.name')
   public routeNameChanged(to: string): void {
-    if (to === 'workout-detail') {
+    if (to === 'training-workout') {
       this.workout = null;
       const id = this.$route.params.id;
       this.workout = (this.$store.getters.latestWorkouts || []).filter(
@@ -67,7 +67,7 @@ export default class ProfileInterim extends Vue {
     } else if (this.$route.name === 'training-wiki') {
       title = 'Trainings Wiki';
       thumbnail = '1571019614242-c5c5dee9f50b';
-    } else if (this.$route.name === 'workout-detail' && this.workout) {
+    } else if (this.$route.name === 'training-workout' && this.workout) {
       title = this.workout.title;
     }
     return {

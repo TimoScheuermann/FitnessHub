@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import FHExercise from '@/components/shared/FH-Exercise.vue';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 

@@ -1,7 +1,7 @@
 <template>
   <tc-modal
-    @close="closeing"
-    class="fh-create-workout"
+    @close="close"
+    class="fh-modal-create-workout"
     v-model="modalOpened"
     title="Workout erstellen"
     :dark="$store.getters.darkmode"
@@ -52,36 +52,28 @@ import { CreateWorkoutDTO } from '@/utils/dtos';
 import { EventBus } from '@/utils/eventbus';
 import { sendNotification } from '@/utils/functions';
 import { IExercise, IModalReturn } from '@/utils/interfaces';
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import FHExerciseSearch from '../exercise/FH-ExerciseSearch.vue';
+import FHModalMixin from './FHModal.mixin';
 
 @Component({
   components: {
     'fh-exercise-search': FHExerciseSearch
   }
 })
-export default class FHCreateWorkout extends Vue {
-  public modalOpened = false;
+export default class FHModalCreateWorkout extends Mixins(FHModalMixin) {
   public title = '';
   public selectedExerxises: { id: string; name: string }[] = [];
-  public modalReturn: IModalReturn | null = null;
 
   mounted() {
-    EventBus.$on('create-workout', () => {
+    EventBus.$on('modal-create-workout', () => {
       this.title = '';
       this.selectedExerxises = [];
       this.modalOpened = true;
     });
-    EventBus.$on('create-workout-return', (data: IModalReturn) => {
+    EventBus.$on('modal-create-workout-return', (data: IModalReturn) => {
       this.modalReturn = data;
     });
-  }
-
-  public closeing(): void {
-    if (this.modalReturn) {
-      EventBus.$emit(this.modalReturn.event, this.modalReturn.data);
-      this.modalReturn = null;
-    }
   }
 
   public isInList(id: string) {
@@ -106,14 +98,12 @@ export default class FHCreateWorkout extends Vue {
       });
       return;
     }
-    await axios.post('workout', {
+    const data = {
       title: this.title,
       exercises: this.selectedExerxises.map(x => x.id)
-    } as CreateWorkoutDTO);
-    this.closeing();
-    this.modalOpened = false;
+    } as CreateWorkoutDTO;
+
+    axios.post('workout', data).then(this.close);
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -51,7 +51,7 @@ export default class FHExercise extends Vue {
   }
 
   public addToWorkout(): void {
-    EventBus.$emit('add-to-workout', this.ex);
+    EventBus.$emit('modal-add-to-workout', this.ex);
   }
 }
 </script>
