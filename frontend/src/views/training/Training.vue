@@ -60,10 +60,10 @@
 import { IExercise, IWorkout } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 import axios from '@/utils/axios';
-import { muscles } from '@/utils/muscles';
 import FHWorkoutPreview from '@/components/workout/FH-WorkoutPreview.vue';
 import FHTodaysWorkout from '@/components/workout/FH-TodaysWorkout.vue';
 import FHExercise from '@/components/exercise/FH-Exercise.vue';
+import { getMuscleNames } from '@/utils/functions';
 
 @Component({
   components: {
@@ -73,7 +73,7 @@ import FHExercise from '@/components/exercise/FH-Exercise.vue';
   }
 })
 export default class Training extends Vue {
-  private muscles = muscles;
+  public muscles = getMuscleNames();
 
   get trendingExercises(): IExercise[] | null {
     return this.$store.state.trendingExercises;

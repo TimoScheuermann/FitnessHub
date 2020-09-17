@@ -236,8 +236,8 @@ import { INutrition, IRecipe, IRecipeIngredient } from '@/utils/interfaces';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { CreateRecipeDTO } from '@/utils/dtos';
 import axios from '@/utils/axios';
-import { recipeCategories } from '@/utils/recipeCategories';
 import { defaultRecipe, validate } from '@/utils/recipeFormValidator';
+import { getCategoryNames } from '@/utils/functions';
 
 @Component
 export default class FHRecipeForm extends Vue {
@@ -265,7 +265,7 @@ export default class FHRecipeForm extends Vue {
   }
 
   get categories(): string[] {
-    return Object.keys(recipeCategories);
+    return getCategoryNames();
   }
 
   public roundNutrition(): void {

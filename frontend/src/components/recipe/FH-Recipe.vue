@@ -11,6 +11,15 @@
     </template>
 
     <div class="card-content">
+      <!-- <tc-headline :title="recipe.title">
+        <tc-button
+          name="Link kopieren"
+          icon="share"
+          background="#fff"
+          color="#000"
+          variant="opaque"
+        />
+      </tc-headline> -->
       <fh-pd-recipe :recipe="recipe" />
     </div>
   </tc-magic-card>

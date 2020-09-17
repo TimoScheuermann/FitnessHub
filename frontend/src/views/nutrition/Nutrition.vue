@@ -8,15 +8,15 @@
     <h1>Kategorien</h1>
     <fh-carousel>
       <router-link
-        v-for="c in Object.keys(categories)"
-        :key="c"
-        :to="{ name: 'nutrition-category', params: { category: c } }"
+        v-for="c in categories"
+        :key="c.title"
+        :to="{ name: 'nutrition-category', params: { category: c.title } }"
         tag="div"
         @click.capture.stop=""
       >
-        <tc-magic-card :src="categories[c]" :dark="true">
+        <tc-magic-card :src="c.thumbnail" :dark="true">
           <div class="card-thumbnail" slot="thumbnail">
-            <div class="title">{{ c }}</div>
+            <div class="title">{{ c.title }}</div>
           </div>
         </tc-magic-card>
       </router-link>
@@ -44,10 +44,10 @@
 <script lang="ts">
 import FHHealthWater from '@/components/health/FH-Health-Water.vue';
 import axios from '@/utils/axios';
-import { IRecipe } from '@/utils/interfaces';
+import { IRecipe, IVariable } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
-import { recipeCategories } from '@/utils/recipeCategories';
 import FHRecipe from '@/components/recipe/FH-Recipe.vue';
+import { getCategories } from '@/utils/functions';
 
 @Component({
   components: {
@@ -56,7 +56,7 @@ import FHRecipe from '@/components/recipe/FH-Recipe.vue';
   }
 })
 export default class Nutrition extends Vue {
-  private categories = recipeCategories;
+  private categories: IVariable[] = getCategories();
   public latestRecipes: IRecipe[] | null =
     this.$store.state.latestRecipes || null;
   public belovedRecipes: IRecipe[] | null =

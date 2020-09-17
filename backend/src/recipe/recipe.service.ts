@@ -83,7 +83,7 @@ export class RecipeService {
       author: user._id,
     });
 
-    const url = 'https://api.timos.design:3000/recipe/' + recipe._id;
+    const url = 'https://fitnesshub.app/nutrition/recipe/' + recipe._id;
     this.tgbotService.sendURLMessage(
       `<b>${this.transformName(
         user,

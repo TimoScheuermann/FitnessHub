@@ -39,19 +39,27 @@
         </div>
       </template>
       <transition :name="$store.getters.routeTransition">
-        <router-view class="child-view" :query="query" />
+        <router-view
+          class="child-view"
+          :query="query"
+          :error="loadingError"
+          :recipe="recipe"
+        />
       </transition>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { recipeCategories } from '@/utils/recipeCategories';
+import { Vue, Component, Watch } from 'vue-property-decorator';
+import { IRecipe } from '@/utils/interfaces';
+import { getCategory, getRecipe } from '@/utils/functions';
 
 @Component
 export default class ProfileInterim extends Vue {
   public query = '';
+  public loadingError = false;
+  public recipe: IRecipe | null = null;
 
   public TRIGGER = 150;
   public fixed = window.scrollY >= this.TRIGGER;
@@ -68,15 +76,36 @@ export default class ProfileInterim extends Vue {
     this.fixed = window.scrollY >= this.TRIGGER;
   }
 
+  @Watch('$route.name', { immediate: true })
+  routeNameChanged(to: string) {
+    if (to === 'nutrition-recipe') {
+      this.loadingError = false;
+      this.recipe = null;
+
+      getRecipe(this.$route.params.id, (data: IRecipe | null) => {
+        this.recipe = data;
+        if (!data) {
+          this.loadingError = true;
+        }
+      });
+    }
+  }
+
   get categoryInfo(): {
     title: string;
     thumbnail: string;
   } {
     if (this.$route.name === 'nutrition-category') {
-      const title = Object.keys(recipeCategories).filter(
-        x => x.toLowerCase() === this.$route.params.category.toLowerCase()
-      )[0];
-      return { title: title, thumbnail: recipeCategories[title] };
+      const cat = getCategory(this.$route.params.category);
+      if (cat) {
+        return { title: cat.title, thumbnail: cat.thumbnail };
+      }
+    }
+    if (this.$route.name === 'nutrition-recipe' && this.recipe) {
+      return {
+        title: this.recipe.title,
+        thumbnail: this.recipe.thumbnail
+      };
     }
     return {
       title: 'Ernährung',

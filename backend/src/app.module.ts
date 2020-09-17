@@ -11,6 +11,7 @@ import { FriendsModule } from './friends/friends.module';
 import { HealthModule } from './health/health.module';
 import { PromoteModule } from './management/promote/promote.module';
 import { StatisticsModule } from './management/statistics/statistics.module';
+import { VariablesModule } from './management/variables/variables.module';
 import { MessageModule } from './message/message.module';
 import { NetlifyModule } from './netlify/netlify.module';
 import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
@@ -51,6 +52,7 @@ import { WorkoutModule } from './workout/workout.module';
     WorkoutModule,
     ChartsModule,
     TrainingplanModule,
+    VariablesModule,
   ],
   controllers: [AppController],
   providers: [FHSocket, AppService],

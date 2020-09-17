@@ -68,6 +68,15 @@ const router = new VueRouter({
             level: 1,
             title: 'Wiki'
           }
+        },
+        {
+          path: 'recipe/:id',
+          name: 'nutrition-recipe',
+          component: () => import('@/views/nutrition/NutritionRecipe.vue'),
+          meta: {
+            level: 1,
+            title: 'Recipe'
+          }
         }
       ]
     },
@@ -99,6 +108,15 @@ const router = new VueRouter({
           meta: {
             level: 2,
             title: 'Workout'
+          }
+        },
+        {
+          path: 'exercise/:id',
+          name: 'training-exercise',
+          component: () => import('@/views/training/TrainingExercise.vue'),
+          meta: {
+            level: 2,
+            title: 'Exercise'
           }
         },
         {
@@ -228,17 +246,6 @@ const router = new VueRouter({
           }
         },
         {
-          path: 'exercises/details/:id',
-          name: 'exercise-details',
-          component: () =>
-            import('@/views/profile/exercises/ExerciseDetails.vue'),
-          meta: {
-            needsSignIn: true,
-            title: 'Informationen',
-            level: 2
-          }
-        },
-        {
           path: 'workouts',
           name: 'workouts',
           component: () => import('@/views/profile/workouts/Workouts.vue'),
@@ -344,6 +351,18 @@ const router = new VueRouter({
                 needsSignIn: true,
                 allowedGroups: ['admin', 'moderator'],
                 title: 'Suspend User',
+                level: 1
+              }
+            },
+            {
+              path: 'variables',
+              name: 'variables',
+              component: () =>
+                import('@/views/profile/management/Variables.vue'),
+              meta: {
+                needsSignIn: true,
+                allowedGroups: ['admin', 'moderator'],
+                title: 'Variablen',
                 level: 1
               }
             }

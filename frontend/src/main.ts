@@ -18,7 +18,7 @@ import { getUserFromJWT, persistLogin, verfiyUser } from './utils/auth';
 import axios from './utils/axios';
 import { backendURL, fhBotId } from './utils/constants';
 import { EventBus } from './utils/eventbus';
-import { getFriend } from './utils/functions';
+import { getCategory, getFriend, getMuscle } from './utils/functions';
 import {
   IExercise,
   IMessage,
@@ -27,8 +27,6 @@ import {
   IUserInfo,
   IWorkout
 } from './utils/interfaces';
-import { muscles } from './utils/muscles';
-import { recipeCategories } from './utils/recipeCategories';
 
 const socket = io(backendURL, { autoConnect: false });
 Vue.use(VueSocketIOExt, socket);
@@ -141,21 +139,12 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     return;
   }
 
-  if (
-    to.name === 'training-muscle' &&
-    muscles.filter(x => x.toLowerCase() === to.params.muscle.toLowerCase())
-      .length !== 1
-  ) {
+  if (to.name === 'training-muscle' && !getMuscle(to.params.muscle)) {
     next(from);
     return;
   }
 
-  if (
-    to.name === 'nutrition-category' &&
-    Object.keys(recipeCategories).filter(
-      x => x.toLowerCase() === to.params.category.toLowerCase()
-    ).length !== 1
-  ) {
+  if (to.name === 'nutrition-category' && !getCategory(to.params.category)) {
     next(from);
     return;
   }

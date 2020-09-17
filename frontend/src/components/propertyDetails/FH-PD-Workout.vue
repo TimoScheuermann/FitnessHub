@@ -33,7 +33,7 @@ export default class FHPropertyDetailsWorkout extends Vue {
   public openExerciseDetails(exerciseInfo: IExerciseInfo) {
     EventBus.$emit('modals-close');
     EventBus.$emit('modal-exercise-details', exerciseInfo._id);
-    if (this.$route.name !== 'workout-detail') {
+    if (this.$route.name !== 'training-workout') {
       EventBus.$emit('modal-exercise-details-return', {
         event: 'modal-workout-details',
         data: this.workout._id

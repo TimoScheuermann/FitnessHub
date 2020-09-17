@@ -17,8 +17,8 @@
 <script lang="ts">
 import FHRecipe from '@/components/recipe/FH-Recipe.vue';
 import axios from '@/utils/axios';
+import { getCategory } from '@/utils/functions';
 import { IRecipe } from '@/utils/interfaces';
-import { recipeCategories } from '@/utils/recipeCategories';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
@@ -40,9 +40,9 @@ export default class NutritionCategory extends Vue {
   }
 
   get category(): string {
-    return Object.keys(recipeCategories).filter(
-      x => x.toLowerCase() === this.$route.params.category.toLowerCase()
-    )[0];
+    const cat = getCategory(this.$route.params.category);
+    if (cat) return cat.title;
+    return '';
   }
 
   get filteredRecipes(): IRecipe[] {

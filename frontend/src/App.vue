@@ -41,6 +41,8 @@ import FHModalWorkoutDetails from './components/globalModals/FH-Modal-WorkoutDet
 import FHModalCreateWorkout from './components/globalModals/FH-Modal-CreateWorkout.vue';
 import FHModalAddToWorkout from './components/globalModals/FH-Modal-AddToWorkout.vue';
 import FHModalUserSearch from './components/globalModals/FH-Modal-UserSearch.vue';
+import axios from './utils/axios';
+import { IVariable } from './utils/interfaces';
 
 @Component({
   components: {
@@ -74,6 +76,10 @@ export default class App extends Mixins(
     document.documentElement.classList[
       this.mqDarkmode.matches ? 'add' : 'remove'
     ]('dark');
+
+    axios.get('variables').then(res => {
+      res.data.forEach((x: IVariable) => this.$store.commit('addVariable', x));
+    });
   }
 
   beforeDestroy() {
@@ -94,11 +100,6 @@ export default class App extends Mixins(
 </script>
 
 <style lang="scss">
-.test {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
 html {
   font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Inter,
     Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji,

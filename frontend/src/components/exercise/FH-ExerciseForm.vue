@@ -255,10 +255,10 @@
 <script lang="ts">
 import { IExercise } from '@/utils/interfaces';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { muscles } from '@/utils/muscles';
 import { CreateExerciseDTO } from '@/utils/dtos';
 import { defaultExercise, validate } from '@/utils/exerciseFormValidator';
 import axios from '@/utils/axios';
+import { getMuscleNames } from '@/utils/functions';
 
 interface MinMax {
   min: number;
@@ -274,7 +274,7 @@ export default class FHExerciseForm extends Vue {
   public sets: MinMax = { min: 4, max: 5 };
   public timeUnits = ['Sekunden', 'Minute(n)', 'Stunde(n)'];
   public timeUnit: string | null = null;
-  public muscles: string[] = muscles;
+  public muscles: string[] = getMuscleNames();
   public categories: string[] = ['Gym', 'Zeit', 'Strecke'];
   public selectedCategorie = 0;
   public warningInput = '';

@@ -1,6 +1,13 @@
 import store from '@/store';
+import axios from './axios';
 import { aHour, days } from './constants';
-import { IFHNotification, IRecipe, IUserInfo } from './interfaces';
+import {
+  IExercise,
+  IFHNotification,
+  IRecipe,
+  IUserInfo,
+  IVariable
+} from './interfaces';
 
 export function copyToClipboard(data: string) {
   const el = document.createElement('textarea');
@@ -112,4 +119,78 @@ export function hasLikedRecipe(id: string): boolean {
     (store.getters.favedRecipes as IRecipe[]).filter(x => x._id === id).length >
     0
   );
+}
+
+export function getExercise(id: string, callback: Function): void {
+  const allLoadedExercises: IExercise[] = [];
+  allLoadedExercises.push(store.getters.exercises);
+  allLoadedExercises.push(store.getters.recentExercises);
+  allLoadedExercises.push(store.getters.trendingExercises);
+  allLoadedExercises.push(store.getters.latestExercises);
+
+  const exercise = allLoadedExercises.filter(x => x && x._id === id)[0];
+  if (exercise) {
+    callback(null);
+    return;
+  }
+  axios
+    .get('exercise/' + id)
+    .then(res => {
+      callback(res.data);
+    })
+    .catch(() => {
+      callback(null);
+    });
+}
+
+export function getRecipe(id: string, callback: Function): void {
+  const allLoadedRecipes: IRecipe[] = [];
+  allLoadedRecipes.push(store.getters.favedRecipes);
+  allLoadedRecipes.push(store.getters.recipes);
+
+  const recipe = allLoadedRecipes.filter(x => x && x._id === id)[0];
+  if (recipe) {
+    callback(null);
+    return;
+  }
+  axios
+    .get('recipe/' + id)
+    .then(res => {
+      callback(res.data);
+    })
+    .catch(() => {
+      callback(null);
+    });
+}
+
+export function getMuscles(): IVariable[] {
+  return (store.getters.variables as IVariable[])
+    .filter(x => x.type === 'muscle')
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
+
+export function getMuscle(name: string): IVariable | null {
+  return getMuscles().filter(
+    x => x.title.toLocaleLowerCase() === name.toLocaleLowerCase()
+  )[0];
+}
+
+export function getMuscleNames(): string[] {
+  return getMuscles().map(x => x.title);
+}
+
+export function getCategories(): IVariable[] {
+  return (store.getters.variables as IVariable[])
+    .filter(x => x.type === 'category')
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
+
+export function getCategory(name: string): IVariable | null {
+  return getCategories().filter(
+    x => x.title.toLocaleLowerCase() === name.toLocaleLowerCase()
+  )[0];
+}
+
+export function getCategoryNames(): string[] {
+  return getCategories().map(x => x.title);
 }

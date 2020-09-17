@@ -13,6 +13,7 @@ import {
   ITrainingplanFull,
   IUser,
   IUserInfo,
+  IVariable,
   IWorkout
 } from '@/utils/interfaces';
 import Vue from 'vue';
@@ -46,7 +47,8 @@ export default new Vuex.Store({
     weight: null,
     water: null,
     trainingplan: null,
-    height: null
+    height: null,
+    variables: [] as IVariable[]
   },
   getters: {
     valid: (state: any): boolean => {
@@ -151,6 +153,9 @@ export default new Vuex.Store({
     },
     trainingplan: (state: any): ITrainingplanFull | null => {
       return state.trainingplan;
+    },
+    variables: (state: any): IVariable[] => {
+      return state.variables;
     }
   },
   mutations: {
@@ -355,6 +360,22 @@ export default new Vuex.Store({
       state.recentExercises.unshift(exercise);
       state.recentExercises = (state.recentExercises as IExercise[]).filter(
         (x, i) => i < 10
+      );
+    },
+    addVariable(state: any, variable: IVariable) {
+      let matched = false;
+      state.variables = state.variables.map((x: IHealth) => {
+        if (x._id === variable._id) {
+          matched = true;
+          return variable;
+        }
+        return x;
+      });
+      if (!matched) state.variables.push(variable);
+    },
+    removeVariable(state: any, id: string) {
+      state.variables = (state.variables as IVariable[]).filter(
+        x => x._id !== id
       );
     }
   }

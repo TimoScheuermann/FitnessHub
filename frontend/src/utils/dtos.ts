@@ -99,3 +99,8 @@ export class CreateWorkoutDTO {
   title!: string;
   exercises!: string[];
 }
+
+export class CreateVariableDTO {
+  title!: string;
+  thumbnail!: string;
+}
