@@ -9,6 +9,7 @@ import { Message } from 'src/message/schemas/Message.schema';
 import { Recipe } from 'src/recipe/schemas/Recipe.schema';
 import { UserService } from 'src/user/user.service';
 import { Workout } from 'src/workout/schemas/Workout.schema';
+import { Variable } from '../variables/schemas/Variable.schema';
 import { IGeneralStatistics } from './interfaces/IGeneralStatistics';
 import { ILoginProviderStatistic } from './interfaces/ILoginProviderStatistic';
 
@@ -23,6 +24,7 @@ export class StatisticsService {
     @InjectModel(Recipe.name) private recipeModel: Model<Recipe>,
     @InjectModel(CompletedExercise.name)
     private completedExerciseModel: Model<CompletedExercise>,
+    @InjectModel(Variable.name) private variableModel: Model<Variable>,
   ) {}
 
   async getGeneralStatistics(): Promise<IGeneralStatistics[]> {
@@ -54,6 +56,18 @@ export class StatisticsService {
       {
         title: 'Completed Exercises',
         amount: await this.completedExerciseModel.countDocuments(),
+      },
+      {
+        title: 'Muskeln',
+        amount: await this.variableModel
+          .find({ type: 'muscle' })
+          .countDocuments(),
+      },
+      {
+        title: 'Kategorien',
+        amount: await this.variableModel
+          .find({ type: 'category' })
+          .countDocuments(),
       },
     ];
   }
