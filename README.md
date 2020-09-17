@@ -9,7 +9,6 @@
 - [Backend](https://api.timos.design:3000/)
 - [API](https://api.timos.design:3000/api)
 - [Jira](https://fancyfitnessplanner.atlassian.net/)
-- [Endpoints](https://github.com/TimoScheuermann/FitnessHub/blob/master/REST.md)
 
 ## Gruppenmitglieder
 
