@@ -20,5 +20,5 @@ const KEY_PATH = '/etc/letsencrypt/live/api.timos.design/';
 
   app.use(express.static(join(process.cwd(), 'public')));
 
-  await app.listen(4000);
+  await app.listen(3001);
 })();
