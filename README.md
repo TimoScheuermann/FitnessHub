@@ -9,16 +9,15 @@
 - [Backend](https://api.timos.design:3000/)
 - [API](https://api.timos.design:3000/api)
 - [Jira](https://fancyfitnessplanner.atlassian.net/)
-- [Endpoints](https://github.com/TimoScheuermann/FitnessHub/blob/master/REST.md)
 
 ## Gruppenmitglieder
 
-- Jeannine Bertrand
-- Velichka Popp
-- Jan Eger
-- Nicolas Fürhaupter
-- Moritz Jürgens
-- Timo Scheuermann
+- [Jeannine Bertrand](https://github.com/JeannineB)
+- [Velichka Popp](https://github.com/Velii)
+- [Jan Eger](https://github.com/egerj)
+- [Nicolas Fürhaupter](https://github.com/Salocinf)
+- [Moritz Jürgens](https://github.com/moritzjuergens)
+- [Timo Scheuermann](https://github.com/TimoScheuermann)
 
 ## Repo
 
