@@ -98,6 +98,7 @@ export class ExerciseService {
         $unset: { editedData: true },
         $set: {
           ...update,
+          updated: new Date().getTime(),
           reviewed: true,
           reviewedBy: reviewer._id,
         },
@@ -125,7 +126,7 @@ export class ExerciseService {
   ): Promise<void> {
     await this.exerciseModel.updateOne(
       { _id: id, author: author._id },
-      { $set: { editedData: update, updated: new Date().getTime() } },
+      { $set: { editedData: update } },
     );
 
     const exercise: IExercise = await this.getById(id);
@@ -209,9 +210,8 @@ export class ExerciseService {
 
   public async getLatestExercises(): Promise<IExercise[]> {
     return await this.exerciseModel
-      .find()
-      .sort({ updated: -1, created: -1 })
-      .limit(10)
-      .sort({ updated: 1, created: 1 });
+      .find({ reviewed: true })
+      .sort({ created: -1 })
+      .limit(10);
   }
 }
