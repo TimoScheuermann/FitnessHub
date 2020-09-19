@@ -1,7 +1,7 @@
 <template>
   <div class="fitnesshub">
-    <fh-navbar id="desktop" />
-    <fh-tabbar id="mobile" />
+    <!-- <fh-navbar id="desktop" /> -->
+    <fh-tabbar v-if="!$store.getters.isDesktop" />
     <fh-notification />
     <fh-edit-trainingplan />
     <fh-run-workout />
@@ -13,11 +13,20 @@
     <fh-modal-user-search />
     <fh-modal-exercise-search />
 
-    <div class="view">
-      <transition name="main-route">
-        <router-view class="child-view" />
-      </transition>
-    </div>
+    <tl-sidebar
+      sidebarBackgroundImage="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?h=1920"
+      :blurred="true"
+    >
+      <template v-if="$store.getters.isDesktop">
+        <fh-sidebar-head slot="sidebar-header" />
+        <fh-sidebar-items slot="sidebar-content" />
+      </template>
+      <div class="view">
+        <transition name="main-route">
+          <router-view class="child-view" />
+        </transition>
+      </div>
+    </tl-sidebar>
 
     <div class="loading" v-if="$store.getters.loading">
       <tc-spinner :dark="$store.getters.darkmode" />
@@ -45,11 +54,15 @@ import FHModalUserSearch from './components/globalModals/FH-Modal-UserSearch.vue
 import axios from './utils/axios';
 import { IVariable } from './utils/interfaces';
 import FHModalExerciseSearch from './components/globalModals/FH-Modal-ExerciseSearch.vue';
+import FHSidebarItems from './components/global/FH-Sidebar-Items.vue';
+import FHSidebarHead from './components/global/FH-Sidebar-Head.vue';
 
 @Component({
   components: {
     'fh-navbar': FHNavbar,
     'fh-tabbar': FHTabbar,
+    'fh-sidebar-items': FHSidebarItems,
+    'fh-sidebar-head': FHSidebarHead,
     'fh-notification': FHNotification,
     'fh-edit-trainingplan': FHEditTrainingplan,
     'fh-run-workout': FHRunWorkout,
@@ -68,13 +81,13 @@ export default class App extends Mixins(
   ExerciseSocketManager,
   WorkoutSocketManager
 ) {
-  public mqFixedHeader = window.matchMedia('(min-width: 851px)');
+  public mqIsDesktop = window.matchMedia('(min-width: 851px)');
   public mqDarkmode = window.matchMedia('(prefers-color-scheme: dark)');
 
   async mounted() {
-    this.mqFixedHeader.addListener(this.mediaListenerHeader);
+    this.mqIsDesktop.addListener(this.mediaListenerHeader);
     this.mqDarkmode.addListener(this.mediaListenerDarkmode);
-    this.$store.commit('fixedHeader', this.mqFixedHeader.matches);
+    this.$store.commit('isDesktop', this.mqIsDesktop.matches);
     this.$store.commit('darkmode', this.mqDarkmode.matches);
     document.documentElement.classList[
       this.mqDarkmode.matches ? 'add' : 'remove'
@@ -86,12 +99,12 @@ export default class App extends Mixins(
   }
 
   beforeDestroy() {
-    this.mqFixedHeader.removeListener(this.mediaListenerHeader);
+    this.mqIsDesktop.removeListener(this.mediaListenerHeader);
     this.mqDarkmode.removeListener(this.mediaListenerDarkmode);
   }
 
   public mediaListenerHeader(event: MediaQueryListEvent): void {
-    this.$store.commit('fixedHeader', event && event.matches);
+    this.$store.commit('isDesktop', event && event.matches);
   }
   public mediaListenerDarkmode(event: MediaQueryListEvent): void {
     const matches = event && event.matches;

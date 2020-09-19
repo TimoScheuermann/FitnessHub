@@ -26,7 +26,7 @@ export default new Vuex.Store({
     user: {} as IUser,
     userValidated: false,
     notifications: [] as IFHNotification[],
-    fixedHeader: false,
+    isDesktop: false,
     darkmode: false,
     routeTransition: 'slide-left',
     messages: [] as IMessage[],
@@ -69,8 +69,8 @@ export default new Vuex.Store({
         getters.exerciseSubmissions.length
       );
     },
-    fixedHeader: (state: any): boolean => {
-      return state.fixedHeader;
+    isDesktop: (state: any): boolean => {
+      return state.isDesktop;
     },
     darkmode: (state: any): boolean => {
       return state.darkmode;
@@ -168,8 +168,8 @@ export default new Vuex.Store({
       state.userValidated = true;
       state.user.familyName = user.familyName.split('Ã¼').join('ü');
     },
-    fixedHeader(state: any, fixedHeader: boolean) {
-      state.fixedHeader = fixedHeader;
+    isDesktop(state: any, isDesktop: boolean) {
+      state.isDesktop = isDesktop;
     },
     darkmode(state: any, darkmode: boolean) {
       state.darkmode = darkmode;

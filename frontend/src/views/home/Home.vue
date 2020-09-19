@@ -1,11 +1,7 @@
 <template>
   <div class="home">
     <fh-mobile-header :title="$store.getters.valid ? 'Home' : 'FitnessHub'" />
-    <tc-hero
-      :dark="true"
-      :hasFixedHeader="$store.getters.fixedHeader"
-      :height="200"
-    >
+    <tc-hero :dark="true" :hasFixedHeader="false" :height="200">
       <img
         src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=1080"
         slot="background"

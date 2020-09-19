@@ -43,11 +43,7 @@
       />
     </fh-mobile-header>
 
-    <tc-hero
-      :dark="true"
-      :hasFixedHeader="$store.getters.fixedHeader"
-      :height="200"
-    >
+    <tc-hero :dark="true" :hasFixedHeader="false" :height="200">
       <img
         src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
         slot="background"

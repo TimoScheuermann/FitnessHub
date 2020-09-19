@@ -8,11 +8,7 @@
       />
     </fh-mobile-header>
 
-    <tc-hero
-      :dark="true"
-      :hasFixedHeader="$store.getters.fixedHeader"
-      :height="200"
-    >
+    <tc-hero :dark="true" :hasFixedHeader="false" :height="200">
       <img :src="categoryInfo.thumbnail" slot="background" alt="" />
       <transition name="hero-anim" mode="out-in">
         <h1 :key="categoryInfo.title">{{ categoryInfo.title }}</h1>

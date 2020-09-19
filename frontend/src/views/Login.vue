@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <fh-mobile-header title="Login" />
-    <tc-hero :hasFixedHeader="false">
+    <tc-hero :hasFixedHeader="false || false">
       <video slot="background" playsinline autoplay="autoplay" loop muted>
         <source
           src="https://assets.mixkit.co/videos/preview/mixkit-two-people-working-out-1318-small.mp4"

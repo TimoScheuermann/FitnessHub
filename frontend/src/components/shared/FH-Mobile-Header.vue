@@ -36,29 +36,33 @@ export default class FHMobileHeader extends Vue {
   public TRIGGER = 100;
   public enhancedVisibility = window.scrollY >= this.TRIGGER;
 
-  mounted() {
-    window.addEventListener('scroll', this.scrollListener);
+  beforeMount() {
+    document.querySelectorAll('.tl-sidebar--content').forEach(elem => {
+      elem.addEventListener('scroll', () => this.scrollListener(elem));
+    });
   }
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollListener);
+    document.querySelectorAll('.tl-sidebar--content').forEach(elem => {
+      elem.removeEventListener('scroll', () => this.scrollListener(elem));
+    });
   }
 
-  public scrollListener(): void {
-    this.enhancedVisibility = window.scrollY >= this.TRIGGER;
+  public scrollListener(elem: Element): void {
+    this.enhancedVisibility = elem.scrollTop >= this.TRIGGER;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .fh-mobile-header {
-  @media #{$isDesktop} {
-    display: none;
-  }
   padding: 0 5vw;
   position: fixed;
   top: 0;
   left: 0;
+  @media #{$isDesktop} {
+    left: 201.31px;
+  }
   right: 0;
   z-index: 900;
   &.dark &--right,
@@ -99,15 +103,15 @@ export default class FHMobileHeader extends Vue {
     .input-content {
       display: block;
     }
-    @media #{$isMobile} {
-      .tc-header-button {
-        color: $primary;
-      }
-      @include backdrop-blur($background);
-      &.dark {
-        @include backdrop-blur($background_dark);
-      }
+    // @media #{$isMobile} {
+    .tc-header-button {
+      color: $success;
     }
+    @include backdrop-blur($background);
+    &.dark {
+      @include backdrop-blur($background_dark);
+    }
+    // }
   }
 }
 .fade-enter-active,
