@@ -1,11 +1,13 @@
 <template>
   <div class="fh-feature-card">
-    <div class="fh-feature-card--title">{{ title }}</div>
-    <div class="fh-feature-card--description">
-      <slot />
-    </div>
     <div class="fh-feature-card--image">
       <img :src="image" alt="" />
+    </div>
+    <div class="fh-feature-card--container">
+      <div class="fh-feature-card--title">{{ title }}</div>
+      <div class="fh-feature-card--description">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -23,31 +25,44 @@ export default class FHFeatureCard extends Vue {
 <style lang="scss" scoped>
 .fh-feature-card {
   background: $paragraph;
+  box-shadow: $shadow-light;
   @media (prefers-color-scheme: dark) {
     background: $paragraph_dark;
+    box-shadow: $shadow;
   }
-  padding: 20px;
   border-radius: $border-radius;
-  display: flex;
-  flex-direction: column;
-  .fh-feature-card--title {
-    font-weight: bold;
-    color: $success;
-  }
-  .fh-feature-card--description {
-    font-size: 20px;
-    font-weight: 500;
-    margin: 12px 0;
+  height: fit-content;
+  .fh-feature-card--container {
+    padding: 20px;
+    background: $background;
+    @media (prefers-color-scheme: dark) {
+      background: $background_dark;
+    }
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px -8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 $border-radius $border-radius;
+    text-align: center;
+    .fh-feature-card--title {
+      font-weight: bold;
+      font-size: 20px;
+      color: $success;
+    }
+    .fh-feature-card--description {
+      margin-top: 12px;
+    }
   }
   .fh-feature-card--image {
-    flex-grow: 1;
+    height: 160px;
+    padding: 20px;
+    margin-bottom: -50px;
     img {
       width: 100%;
       height: 100%;
-      max-height: 200px;
       object-fit: contain;
-      object-position: center;
-      filter: drop-shadow(4px 8px 10px rgba(#111, 0.2));
+      object-position: top center;
+      filter: drop-shadow(8px 8px 5px rgba(#111, 0.2));
     }
   }
 }

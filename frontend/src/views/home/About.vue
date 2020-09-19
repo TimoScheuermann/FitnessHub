@@ -9,6 +9,10 @@
       FitnessHub eine digitale und personalisierte Begleitung bei der Erreichung
       der persönlichen Fitnessziele.
     </p>
+    <br />
+    <br />
+    <fh-large-headline title="FitnessHub" subtitle="Was dich erwartet" />
+    <br />
     <h1>Workouts</h1>
     <p>
       Die App soll den Benutzern eine breite Vielfalt an Trainingsplänen mit
@@ -148,11 +152,13 @@
 
 <script lang="ts">
 import FHFeatureCard from '@/components/about/FH-FeatureCard.vue';
+import FHLargeHeadline from '@/components/about/FH-LargeHeadline.vue';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
-    'fh-feature-card': FHFeatureCard
+    'fh-feature-card': FHFeatureCard,
+    'fh-large-headline': FHLargeHeadline
   }
 })
 export default class About extends Vue {}
@@ -160,9 +166,6 @@ export default class About extends Vue {}
 
 <style lang="scss" scoped>
 .about {
-  h1 {
-    color: $success;
-  }
   [standalone='below'] {
     margin-top: 30px;
   }

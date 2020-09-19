@@ -7,17 +7,22 @@
       dark: $store.getters.darkmode
     }"
   >
-    <slot />
-    <transition name="fade">
-      <div v-if="enhancedVisibility" class="fh-mobile-header--title">
-        {{ title }}
-      </div>
-    </transition>
-    <transition name="fade2">
-      <div v-if="enhancedVisibility" class="fh-mobile-header--right">
-        <slot name="right" />
-      </div>
-    </transition>
+    <div class="main-content">
+      <slot />
+      <transition name="fade">
+        <div v-if="enhancedVisibility" class="fh-mobile-header--title">
+          {{ title }}
+        </div>
+      </transition>
+      <transition name="fade2">
+        <div v-if="enhancedVisibility" class="fh-mobile-header--right">
+          <slot name="right" />
+        </div>
+      </transition>
+    </div>
+    <div class="input-content" v-if="$slots.input">
+      <slot name="input" />
+    </div>
   </div>
 </template>
 
@@ -49,13 +54,8 @@ export default class FHMobileHeader extends Vue {
 .fh-mobile-header {
   @media #{$isDesktop} {
     display: none;
-    // top: calc(70px + env(safe-area-inset-top));
   }
-  min-height: 50px;
   padding: 0 5vw;
-  padding-top: env(safe-area-inset-top);
-  display: flex;
-  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -65,6 +65,22 @@ export default class FHMobileHeader extends Vue {
   &.dark &--title {
     color: $color_dark;
   }
+  .main-content {
+    padding-top: env(safe-area-inset-top);
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 50px;
+    .tc-header-button {
+      color: #fff;
+      transition: 0.2s ease-in-out;
+    }
+  }
+  .input-content {
+    display: none;
+    padding-bottom: 10px;
+  }
+
   &--title {
     position: absolute;
     left: 50%;
@@ -78,12 +94,11 @@ export default class FHMobileHeader extends Vue {
     position: absolute;
     right: 5vw;
   }
-  .tc-header-button {
-    color: #fff;
-    transition: 0.2s ease-in-out;
-  }
   transition: background 0.2s ease-in-out;
   &.enhancedVisibility {
+    .input-content {
+      display: block;
+    }
     @media #{$isMobile} {
       .tc-header-button {
         color: $primary;

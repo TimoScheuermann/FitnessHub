@@ -11,4 +11,7 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class Impressum extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.impressum {
+}
+</style>

@@ -6,6 +6,14 @@
         routeName="training"
         name="Training"
       />
+      <tc-button
+        class="search"
+        icon="lens"
+        name="Suche"
+        tfbackground="success"
+        slot="right"
+        @click="openSearch"
+      />
     </fh-mobile-header>
 
     <tc-hero
@@ -32,12 +40,20 @@
 </template>
 
 <script lang="ts">
+import FHDifficulty from '@/components/common/FH-Difficulty.vue';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import axios from '@/utils/axios';
+import { EventBus } from '@/utils/eventbus';
 import { getExercise, getMuscleNames } from '@/utils/functions';
 import { IExercise, IWorkout } from '@/utils/interfaces';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 
-@Component
+@Component({
+  components: {
+    'fh-exercise': FHExercise,
+    'fh-difficulty': FHDifficulty
+  }
+})
 export default class ProfileInterim extends Vue {
   public workout: IWorkout | null = null;
   public loadingError = false;
@@ -45,6 +61,13 @@ export default class ProfileInterim extends Vue {
 
   mounted() {
     this.routeNameChanged(this.$route.name + '');
+
+    EventBus.$on('training-interim-exercise', (exercise: IExercise) => {
+      this.$router.push({
+        name: 'training-exercise',
+        params: { id: exercise._id }
+      });
+    });
   }
 
   @Watch('$route.name', { immediate: true })
@@ -98,6 +121,10 @@ export default class ProfileInterim extends Vue {
       thumbnail: `https://images.unsplash.com/photo-${thumbnail}?w=1080&q=5`
     };
   }
+
+  public openSearch(): void {
+    EventBus.$emit('modal-exercise-search', 'training-interim-exercise');
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -120,5 +147,16 @@ export default class ProfileInterim extends Vue {
 .hero-anim-leave-to {
   transform: translateY(-20px);
   opacity: 0;
+}
+.hero-input {
+  margin-top: 20px;
+  .tc-input {
+    width: 80vw;
+    max-width: 400px;
+    padding: 10px;
+  }
+}
+.tc-button.search {
+  margin-right: calc(-10vw + 5px + env(safe-area-inset-right));
 }
 </style>

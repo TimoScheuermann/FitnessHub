@@ -11,6 +11,7 @@
     <fh-modal-create-workout />
     <fh-modal-add-to-workout />
     <fh-modal-user-search />
+    <fh-modal-exercise-search />
 
     <div class="view">
       <transition name="main-route">
@@ -43,6 +44,7 @@ import FHModalAddToWorkout from './components/globalModals/FH-Modal-AddToWorkout
 import FHModalUserSearch from './components/globalModals/FH-Modal-UserSearch.vue';
 import axios from './utils/axios';
 import { IVariable } from './utils/interfaces';
+import FHModalExerciseSearch from './components/globalModals/FH-Modal-ExerciseSearch.vue';
 
 @Component({
   components: {
@@ -56,7 +58,8 @@ import { IVariable } from './utils/interfaces';
     'fh-modal-workout-details': FHModalWorkoutDetails,
     'fh-modal-create-workout': FHModalCreateWorkout,
     'fh-modal-add-to-workout': FHModalAddToWorkout,
-    'fh-modal-user-search': FHModalUserSearch
+    'fh-modal-user-search': FHModalUserSearch,
+    'fh-modal-exercise-search': FHModalExerciseSearch
   }
 })
 export default class App extends Mixins(
@@ -185,11 +188,11 @@ a {
 
 .main-route-leave-active {
   opacity: 0;
-  transform: scale(0.8);
+  // transform: scale(0.8);
 }
 .main-route-enter {
   opacity: 0;
-  transform: scale(1.2);
+  // transform: scale(1.2);
 }
 .loading {
   position: fixed;

@@ -1,19 +1,15 @@
 <template>
   <div class="login">
-    <tc-hero :hasFixedHeader="false" :height="200">
-      <img
-        src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-        slot="background"
-        alt=""
-      />
-      <div class="info">
-        <div class="title">Melde dich an</div>
-        <div class="subtitle">und werde Teil der Community</div>
-      </div>
-    </tc-hero>
-    <div content>
-      <h1>Login</h1>
-      <tc-list :dark="$store.getters.darkmode">
+    <fh-mobile-header title="Login" />
+    <tc-hero :hasFixedHeader="false">
+      <video slot="background" playsinline autoplay="autoplay" loop muted>
+        <source
+          src="https://assets.mixkit.co/videos/preview/mixkit-two-people-working-out-1318-small.mp4"
+        />
+      </video>
+
+      <tc-list title="Willkommen zurück" :frosted="true" :dark="true">
+        <br />
         <tc-list-item
           title="Sign in with Google"
           icon="google"
@@ -40,6 +36,14 @@
           @click="login('amazon')"
         />
       </tc-list>
+    </tc-hero>
+    <div content>
+      <div class="scroll-indicator" @click="scrollDown">
+        <div class="text">Deine Vorteile</div>
+        <div class="icon">
+          <i class="ti-chevron-down"></i>
+        </div>
+      </div>
       <h1>Deine Vorteile</h1>
       <p>
         Wir bieten Dir ein Rund­um-sorglos-Paket an, das Deinen Einstieg in das
@@ -74,28 +78,71 @@ export default class Login extends Vue {
   public login(provider = 'google') {
     signIn(provider);
   }
+
+  mounted() {
+    setTimeout(() => {
+      document.getElementsByTagName('video')[0].play();
+    }, 100);
+  }
+
+  public scrollDown(): void {
+    window.scrollTo({ top: window.innerHeight });
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-p {
-  text-align: justify;
-  hyphens: auto;
-}
-.tc-hero {
-  img {
-    filter: brightness(60%);
+.login {
+  p {
+    text-align: justify;
+    hyphens: auto;
   }
-  .info {
-    margin-top: env(safe-area-inset-top);
-    color: #fff;
-    text-align: center;
-    .title {
-      font-weight: 500;
-      font-size: 1.4em;
+  .scroll-indicator {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    @media (orientation: landscape) and (max-width: 850px) {
+      display: none;
     }
-    .subtitle {
-      font-size: 1.2em;
+
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -100px);
+
+    color: white;
+    cursor: pointer;
+    .text {
+      margin-bottom: 5px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    &:hover .icon {
+      border-color: #fff;
+    }
+    .icon {
+      transition: 0.2s ease-in-out;
+      border: 2px solid transparent;
+      $size: 30px;
+      border-radius: $size;
+      width: $size;
+      height: $size;
+      display: grid;
+      place-content: center;
+    }
+  }
+  .tc-hero {
+    height: 100vh;
+    @media #{$isMobile} {
+      height: calc(100vh - env(safe-area-inset-bottom) - 50px);
+      // transform: translate(-50%, -170px);
+    }
+    img,
+    video {
+      filter: brightness(60%);
+    }
+    .tc-list {
+      width: 300px;
+      max-width: 80vw;
     }
   }
 }

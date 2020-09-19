@@ -1,78 +1,69 @@
 <template>
   <div class="variables" content>
-    <tl-grid>
-      <div>
-        <h1>Muskeln</h1>
-        <tc-revealer title="Muskel hinzufügen" :dark="$store.getters.darkmode">
-          <tl-grid gap="0 10">
-            <tc-input
-              title="Titel"
-              v-model="muscleInput.title"
-              :dark="$store.getters.darkmode"
-            />
-            <tc-input
-              title="Thumbnail"
-              v-model="muscleInput.thumbnail"
-              :dark="$store.getters.darkmode"
-            />
-            <tc-button
-              name="Hinzufügen"
-              tfbackground="success"
-              variant="filled"
-              @click="addMuscle"
-            />
-          </tl-grid>
-        </tc-revealer>
-        <div class="variable" v-for="v in muscles" :key="v._id">
-          <div class="title">{{ v.title }}</div>
-          <div class="button">
-            <tc-button
-              icon="cross"
-              tfbackground="error"
-              variant="filled"
-              @click="removeMuscle(v._id)"
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <h1>Kategorien</h1>
-        <tc-revealer
-          title="Kategorie hinzufügen"
+    <h1>Muskeln</h1>
+    <tc-revealer title="Muskel hinzufügen" :dark="$store.getters.darkmode">
+      <tl-grid gap="0 10">
+        <tc-input
+          title="Titel"
+          v-model="muscleInput.title"
           :dark="$store.getters.darkmode"
-        >
-          <tl-grid gap="0 10">
-            <tc-input
-              title="Titel"
-              v-model="categoryInput.title"
-              :dark="$store.getters.darkmode"
-            />
-            <tc-input
-              title="Thumbnail"
-              v-model="categoryInput.thumbnail"
-              :dark="$store.getters.darkmode"
-            />
-            <tc-button
-              name="Hinzufügen"
-              tfbackground="success"
-              variant="filled"
-              @click="addCategory"
-            />
-          </tl-grid>
-        </tc-revealer>
-        <div class="variable" v-for="v in categories" :key="v._id">
-          <div class="title">{{ v.title }}</div>
-          <div class="button">
-            <tc-button
-              icon="cross"
-              tfbackground="error"
-              variant="filled"
-              @click="removeCategory(v._id)"
-            />
-          </div>
-        </div>
+        />
+        <tc-input
+          title="Thumbnail"
+          v-model="muscleInput.thumbnail"
+          :dark="$store.getters.darkmode"
+        />
+        <tc-button
+          name="Hinzufügen"
+          tfbackground="success"
+          variant="filled"
+          @click="addMuscle"
+        />
+      </tl-grid>
+    </tc-revealer>
+    <div class="variable" v-for="v in muscles" :key="v._id">
+      <div class="title">{{ v.title }}</div>
+      <div class="button">
+        <tc-button
+          icon="cross"
+          tfbackground="error"
+          variant="filled"
+          @click="removeMuscle(v._id)"
+        />
       </div>
-    </tl-grid>
+    </div>
+    <h1>Kategorien</h1>
+    <tc-revealer title="Kategorie hinzufügen" :dark="$store.getters.darkmode">
+      <tl-grid gap="0 10">
+        <tc-input
+          title="Titel"
+          v-model="categoryInput.title"
+          :dark="$store.getters.darkmode"
+        />
+        <tc-input
+          title="Thumbnail"
+          v-model="categoryInput.thumbnail"
+          :dark="$store.getters.darkmode"
+        />
+        <tc-button
+          name="Hinzufügen"
+          tfbackground="success"
+          variant="filled"
+          @click="addCategory"
+        />
+      </tl-grid>
+    </tc-revealer>
+    <div class="variable" v-for="v in categories" :key="v._id">
+      <div class="title">{{ v.title }}</div>
+      <div class="button">
+        <tc-button
+          icon="cross"
+          tfbackground="error"
+          variant="filled"
+          @click="removeCategory(v._id)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -153,7 +144,10 @@ export default class Variables extends Vue {
     grid-gap: 5px;
     margin: 3px;
     padding: 5px;
-    background: $paragraph_dark;
+    background: $paragraph;
+    @media (prefers-color-scheme: dark) {
+      background: $paragraph_dark;
+    }
     border-radius: $border-radius;
     .title,
     .button {

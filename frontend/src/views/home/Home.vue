@@ -7,11 +7,10 @@
       :height="200"
     >
       <img
-        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
+        src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=1080"
         slot="background"
         alt
       />
-      <h1 v-if="!$store.getters.valid"><i class="ti-gym" /> FitnessHub</h1>
 
       <div class="info" v-if="$store.getters.valid">
         <div class="welcomeMessage">{{ returnWelcomeMessage }},</div>
@@ -20,6 +19,9 @@
           {{ $store.getters.user.familyName }}
         </div>
       </div>
+      <template v-else>
+        <h1><i class="ti-gym" /> FitnessHub</h1>
+      </template>
     </tc-hero>
     <fh-about v-if="!$store.getters.valid" />
     <fh-landing v-else />
