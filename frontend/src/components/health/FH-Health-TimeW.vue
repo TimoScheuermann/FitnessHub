@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { days } from '@/utils/constants';
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHHealthHead from './shared/FH-Health-Head.vue';
 
 @Component({
@@ -31,11 +31,16 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthTimeW extends Vue {
-  // Done
+  @Prop() chartData!: number[][];
+
   public height = 125;
 
+  get chart(): number[][] {
+    return this.chartData || this.$store.getters.chartWorkouts;
+  }
+
   get times(): number[] {
-    return (this.$store.getters.chartWorkouts as number[][])
+    return this.chart
       .filter((x, i) => i > 20)
       .map(x => Math.floor(x.reduce((a, b) => a + b, 0) / 60));
   }
@@ -48,6 +53,8 @@ export default class FHHealthTimeW extends Vue {
   }
 
   get description(): string {
+    if (this.chartData)
+      return `Durschnittliche Trainingszeiten der letzten 7 Tage: ${this.average.hours}h ${this.average.minutes}m`;
     return `In den letzten 7 Tagen hast du im Schnitt ${this.average.hours}h ${this.average.minutes}m trainiert.`;
   }
 

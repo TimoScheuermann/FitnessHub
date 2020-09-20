@@ -9,7 +9,7 @@
     <div class="workout-days">
       <div class="day" v-for="(d, i) in days" :key="d.getTime()">
         <div class="name">{{ dayName(d) }}</div>
-        <div class="circle" :class="{ workedout: workoutedOut(i) }">
+        <div class="circle" :class="{ workedout: hasWorkedout(i) }">
           {{ d.getDate() }}
         </div>
       </div>
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { aDay, days } from '@/utils/constants';
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHHealthHead from './shared/FH-Health-Head.vue';
 
 @Component({
@@ -28,6 +28,12 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout7 extends Vue {
+  @Prop() chartData!: number[][];
+
+  get chart(): number[][] {
+    return this.chartData || this.$store.getters.chartWorkouts;
+  }
+
   get days(): Date[] {
     const today = new Date().getTime();
     return Array.from(
@@ -37,13 +43,11 @@ export default class FHHealthWorkout7 extends Vue {
   }
 
   get total(): number {
-    return (this.$store.getters.chartWorkouts as number[][]).filter(
-      (x, i) => i > 20 && x.length > 0
-    ).length;
+    return this.chart.filter((x, i) => i > 20 && x.length > 0).length;
   }
 
-  public workoutedOut(index: number): boolean {
-    return this.$store.getters.chartWorkouts[index + 21].length > 0;
+  public hasWorkedout(index: number): boolean {
+    return this.chart[index + 21].length > 0;
   }
 
   public dayName(date: Date) {

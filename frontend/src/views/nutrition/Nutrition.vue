@@ -6,20 +6,13 @@
     </template>
 
     <h1>Kategorien</h1>
+
     <fh-carousel>
-      <router-link
+      <fh-category-preview
         v-for="c in categories"
         :key="c.title"
-        :to="{ name: 'nutrition-category', params: { category: c.title } }"
-        tag="div"
-        @click.capture.stop=""
-      >
-        <tc-magic-card :src="c.thumbnail" :dark="true">
-          <div class="card-thumbnail" slot="thumbnail">
-            <div class="title">{{ c.title }}</div>
-          </div>
-        </tc-magic-card>
-      </router-link>
+        :category="c"
+      />
     </fh-carousel>
 
     <template v-if="belovedRecipes && belovedRecipes.length > 0">
@@ -48,11 +41,13 @@ import { IRecipe, IVariable } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 import FHRecipe from '@/components/recipe/FH-Recipe.vue';
 import { getCategories } from '@/utils/functions';
+import FHCategoryPreview from '@/components/recipe/FH-CategoryPreview.vue';
 
 @Component({
   components: {
     'fh-health-water': FHHealthWater,
-    'fh-recipe': FHRecipe
+    'fh-recipe': FHRecipe,
+    'fh-category-preview': FHCategoryPreview
   }
 })
 export default class Nutrition extends Vue {

@@ -25,6 +25,7 @@
     >
       <tc-sidebar-item routeName="profile" icon="user" name="Profil" />
     </tc-badge>
+    <tc-sidebar-item v-else icon="login" name="Anmelden" routeName="login" />
   </div>
 </template>
 

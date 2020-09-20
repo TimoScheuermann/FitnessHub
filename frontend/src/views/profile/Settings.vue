@@ -68,6 +68,12 @@
             @input="val => toggleSetting(val, 'FRIENDS_SHARE_HEIGHT')"
           />
           <tc-list-item
+            title="Letzten Workouts"
+            icon="gym"
+            :value="isSettingEnabled('FRIENDS_SHARE_LATEST_WORKOUTS')"
+            @input="val => toggleSetting(val, 'FRIENDS_SHARE_LATEST_WORKOUTS')"
+          />
+          <tc-list-item
             title="Trainingsstatistik"
             icon="heartbeat"
             :value="isSettingEnabled('FRIENDS_SHARE_STATS')"
@@ -90,7 +96,8 @@ enum AvailableSetting {
   FRIENDS_SHARE_WEIGHT = 'FRIENDS_SHARE_WEIGHT',
   FRIENDS_SHARE_WATER = 'FRIENDS_SHARE_WATER',
   FRIENDS_SHARE_HEIGHT = 'FRIENDS_SHARE_HEIGHT',
-  FRIENDS_SHARE_STATS = 'FRIENDS_SHARE_STATS'
+  FRIENDS_SHARE_STATS = 'FRIENDS_SHARE_STATS',
+  FRIENDS_SHARE_LATEST_WORKOUTS = 'FRIENDS_SHARE_LATEST_WORKOUTS'
 }
 
 @Component

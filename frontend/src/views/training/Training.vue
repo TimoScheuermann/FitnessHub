@@ -33,6 +33,20 @@
     </template>
 
     <h1>Betroffene Muskeln</h1>
+    <fh-carousel>
+      <tc-list
+        :dark="$store.getters.darkmode"
+        v-for="(pairs, i) in musclePairs"
+        :key="i + +'mp'"
+      >
+        <tc-list-item
+          v-for="m in pairs"
+          :key="m"
+          :title="m"
+          :to="{ name: 'training-muscle', params: { muscle: m } }"
+        />
+      </tc-list>
+    </fh-carousel>
     <div class="muscles-mobile">
       <tc-list :dark="$store.getters.darkmode">
         <tc-list-item
@@ -86,6 +100,12 @@ export default class Training extends Vue {
     return this.$store.state.latestWorkouts;
   }
 
+  get musclePairs(): string[][] {
+    const newArr = [];
+    while (this.muscles.length) newArr.push(this.muscles.splice(0, 3));
+    return newArr;
+  }
+
   mounted() {
     if (!this.trendingExercises) {
       axios.get('exercise/trending').then(res => {
@@ -107,6 +127,10 @@ export default class Training extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.muscle-grid {
+  display: flex;
+  // max
+}
 .cd-body {
   display: flex;
   flex-direction: column;

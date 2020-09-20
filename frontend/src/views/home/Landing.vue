@@ -10,22 +10,23 @@
     </tc-segments>
     <h1>Workout</h1>
     <tl-grid minWidth="100">
-      <router-link :to="{ name: 'training' }" @click.capture="() => {}">
-        <tc-magic-card
-          src="https://images.unsplash.com/photo-1539794830467-1f1755804d13?w=540&q=5"
-          :dark="true"
-        >
-          <div class="tile-title" slot="thumbnail">Starten</div>
-        </tc-magic-card>
-      </router-link>
-      <div @click.capture.stop="createWorkout">
-        <tc-magic-card
-          src="https://images.unsplash.com/photo-1547919307-1ecb10702e6f?w=540&q=5"
-          :dark="true"
-        >
-          <div class="tile-title" slot="thumbnail">Erstellen</div>
-        </tc-magic-card>
-      </div>
+      <fh-category-preview
+        :category="{
+          title: 'Training starten',
+          thumbnail:
+            'https://assets.mixkit.co/videos/preview/mixkit-runner-does-stretch-routine-with-city-bridge-in-background-15801-small.mp4'
+        }"
+        routeName="training"
+      />
+      <fh-category-preview
+        @click="createWorkout"
+        :noLink="true"
+        :category="{
+          title: 'Workout erstellen',
+          thumbnail:
+            'https://assets.mixkit.co/videos/preview/mixkit-athlete-working-out-with-heavy-ropes-in-the-gym-23141-small.mp4'
+        }"
+      />
     </tl-grid>
   </div>
 </template>
@@ -33,13 +34,15 @@
 <script lang="ts">
 import FHStopwatch from '@/components/home/FH-Stopwatch.vue';
 import FHTimer from '@/components/home/FH-Timer.vue';
+import FHCategoryPreview from '@/components/recipe/FH-CategoryPreview.vue';
 import { EventBus } from '@/utils/eventbus';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
     'fh-timer': FHTimer,
-    'fh-stopwatch': FHStopwatch
+    'fh-stopwatch': FHStopwatch,
+    'fh-category-preview': FHCategoryPreview
   }
 })
 export default class Landing extends Vue {
@@ -52,16 +55,5 @@ export default class Landing extends Vue {
 <style lang="scss" scoped>
 [content] {
   padding-top: 20px;
-}
-.landing {
-  .tile-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2em;
-    font-weight: 700;
-    text-align: center;
-  }
 }
 </style>

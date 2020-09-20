@@ -18,7 +18,7 @@
         <div class="name" v-if="d.getDate() === 1">
           {{ monthNames[d.getMonth()].substring(0, 3) }}
         </div>
-        <div class="circle" :class="{ workedout: workedOut(i) }">
+        <div class="circle" :class="{ workedout: hasWorkedout(i) }">
           {{ d.getDate() }}
         </div>
       </div>
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { aDay, days, months } from '@/utils/constants';
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHHealthHead from './shared/FH-Health-Head.vue';
 
 @Component({
@@ -37,8 +37,14 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthWorkout28 extends Vue {
+  @Prop() chartData!: number[][];
+
   public monthNames = months;
   public skips = Array.from({ length: new Date().getDay() }, (x, i) => 's' + i);
+
+  get chart(): number[][] {
+    return this.chartData || this.$store.getters.chartWorkouts;
+  }
 
   get dayNames(): string[] {
     const dN = [...days];
@@ -54,14 +60,12 @@ export default class FHHealthWorkout28 extends Vue {
     );
   }
 
-  public workedOut(index: number) {
-    return this.$store.getters.chartWorkouts[index].length > 0;
+  public hasWorkedout(index: number) {
+    return this.chart[index].length > 0;
   }
 
   get total(): number {
-    return (this.$store.getters.chartWorkouts as number[][]).filter(
-      x => x.length > 0
-    ).length;
+    return this.chart.filter(x => x.length > 0).length;
   }
 }
 </script>

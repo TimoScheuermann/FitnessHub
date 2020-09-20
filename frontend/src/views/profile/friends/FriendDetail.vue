@@ -75,8 +75,33 @@
       </div>
     </tl-grid>
 
-    <h1>Workouts</h1>
-    <p>soon.</p>
+    <template v-if="workouts">
+      <h1>Letzten 10 Workouts</h1>
+      <p v-if="workouts.length === 0">
+        Bisher wurden keine Workouts eingetragen
+      </p>
+      <fh-carousel v-else>
+        <fh-exercise
+          v-for="(e, i) in workouts"
+          :key="e._id + i"
+          :exercise="e"
+        />
+      </fh-carousel>
+    </template>
+
+    <template v-if="stats">
+      <h1>Trainingsstatistik</h1>
+
+      <tl-grid>
+        <fh-health-time-w :chartData="stats" />
+        <fh-health-time-c :chartData="stats" />
+        <fh-health-workout-w :chartData="stats" />
+        <fh-health-workout7 :chartData="stats" />
+      </tl-grid>
+
+      <h2>Monatsübersicht</h2>
+      <fh-health-workout28 :chartData="stats" />
+    </template>
   </div>
 </template>
 
@@ -84,10 +109,23 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import axios from '@/utils/axios';
 import FHHealthHead from '@/components/health/shared/FH-Health-Head.vue';
+import FHHealthWorkout7 from '@/components/health/FH-Health-Workout7.vue';
+import FHHealthWorkout28 from '@/components/health/FH-Health-Workout28.vue';
+import FHHealthWorkoutW from '@/components/health/FH-Health-WorkoutW.vue';
+import FHHealthTimeW from '@/components/health/FH-Health-TimeW.vue';
+import FHHealthTimeC from '@/components/health/FH-Health-TimeC.vue';
+import { IWorkout } from '@/utils/interfaces';
+import FHExercise from '@/components/exercise/FH-Exercise.vue';
 
 @Component({
   components: {
-    'fh-health-head': FHHealthHead
+    'fh-health-head': FHHealthHead,
+    'fh-health-workout7': FHHealthWorkout7,
+    'fh-health-workout28': FHHealthWorkout28,
+    'fh-health-workout-w': FHHealthWorkoutW,
+    'fh-health-time-w': FHHealthTimeW,
+    'fh-health-time-c': FHHealthTimeC,
+    'fh-exercise': FHExercise
   }
 })
 export default class FriendDetail extends Vue {
@@ -96,11 +134,19 @@ export default class FriendDetail extends Vue {
   public water = -2;
   public height = -2;
   public weight = -2;
+  public stats: null | number[][] = null;
+  public workouts: null | IWorkout[] = null;
 
   mounted() {
     this.load('weight');
     this.load('height');
     this.load('water');
+    axios.get('charts/' + this.$route.params.id).then(res => {
+      this.stats = res.data;
+    });
+    axios.get('exercise/recent/' + this.$route.params.id).then(res => {
+      this.workouts = res.data;
+    });
   }
 
   public async load(type = 'weight') {

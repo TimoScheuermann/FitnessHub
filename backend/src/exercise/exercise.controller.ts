@@ -11,6 +11,9 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
+import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
+import { FHSetting, SettingGuard } from 'src/setting/setting.guard';
+import { AvailableSetting } from 'src/setting/setting.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
 import { FinishExerciseDTO } from './dtos/FinishExercise.dto';
@@ -36,6 +39,14 @@ export class ExerciseController {
   @Get('recent')
   async getRecent(@FHUser() user: IUser): Promise<IExercise[]> {
     return this.exerciseService.getRecent(user._id);
+  }
+
+  @FriendIDParam('userId')
+  @FHSetting(AvailableSetting.FRIENDS_SHARE_LATEST_WORKOUTS)
+  @UseGuards(AuthGuard('jwt'), RolesGuard, FriendsGuard, SettingGuard)
+  @Get('recent/:userId')
+  async getRecentOf(@Param('userId') userId: string): Promise<IExercise[]> {
+    return this.exerciseService.getRecent(userId);
   }
 
   @Get('trending')

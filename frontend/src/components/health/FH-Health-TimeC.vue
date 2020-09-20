@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHHealthHead from './shared/FH-Health-Head.vue';
 
 @Component({
@@ -27,6 +27,12 @@ import FHHealthHead from './shared/FH-Health-Head.vue';
   }
 })
 export default class FHHealthTimeC extends Vue {
+  @Prop() chartData!: number[][];
+
+  get chart(): number[][] {
+    return this.chartData || this.$store.getters.chartWorkouts;
+  }
+
   get thisWeek(): number {
     return this.getWorkoutAmount(21, 27);
   }
@@ -36,7 +42,7 @@ export default class FHHealthTimeC extends Vue {
 
   getWorkoutAmount(start: number, end: number): number {
     return Math.round(
-      (this.$store.getters.chartWorkouts as number[][])
+      this.chart
         .filter((x, i) => i >= start && i <= end)
         .reduce(
           (prev, times) => prev + times.reduce((x, y) => x + y, 0) / 60,
@@ -62,6 +68,8 @@ export default class FHHealthTimeC extends Vue {
   }
 
   get description(): string {
+    if (this.chartData)
+      return 'Vergleich der Trainigszeit der letzten 2 Wochen';
     const diff = this.thisWeek - this.lastWeek;
     if (diff < 0)
       return 'Diese Woche hast du weniger trainiert als letzte Woche. Gib nochmal alles, dann schaffst du es!';

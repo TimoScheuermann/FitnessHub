@@ -123,7 +123,7 @@ export default new Vuex.Store({
     workouts: (state: any): IWorkout[] => {
       return state.workouts;
     },
-    chartWorkouts: (state: any): number[] => {
+    chartWorkouts: (state: any): number[][] => {
       return state.chartWorkouts;
     },
     recipes: (state: any): IRecipe[] => {
