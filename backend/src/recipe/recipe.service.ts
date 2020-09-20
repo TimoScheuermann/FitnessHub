@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TgbotService } from 'src/tgbot/tgbot.service';
+import { IUser } from 'src/user/interfaces/IUser';
 import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
 import { UpdateRecipeDTO } from './dtos/UpdateRecipe.dto';
 import { IRecipe } from './interfaces/IRecipe';
