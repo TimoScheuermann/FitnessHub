@@ -124,7 +124,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
       return;
     }
     if (!getFriend(to.params.id)) {
-      next(from);
+      next({ name: 'friends' });
       return;
     }
   }

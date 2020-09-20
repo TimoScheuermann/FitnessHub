@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="lastWeek !== 0 && thisWeek !== 0"
     class="fh-health-card fh-health-workout-w"
     :style="'--perc-min:' + percOfMin"
   >
