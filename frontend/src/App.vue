@@ -21,10 +21,15 @@
         <fh-sidebar-head slot="sidebar-header" />
         <fh-sidebar-items slot="sidebar-content" />
       </template>
-      <div class="view">
-        <transition name="main-route">
-          <router-view class="child-view" />
-        </transition>
+      <div class="app-wrapper">
+        <div class="view-wrapper">
+          <div class="view">
+            <transition name="main-route">
+              <router-view class="child-view" />
+            </transition>
+          </div>
+        </div>
+        <fh-profile-sidebar />
       </div>
     </tl-sidebar>
 
@@ -56,6 +61,7 @@ import { IVariable } from './utils/interfaces';
 import FHModalExerciseSearch from './components/globalModals/FH-Modal-ExerciseSearch.vue';
 import FHSidebarItems from './components/global/FH-Sidebar-Items.vue';
 import FHSidebarHead from './components/global/FH-Sidebar-Head.vue';
+import FHProfileSidebar from './components/global/FH-Profile-Sidebar.vue';
 
 @Component({
   components: {
@@ -72,7 +78,8 @@ import FHSidebarHead from './components/global/FH-Sidebar-Head.vue';
     'fh-modal-create-workout': FHModalCreateWorkout,
     'fh-modal-add-to-workout': FHModalAddToWorkout,
     'fh-modal-user-search': FHModalUserSearch,
-    'fh-modal-exercise-search': FHModalExerciseSearch
+    'fh-modal-exercise-search': FHModalExerciseSearch,
+    'fh-profile-sidebar': FHProfileSidebar
   }
 })
 export default class App extends Mixins(
@@ -82,12 +89,15 @@ export default class App extends Mixins(
   WorkoutSocketManager
 ) {
   public mqIsDesktop = window.matchMedia('(min-width: 851px)');
+  public mqIsFullscreen = window.matchMedia('(min-width: 1250px)');
   public mqDarkmode = window.matchMedia('(prefers-color-scheme: dark)');
 
   async mounted() {
     this.mqIsDesktop.addListener(this.mediaListenerHeader);
+    this.mqIsFullscreen.addListener(this.mediaListenerFullscreen);
     this.mqDarkmode.addListener(this.mediaListenerDarkmode);
     this.$store.commit('isDesktop', this.mqIsDesktop.matches);
+    this.$store.commit('isFullscreen', this.mqIsFullscreen.matches);
     this.$store.commit('darkmode', this.mqDarkmode.matches);
     document.documentElement.classList[
       this.mqDarkmode.matches ? 'add' : 'remove'
@@ -100,11 +110,15 @@ export default class App extends Mixins(
 
   beforeDestroy() {
     this.mqIsDesktop.removeListener(this.mediaListenerHeader);
+    this.mqIsFullscreen.removeListener(this.mediaListenerFullscreen);
     this.mqDarkmode.removeListener(this.mediaListenerDarkmode);
   }
 
   public mediaListenerHeader(event: MediaQueryListEvent): void {
     this.$store.commit('isDesktop', event && event.matches);
+  }
+  public mediaListenerFullscreen(event: MediaQueryListEvent): void {
+    this.$store.commit('isFullscreen', event && event.matches);
   }
   public mediaListenerDarkmode(event: MediaQueryListEvent): void {
     const matches = event && event.matches;
@@ -178,8 +192,24 @@ a {
   z-index: 996 !important;
 }
 
+.app-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.view-wrapper {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  @media #{$isDesktop} {
+    @include custom-scrollbar__light();
+    @media (prefers-color-scheme: dark) {
+      @include custom-scrollbar__dark();
+    }
+  }
+}
 .view {
   position: relative;
+  // max-height: 100vh;
 }
 .child-view {
   position: absolute;

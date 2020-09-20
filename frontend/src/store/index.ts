@@ -27,6 +27,7 @@ export default new Vuex.Store({
     userValidated: false,
     notifications: [] as IFHNotification[],
     isDesktop: false,
+    isFullscreen: false,
     darkmode: false,
     routeTransition: 'slide-left',
     messages: [] as IMessage[],
@@ -71,6 +72,9 @@ export default new Vuex.Store({
     },
     isDesktop: (state: any): boolean => {
       return state.isDesktop;
+    },
+    isFullscreen: (state: any): boolean => {
+      return state.isFullscreen;
     },
     darkmode: (state: any): boolean => {
       return state.darkmode;
@@ -170,6 +174,9 @@ export default new Vuex.Store({
     },
     isDesktop(state: any, isDesktop: boolean) {
       state.isDesktop = isDesktop;
+    },
+    isFullscreen(state: any, isFullscreen: boolean) {
+      state.isFullscreen = isFullscreen;
     },
     darkmode(state: any, darkmode: boolean) {
       state.darkmode = darkmode;

@@ -52,6 +52,7 @@
           :dark="$store.getters.darkmode"
           pattern=".{0,}"
           v-model="newMessage"
+          placeholder="Nachricht eingeben"
         />
       </form>
       <tc-button icon="reply" @click="sendMessage" variant="filled" />
@@ -195,7 +196,7 @@ export default class Chatroom extends Vue {
       background: $paragraph_dark;
     }
     padding: 10px 5vw;
-    position: fixed;
+    position: absolute;
     bottom: calc(50px + env(safe-area-inset-bottom));
     @media #{$isDesktop} {
       bottom: 0px;

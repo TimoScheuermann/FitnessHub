@@ -37,13 +37,13 @@ export default class FHMobileHeader extends Vue {
   public enhancedVisibility = window.scrollY >= this.TRIGGER;
 
   beforeMount() {
-    document.querySelectorAll('.tl-sidebar--content').forEach(elem => {
+    document.querySelectorAll('.view-wrapper').forEach(elem => {
       elem.addEventListener('scroll', () => this.scrollListener(elem));
     });
   }
 
   beforeDestroy() {
-    document.querySelectorAll('.tl-sidebar--content').forEach(elem => {
+    document.querySelectorAll('.view-wrapper').forEach(elem => {
       elem.removeEventListener('scroll', () => this.scrollListener(elem));
     });
   }
@@ -60,10 +60,13 @@ export default class FHMobileHeader extends Vue {
   position: fixed;
   top: 0;
   left: 0;
-  @media #{$isDesktop} {
-    left: 201.31px;
-  }
   right: 0;
+  @media #{$isDesktop} {
+    left: 210px;
+  }
+  @media #{$isFullscreen} {
+    right: 315px;
+  }
   z-index: 900;
   &.dark &--right,
   &.dark &--title {

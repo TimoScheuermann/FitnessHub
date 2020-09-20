@@ -1,12 +1,12 @@
 <template>
   <div class="profile">
-    <div content v-if="$store.getters.valid">
-      <h1>Profil</h1>
+    <div :content="!isInSidebar" v-if="$store.getters.valid">
+      <h1 v-if="!isInSidebar">Profil</h1>
       <tc-list :dark="$store.getters.darkmode" tfcolor="error">
         <tc-list-item title="Abmelden" icon="logout" @click="signout" />
       </tc-list>
 
-      <tl-grid gap="0px 20">
+      <tl-grid gap="0px 20" minWidth="200">
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
             icon="shield"
@@ -69,7 +69,7 @@
 
       <div v-group.admin.moderator>
         <h1>Management</h1>
-        <tl-grid gap="0px 20">
+        <tl-grid gap="0px 20" minWidth="200">
           <tc-list :dark="$store.getters.darkmode">
             <tc-badge
               :value="$store.getters.exerciseSubmissions.length"
@@ -126,12 +126,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { signOut } from '@/utils/auth';
 import { copyToClipboard } from '@/utils/functions';
 
 @Component
 export default class Profile extends Vue {
+  @Prop() isInSidebar!: boolean;
+
   public signout(): void {
     signOut();
   }

@@ -15,6 +15,7 @@ export default class FHSidebarHead extends Vue {}
   font-size: 1.2em;
   display: flex;
   height: 50px;
+  width: 210px;
   justify-content: center;
   align-items: center;
   color: #fff;
