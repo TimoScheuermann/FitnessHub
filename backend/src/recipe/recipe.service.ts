@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TgbotService } from 'src/tgbot/tgbot.service';
-import { IUser } from 'src/user/interfaces/IUser';
 import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
 import { UpdateRecipeDTO } from './dtos/UpdateRecipe.dto';
 import { IRecipe } from './interfaces/IRecipe';
@@ -39,6 +38,22 @@ export class RecipeService {
       .sort({ count: -1 })
       .limit(10);
     return Promise.all(topTen.map((x) => this.getById(x._id)));
+  }
+
+  public async find(query: string): Promise<IRecipe[]> {
+    const reg = new RegExp(`${query}`, 'i');
+    return this.recipeModel
+      .find({
+        $or: [
+          { title: reg },
+          { category: { $all: [reg] } },
+          { ingredients: { $all: [reg] } },
+          { nutrition: { $all: [reg] } },
+          { steps: { $all: [reg] } },
+          { description: reg },
+        ],
+      })
+      .limit(50);
   }
 
   public async getById(id: string): Promise<IRecipe> {

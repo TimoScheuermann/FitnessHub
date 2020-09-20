@@ -48,6 +48,11 @@ export class RecipeController {
     return this.recipeService.getBeloved();
   }
 
+  @Get('find/:query')
+  async findRecipe(@Param('query') query: string): Promise<IRecipe[]> {
+    return this.recipeService.find(query);
+  }
+
   @Get(':id')
   async getById(@Param('id') id: string): Promise<IRecipe> {
     return this.recipeService.getById(id);
