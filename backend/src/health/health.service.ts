@@ -21,6 +21,25 @@ export class HealthService {
   public async getWeightData(userId: string): Promise<IHealth[]> {
     return this.getDataOfType(userId, HealthType.WEIGHT);
   }
+
+  public async getCurrentHeight(userId: string): Promise<number> {
+    const data = await this.healthModel
+      .find({ user: userId, type: HealthType.HEIGHT })
+      .sort({ date: -1 })
+      .limit(1);
+    if (!data || data.length == 0) return -1;
+    return data[0].value;
+  }
+  public async getTodaysWater(userId: string): Promise<number> {
+    const data = await this.healthModel.findOne({
+      user: userId,
+      type: HealthType.WATER,
+      date: new Date().setHours(0, 0, 0, 0),
+    });
+    if (data) return data.value;
+    return 0;
+  }
+
   public async getCurrentWeight(userId: string): Promise<number> {
     const data = await this.healthModel
       .find({ user: userId, type: HealthType.WEIGHT })
