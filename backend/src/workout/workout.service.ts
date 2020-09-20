@@ -69,8 +69,6 @@ export class WorkoutService {
     user: IUser,
     createWorkoutDTO: CreateWorkoutDTO,
   ): Promise<void> {
-    console.log('creating', createWorkoutDTO);
-    console.log('for', user.givenName, user.familyName);
     const workout = await this.workoutModel.create({
       author: user._id,
       exercises: createWorkoutDTO.exercises,

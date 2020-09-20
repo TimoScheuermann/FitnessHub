@@ -10,6 +10,9 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
+import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
+import { FHSetting, SettingGuard } from 'src/setting/setting.guard';
+import { AvailableSetting } from 'src/setting/setting.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { HealthService } from './health.service';
 import { IHealth } from './interfaces/IHealth';
@@ -24,6 +27,14 @@ export class HealthController {
     return this.healthService.getWeightData(user._id);
   }
 
+  @FriendIDParam('userId')
+  @FHSetting(AvailableSetting.FRIENDS_SHARE_WEIGHT)
+  @UseGuards(AuthGuard('jwt'), RolesGuard, FriendsGuard, SettingGuard)
+  @Get('weight/:userId')
+  async getWeightOf(@Param('userId') userId: string): Promise<number> {
+    return this.healthService.getCurrentWeight(userId);
+  }
+
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('currentWeight')
   async getCurrentWeight(@FHUser() user: IUser): Promise<number> {
@@ -36,10 +47,26 @@ export class HealthController {
     return this.healthService.getWaterData(user._id);
   }
 
+  @FriendIDParam('userId')
+  @FHSetting(AvailableSetting.FRIENDS_SHARE_WATER)
+  @UseGuards(AuthGuard('jwt'), RolesGuard, FriendsGuard, SettingGuard)
+  @Get('water/:userId')
+  async getTodaysWaterOf(@Param('userId') userId: string): Promise<number> {
+    return this.healthService.getTodaysWater(userId);
+  }
+
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('height')
   async getHeight(@FHUser() user: IUser): Promise<IHealth> {
     return this.healthService.getHeightData(user._id);
+  }
+
+  @FriendIDParam('userId')
+  @FHSetting(AvailableSetting.FRIENDS_SHARE_HEIGHT)
+  @UseGuards(AuthGuard('jwt'), RolesGuard, FriendsGuard, SettingGuard)
+  @Get('height/:userId')
+  async getCurrentHeightOf(@Param('userId') userId: string): Promise<number> {
+    return this.healthService.getCurrentHeight(userId);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
