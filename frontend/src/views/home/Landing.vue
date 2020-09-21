@@ -1,13 +1,15 @@
 <template>
   <div class="landing" content>
-    <tc-segments :dark="$store.getters.darkmode">
-      <tc-segment-item title="Timer">
-        <fh-timer />
-      </tc-segment-item>
-      <tc-segment-item title="Stoppuhr">
-        <fh-stopwatch />
-      </tc-segment-item>
-    </tc-segments>
+    <tl-flow>
+      <tc-segments :dark="$store.getters.darkmode">
+        <tc-segment-item title="Timer">
+          <fh-timer />
+        </tc-segment-item>
+        <tc-segment-item title="Stoppuhr">
+          <fh-stopwatch />
+        </tc-segment-item>
+      </tc-segments>
+    </tl-flow>
     <h1>Workout</h1>
     <tl-grid minWidth="100">
       <fh-preview

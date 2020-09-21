@@ -205,6 +205,7 @@ export default class FHTodaysWorkout extends Vue {
     .button-container {
       display: flex;
       align-items: center;
+      cursor: pointer;
       &:first-child {
         padding-left: 20px;
       }

@@ -136,11 +136,10 @@ export default class FHTimer extends Vue {
         this.minutes = Math.floor(totalSeconds / 60);
         if (this.seconds <= 9) this.seconds = '0' + this.seconds;
         if (this.minutes <= 9) this.minutes = '0' + this.minutes;
-        // this.seconds = (this.seconds + '').substring(0, 2);
       } else {
         this.stop();
       }
-    }, 1000);
+    }, 10);
   }
 }
 </script>

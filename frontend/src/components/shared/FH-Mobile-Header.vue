@@ -3,8 +3,9 @@
     ref="FHMobileHeader"
     class="fh-mobile-header"
     :class="{
-      enhancedVisibility: this.enhancedVisibility,
-      dark: $store.getters.darkmode
+      enhancedVisibility: enhancedVisibility,
+      dark: $store.getters.darkmode,
+      profileSidebar: profileSidebarVisisble
     }"
   >
     <div class="main-content">
@@ -36,6 +37,10 @@ export default class FHMobileHeader extends Vue {
   public TRIGGER = 100;
   public enhancedVisibility = window.scrollY >= this.TRIGGER;
 
+  get profileSidebarVisisble() {
+    return this.$route.name !== 'profile' && this.$store.getters.valid;
+  }
+
   beforeMount() {
     document.querySelectorAll('.view-wrapper').forEach(elem => {
       elem.addEventListener('scroll', () => this.scrollListener(elem));
@@ -64,9 +69,10 @@ export default class FHMobileHeader extends Vue {
   @media #{$isDesktop} {
     left: 210px;
   }
-  @media #{$isFullscreen} {
+  &.profileSidebar {
     right: 315px;
   }
+
   z-index: 900;
   &.dark &--right,
   &.dark &--title {

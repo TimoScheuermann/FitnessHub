@@ -105,11 +105,13 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (to.name === 'login' && store.getters.valid) {
     next({ name: 'profile' });
+    window.scrollTo({ top: 0 });
     return;
   }
 
   if (to.name === 'profile' && !store.getters.valid) {
     next({ name: 'login' });
+    window.scrollTo({ top: 0 });
     return;
   }
 
@@ -121,10 +123,12 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   if (to.name === 'chatroom' || to.name === 'friend') {
     if (to.name === 'chatroom' && to.params.id === fhBotId) {
       next();
+      window.scrollTo({ top: 0 });
       return;
     }
     if (!getFriend(to.params.id)) {
       next({ name: 'friends' });
+      window.scrollTo({ top: 0 });
       return;
     }
   }
@@ -162,10 +166,12 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (possibleToken) {
     next({ name: 'profile' });
+    window.scrollTo({ top: 0 });
     return;
   }
   EventBus.$emit('modals-close');
   next();
+  window.scrollTo({ top: 0 });
 });
 
 // eslint-disable-next-line

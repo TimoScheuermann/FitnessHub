@@ -25,9 +25,16 @@ export default class FHFeatureCard extends Vue {
 <style lang="scss" scoped>
 .fh-feature-card {
   background: $paragraph;
+  width: calc(90vw - 20px);
+  max-width: 400px;
+  @media #{$isDesktop} {
+    max-width: 300px;
+  }
+  margin: 10px;
+
   box-shadow: $shadow-light;
   @media (prefers-color-scheme: dark) {
-    background: $paragraph_dark;
+    background: $container_dark;
     box-shadow: $shadow;
   }
   border-radius: $border-radius;
@@ -36,7 +43,7 @@ export default class FHFeatureCard extends Vue {
     padding: 20px;
     background: $background;
     @media (prefers-color-scheme: dark) {
-      background: $background_dark;
+      background: $paragraph_dark;
     }
     position: relative;
     display: flex;
@@ -45,12 +52,15 @@ export default class FHFeatureCard extends Vue {
     border-radius: 0 0 $border-radius $border-radius;
     text-align: center;
     .fh-feature-card--title {
-      font-weight: bold;
-      font-size: 20px;
-      color: $success;
+      font-weight: 600;
+      font-size: 21px;
+      // color: $success;
     }
     .fh-feature-card--description {
       margin-top: 12px;
+      font-size: 17px;
+      font-weight: 600;
+      opacity: 0.75;
     }
   }
   .fh-feature-card--image {

@@ -17,6 +17,7 @@ export default class FHCarousel extends Vue {}
   margin: 20px -5vw 0;
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
 
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
