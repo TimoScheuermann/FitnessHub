@@ -38,7 +38,11 @@ export default class FHMobileHeader extends Vue {
   public enhancedVisibility = window.scrollY >= this.TRIGGER;
 
   get profileSidebarVisisble() {
-    return this.$route.name !== 'profile' && this.$store.getters.valid;
+    return (
+      this.$route.name !== 'profile' &&
+      this.$store.getters.valid &&
+      this.$store.getters.isFullscreen
+    );
   }
 
   beforeMount() {

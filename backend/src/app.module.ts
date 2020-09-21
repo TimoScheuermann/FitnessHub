@@ -21,6 +21,7 @@ import { TgbotModule } from './tgbot/tgbot.module';
 import { TrainingplanModule } from './trainingplan/trainingplan.module';
 import { UserModule } from './user/user.module';
 import { WorkoutModule } from './workout/workout.module';
+import { AchievementModule } from './achievement/achievement.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { WorkoutModule } from './workout/workout.module';
     TrainingplanModule,
     VariablesModule,
     SettingModule,
+    AchievementModule,
   ],
   controllers: [AppController],
   providers: [FHSocket, AppService],
