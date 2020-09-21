@@ -17,16 +17,20 @@
 </template>
 
 <script lang="ts">
-import axios from '@/utils/axios';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class Community extends Vue {
-  async mounted() {
-    const { data } = await axios.get('health/weight/5f47ac0688e01f1eaa1881db');
-    console.log('Data', data);
-  }
-}
+export default class Community extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.community {
+  .tc-hero {
+    h1 {
+      margin: 0px;
+      margin-top: env(safe-area-inset-top);
+      text-transform: capitalize;
+    }
+  }
+}
+</style>

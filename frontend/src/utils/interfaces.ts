@@ -213,3 +213,10 @@ export interface IVariable {
   title: string;
   thumbnail: string;
 }
+
+export interface IAchievment {
+  title: string;
+  subtitle: string;
+  date: number;
+  asset: string;
+}

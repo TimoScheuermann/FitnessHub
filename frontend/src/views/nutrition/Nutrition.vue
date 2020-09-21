@@ -8,10 +8,15 @@
     <h1>Kategorien</h1>
 
     <fh-carousel>
-      <fh-category-preview
+      <fh-preview
         v-for="c in categories"
         :key="c.title"
-        :category="c"
+        :to="{
+          name: 'nutrition-category',
+          params: { category: c.title }
+        }"
+        :title="c.title"
+        :thumbnail="c.thumbnail"
       />
     </fh-carousel>
 
@@ -41,13 +46,13 @@ import { IRecipe, IVariable } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 import FHRecipe from '@/components/recipe/FH-Recipe.vue';
 import { getCategories } from '@/utils/functions';
-import FHCategoryPreview from '@/components/recipe/FH-CategoryPreview.vue';
+import FHPreview from '@/components/common/FH-Preview.vue';
 
 @Component({
   components: {
     'fh-health-water': FHHealthWater,
     'fh-recipe': FHRecipe,
-    'fh-category-preview': FHCategoryPreview
+    'fh-preview': FHPreview
   }
 })
 export default class Nutrition extends Vue {
