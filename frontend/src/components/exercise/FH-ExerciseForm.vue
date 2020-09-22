@@ -164,6 +164,7 @@
           title="Für Home-Training geeignet"
           :dark="$store.getters.darkmode"
           tfbackground="success"
+          v-model="exercise.possibleAtHome"
         />
       </div>
 
@@ -286,6 +287,7 @@ export default class FHExerciseForm extends Vue {
   mounted() {
     if (this.exerciseInput) {
       this.exercise = {
+        possibleAtHome: false,
         ...this.exerciseInput,
         ...this.exerciseInput.editedData
       };

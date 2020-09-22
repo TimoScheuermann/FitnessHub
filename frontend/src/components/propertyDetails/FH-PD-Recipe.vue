@@ -1,6 +1,14 @@
 <template>
   <div class="fh-pd-recipe" v-if="recipe">
     <p v-if="recipe.description">{{ recipe.description }}</p>
+
+    <template v-if="recipe.source">
+      <h3>Original</h3>
+      <tc-link :href="recipe.source" tfcolor="success">
+        <i v-if="urlInfo.icon.length > 0" :class="'ti-' + urlInfo.icon" />
+        {{ urlInfo.user }}
+      </tc-link>
+    </template>
     <h3>Kategorien</h3>
     <div class="categories">
       <div
@@ -79,6 +87,7 @@
 </template>
 
 <script lang="ts">
+import { extractInfoFromUrl } from '@/utils/functions';
 import { IRecipe } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
@@ -92,6 +101,11 @@ export default class FHPropertyDetailsRecipe extends Vue {
     if (!this.recipe) return false;
     if (!this.$store.getters.valid) return false;
     return this.recipe.author === this.$store.getters.user._id;
+  }
+
+  get urlInfo(): { icon: string; user: string } | null {
+    if (!this.recipe || !this.recipe.source) return null;
+    return extractInfoFromUrl(this.recipe.source);
   }
 
   public showRecipesOf(category: string) {

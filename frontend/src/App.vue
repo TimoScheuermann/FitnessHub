@@ -12,6 +12,7 @@
     <fh-modal-add-to-workout />
     <fh-modal-user-search />
     <fh-modal-exercise-search />
+    <fh-modal-update-available />
 
     <tl-sidebar
       sidebarBackgroundImage="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?h=1920"
@@ -62,6 +63,11 @@ import FHModalExerciseSearch from './components/globalModals/FH-Modal-ExerciseSe
 import FHSidebarItems from './components/global/FH-Sidebar-Items.vue';
 import FHSidebarHead from './components/global/FH-Sidebar-Head.vue';
 import FHProfileSidebar from './components/global/FH-Profile-Sidebar.vue';
+import {
+  registerMediaQueries,
+  unregisterMediaQueries
+} from '@/utils/mediaQueries';
+import FHModalUpdateAvailable from './components/globalModals/FH-Modal-UpdateAvailable.vue';
 
 @Component({
   components: {
@@ -79,6 +85,7 @@ import FHProfileSidebar from './components/global/FH-Profile-Sidebar.vue';
     'fh-modal-add-to-workout': FHModalAddToWorkout,
     'fh-modal-user-search': FHModalUserSearch,
     'fh-modal-exercise-search': FHModalExerciseSearch,
+    'fh-modal-update-available': FHModalUpdateAvailable,
     'fh-profile-sidebar': FHProfileSidebar
   }
 })
@@ -88,20 +95,10 @@ export default class App extends Mixins(
   ExerciseSocketManager,
   WorkoutSocketManager
 ) {
-  public mqIsDesktop = window.matchMedia('(min-width: 851px)');
-  public mqIsFullscreen = window.matchMedia('(min-width: 1250px)');
-  public mqDarkmode = window.matchMedia('(prefers-color-scheme: dark)');
+  private swRegistration: ServiceWorkerRegistration | null = null;
 
-  async mounted() {
-    this.mqIsDesktop.addListener(this.mediaListenerHeader);
-    this.mqIsFullscreen.addListener(this.mediaListenerFullscreen);
-    this.mqDarkmode.addListener(this.mediaListenerDarkmode);
-    this.$store.commit('isDesktop', this.mqIsDesktop.matches);
-    this.$store.commit('isFullscreen', this.mqIsFullscreen.matches);
-    this.$store.commit('darkmode', this.mqDarkmode.matches);
-    document.documentElement.classList[
-      this.mqDarkmode.matches ? 'add' : 'remove'
-    ]('dark');
+  mounted() {
+    registerMediaQueries();
 
     axios.get('variables').then(res => {
       res.data.forEach((x: IVariable) => this.$store.commit('addVariable', x));
@@ -109,22 +106,7 @@ export default class App extends Mixins(
   }
 
   beforeDestroy() {
-    this.mqIsDesktop.removeListener(this.mediaListenerHeader);
-    this.mqIsFullscreen.removeListener(this.mediaListenerFullscreen);
-    this.mqDarkmode.removeListener(this.mediaListenerDarkmode);
-  }
-
-  public mediaListenerHeader(event: MediaQueryListEvent): void {
-    this.$store.commit('isDesktop', event && event.matches);
-  }
-  public mediaListenerFullscreen(event: MediaQueryListEvent): void {
-    this.$store.commit('isFullscreen', event && event.matches);
-  }
-  public mediaListenerDarkmode(event: MediaQueryListEvent): void {
-    const matches = event && event.matches;
-    document.documentElement.classList[matches ? 'add' : 'remove']('dark');
-    this.$store.commit('darkmode', matches);
-    this.$forceUpdate();
+    unregisterMediaQueries();
   }
 }
 </script>

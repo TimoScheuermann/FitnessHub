@@ -46,25 +46,32 @@
       </div>
       <h1>Deine Vorteile</h1>
       <p>
+        Wir bieten Dir ein Rund­um-sorglos-Paket an, das Deinen Einstieg in das
+        aktive Leben durch abwechslungsreiche Tipps, Trainings- und
+        Ernährungspläne deutlich erleichtert.
+      </p>
 
-        Wir bieten Dir ein Rund­um-sorglos-Paket an, das Deinen Einstieg in das aktive Leben durch abwechslungsreiche Tipps, Trainings- und Ernährungspläne deutlich erleichtert.
-        <ul>
-          <li>setze Dir Ziele</li>
-          <li>verfolge Deinen Fortschritt</li>
-          <li>gehe über Deine Grenzen hinweg</li>
-          <li>teile jeden Erfolg und Erfahrungen mit deinen Freunden</li>
-          <li>fordere Deine Freunde zu einer gemeinsamen Challenge heraus</li>
-          <li>inspiriere Dich durch die breite Vielfalt an Übungen und Trainingsplänen</li>
-        </ul>
-        All das bietet Dir unsere App an – allerdings brauchen wir dafür
-        ein paar persönliche Daten von Dir – was damit passiert, kannst Du
-        genauer unter
+      <ul>
+        <li>Setze Dir Ziele</li>
+        <li>Verfolge Deinen Fortschritt</li>
+        <li>Gehe über Deine Grenzen hinweg</li>
+        <li>Teile jeden Erfolg und Erfahrungen mit deinen Freunden</li>
+        <li>Fordere Deine Freunde zu einer gemeinsamen Challenge heraus</li>
+        <li>
+          Inspiriere Dich durch die breite Vielfalt an Übungen und
+          Trainingsplänen
+        </li>
+      </ul>
+      <p>
+        All das bietet Dir unsere App an – allerdings brauchen wir dafür ein
+        paar persönliche Daten von Dir – was damit passiert, kannst Du genauer
+        unter
         <tc-link tfcolor="success" routeName="privacy">Privatsphäre</tc-link>
         nachlesen. Melde Dich an und starte einen neuen gesünderen
         Lebensabschnitt! Bitte beachte dabei, dass Du mit der Anmeldung unsere
-        <tc-link tfcolor="success" routeName="terms"
-          >Nutzungsbedingungen</tc-link
-        >
+        <tc-link tfcolor="success" routeName="terms">
+          Nutzungsbedingungen
+        </tc-link>
         automatisch akzeptierst.
       </p>
       <p>Viel Spaß, Schweiß und Erfolge wünscht Dir Dein Fitnesshub Team!</p>
@@ -137,7 +144,6 @@ export default class Login extends Vue {
     height: 100vh;
     @media #{$isMobile} {
       height: calc(100vh - env(safe-area-inset-bottom) - 50px);
-      // transform: translate(-50%, -170px);
     }
     img,
     video {

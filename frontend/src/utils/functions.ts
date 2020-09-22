@@ -194,3 +194,19 @@ export function getCategory(name: string): IVariable | null {
 export function getCategoryNames(): string[] {
   return getCategories().map(x => x.title);
 }
+
+export function extractInfoFromUrl(
+  url: string
+): { icon: string; user: string } {
+  let icon = 'star';
+  let user = url;
+  url = url.toLowerCase();
+  if (url.includes('instagram')) icon = 'instagram';
+  if (url.includes('youtube')) icon = 'youtube';
+  if (url.includes('facebook')) icon = 'facebook';
+
+  return {
+    icon: icon,
+    user: user
+  };
+}

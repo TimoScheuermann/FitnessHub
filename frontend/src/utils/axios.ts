@@ -1,11 +1,14 @@
 import store from '@/store';
 import Axios from 'axios';
+import { cacheAdapterEnhancer } from 'axios-extensions';
 import { getToken } from './auth';
 import { backendURL } from './constants';
 
 const axios = Axios.create({
   timeout: 10000,
-  baseURL: backendURL
+  baseURL: backendURL,
+  // eslint-disable-next-line
+  adapter: cacheAdapterEnhancer(Axios.defaults.adapter as any)
 });
 
 axios.interceptors.request.use(

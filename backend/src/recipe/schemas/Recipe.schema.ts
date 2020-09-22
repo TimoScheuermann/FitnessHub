@@ -43,5 +43,8 @@ export class Recipe extends Document {
 
   @Prop()
   description?: string;
+
+  @Prop({ required: false })
+  source?: string;
 }
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

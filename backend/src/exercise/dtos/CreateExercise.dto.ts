@@ -7,6 +7,7 @@ export class CreateExerciseDTO {
   readonly difficulty: number;
   readonly warnings: string[];
   readonly steps: string[];
+  readonly possibleAtHome?: boolean;
 
   // Variable, depending on exercise
   readonly time?: number;

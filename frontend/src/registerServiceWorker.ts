@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker';
+import { EventBus } from './utils/eventbus';
 
-if (process.env.NODE_ENV === 'production_') {
+if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
     ready() {
       console.log(
@@ -19,8 +20,10 @@ if (process.env.NODE_ENV === 'production_') {
     updatefound() {
       console.log('New content is downloading.');
     },
-    updated() {
-      console.log('New content is available; please refresh.');
+    updated(registration: ServiceWorkerRegistration) {
+      if (registration && registration.waiting) {
+        EventBus.$emit('modal-update-available', registration);
+      }
     },
     offline() {
       console.log(
@@ -32,3 +35,9 @@ if (process.env.NODE_ENV === 'production_') {
     }
   });
 }
+
+navigator.serviceWorker.addEventListener(
+  'controllerchange',
+  () => window.location.reload(),
+  { once: true }
+);

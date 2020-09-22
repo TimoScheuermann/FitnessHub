@@ -37,6 +37,7 @@ export interface IRecipe {
 
   readonly video?: string;
   readonly description?: string;
+  readonly source?: string;
 }
 export interface INutritionplanDay {
   readonly breakfast: IRecipe;
@@ -141,6 +142,7 @@ export interface IExercise {
   readonly difficulty: number;
   readonly warnings: string[];
   readonly steps: string[];
+  readonly possibleAtHome?: boolean;
 
   // Variable, depending on exercise
   readonly time?: number;

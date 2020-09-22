@@ -11,6 +11,7 @@ export class CreateRecipeDTO {
   readonly thumbnail: string;
   readonly steps: string[];
 
+  readonly source?: string;
   readonly video?: string;
   readonly description?: string;
 }

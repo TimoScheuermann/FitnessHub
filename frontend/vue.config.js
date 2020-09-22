@@ -1,9 +1,7 @@
 module.exports = {
   pwa: {
     manifestOptions: {
-      display: 'fullscreen',
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      start_url: '.'
+      display: 'fullscreen'
     },
     name: 'FitnessHub',
     themeColor: '#000',
@@ -16,7 +14,8 @@ module.exports = {
       appleTouchIcon: 'pwa/splash/manifest-icon-512.jpg',
       maskIcon: 'pwa/maskIcon.svg',
       msTileImage: 'pwa/msTileImage-144.png'
-    }
+    },
+    workboxPluginMode: 'InjectManifest'
   },
   css: {
     loaderOptions: {

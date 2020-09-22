@@ -117,7 +117,12 @@ export class RecipeService {
   ): Promise<IRecipe> {
     await this.recipeModel.updateOne(
       { _id: id, author: userId },
-      { $set: { ...updateRecipeDTO, updated: new Date().getTime() } },
+      {
+        $set: {
+          ...updateRecipeDTO,
+          updated: new Date().getTime(),
+        },
+      },
     );
     return this.getById(id);
   }

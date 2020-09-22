@@ -36,6 +36,7 @@
               tfbackground="success"
               name="Übung ansehen"
               icon="gym"
+              @click="openExercise(JSON.parse(m.content).id)"
             />
           </tl-flow>
         </div>
@@ -116,6 +117,10 @@ export default class Chatroom extends Vue {
       });
       this.newMessage = '';
     }
+  }
+
+  public openExercise(id: string): void {
+    this.$router.push({ name: 'training-exercise', params: { id: id } });
   }
 }
 </script>

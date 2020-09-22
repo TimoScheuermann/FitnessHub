@@ -41,6 +41,9 @@ export class Exercise extends Document {
   steps: string[];
 
   @Prop({ required: false })
+  possibleAtHome?: boolean;
+
+  @Prop({ required: false })
   editedData?: UpdateExerciseDTO;
 
   @Prop({ required: false })

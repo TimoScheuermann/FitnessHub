@@ -70,7 +70,8 @@ export function validate(
     thumbnail: exercise.thumbnail,
     difficulty: +exercise.difficulty,
     warnings: exercise.warnings,
-    steps: exercise.steps
+    steps: exercise.steps,
+    possibleAtHome: exercise.possibleAtHome
   };
   if ((exercise.explanatoryVideo || '').length > 0) {
     createObject.explanatoryVideo = exercise.explanatoryVideo;
@@ -103,5 +104,6 @@ export const defaultExercise: CreateExerciseDTO = {
   reps: '',
   difficulty: 1,
   warnings: [],
-  steps: []
+  steps: [],
+  possibleAtHome: false
 };

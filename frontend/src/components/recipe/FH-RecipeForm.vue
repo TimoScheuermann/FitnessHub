@@ -197,6 +197,17 @@
           title="Tipps & Variationen"
         />
       </div>
+      <div>
+        <h2>Quelle</h2>
+        <p>{{ recipe.source }}</p>
+        <tc-input
+          :dark="$store.getters.darkmode"
+          icon="link"
+          v-model="recipe.source"
+          placeholder="https://..."
+          title="Link zur Quelle"
+        />
+      </div>
     </tl-grid>
 
     <div class="buttons">
@@ -342,9 +353,10 @@ export default class FHRecipeForm extends Vue {
   public async updateRecipe(): Promise<void> {
     const created = this.validateInput();
     if (this.recipeInput && created) {
+      console.log('R', created);
       axios.put('recipe/update/' + this.recipeInput._id, created).then(res => {
         this.$store.commit('addRecipe', res.data);
-        this.$router.push({ name: 'recipes' });
+        // this.$router.push({ name: 'recipes' });
       });
     }
   }

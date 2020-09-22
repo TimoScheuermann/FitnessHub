@@ -10,6 +10,7 @@ export class CreateRecipeDTO {
   readonly thumbnail!: string;
   readonly steps!: string[];
 
+  readonly source?: string;
   readonly video?: string;
   readonly description?: string;
 }
@@ -23,6 +24,7 @@ export class UpdateRecipeDTO {
   readonly thumbnail?: string;
   readonly steps?: string[];
 
+  readonly source?: string;
   readonly video?: string;
   readonly description?: string;
 }
@@ -88,6 +90,7 @@ export class CreateExerciseDTO {
   difficulty!: number;
   warnings!: string[];
   steps!: string[];
+  possibleAtHome!: boolean;
 
   // Variable, depending on exercise
   time?: number;

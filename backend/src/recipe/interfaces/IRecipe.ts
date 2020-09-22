@@ -17,4 +17,5 @@ export interface IRecipe {
 
   readonly video?: string;
   readonly description?: string;
+  readonly source?: string;
 }
