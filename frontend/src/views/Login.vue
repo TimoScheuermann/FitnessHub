@@ -46,14 +46,17 @@
       </div>
       <h1>Deine Vorteile</h1>
       <p>
-        Wir bieten Dir ein Rund­um-sorglos-Paket an, das Deinen Einstieg in das
-        aktive Leben durch abwechslungsreiche Tipps, Trainings- und
-        Ernährungspläne deutlich erleichtert. Setze Dir Ziele und verfolge
-        täglich Deinen Fortschritt. Lass Dich durch die breite Vielfalt an
-        Übungen und Trainingsplänen inspirieren und motivieren. Teile jeden
-        Erfolg mit den Freunden und geh über Deine Grenzen hinaus. Tausche
-        Erfahrungen oder fordere Deine Freunde zu einer gemeinsamen Challenge
-        heraus. All das bietet Dir unsere App an – allerdings brauchen wir dafür
+
+        Wir bieten Dir ein Rund­um-sorglos-Paket an, das Deinen Einstieg in das aktive Leben durch abwechslungsreiche Tipps, Trainings- und Ernährungspläne deutlich erleichtert.
+        <ul>
+          <li>setze Dir Ziele</li>
+          <li>verfolge Deinen Fortschritt</li>
+          <li>gehe über Deine Grenzen hinweg</li>
+          <li>teile jeden Erfolg und Erfahrungen mit deinen Freunden</li>
+          <li>fordere Deine Freunde zu einer gemeinsamen Challenge heraus</li>
+          <li>inspiriere Dich durch die breite Vielfalt an Übungen und Trainingsplänen</li>
+        </ul>
+        All das bietet Dir unsere App an – allerdings brauchen wir dafür
         ein paar persönliche Daten von Dir – was damit passiert, kannst Du
         genauer unter
         <tc-link tfcolor="success" routeName="privacy">Privatsphäre</tc-link>

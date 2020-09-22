@@ -11,14 +11,8 @@
     </p>
     <br />
     <br />
-    <fh-large-headline title="FitnessHub" subtitle="Was dich erwartet" />
+    <fh-large-headline title="Workouts" />
     <br />
-    <h1>Workouts</h1>
-    <p>
-      Die App soll den Benutzern eine breite Vielfalt an Trainingsplänen mit
-      verschiedenen Schwierigkeitsgraden anbieten und zeigen, welche Übungen es
-      für bestimmte Muskelgruppen gibt und wie sie richtig auszuführen sind.
-    </p>
     <tl-flow>
       <fh-feature-card
         title="Trainingspläne"
@@ -40,11 +34,10 @@
         Stelle dir einen Timer für deine Übung. Starte die Stoppuhr.
       </fh-feature-card>
     </tl-flow>
-    <h1>Ernährung</h1>
-    <p>
-      Die Ernährung spielt neben dem Training eine sehr große Rolle. Ausgewogene
-      und gesunde Ernährung sind elementar zum Erreichen deines Trainingsziels.
-    </p>
+    <br />
+    <br />
+    <fh-large-headline title="Ernährung" />
+    <br />
     <tl-flow>
       <fh-feature-card title="Ernährungspläne" image="later">
         Ernährungspläne geben dir eine Hilfestellung beim Erreichen deiner
@@ -65,11 +58,10 @@
         Stay hydrated!
       </fh-feature-card>
     </tl-flow>
-    <h1>Statistik</h1>
-    <p>
-      Durch die Logbuchfunktion kann jeder Benutzer seine Trainingseinheiten
-      protokollieren und so seinen Fortschritt verfolgen.
-    </p>
+    <br />
+    <br />
+    <fh-large-headline title="Statistik" />
+    <br />
     <tl-flow>
       <fh-feature-card title="Trainingsstatistik" image="later">
         Sieh ein, wie viel du bereits trainiert hast. Diese Daten kannst du dir
@@ -89,13 +81,10 @@
         Tracke dein Gewicht, um deinen Fortschritt zu verfolgen.
       </fh-feature-card>
     </tl-flow>
-    <h1>Freunde</h1>
-    <p>
-      Damit die Motivation und der Spaßfaktor nicht unter dem Training leiden,
-      bietet die App neben der integrierten Chatfunktion auch die Möglichkeit
-      zur Erstellung von Challenges, die zur Steigerung der Motivation
-      beitragen.
-    </p>
+    <br />
+    <br />
+    <fh-large-headline title="Freunde" />
+    <br />
     <tl-flow>
       <fh-feature-card
         title="Freunde hinzufügen"
@@ -122,18 +111,19 @@
         Teile Übungen, Statistiken oder Erfolge mit deinen Freunden.
       </fh-feature-card>
     </tl-flow>
-
-    <h1>Erfolge</h1>
-    <p>
-      Erfolge motivieren dich, neue Übungen auszuprobieren und alte Rekorde zu
-      überbieten.
-    </p>
+    <br />
+    <br />
+    <fh-large-headline title="Erfolge" />
+    <br />
     <tl-flow>
       <fh-feature-card title="Erfolge freischalten" image="later">
         Schalte Erfolge für verschiedene Ziele frei.
       </fh-feature-card>
     </tl-flow>
-    <h1>Feed</h1>
+    <br />
+    <br />
+    <fh-large-headline title="Feed" />
+    <br />
     <tl-flow>
       <fh-feature-card title="Aktivitätsfeed" image="later">
         Verfolge die Aktivitäten deiner Freunde. Erfahre, was sie für Übungen
