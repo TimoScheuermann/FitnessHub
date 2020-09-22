@@ -15,7 +15,6 @@ module.exports = {
       maskIcon: 'pwa/maskIcon.svg',
       msTileImage: 'pwa/msTileImage-144.png'
     },
-    workboxPluginMode: 'InjectManifest'
   },
   css: {
     loaderOptions: {
