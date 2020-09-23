@@ -56,7 +56,16 @@
           placeholder="Nachricht eingeben"
         />
       </form>
-      <tc-button icon="reply" @click="sendMessage" variant="filled" />
+      <tc-select
+        :onlyIcon="true"
+        icon="dots"
+        variant="filled"
+        tfbackground="success"
+      >
+        <tc-select-item title="Herausfordern" icon="trophy" />
+        <tc-select-item title="Training planen" icon="calendar-alt" />
+      </tc-select>
+      <tc-button tfbackground="success" icon="reply" @click="sendMessage" />
     </div>
   </div>
 </template>
@@ -192,7 +201,7 @@ export default class Chatroom extends Vue {
 
   .newMessage {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(70px, auto);
+    grid-template-columns: minmax(0, 1fr) minmax(0px, auto) minmax(70px, auto);
     grid-gap: 0;
     background: $paragraph;
     transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
@@ -201,13 +210,17 @@ export default class Chatroom extends Vue {
       background: $paragraph_dark;
     }
     padding: 10px 5vw;
-    position: absolute;
+    position: fixed;
     bottom: calc(50px + env(safe-area-inset-bottom));
-    @media #{$isDesktop} {
-      bottom: 0px;
-    }
     left: 0;
     right: 0;
+    @media #{$isDesktop} {
+      bottom: 0px;
+      left: 210px;
+    }
+    @media #{$isFullscreen} {
+      right: 315px;
+    }
     border-radius: $border-radius $border-radius 0 0;
     margin-top: 10px;
     box-shadow: $shadow;

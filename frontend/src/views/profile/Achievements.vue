@@ -9,7 +9,7 @@
       <p v-if="achievements.length === 0">
         Du hast noch keine Erfolge freigeschaltet.
       </p>
-      <tl-grid v-else arrangement="auto-fill">
+      <tl-grid v-else minWidth="100" arrangement="auto-fill">
         <fh-preview
           v-for="a in achievements"
           :key="a.title"

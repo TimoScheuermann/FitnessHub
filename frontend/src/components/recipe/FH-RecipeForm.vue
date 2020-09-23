@@ -24,6 +24,7 @@
       <div>
         <div class="title">Kategorie</div>
         <tc-select
+          tfbackground="success"
           @selectedItems="c => (recipe.category = c)"
           :multiple="true"
           placeholder="Wähle mind. eine Kategorie"

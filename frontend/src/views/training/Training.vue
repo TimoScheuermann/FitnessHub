@@ -1,6 +1,23 @@
 <template>
   <div class="training" content>
     <fh-todays-workout />
+    <h3>Muskel</h3>
+    <div class="muscles-overview">
+      <div class="muscle-row" v-for="(tri, i) in muscleTriplets" :key="i + 'm'">
+        <router-link
+          class="muscle"
+          v-for="m in tri"
+          :key="m"
+          :to="{ name: 'training-muscle', params: { muscle: m } }"
+        >
+          <div class="name">{{ m }}</div>
+          <div class="icon">
+            <i class="ti-chevron-right" />
+          </div>
+        </router-link>
+      </div>
+    </div>
+
     <template v-if="trendingExercises && trendingExercises.length > 0">
       <h1>Übungen der Woche</h1>
       <fh-carousel>
@@ -31,20 +48,6 @@
         </router-link>
       </fh-carousel>
     </template>
-
-    <h1>Betroffene Muskeln</h1>
-    <fh-carousel>
-      <div v-for="(pairs, i) in musclePairs" :key="i + 'mp'">
-        <tc-list :dark="$store.getters.darkmode">
-          <tc-list-item
-            v-for="m in pairs"
-            :key="m"
-            :title="m"
-            :to="{ name: 'training-muscle', params: { muscle: m } }"
-          />
-        </tc-list>
-      </div>
-    </fh-carousel>
   </div>
 </template>
 
@@ -78,9 +81,11 @@ export default class Training extends Vue {
     return this.$store.state.latestWorkouts;
   }
 
-  get musclePairs(): string[][] {
+  get muscleTriplets(): string[][] {
+    const muscles = getMuscleNames();
+    const max = Math.ceil(muscles.length / 3);
     const newArr = [];
-    while (this.muscles.length) newArr.push(this.muscles.splice(0, 3));
+    while (muscles.length) newArr.push(muscles.splice(0, max));
     return newArr;
   }
 
@@ -103,3 +108,53 @@ export default class Training extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.training {
+  h3 {
+    margin-bottom: 0px;
+  }
+  .muscles-overview {
+    overflow-y: auto;
+
+    .muscle-row {
+      display: flex;
+      flex-wrap: nowrap;
+      margin: 0 -5px;
+      .muscle {
+        color: inherit;
+        cursor: pointer;
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 5px 7.5px;
+        background: $container;
+        border-radius: $border-radius;
+        margin: 5px;
+        opacity: 0.8;
+        transition: 0.2s ease-in-out;
+        &:hover {
+          opacity: 1;
+        }
+        .name {
+          white-space: nowrap;
+        }
+        .icon {
+          margin-left: 5px;
+          i {
+            font-size: 11px;
+            opacity: 0.75;
+          }
+        }
+      }
+    }
+
+    @include custom-scrollbar__light();
+    @media (prefers-color-scheme: dark) {
+      @include custom-scrollbar__dark();
+      .muscle-row .muscle {
+        background: $container_dark;
+      }
+    }
+  }
+}
+</style>

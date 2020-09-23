@@ -7,6 +7,7 @@
         :to="chatRoute"
       />
       <tc-list-item icon="trophy" title="Herausfordern" />
+      <tc-list-item icon="calendar-alt" title="Training planen" />
       <tc-list-item
         red
         icon="trashcan-alt"

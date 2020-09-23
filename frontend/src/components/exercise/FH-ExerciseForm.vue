@@ -21,6 +21,7 @@
         <div>
           <div class="title">Betroffene Muskeln</div>
           <tc-select
+            tfbackground="success"
             @selectedItems="m => (exercise.affectedMuscles = m)"
             :multiple="true"
             placeholder="Wähle mind. einen Muskel"
@@ -84,6 +85,7 @@
             />
             <div class="mid"></div>
             <tc-select
+              tfbackground="success"
               @selectedItems="s => (timeUnit = s[0])"
               :dark="$store.getters.darkmode"
             >

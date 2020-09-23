@@ -18,7 +18,7 @@
       <div class="title">
         {{ title }}
       </div>
-      <div class="subtitle">
+      <div class="subtitle" v-if="subtitle">
         {{ subtitle }}
       </div>
     </div>
@@ -67,7 +67,7 @@ export default class FHPreview extends Vue {
   img,
   video {
     width: 100%;
-    height: 200px;
+    height: inherit;
     object-fit: cover;
     border-radius: $border-radius;
   }
@@ -75,47 +75,44 @@ export default class FHPreview extends Vue {
   &.fh-category-preview__subtitle {
     &:hover {
       .fh-category-preview--container {
-        top: 0;
+        height: inherit;
         border-radius: $border-radius;
-        .title {
-          padding-top: 0px;
-        }
         .subtitle {
+          padding-top: 10px;
+          max-height: 200px;
           opacity: 1;
           transition: opacity 0.2s ease-in-out 0.2s;
         }
       }
     }
-    .title {
-      padding-top: 30px;
-    }
   }
   .fh-category-preview--container {
     position: absolute;
-    text-align: center;
     display: grid;
     place-content: center;
-
-    top: 140px;
+    height: 60px;
     bottom: 0;
     left: 0;
     right: 0;
-    transition: all 0.3s ease-in-out;
     padding: 0 20px;
     border-radius: 0 0 $border-radius $border-radius;
+
+    transition: all 0.2s ease-in-out;
     @include backdrop-blur($paragraph);
     @media (prefers-color-scheme: dark) {
       @include backdrop-blur($paragraph_dark);
     }
+
+    text-align: center;
     .title {
       font-weight: bold;
       font-size: 1.1em;
-      margin-top: 20px;
       transition: all 0.2s ease-in-out;
     }
     .subtitle {
-      margin-top: 20px;
       opacity: 0;
+      max-height: 0px;
+      overflow: hidden;
     }
   }
 }

@@ -1,5 +1,8 @@
 <template>
-  <div class="fh-health-card fh-health-time-w">
+  <div
+    class="fh-health-card fh-health-time-w"
+    v-if="average.hours + average.minutes > 0"
+  >
     <fh-health-head average="Trainingszeit" :description="description" />
     <div class="time-container">
       <div class="average-text" :style="averageStyle">Durchschnitt</div>

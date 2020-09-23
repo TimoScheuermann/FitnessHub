@@ -59,9 +59,28 @@
             :to="{ name: 'friend', params: { id: f._id } }"
           >
             {{ f.username }}
-            <tc-link slot="action" tfcolor="error" @click="removeFriend(f._id)">
+
+            <tc-select
+              slot="action"
+              :onlyIcon="true"
+              icon="dots"
+              variant="filled"
+              :dark="$store.getters.darkmode"
+              :tfbackground="
+                $store.getters.darkmode ? 'backgroundDark' : 'container'
+              "
+            >
+              <tc-select-item
+                tfcolor="error"
+                title="Freund entfernen"
+                icon="trashcan-alt"
+              />
+              <tc-select-item title="Herausfordern" icon="trophy" />
+              <tc-select-item title="Training planen" icon="calendar-alt" />
+            </tc-select>
+            <!-- <tc-link slot="action" tfcolor="error" @click="removeFriend(f._id)">
               <i class="ti-trashcan-alt" />
-            </tc-link>
+            </tc-link> -->
           </fh-user-list-item>
         </fh-user-list>
       </div>
@@ -141,9 +160,11 @@ export default class Friends extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.pending {
-  opacity: 0.6;
-  font-style: italic;
-  margin-right: 10px;
+.friends {
+  .pending {
+    opacity: 0.6;
+    font-style: italic;
+    margin-right: 10px;
+  }
 }
 </style>

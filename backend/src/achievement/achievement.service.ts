@@ -24,7 +24,7 @@ export class AchievementService {
           achievements.push({
             asset: exercise.thumbnail,
             date: 0,
-            subtitle: `Du hast zum ersten mal die Übung "${exercise.title} gemacht"`,
+            subtitle: `Du hast zum ersten mal die Übung "${exercise.title}" gemacht`,
             title: exercise.title,
           });
         }
