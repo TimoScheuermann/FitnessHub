@@ -77,7 +77,6 @@ export default class FHModalExerciseDetails extends Mixins(FHModalMixin) {
   }
 
   public open(id: string): void {
-    console.log('Opening Exercise-Details Modal for', id);
     this.error = false;
     if (this.exerciseId !== id) {
       this.exercise = null;

@@ -19,6 +19,7 @@ import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
 import { FinishExerciseDTO } from './dtos/FinishExercise.dto';
 import { ExerciseService } from './exercise.service';
 import { IExercise } from './interfaces/IExercise';
+import { IExerciseShowcase } from './interfaces/IExerciseShowcase';
 
 @Controller('exercise')
 export class ExerciseController {
@@ -69,6 +70,14 @@ export class ExerciseController {
     return this.exerciseService.find(query);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('showcases')
+  async getExerciseShowcases(
+    @Body() ids: string[],
+  ): Promise<IExerciseShowcase[]> {
+    return this.exerciseService.getShowcases(ids);
+  }
+
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('submissions')
@@ -85,9 +94,9 @@ export class ExerciseController {
   @Post('finished')
   async exerciseFinished(
     @FHUser() user: IUser,
-    @Body() finish: FinishExerciseDTO,
+    @Body() finished: FinishExerciseDTO[],
   ): Promise<void> {
-    this.exerciseService.finished(user, finish);
+    this.exerciseService.finished(user, finished);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

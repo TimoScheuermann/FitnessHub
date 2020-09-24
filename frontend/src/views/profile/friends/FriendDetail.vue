@@ -16,7 +16,7 @@
       />
     </tc-list>
 
-    <h1>Gesundheitsdaten</h1>
+    <h3>Gesundheitsdaten</h3>
     <tl-grid minWidth="130" gap="10">
       <div class="fh-health-card" v-if="weight !== -3">
         <tc-spinner
@@ -77,7 +77,7 @@
     </tl-grid>
 
     <template v-if="workouts">
-      <h1>Letzten 10 Workouts</h1>
+      <h3>Letzten 10 Workouts</h3>
       <p v-if="workouts.length === 0">
         Bisher wurden keine Workouts eingetragen
       </p>
@@ -91,7 +91,7 @@
     </template>
 
     <template v-if="stats">
-      <h1>Trainingsstatistik</h1>
+      <h3>Trainingsstatistik</h3>
 
       <tl-grid>
         <fh-health-time-w :chartData="stats" />
@@ -100,7 +100,7 @@
         <fh-health-workout7 :chartData="stats" />
       </tl-grid>
 
-      <h2>Monatsübersicht</h2>
+      <h4>Monatsübersicht</h4>
       <fh-health-workout28 :chartData="stats" />
     </template>
   </div>

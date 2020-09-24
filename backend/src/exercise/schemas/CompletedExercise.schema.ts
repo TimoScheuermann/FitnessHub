@@ -1,26 +1,31 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { ISet } from '../interfaces/ICompletedExercise';
 
 @Schema()
 export class CompletedExercise extends Document {
   @Prop()
-  exercise: string;
+  user: string;
 
   @Prop()
-  user: string;
+  exercise: string;
 
   @Prop()
   start: number;
 
   @Prop()
-  end: number;
+  duration: number;
 
   @Prop({ required: false })
-  sets?: ISet[];
+  distances?: number[];
 
   @Prop({ required: false })
-  distance?: string;
+  times?: number[];
+
+  @Prop({ required: false })
+  setsReps?: number[];
+
+  @Prop({ required: false })
+  setsWeights?: number[];
 }
 
 export const CompletedExerciseSchema = SchemaFactory.createForClass(

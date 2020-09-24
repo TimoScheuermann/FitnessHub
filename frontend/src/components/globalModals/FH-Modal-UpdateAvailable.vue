@@ -43,7 +43,6 @@ export default class FHModalUpdateAvailable extends Mixins(FHModalMixin) {
   }
 
   public updateApplication() {
-    console.log('update');
     if (this.swRegistration && this.swRegistration.waiting) {
       this.swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
       window.location.reload();

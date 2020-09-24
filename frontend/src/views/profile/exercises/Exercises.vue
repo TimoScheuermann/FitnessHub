@@ -1,18 +1,15 @@
 <template>
   <div class="exercises" content>
-    <h1>Zuletzt ausgeübt</h1>
+    <tl-flow horizontal="space-between">
+      <h1>Zuletzt</h1>
+      <tc-link tfcolor="success" routeName="highlights">
+        Trainingsstatistik
+      </tc-link>
+    </tl-flow>
     <template v-if="recent.length > 0">
       <fh-carousel>
         <fh-exercise v-for="(e, i) in recent" :key="e._id + i" :exercise="e" />
       </fh-carousel>
-      <br />
-      <tc-button
-        icon="chart-bar"
-        name="Trainingsstatistik"
-        tfbackground="success"
-        variant="filled"
-        routeName="highlights"
-      />
     </template>
     <template v-else>
       <p>Du hast noch kein Übung mit FitnessHub ausgeübt.</p>
@@ -25,12 +22,23 @@
       />
     </template>
 
+    <br />
     <tl-flow horizontal="space-between">
-      <h1>Eingereicht</h1>
+      <h3>Eingereicht</h3>
       <tc-link tfcolor="success" routeName="submitExercise">
         Übung einreichen
       </tc-link>
     </tl-flow>
+
+    <p
+      v-if="
+        published.length === 0 &&
+          unpublished.length === 0 &&
+          edited.length === 0
+      "
+    >
+      Du hast noch keine Übung eingereicht.
+    </p>
 
     <template v-if="published.length > 0">
       <div>

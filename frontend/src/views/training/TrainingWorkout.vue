@@ -12,7 +12,7 @@
       <tc-spinner size="20" :dark="$store.getters.darkmode" />
     </div>
     <div v-else content>
-      <h1>Übungen</h1>
+      <h3>Übungen</h3>
       <tl-grid>
         <fh-exercise v-for="e in exercises" :key="e._id" :id="e._id" />
       </tl-grid>

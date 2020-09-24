@@ -1,6 +1,6 @@
 <template>
   <div class="training-muscle" content>
-    <h1>Übungen</h1>
+    <h3>Übungen</h3>
     <tl-grid>
       <fh-exercise v-for="ex in exercises" :key="ex._id" :exercise="ex" />
     </tl-grid>

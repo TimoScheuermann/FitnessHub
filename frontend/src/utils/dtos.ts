@@ -57,6 +57,16 @@ export class UpdateNutritionplanDTO {
   readonly sunday?: INutritionplanDay;
 }
 
+export class FinishExerciseDTO {
+  readonly exercise!: string;
+  readonly start!: number;
+  readonly duration!: number;
+  distances?: number[];
+  times?: number[];
+  setsReps?: number[];
+  setsWeights?: number[];
+}
+
 export class UpdateExerciseDTO {
   readonly title?: string;
   readonly affectedMuscles?: string[];

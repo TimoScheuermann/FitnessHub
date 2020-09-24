@@ -14,6 +14,7 @@
           type="number"
           inputmode="numeric"
           min="0"
+          :disabled="state !== 0"
           @input="changeMinutes"
           v-model="minutes"
         />
@@ -22,6 +23,7 @@
           type="number"
           inputmode="numeric"
           min="0"
+          :disabled="state !== 0"
           @input="changeSeconds"
           max="60"
           v-model="seconds"

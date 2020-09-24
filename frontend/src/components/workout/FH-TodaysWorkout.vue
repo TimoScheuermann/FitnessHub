@@ -18,7 +18,6 @@
           </transition>
         </div>
       </div>
-
       <div class="button-container">
         <div class="button" @click="next">
           <i class="ti-chevron-right"></i>
@@ -31,7 +30,6 @@
         <div class="title">{{ day }}</div>
       </div>
     </div>
-
     <tc-divider :dark="$store.getters.darkmode" />
 
     <div class="workout-preview">
@@ -67,6 +65,16 @@
         <ol>
           <li v-for="e in todaysWorkout" :key="e._id">{{ e.title }}</li>
         </ol>
+        <br />
+        <tl-grid minWidth="100">
+          <tc-button
+            tfbackground="success"
+            variant="filled"
+            icon="gym"
+            name="Workout starten"
+            @click="startToday"
+          />
+        </tl-grid>
       </div>
     </div>
   </div>
@@ -76,7 +84,11 @@
 import axios from '@/utils/axios';
 import { aDay, days, months } from '@/utils/constants';
 import { EventBus } from '@/utils/eventbus';
-import { IExercise, ITrainingplanFull } from '@/utils/interfaces';
+import {
+  IExercise,
+  IExerciseShowcase,
+  ITrainingplanFull
+} from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
@@ -119,19 +131,18 @@ export default class FHTodaysWorkout extends Vue {
 
   get today(): boolean {
     if (!this.trainingplan) return false;
-    return Object.keys(this.trainingplan).includes(this.date.getDay() + '');
+    return Object.keys(this.trainingplan).includes(this.index + '');
   }
 
   get todaysWorkout(): IExercise[] {
     if (!this.today) return [];
     // eslint-disable-next-line
-    return (this.trainingplan as any)['' + this.date.getDay()].exercises;
+    return (this.trainingplan as any)['' + this.index].exercises;
   }
 
   get index(): number {
-    let index = this.date.getDay();
-    if (this.day) index = days.indexOf(this.day);
-    return index;
+    if (this.day) return days.indexOf(this.day);
+    return this.date.getDay();
   }
 
   public editDay(): void {
@@ -144,6 +155,18 @@ export default class FHTodaysWorkout extends Vue {
         this.$store.commit('setTrainingplan', res.data);
       });
     }
+  }
+
+  public startToday(): void {
+    const mapped = this.todaysWorkout.map(x => {
+      return {
+        _id: x._id,
+        title: x.title,
+        thumbnail: x.thumbnail,
+        type: x.distance ? 'distance' : x.sets ? 'gym' : 'time'
+      } as IExerciseShowcase;
+    });
+    EventBus.$emit('modal-start-workout', mapped);
   }
 }
 </script>

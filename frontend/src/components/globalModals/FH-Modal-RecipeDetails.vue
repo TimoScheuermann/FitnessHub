@@ -100,7 +100,6 @@ export default class FHModalRecipeDetails extends Mixins(FHModalMixin) {
   }
 
   public open(id: string): void {
-    console.log('Opening Recipe-Details Modal for', id);
     this.error = false;
     if (this.recipeId !== id) {
       this.recipe = null;

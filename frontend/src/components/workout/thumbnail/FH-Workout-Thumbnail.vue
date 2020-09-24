@@ -2,8 +2,8 @@
   <div class="fh-workout-thumbnail" v-if="workout" :style="'--cells:' + cells">
     <div
       class="fh-workout-thumbnail--cell"
-      v-for="a in displayedAssets"
-      :key="a"
+      v-for="(a, i) in displayedAssets"
+      :key="a + i"
     >
       <img :src="a" alt="" />
     </div>

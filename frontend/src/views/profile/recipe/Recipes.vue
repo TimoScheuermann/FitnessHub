@@ -12,7 +12,7 @@
       Du hast noch kein eigenes Rezept veröffentlicht
     </p>
 
-    <h1>Lieblingsrezepte</h1>
+    <h3>Lieblingsrezepte</h3>
     <fh-carousel v-if="favedRecipes.length > 0">
       <fh-recipe v-for="r in favedRecipes" :key="r._id" :recipe="r" />
     </fh-carousel>

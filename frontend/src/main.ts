@@ -58,6 +58,7 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
+    EventBus.$emit('modal-start-workout-returning', true);
     axios.get('message').then(res => {
       res.data.forEach((x: IMessage) => store.commit('addMessage', x));
     });

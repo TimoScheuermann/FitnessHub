@@ -354,10 +354,9 @@ export default class FHRecipeForm extends Vue {
   public async updateRecipe(): Promise<void> {
     const created = this.validateInput();
     if (this.recipeInput && created) {
-      console.log('R', created);
       axios.put('recipe/update/' + this.recipeInput._id, created).then(res => {
         this.$store.commit('addRecipe', res.data);
-        // this.$router.push({ name: 'recipes' });
+        this.$router.push({ name: 'recipes' });
       });
     }
   }

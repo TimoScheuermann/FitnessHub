@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { IExercise } from 'src/exercise/interfaces/IExercise';
+import { Model, mongo } from 'mongoose';
 import { Exercise } from 'src/exercise/schemas/Exercise.schema';
 import { Workout } from 'src/workout/schemas/Workout.schema';
 import { ITrainingplan } from './interfaces/ITrainingplan';
@@ -24,29 +23,60 @@ export class TrainingplanService {
   }
 
   public async getFullTrainingplan(userId: string): Promise<ITrainingplanFull> {
-    const trainingPlan = await this.getTrainingplan(userId);
+    const trainingPlan = (await this.getTrainingplan(userId)) as ITrainingplan;
     if (!trainingPlan) return undefined;
 
     const fullPlan: ITrainingplanFull = {
       _id: trainingPlan._id,
       author: trainingPlan.author,
     };
-    for (let i = 0; i < 7; i++) {
-      let data: string | undefined = trainingPlan[i];
-      if (data) {
-        const items: IExercise[] = [];
-        if (data.startsWith('ex_')) {
-          data = data.split('ex_')[1];
-          items.push(await this.exerciseModel.findOne({ _id: data }));
-        } else {
-          const workout = await this.workoutModel.findOne({ _id: data });
-          workout.exercises.forEach(async (x) => {
-            items.push(await this.exerciseModel.findOne({ _id: x }));
-          });
-        }
-        fullPlan[i] = { id: trainingPlan[i], exercises: items };
+
+    const days = Array.from({ length: 7 }, (_x, i) => i + '').filter(
+      (x) => !!trainingPlan[x],
+    );
+
+    let uniqueWorkoutIds = [];
+    let uniqueExerciseIds = [];
+    days.forEach((x) => {
+      const data: string = trainingPlan[x];
+      if (data.startsWith('ex_')) {
+        uniqueExerciseIds.push(data.split('ex_')[1]);
+      } else {
+        uniqueWorkoutIds.push(data);
       }
-    }
+    });
+
+    uniqueWorkoutIds = [...new Set(uniqueWorkoutIds)];
+    const uniqueWorkouts = await this.workoutModel.find({
+      _id: { $in: uniqueWorkoutIds.map((x) => new mongo.ObjectID(x)) },
+    });
+    uniqueWorkouts.forEach((x) => uniqueExerciseIds.push(...x.exercises));
+    uniqueExerciseIds = [...new Set(uniqueExerciseIds)];
+    const uniqueExercises = await this.exerciseModel.find({
+      _id: { $in: uniqueExerciseIds.map((x) => new mongo.ObjectID(x)) },
+    });
+
+    const getWorkout = (id: string) => {
+      return uniqueWorkouts.filter((x) => x._id == id)[0];
+    };
+    const getExercise = (id: string) => {
+      return uniqueExercises.filter((x) => x._id == id)[0];
+    };
+
+    days.forEach((x) => {
+      const id = trainingPlan[x];
+      let exercises = [];
+      if (id.startsWith('ex_')) {
+        exercises = [getExercise(id.split('ex_')[1])];
+      } else {
+        exercises = getWorkout(id).exercises.map(getExercise);
+      }
+      fullPlan[x] = {
+        id: id,
+        exercises: exercises,
+      };
+    });
+
     return fullPlan;
   }
 

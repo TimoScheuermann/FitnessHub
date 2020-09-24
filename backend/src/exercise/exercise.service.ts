@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, mongo } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
 import { Message } from 'src/message/schemas/Message.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
@@ -10,6 +10,7 @@ import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
 import { FinishExerciseDTO } from './dtos/FinishExercise.dto';
 import { UpdateExerciseDTO } from './dtos/UpdateExercise.dto';
 import { IExercise } from './interfaces/IExercise';
+import { IExerciseShowcase } from './interfaces/IExerciseShowcase';
 import { CompletedExercise } from './schemas/CompletedExercise.schema';
 import { Exercise } from './schemas/Exercise.schema';
 
@@ -55,6 +56,25 @@ export class ExerciseService {
       .sort({ start: -1 })
       .limit(10);
     return Promise.all(recent.map(async (x) => await this.getById(x.exercise)));
+  }
+
+  public async getShowcases(ids: string[]): Promise<IExerciseShowcase[]> {
+    const exercises = await this.exerciseModel.find({
+      _id: { $in: ids.map((x) => new mongo.ObjectID(x)) },
+    });
+    const getType = (exercises: IExercise): 'time' | 'distance' | 'gym' => {
+      if (exercises.reps) return 'gym';
+      if (exercises.distance) return 'distance';
+      return 'time';
+    };
+    return exercises.map((x) => {
+      return {
+        _id: x._id,
+        thumbnail: x.thumbnail,
+        title: x.title,
+        type: getType(x),
+      } as IExerciseShowcase;
+    });
   }
 
   public async find(query: string): Promise<IExercise[]> {
@@ -184,15 +204,14 @@ export class ExerciseService {
     this.fhSocket.server.to(to).emit('message', createdMessage);
   }
 
-  public async finished(user: IUser, finish: FinishExerciseDTO): Promise<void> {
-    await this.completedExerciseModel.create({
-      user: user._id,
-      exercise: finish.exercise,
-      end: finish.end,
-      start: finish.start,
-      distance: finish.distance,
-      sets: finish.sets,
+  public async finished(
+    user: IUser,
+    finish: FinishExerciseDTO[],
+  ): Promise<void> {
+    const transformed = finish.map((x) => {
+      return { ...x, user: user._id };
     });
+    await this.completedExerciseModel.insertMany(transformed);
     // TODO: Inform friends?
   }
 

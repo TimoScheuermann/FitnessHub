@@ -5,7 +5,7 @@
       <tc-spinner :dark="$store.getters.darkmode" size="20" />
     </tl-flow>
     <template v-else>
-      <h1>Freigeschaltet</h1>
+      <h3>Freigeschaltet</h3>
       <p v-if="achievements.length === 0">
         Du hast noch keine Erfolge freigeschaltet.
       </p>

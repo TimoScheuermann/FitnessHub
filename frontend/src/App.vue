@@ -4,7 +4,6 @@
     <fh-tabbar v-if="!$store.getters.isDesktop" />
     <fh-notification />
     <fh-edit-trainingplan />
-    <fh-run-workout />
     <fh-modal-exercise-details />
     <fh-modal-recipe-details />
     <fh-modal-workout-details />
@@ -13,6 +12,7 @@
     <fh-modal-user-search />
     <fh-modal-exercise-search />
     <fh-modal-update-available />
+    <fh-modal-start-workout />
 
     <tl-sidebar
       sidebarBackgroundImage="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?h=1920"
@@ -50,7 +50,6 @@ import FriendSocketManager from '@/socketManager/FriendSocket.manager';
 import ExerciseSocketManager from '@/socketManager/ExerciseSocket.manager';
 import WorkoutSocketManager from '@/socketManager/WorkoutSocket.manager';
 import FHEditTrainingplan from './components/workout/FH-EditTrainingplan.vue';
-import FHRunWorkout from './components/workout/FH-RunWorkouts.vue';
 import FHModalExerciseDetails from './components/globalModals/FH-Modal-ExerciseDetails.vue';
 import FHModalRecipeDetails from './components/globalModals/FH-Modal-RecipeDetails.vue';
 import FHModalWorkoutDetails from './components/globalModals/FH-Modal-WorkoutDetails.vue';
@@ -68,6 +67,7 @@ import {
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
 import FHModalUpdateAvailable from './components/globalModals/FH-Modal-UpdateAvailable.vue';
+import FHModalStartWorkout from './components/globalModals/FH-Modal-StartWorkout.vue';
 
 @Component({
   components: {
@@ -77,7 +77,6 @@ import FHModalUpdateAvailable from './components/globalModals/FH-Modal-UpdateAva
     'fh-sidebar-head': FHSidebarHead,
     'fh-notification': FHNotification,
     'fh-edit-trainingplan': FHEditTrainingplan,
-    'fh-run-workout': FHRunWorkout,
     'fh-modal-exercise-details': FHModalExerciseDetails,
     'fh-modal-recipe-details': FHModalRecipeDetails,
     'fh-modal-workout-details': FHModalWorkoutDetails,
@@ -85,6 +84,7 @@ import FHModalUpdateAvailable from './components/globalModals/FH-Modal-UpdateAva
     'fh-modal-add-to-workout': FHModalAddToWorkout,
     'fh-modal-user-search': FHModalUserSearch,
     'fh-modal-exercise-search': FHModalExerciseSearch,
+    'fh-modal-start-workout': FHModalStartWorkout,
     'fh-modal-update-available': FHModalUpdateAvailable,
     'fh-profile-sidebar': FHProfileSidebar
   }

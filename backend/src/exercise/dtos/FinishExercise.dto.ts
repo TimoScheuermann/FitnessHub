@@ -1,9 +1,9 @@
-import { ISet } from '../interfaces/ICompletedExercise';
-
 export class FinishExerciseDTO {
   readonly exercise: string;
   readonly start: number;
-  readonly end: number;
-  readonly distance?: string;
-  readonly sets?: ISet[];
+  readonly duration: number;
+  readonly distances?: number[];
+  readonly times?: number[];
+  readonly setsReps?: number[];
+  readonly setsWeights?: number[];
 }

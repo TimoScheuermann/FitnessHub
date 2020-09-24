@@ -19,7 +19,7 @@
     </div>
 
     <template v-if="trendingExercises && trendingExercises.length > 0">
-      <h1>Übungen der Woche</h1>
+      <h3>Beliebte Übungen</h3>
       <fh-carousel>
         <fh-exercise
           v-for="e in trendingExercises"
@@ -30,14 +30,14 @@
     </template>
 
     <template v-if="latestExercises && latestExercises.length > 0">
-      <h1>Neueste Übungen</h1>
+      <h3>Neueste Übungen</h3>
       <fh-carousel>
         <fh-exercise v-for="e in latestExercises" :key="e._id" :exercise="e" />
       </fh-carousel>
     </template>
 
     <template v-if="latestWorkouts && latestWorkouts.length > 0">
-      <h1>Aktuelle Workouts</h1>
+      <h3>Aktuelle Workouts</h3>
       <fh-carousel>
         <router-link
           v-for="w in latestWorkouts"

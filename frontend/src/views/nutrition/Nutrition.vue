@@ -1,11 +1,11 @@
 <template>
   <div class="nutrition" content>
     <template v-if="$store.getters.valid">
-      <h1>Trinkometer</h1>
+      <br />
       <fh-health-water :onlyToday="true" />
     </template>
 
-    <h1>Kategorien</h1>
+    <h3>Kategorien</h3>
 
     <fh-carousel>
       <fh-preview
@@ -21,20 +21,20 @@
     </fh-carousel>
 
     <template v-if="belovedRecipes && belovedRecipes.length > 0">
-      <h1>Beliebte Rezepte</h1>
+      <h3>Beliebte Rezepte</h3>
       <fh-carousel>
         <fh-recipe v-for="r in belovedRecipes" :key="r._id" :recipe="r" />
       </fh-carousel>
     </template>
 
     <template v-if="latestRecipes && latestRecipes.length > 0">
-      <h1>Neuesten Rezepte</h1>
+      <h3>Neuesten Rezepte</h3>
       <fh-carousel>
         <fh-recipe v-for="r in latestRecipes" :key="r._id" :recipe="r" />
       </fh-carousel>
     </template>
 
-    <h1>Ernährungspläne</h1>
+    <h3>Ernährungspläne</h3>
     <p>soon</p>
   </div>
 </template>

@@ -68,7 +68,7 @@
       <!-- Profil Ende -->
 
       <div v-group.admin.moderator>
-        <h1>Management</h1>
+        <h3>Management</h3>
         <tl-grid gap="0px 20" minWidth="200">
           <tc-list :dark="$store.getters.darkmode">
             <tc-badge

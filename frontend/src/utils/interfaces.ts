@@ -165,6 +165,12 @@ export interface IExerciseInfo {
   readonly difficulty: number;
   readonly affectedMuscles: string[];
 }
+export interface IExerciseShowcase {
+  readonly _id: string;
+  readonly title: string;
+  readonly thumbnail: string;
+  readonly type: 'gym' | 'time' | 'distance';
+}
 export interface ISet {
   readonly reps: number;
   readonly weight: number;

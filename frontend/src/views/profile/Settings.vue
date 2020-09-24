@@ -2,7 +2,7 @@
   <div class="settings" content>
     <tl-grid gap="0px 20">
       <div>
-        <h1>Allgemein</h1>
+        <h3>Allgemein</h3>
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
             title="Sprache"
@@ -26,7 +26,7 @@
       </div>
 
       <div>
-        <h1>Freunde</h1>
+        <h3>Freunde</h3>
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
             title="Anfragen erhalten"
@@ -47,7 +47,7 @@
             @input="val => toggleSetting(val, 'FRIENDS_RECEIVE_CHALLENGES')"
           />
         </tc-list>
-        <h2>Teilen</h2>
+        <h4>Teilen</h4>
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
             title="Gewicht"
@@ -116,7 +116,6 @@ export default class Settings extends Vue {
     enabled: boolean,
     setting: AvailableSetting
   ): Promise<void> {
-    console.log('Test', setting);
     if (enabled) {
       await axios.delete('setting/' + setting);
     } else {

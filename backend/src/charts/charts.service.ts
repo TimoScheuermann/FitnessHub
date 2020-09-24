@@ -22,7 +22,7 @@ export class ChartsService {
     const data = Array.from({ length: 28 }, () => []);
     exercises.forEach((x) => {
       const index = this.getIndex(x.start);
-      data[index].push((x.end - x.start) / 1000);
+      data[index].push(x.duration / 1000);
     });
     return data;
   }
