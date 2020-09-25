@@ -39,13 +39,11 @@
     <template v-if="latestWorkouts && latestWorkouts.length > 0">
       <h3>Aktuelle Workouts</h3>
       <fh-carousel>
-        <router-link
+        <fh-workout-preview
           v-for="w in latestWorkouts"
           :key="w._id"
-          :to="{ name: 'training-workout', params: { id: w._id } }"
-        >
-          <fh-workout-preview :workout="w" />
-        </router-link>
+          :workout="w"
+        />
       </fh-carousel>
     </template>
   </div>

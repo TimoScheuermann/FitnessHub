@@ -162,6 +162,7 @@ export interface IExerciseInfo {
   readonly _id: string;
   readonly title: string;
   readonly thumbnail: string;
+  readonly type: 'gym' | 'time' | 'distance';
   readonly difficulty: number;
   readonly affectedMuscles: string[];
 }

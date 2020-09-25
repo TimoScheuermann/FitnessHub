@@ -370,6 +370,7 @@ export default class FHModalStartWorkout extends Vue {
 
   getTransformedStoreToDTO(): FinishExerciseDTO[] {
     return this.store
+      .filter(x => x.data.length !== 0)
       .map((x, i) => {
         const exercise = (this.exercises || [])[i];
         const common = {

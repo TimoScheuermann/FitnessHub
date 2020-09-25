@@ -255,7 +255,7 @@ const router = new VueRouter({
           }
         },
         {
-          path: 'edit/:id',
+          path: 'workouts/edit/:id',
           name: 'workout-edit',
           component: () => import('@/views/profile/workouts/EditWorkout.vue'),
           meta: {

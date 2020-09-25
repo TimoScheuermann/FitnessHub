@@ -3,11 +3,14 @@
     class="fh-workout-preview"
     :style="'--cells: ' + this.cells"
     v-if="workout"
+    @click="open"
   >
     <div class="container">
       <div class="title">{{ workout.title }}</div>
       <div class="date">{{ date }}</div>
     </div>
+
+    <fh-workout-start-button :workout="workout" />
     <div
       class="exercise-image"
       v-for="(e, i) in workout.exercises.filter((x, i) => i < cells * cells)"
@@ -22,8 +25,13 @@
 import { formatDate } from '@/utils/functions';
 import { IWorkout } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import FHWorkoutStartButton from './thumbnail/FH-Workout-StartButton.vue';
 
-@Component
+@Component({
+  components: {
+    'fh-workout-start-button': FHWorkoutStartButton
+  }
+})
 export default class FHWorkoutPreview extends Vue {
   @Prop() workout!: IWorkout;
 
@@ -38,6 +46,13 @@ export default class FHWorkoutPreview extends Vue {
     if (this.workout.exercises.length < 9) return 2;
     return 3;
   }
+
+  public open() {
+    this.$router.push({
+      name: 'training-workout',
+      params: { id: this.workout._id }
+    });
+  }
 }
 </script>
 
@@ -50,6 +65,7 @@ export default class FHWorkoutPreview extends Vue {
   border-radius: $border-radius;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 
   .container {
     color: #fff;

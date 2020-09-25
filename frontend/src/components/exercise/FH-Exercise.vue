@@ -11,7 +11,7 @@
         v-if="!isInATWModal"
         slot="thumbnail"
       />
-      <i slot="thumbnail" class="info ti-share" />
+      <fh-exercise-atl-button :info="ex" slot="thumbnail" />
       <div class="card-content">
         <fh-pd-exercise :exercise="ex" />
       </div>
@@ -27,11 +27,13 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHExerciseATWButton from '../exercise/thumbnail/FH-Exercise-ATWButton.vue';
 import FHExerciseInformations from '../exercise/thumbnail/FH-Exercise-Informations.vue';
 import FHPropertyDetailsExercise from '../propertyDetails/FH-PD-Exercise.vue';
+import FHExerciseATLButton from './thumbnail/FH-Exercise-ATLButton.vue';
 
 @Component({
   components: {
     'fh-pd-exercise': FHPropertyDetailsExercise,
     'fh-exercise-atw-button': FHExerciseATWButton,
+    'fh-exercise-atl-button': FHExerciseATLButton,
     'fh-exercise-informations': FHExerciseInformations
   }
 })
@@ -57,13 +59,11 @@ export default class FHExercise extends Vue {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .tc-magic-card__expanded i.info {
-  display: none;
+/deep/ .tc-magic-card__expanded .fh-exercise-atl-button {
+  top: unset;
+  bottom: 45px;
 }
 .fh-exercise {
-  /deep/ i.info {
-    font-size: 18px;
-  }
   .card-content {
     padding: 0 5vw;
   }

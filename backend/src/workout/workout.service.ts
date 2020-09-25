@@ -122,6 +122,7 @@ export class WorkoutService {
       thumbnail: exercise.thumbnail,
       title: exercise.title,
       difficulty: exercise.difficulty,
+      type: exercise.distance ? 'distance' : exercise.sets ? 'gym' : 'time',
       affectedMuscles: exercise.affectedMuscles,
     };
   }

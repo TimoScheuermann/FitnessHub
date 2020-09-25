@@ -13,6 +13,7 @@
     <fh-modal-exercise-search />
     <fh-modal-update-available />
     <fh-modal-start-workout />
+    <fh-modal-exercise-list />
 
     <tl-sidebar
       sidebarBackgroundImage="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?h=1920"
@@ -68,6 +69,7 @@ import {
 } from '@/utils/mediaQueries';
 import FHModalUpdateAvailable from './components/globalModals/FH-Modal-UpdateAvailable.vue';
 import FHModalStartWorkout from './components/globalModals/FH-Modal-StartWorkout.vue';
+import FHModalExerciseList from './components/globalModals/FH-Modal-ExerciseList.vue';
 
 @Component({
   components: {
@@ -86,6 +88,7 @@ import FHModalStartWorkout from './components/globalModals/FH-Modal-StartWorkout
     'fh-modal-exercise-search': FHModalExerciseSearch,
     'fh-modal-start-workout': FHModalStartWorkout,
     'fh-modal-update-available': FHModalUpdateAvailable,
+    'fh-modal-exercise-list': FHModalExerciseList,
     'fh-profile-sidebar': FHProfileSidebar
   }
 })

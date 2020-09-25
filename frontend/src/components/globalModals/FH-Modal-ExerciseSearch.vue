@@ -23,6 +23,14 @@
           <fh-difficulty :difficulty="e.difficulty" />
           <div class="title">{{ e.title }}</div>
         </div>
+        <tl-flow v-if="$store.getters.valid">
+          <tc-button
+            @click.stop="addToList(e)"
+            icon="list"
+            variant="filled"
+            tfbackground="success"
+          />
+        </tl-flow>
       </div>
     </transition-group>
   </tc-modal>
@@ -30,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { IExercise } from '@/utils/interfaces';
+import { IExercise, IExerciseShowcase } from '@/utils/interfaces';
 import axios from '@/utils/axios';
 import { EventBus } from '@/utils/eventbus';
 import FHModalMixin from './FHModal.mixin';
@@ -70,6 +78,15 @@ export default class FHModalExerciseSearch extends Mixins(FHModalMixin) {
       this.results = this.results.filter(() => false);
     }
   }
+
+  public addToList(exercise: IExercise) {
+    EventBus.$emit('modal-exercise-list', {
+      _id: exercise._id,
+      title: exercise.title,
+      thumbnail: exercise.thumbnail,
+      type: exercise.distance ? 'distance' : exercise.sets ? 'gym' : 'time'
+    } as IExerciseShowcase);
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -80,7 +97,7 @@ export default class FHModalExerciseSearch extends Mixins(FHModalMixin) {
     position: relative;
     .exercise {
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       grid-gap: 20px;
       padding: 5px 0;
       cursor: pointer;

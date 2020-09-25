@@ -29,6 +29,7 @@
       <div class="thumbnail">
         <fh-workout-thumbnail :workout="workout">
           <fh-workout-informations :workout="workout" />
+          <fh-workout-start-button :workout="workout" />
         </fh-workout-thumbnail>
       </div>
       <h1>Übungen</h1>
@@ -44,6 +45,7 @@ import { IWorkout, IModalReturn } from '@/utils/interfaces';
 import { Component, Mixins } from 'vue-property-decorator';
 import FHPropertyDetailsWorkout from '../propertyDetails/FH-PD-Workout.vue';
 import FHworkoutInformations from '../workout/thumbnail/FH-Workout-Informations.vue';
+import FHWorkoutStartButton from '../workout/thumbnail/FH-Workout-StartButton.vue';
 import FHWorkoutThumbnail from '../workout/thumbnail/FH-Workout-Thumbnail.vue';
 import FHModalMixin from './FHModal.mixin';
 
@@ -51,7 +53,8 @@ import FHModalMixin from './FHModal.mixin';
   components: {
     'fh-pd-workout': FHPropertyDetailsWorkout,
     'fh-workout-informations': FHworkoutInformations,
-    'fh-workout-thumbnail': FHWorkoutThumbnail
+    'fh-workout-thumbnail': FHWorkoutThumbnail,
+    'fh-workout-start-button': FHWorkoutStartButton
   }
 })
 export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
@@ -67,9 +70,6 @@ export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
         this.modalReturn = modalReturn;
       }
     );
-    // setTimeout(() => {
-    //   this.open('5f5e5a521cd04741df5ca246');
-    // }, 500);
   }
 
   get title(): string | null {
