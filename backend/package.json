@@ -33,6 +33,7 @@
     "@nestjs/websockets": "^7.4.3",
     "@types/socket.io": "^2.1.11",
     "fs-sync": "^1.0.6",
+    "hbs": "^4.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.2",
     "node-telegram-bot-api": "^0.50.0",

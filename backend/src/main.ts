@@ -2,6 +2,7 @@ import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.i
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
+import { join } from 'path';
 import { AppModule } from './app.module';
 
 const KEY_PATH = '/etc/letsencrypt/live/api.timos.design/';
@@ -17,9 +18,12 @@ async function bootstrap() {
     app = await NestFactory.create(AppModule, { cors: true });
   }
 
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
+
   const options = new DocumentBuilder()
-    .setTitle('Fitness Planner API')
-    .setVersion('1.0')
+    .setTitle('FitnessHub API')
+    .setVersion('2.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

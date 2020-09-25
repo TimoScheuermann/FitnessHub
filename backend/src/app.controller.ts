@@ -1,11 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  @ApiResponse({ description: 'Returns Hi' })
   @Get()
-  hi(): string {
-    return `Hi`;
+  @Render('index')
+  index(): void {
+    //
   }
 }
