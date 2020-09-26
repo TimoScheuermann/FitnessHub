@@ -51,7 +51,7 @@ export default class FHWorkoutThumbnail extends Vue {
     img {
       width: 100%;
       height: 100%;
-      filter: brightness(50%);
+      // filter: brightness(50%);
       object-fit: cover;
     }
   }

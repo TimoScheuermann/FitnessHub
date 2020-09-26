@@ -5,8 +5,10 @@ import {
   IExercise,
   IFHNotification,
   IRecipe,
+  IUser,
   IUserInfo,
-  IVariable
+  IVariable,
+  IWorkout
 } from './interfaces';
 
 export function copyToClipboard(data: string) {
@@ -16,6 +18,14 @@ export function copyToClipboard(data: string) {
   el.select();
   document.execCommand('copy');
   document.body.removeChild(el);
+}
+
+export function getUserName(user: IUserInfo | IUser): string | null {
+  if (!user) return null;
+  if ((user as IUserInfo).username) return (user as IUserInfo).username;
+  return [(user as IUser).givenName, (user as IUser).familyName]
+    .filter(x => !!x)
+    .join(' ');
 }
 
 /* eslint-disable */
@@ -209,4 +219,20 @@ export function extractInfoFromUrl(
     icon: icon,
     user: user
   };
+}
+
+export function getWorkout(id: string, callback: Function) {
+  let workout = (store.getters.latestWorkouts || []).filter(
+    (x: IWorkout) => x._id === id
+  )[0];
+
+  if (workout) {
+    callback(workout);
+    return;
+  }
+
+  axios
+    .get('workout/' + id)
+    .then(res => callback(res.data))
+    .catch(() => callback(null));
 }

@@ -81,7 +81,9 @@ export default class FHWorkoutList extends Vue {
 
 <style lang="scss" scoped>
 .fh-workout-list {
+  user-select: none;
   .workout {
+    cursor: pointer;
     background: $paragraph;
     @media (prefers-color-scheme: dark) {
       background: $paragraph_dark;

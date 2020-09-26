@@ -10,10 +10,7 @@
     >
       <div class="fh-profile-sidebar--container">
         <div class="fh-profile-sidebar--head">
-          <img
-            src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?h=200&w=300"
-            alt=""
-          />
+          <img src="assets/hero/fh-hero-blur.webp" alt="" />
           <div class="container">
             <fh-avatar size="small" />
             <div class="info" v-if="$store.getters.valid">

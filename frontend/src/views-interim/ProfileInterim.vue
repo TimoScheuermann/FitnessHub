@@ -45,11 +45,7 @@
     </fh-mobile-header>
 
     <tc-hero :dark="true" :hasFixedHeader="false" :height="200">
-      <img
-        src="https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?q=25"
-        slot="background"
-        alt=""
-      />
+      <img src="assets/hero/profile-hero.webp" slot="background" alt="" />
       <transition name="hero-anim" mode="out-in">
         <template v-if="!['profile', 'friend'].includes($route.name)">
           <h1 v-if="$route.name !== 'chatroom'">{{ title }}</h1>

@@ -2,11 +2,7 @@
   <div class="home">
     <fh-mobile-header :title="$store.getters.valid ? 'Home' : 'FitnessHub'" />
     <tc-hero :dark="true" :hasFixedHeader="false" :height="200">
-      <img
-        src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=1080"
-        slot="background"
-        alt
-      />
+      <img src="assets/hero/fh-hero.webp" slot="background" alt />
 
       <div class="info" v-if="$store.getters.valid">
         <div class="welcomeMessage">{{ returnWelcomeMessage }},</div>

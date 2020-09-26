@@ -49,8 +49,7 @@ export default class Workouts extends Vue {
   }
 
   public openWorkout(workout: IWorkout) {
-    EventBus.$emit('modal-workout-details', workout._id);
-    // this.$router.push({ name: 'training-workout', params: { id: workout._id } });
+    EventBus.$emit('modal-workout-details', workout);
   }
 }
 </script>

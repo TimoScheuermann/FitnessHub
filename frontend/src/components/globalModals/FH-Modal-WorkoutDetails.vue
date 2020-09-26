@@ -4,63 +4,66 @@
     v-model="modalOpened"
     :dark="$store.getters.darkmode"
     class="fh-modal-workout-details"
-    :class="{ 'content-loaded': workout }"
-    :title="title"
   >
-    <div class="error" v-if="error">
+    <div class="loading-error" v-if="error">
       <div class="icon">
         <i class="ti-exclamation-triangle" />
       </div>
-      <div class="title">
-        Das angeforderte Workout konnte nicht gefunden werden.
-      </div>
-      <tl-grid>
-        <tc-button
-          name="Ansicht schließen"
-          tfbackground="success"
-          @click="close"
-        />
-      </tl-grid>
+      <div class="title">Das Workout konnte nicht gefunden werden</div>
+      <tl-flow>
+        <tc-link routeName="training" tfcolor="success">
+          Verfügbare Workouts ansehen
+        </tc-link>
+      </tl-flow>
     </div>
-    <tl-flow v-else-if="!workout">
-      <tc-spinner size="20" :dark="$store.getters.darkmode" />
+
+    <tl-flow v-else-if="!workout" content class="loading-active" flow="column">
+      <tc-spinner :dark="$store.getters.darkmode" size="20" />
+      <div class="loading-message">Daten werden geladen</div>
     </tl-flow>
-    <template v-else>
-      <div class="thumbnail">
-        <fh-workout-thumbnail :workout="workout">
-          <fh-workout-informations :workout="workout" />
-          <fh-workout-start-button :workout="workout" />
-        </fh-workout-thumbnail>
-      </div>
-      <h1>Übungen</h1>
-      <fh-pd-workout :workout="workout" />
-    </template>
+
+    <div class="content" v-else>
+      <fh-workout-head :user="user" :workout="workout" />
+
+      <fh-exercise-list>
+        <fh-exercise-list-item
+          v-for="(e, i) in workout.exercises"
+          :key="e._id + i"
+          :exercise="e"
+          @click="showExercise(e)"
+        />
+      </fh-exercise-list>
+    </div>
   </tc-modal>
 </template>
 
 <script lang="ts">
-import axios from '@/utils/axios';
 import { EventBus } from '@/utils/eventbus';
-import { IWorkout, IModalReturn } from '@/utils/interfaces';
+import { getWorkout } from '@/utils/functions';
+import {
+  IWorkout,
+  IModalReturn,
+  IUser,
+  IUserInfo,
+  IExerciseInfo
+} from '@/utils/interfaces';
 import { Component, Mixins } from 'vue-property-decorator';
-import FHPropertyDetailsWorkout from '../propertyDetails/FH-PD-Workout.vue';
-import FHworkoutInformations from '../workout/thumbnail/FH-Workout-Informations.vue';
-import FHWorkoutStartButton from '../workout/thumbnail/FH-Workout-StartButton.vue';
-import FHWorkoutThumbnail from '../workout/thumbnail/FH-Workout-Thumbnail.vue';
+import FHExerciseListItem from '../shared/exercise-list/FH-ExerciseListItem.vue';
+import FHExerciseList from '../shared/exercise-list/FH-ExerciseList.vue';
+import FHWorkoutHead from '../workout/common/FH-Workout-Head.vue';
 import FHModalMixin from './FHModal.mixin';
 
 @Component({
   components: {
-    'fh-pd-workout': FHPropertyDetailsWorkout,
-    'fh-workout-informations': FHworkoutInformations,
-    'fh-workout-thumbnail': FHWorkoutThumbnail,
-    'fh-workout-start-button': FHWorkoutStartButton
+    'fh-workout-head': FHWorkoutHead,
+    'fh-exercise-list': FHExerciseList,
+    'fh-exercise-list-item': FHExerciseListItem
   }
 })
 export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
   public error = false;
-  public workoutId = '';
   public workout: IWorkout | null = null;
+  public user: IUser | IUserInfo | null = null;
 
   mounted() {
     EventBus.$on('modal-workout-details', this.open);
@@ -72,31 +75,35 @@ export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
     );
   }
 
-  get title(): string | null {
-    if (!this.workout) return 'Lade Informationen...';
-    return null;
+  public showExercise(ex: IExerciseInfo): void {
+    this.close();
+    EventBus.$emit('modal-exercise-details', ex._id);
+    EventBus.$emit('modal-exercise-details-return', {
+      event: 'modal-workout-details',
+      data: this.workout
+    } as IModalReturn);
   }
 
-  public open(id: string): void {
+  public open(w: string | IWorkout): void {
     this.error = false;
-    if (this.workoutId !== id) {
-      this.workout = null;
-      this.workoutId = id;
-    }
     this.modalOpened = true;
-    if (!this.workout) {
-      axios
-        .get('workout/' + this.workoutId, { timeout: 2000 })
-        .then(res => {
-          if (!res.data) {
-            this.error = true;
-            return;
-          }
-          this.workout = res.data;
-        })
-        .catch(() => {
-          this.error = true;
-        });
+    if (typeof w === 'object') {
+      this.workout = w;
+    } else if (!this.workout || this.workout._id !== w) {
+      getWorkout(w, (workout: IWorkout | null) => {
+        this.error = !workout;
+        if (workout) {
+          this.workout = workout;
+        }
+      });
+    }
+    if (this.workout) {
+      const me = this.$store.getters.user;
+      if (this.workout.author === me._id) {
+        this.user = me;
+      } else {
+        this.user = null;
+      }
     }
   }
 }
@@ -104,32 +111,33 @@ export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
 
 <style lang="scss" scoped>
 .fh-modal-workout-details {
-  &.content-loaded {
-    /deep/ .tc-modal--head__prestyled {
-      padding: 0;
+  /deep/ .tc-modal--head {
+    padding: unset;
+  }
+  .loading-active {
+    margin-top: 40px;
+    .loading-message {
+      opacity: 0.75;
+      margin-top: 10px;
     }
   }
-  .error {
+  .loading-error {
+    margin-top: 40px;
+    text-align: center;
     .icon {
       color: $error;
-      text-align: center;
       font-size: 3em;
     }
     .title {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      opacity: 0.75;
     }
   }
-  .thumbnail {
-    height: 200px;
-    width: calc(100% + 10vw);
-    margin-left: -5vw;
-    position: relative;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(50%);
+  .content {
+    margin: 0 -5vw;
+    .fh-exercise-list {
+      margin: 5vw 5vw 0;
     }
   }
 }
