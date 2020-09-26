@@ -73,8 +73,10 @@ export default class FHWorkoutHead extends Vue {
       @include backdrop-blur($paragraph_dark);
     }
     .fh-workout-thumbnail {
-      height: clamp(0px, 90vw, 200px);
-      width: clamp(0px, 90vw, 200px);
+      height: 90vw;
+      width: 90vw;
+      max-height: 200px;
+      max-width: 200px;
       border-radius: $border-radius;
     }
     .tl-flow {
