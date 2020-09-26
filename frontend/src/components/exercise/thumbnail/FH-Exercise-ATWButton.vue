@@ -1,5 +1,6 @@
 <template>
   <tc-button
+    v-if="$store.getters.valid"
     class="fh-exercise-atw-button"
     :disabled="$store.getters.loading"
     variant="border"

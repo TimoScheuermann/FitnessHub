@@ -86,10 +86,11 @@ export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
 
   public open(w: string | IWorkout): void {
     this.error = false;
-    this.modalOpened = true;
     if (typeof w === 'object') {
       this.workout = w;
+      this.modalOpened = true;
     } else if (!this.workout || this.workout._id !== w) {
+      this.modalOpened = true;
       getWorkout(w, (workout: IWorkout | null) => {
         this.error = !workout;
         if (workout) {

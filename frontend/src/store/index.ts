@@ -170,7 +170,8 @@ export default new Vuex.Store({
     signIn(state: any, user: IUser) {
       state.user = user;
       state.userValidated = true;
-      state.user.familyName = user.familyName.split('Ã¼').join('ü');
+      if (user.familyName)
+        state.user.familyName = user.familyName.split('Ã¼').join('ü');
     },
     isDesktop(state: any, isDesktop: boolean) {
       state.isDesktop = isDesktop;

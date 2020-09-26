@@ -1,12 +1,12 @@
 <template>
-  <tl-flow class="fh-button" @click.stop="clicked">
+  <div class="fh-button" @click.stop="clicked">
     <div class="fh-button--icon" v-if="icon">
       <i :class="'ti-' + icon" />
     </div>
     <div class="fh-button--title" v-if="title">
       {{ title }}
     </div>
-  </tl-flow>
+  </div>
 </template>
 
 <script lang="ts">
@@ -20,13 +20,13 @@ export default class FHButton extends Vue {
   @Prop() routeName!: string;
 
   public clicked(e: MouseEvent) {
+    this.$emit('click', e);
     if (this.to) {
       this.$router.push(this.to);
     }
     if (this.routeName) {
       this.$router.push({ name: this.routeName });
     }
-    this.$emit('click', e);
   }
 }
 </script>
@@ -39,6 +39,8 @@ export default class FHButton extends Vue {
     background: darken($paragraph_dark, 5%);
   }
   display: inline-flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
   border-radius: $border-radius;
   color: $success;

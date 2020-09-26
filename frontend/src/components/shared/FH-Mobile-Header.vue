@@ -106,6 +106,7 @@ export default class FHMobileHeader extends Vue {
     color: $color;
     font-size: 1.2em;
     text-transform: capitalize;
+    white-space: nowrap;
   }
   &--right {
     position: absolute;

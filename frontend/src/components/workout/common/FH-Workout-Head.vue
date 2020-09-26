@@ -12,7 +12,7 @@
         <div class="author" v-if="username.length > 0">{{ username }}</div>
         <div class="updated">updated {{ workoutUpdated }}</div>
         <div class="buttons" v-if="$store.getters.valid">
-          <fh-button icon="play" title="Start" />
+          <fh-button icon="play" title="Start" @click="start" />
           <fh-button icon="cloud-download" title="Download" />
         </div>
       </tl-flow>
@@ -22,8 +22,14 @@
 
 <script lang="ts">
 import FHButton from '@/components/shared/FH-Button.vue';
+import { EventBus } from '@/utils/eventbus';
 import { formatTimeForMessage, getUserName } from '@/utils/functions';
-import { IUser, IUserInfo, IWorkout } from '@/utils/interfaces';
+import {
+  IExerciseShowcase,
+  IUser,
+  IUserInfo,
+  IWorkout
+} from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHWorkoutThumbnail from '../thumbnail/FH-Workout-Thumbnail.vue';
 
@@ -44,6 +50,22 @@ export default class FHWorkoutHead extends Vue {
   get workoutUpdated(): string {
     if (!this.workout) return '';
     return formatTimeForMessage(this.workout.updated);
+  }
+
+  public start(): void {
+    if (this.workout) {
+      EventBus.$emit(
+        'modal-start-workout',
+        this.workout.exercises.map(x => {
+          return {
+            _id: x._id,
+            title: x.title,
+            thumbnail: x.thumbnail,
+            type: x.type
+          } as IExerciseShowcase;
+        })
+      );
+    }
   }
 }
 </script>

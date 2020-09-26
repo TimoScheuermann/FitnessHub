@@ -348,8 +348,8 @@ export default class FHModalStartWorkout extends Vue {
     this.change(0);
     const data = this.getTransformedStoreToDTO();
     this.exercises = null;
-    await axios.post('exercise/finished', data);
     this.modalOpened = false;
+    await axios.post('exercise/finished', data);
     axios.get('exercise/recent').then(res => {
       res.data.forEach((x: IExercise) =>
         this.$store.commit('addRecentExercise', x)

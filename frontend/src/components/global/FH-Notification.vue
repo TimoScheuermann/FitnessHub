@@ -89,6 +89,10 @@ export default class FHNotification extends Vue {
     @media only screen and(min-width: 501px) {
       top: calc(70px + env(safe-area-inset-top));
     }
+    @media #{$isDesktop} {
+      left: calc(210px + 5vw);
+    }
+
     padding: 10px;
     border-radius: $border-radius;
 
@@ -107,7 +111,11 @@ export default class FHNotification extends Vue {
       margin-right: 10px;
     }
     .title {
-      font-weight: 500;
+      font-weight: 700;
+      opacity: 0.75;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 5px;
     }
   }
 }
