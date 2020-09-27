@@ -146,7 +146,7 @@ export default class TrainingWorkout extends Vue {
   .hero {
     margin-top: calc(-200px - env(safe-area-inset-top));
     /deep/ .tl-grid {
-      padding-top: calc(50px + env(safe-area-inset-top));
+      padding-top: calc(50px + 2 * env(safe-area-inset-top));
     }
   }
   .fh-exercise-list {

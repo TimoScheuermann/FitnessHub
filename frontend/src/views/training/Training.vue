@@ -1,22 +1,28 @@
 <template>
   <div class="training" content>
     <fh-todays-workout />
-    <h3>Muskel</h3>
-    <div class="muscles-overview">
-      <div class="muscle-row" v-for="(tri, i) in muscleTriplets" :key="i + 'm'">
-        <router-link
-          class="muscle"
-          v-for="m in tri"
-          :key="m"
-          :to="{ name: 'training-muscle', params: { muscle: m } }"
+    <template v-if="muscleTriplets && muscleTriplets.length > 0">
+      <h3>Muskel</h3>
+      <div class="muscles-overview">
+        <div
+          class="muscle-row"
+          v-for="(tri, i) in muscleTriplets"
+          :key="i + 'm'"
         >
-          <div class="name">{{ m }}</div>
-          <div class="icon">
-            <i class="ti-chevron-right" />
-          </div>
-        </router-link>
+          <router-link
+            class="muscle"
+            v-for="m in tri"
+            :key="m"
+            :to="{ name: 'training-muscle', params: { muscle: m } }"
+          >
+            <div class="name">{{ m }}</div>
+            <div class="icon">
+              <i class="ti-chevron-right" />
+            </div>
+          </router-link>
+        </div>
       </div>
-    </div>
+    </template>
 
     <template v-if="trendingExercises && trendingExercises.length > 0">
       <h3>Beliebte Übungen</h3>

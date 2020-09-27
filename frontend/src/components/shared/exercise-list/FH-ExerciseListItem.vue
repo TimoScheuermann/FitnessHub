@@ -1,10 +1,15 @@
 <template>
   <div class="fh-exercise-list-item" @click="handleClick">
+    <div class="fh-exercise-list-item--front">
+      <slot name="front" />
+    </div>
+
     <div class="fh-exercise-list-item--avatar">
       <tc-avatar size="large" border="rounded" :src="exercise.thumbnail" />
     </div>
-    <!-- <div></div> -->
-    <fh-difficulty :difficulty="exercise.difficulty" />
+
+    <fh-difficulty v-if="showDifficulty" :difficulty="exercise.difficulty" />
+    <div v-else />
     <div class="fh-exercise-list-item--container">
       <div class="fh-exercise-list-item--title">
         {{ exercise.title }}
@@ -39,6 +44,7 @@ export default class FHExerciseListItem extends Vue {
   @Prop() href!: string;
   @Prop() routeName!: string;
   @Prop() exercise!: IExercise | IExerciseInfo | IExerciseShowcase;
+  @Prop({ default: true }) showDifficulty!: boolean;
 
   public handleClick(e: MouseEvent) {
     this.$emit('click', e);
@@ -70,10 +76,10 @@ $size: 60px;
 .fh-exercise-list-item {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: $size auto 1fr;
+  grid-template-columns: auto $size auto 1fr;
   grid-template-rows: minmax($size, 100%);
   border-radius: $border-radius;
-  transition: background 0.2s ease-in-out, transform 0.5s;
+  transition: background 0.2s ease-in-out;
   cursor: pointer;
 
   background: $paragraph;

@@ -20,11 +20,12 @@
         tfbackground="success"
         routeName="training"
       />
+      <br />
+      <br />
     </template>
 
-    <br />
     <tl-flow horizontal="space-between">
-      <h3>Eingereicht</h3>
+      <h1>Eingereicht</h1>
       <tc-link tfcolor="success" routeName="submitExercise">
         Übung einreichen
       </tc-link>
