@@ -27,7 +27,7 @@
     <template v-if="trendingExercises && trendingExercises.length > 0">
       <h3>Beliebte Übungen</h3>
       <fh-carousel>
-        <fh-exercise
+        <fh-exercise-two
           v-for="e in trendingExercises"
           :key="e._id"
           :exercise="e"
@@ -35,10 +35,25 @@
       </fh-carousel>
     </template>
 
+    <!-- <template v-if="latestExercises && latestExercises.length > 0">
+      <h3>Neueste Übungen</h3>
+      <fh-carousel>
+        <fh-exercise
+          v-for="(e, i) in latestExercises"
+          :key="i + e._id"
+          :exercise="e"
+        />
+      </fh-carousel>
+    </template> -->
+
     <template v-if="latestExercises && latestExercises.length > 0">
       <h3>Neueste Übungen</h3>
       <fh-carousel>
-        <fh-exercise v-for="e in latestExercises" :key="e._id" :exercise="e" />
+        <fh-exercise-two
+          v-for="e in latestExercises"
+          :key="e._id"
+          :exercise="e"
+        />
       </fh-carousel>
     </template>
 
@@ -63,12 +78,14 @@ import FHWorkoutPreview from '@/components/workout/FH-WorkoutPreview.vue';
 import FHTodaysWorkout from '@/components/workout/FH-TodaysWorkout.vue';
 import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import { getMuscleNames } from '@/utils/functions';
+import FHExerciseTwo from '@/components/exercise/FH-Exercise-Two.vue';
 
 @Component({
   components: {
     'fh-exercise': FHExercise,
     'fh-workout-preview': FHWorkoutPreview,
-    'fh-todays-workout': FHTodaysWorkout
+    'fh-todays-workout': FHTodaysWorkout,
+    'fh-exercise-two': FHExerciseTwo
   }
 })
 export default class Training extends Vue {

@@ -42,7 +42,10 @@ Vue.config.productionTip = false;
 for (const component in TCComponents) {
   Vue.component(component, TCComponents[component]);
 }
-
+router.afterEach(() => {
+  window.scrollTo({ top: 0 });
+  document.querySelectorAll('.child-view').forEach(x => x.scrollTo({ top: 0 }));
+});
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
   const toDepth = to.meta.level || 0;
   const fromDepth = from.meta.level || 0;
