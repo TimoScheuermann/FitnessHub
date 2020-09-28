@@ -107,3 +107,11 @@ export default class FHModalCreateWorkout extends Mixins(FHModalMixin) {
   }
 }
 </script>
+<style lang="scss" scoped>
+.fh-modal-create-workout {
+  &,
+  * {
+    user-select: none;
+  }
+}
+</style>

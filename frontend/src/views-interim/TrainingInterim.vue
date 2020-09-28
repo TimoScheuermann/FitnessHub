@@ -6,14 +6,15 @@
         routeName="training"
         name="Training"
       />
-      <!-- <tc-button
-        class="search"
+      <tc-input
+        slot="input"
         icon="lens"
-        name="Suche"
-        tfbackground="success"
-        slot="right"
-        @click="openSearch"
-      /> -->
+        placeholder="Übung suchen"
+        :frosted="true"
+        :dark="$store.getters.darkmode"
+        v-model="query"
+        @input="search"
+      />
     </fh-mobile-header>
 
     <tc-hero :dark="true" :hasFixedHeader="false" :height="200">
@@ -33,13 +34,31 @@
         />
       </transition>
     </div>
+
+    <transition name="slide-top">
+      <div v-if="results.length > 0" class="search-results">
+        <div class="list-wrapper">
+          <fh-exercise-list>
+            <fh-exercise-list-item
+              v-for="e in results"
+              :key="e._id"
+              :exercise="e"
+              @click="openDetails(e)"
+            />
+          </fh-exercise-list>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script lang="ts">
 import FHDifficulty from '@/components/common/FH-Difficulty.vue';
 import FHExercise from '@/components/exercise/FH-Exercise.vue';
+import FHExerciseList from '@/components/shared/exercise-list/FH-ExerciseList.vue';
+import FHExerciseListItem from '@/components/shared/exercise-list/FH-ExerciseListItem.vue';
 import FHWorkoutThumbnail from '@/components/workout/thumbnail/FH-Workout-Thumbnail.vue';
+import axios from '@/utils/axios';
 import { EventBus } from '@/utils/eventbus';
 import { getExercise, getMuscleNames } from '@/utils/functions';
 import { IExercise, IWorkout } from '@/utils/interfaces';
@@ -49,13 +68,17 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
   components: {
     'fh-exercise': FHExercise,
     'fh-difficulty': FHDifficulty,
-    'fh-workout-thumbnail': FHWorkoutThumbnail
+    'fh-workout-thumbnail': FHWorkoutThumbnail,
+    'fh-exercise-list': FHExerciseList,
+    'fh-exercise-list-item': FHExerciseListItem
   }
 })
 export default class ProfileInterim extends Vue {
   public workout: IWorkout | null = null;
   public loadingError = false;
   public exercise: IExercise | null = null;
+  public query = '';
+  public results: IExercise[] = [];
 
   mounted() {
     this.routeNameChanged(this.$route.name + '');
@@ -66,6 +89,20 @@ export default class ProfileInterim extends Vue {
         params: { id: exercise._id }
       });
     });
+  }
+
+  public search(query: string = this.query): void {
+    if (query.length < 2) {
+      this.results.splice(0, this.results.length);
+    } else {
+      axios.get('exercise/find/' + query).then(res => {
+        this.results = res.data;
+      });
+    }
+  }
+
+  public openDetails(ex: IExercise) {
+    EventBus.$emit('modal-exercise-details', ex);
   }
 
   @Watch('$route.name', { immediate: true })
@@ -150,5 +187,33 @@ export default class ProfileInterim extends Vue {
 }
 .tc-button.search {
   margin-right: calc(-10vw + 5px + env(safe-area-inset-right));
+}
+.search-results {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  .list-wrapper {
+    padding: calc(120px + env(safe-area-inset-top)) 5vw
+      calc(70px + env(safe-area-inset-bottom));
+    max-height: calc(
+      100vh - 190px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
+    overflow-y: auto;
+  }
+}
+
+.slide-top-enter,
+.slide-bottom-leave-active {
+  opacity: 0;
+  transform: translate(0, 60px);
+}
+.slide-top-leave-active,
+.slide-bottom-enter {
+  opacity: 0;
+  transform: translate(0, -60px);
 }
 </style>

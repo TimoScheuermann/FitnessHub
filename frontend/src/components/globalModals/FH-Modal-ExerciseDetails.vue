@@ -55,7 +55,6 @@ import FHModalMixin from './FHModal.mixin';
 })
 export default class FHModalExerciseDetails extends Mixins(FHModalMixin) {
   public error = false;
-  public exerciseId = '';
   public exercise: IExercise | null = null;
 
   mounted() {
@@ -66,9 +65,6 @@ export default class FHModalExerciseDetails extends Mixins(FHModalMixin) {
         this.modalReturn = modalReturn;
       }
     );
-    // setTimeout(() => {
-    //   this.open('5f54d47fb2d2bf0ae090cac0');
-    // }, 500);
   }
 
   get title(): string | null {
@@ -76,27 +72,26 @@ export default class FHModalExerciseDetails extends Mixins(FHModalMixin) {
     return null;
   }
 
-  public open(id: string): void {
+  public open(id: string | IExercise): void {
     this.error = false;
-    if (this.exerciseId !== id) {
+    this.exercise = null;
+
+    if (typeof id === 'object') {
+      this.exercise = id as IExercise;
+      // eslint-disable-next-line
+    } else if (!this.exercise || this.exercise!._id !== id) {
       this.exercise = null;
-      this.exerciseId = id;
-    }
-    this.modalOpened = true;
-    if (!this.exercise) {
       axios
-        .get('exercise/' + this.exerciseId, { timeout: 2000 })
+        .get('exercise/' + id)
         .then(res => {
-          if (!res.data) {
-            this.error = true;
-            return;
-          }
           this.exercise = res.data;
+          this.error = !this.exercise;
         })
         .catch(() => {
           this.error = true;
         });
     }
+    this.modalOpened = true;
   }
 }
 </script>
