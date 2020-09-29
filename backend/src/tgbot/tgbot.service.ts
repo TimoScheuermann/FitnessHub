@@ -16,9 +16,11 @@ export class TgbotService {
     ? undefined
     : new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
 
-  private clientBot = new TelegramBot(process.env.TG_BOT_CLIENT_TOKEN, {
-    polling: true,
-  });
+  private clientBot = process.env.IGNORE_BOT
+    ? undefined
+    : new TelegramBot(process.env.TG_BOT_CLIENT_TOKEN, {
+        polling: true,
+      });
 
   // UserId, ChatId
   private connectedChats: Record<string, number> = {};
@@ -38,51 +40,54 @@ export class TgbotService {
         });
       });
 
-    this.clientBot.on('message', (details) => {
-      if (!Object.values(this.connectedChats).includes(details.chat.id)) {
-        if (!Object.keys(this.tokens).includes(details.chat.id + '')) {
-          let token = v4();
-          while (Object.values(this.tokens).includes(token)) {
-            token = v4();
+    if (this.clientBot) {
+      this.clientBot.on('message', (details) => {
+        if (!Object.values(this.connectedChats).includes(details.chat.id)) {
+          if (!Object.keys(this.tokens).includes(details.chat.id + '')) {
+            let token = v4();
+            while (Object.values(this.tokens).includes(token)) {
+              token = v4();
+            }
+            this.tokens[details.chat.id] = token;
           }
-          this.tokens[details.chat.id] = token;
+          this.clientBot.sendMessage(
+            details.chat.id,
+            `Dein Code lautet:\n${this.tokens[details.chat.id]}`,
+          );
         }
-        this.clientBot.sendMessage(
-          details.chat.id,
-          `Dein Code lautet:\n${this.tokens[details.chat.id]}`,
+      });
+
+      this.clientBot.on('callback_query', async (details) => {
+        const canceled = details.data === 'cancel';
+        const chatId = details.message.chat.id;
+        const userId = details.data;
+
+        delete this.tokens[chatId + ''];
+
+        if (!canceled) {
+          await this.userModel.updateOne(
+            { _id: userId },
+            { $set: { telegramChat: chatId } },
+            { upsert: true },
+          );
+          this.fhSocket.server.to(userId).emit('telegram.chat', chatId);
+          this.clientBot.answerCallbackQuery(details.id, {
+            show_alert: true,
+            text: 'Accounts erfolgreich verknüpft!',
+          });
+          this.connectedChats[userId] = chatId;
+        }
+
+        this.clientBot.deleteMessage(
+          details.message.chat.id,
+          details.message.message_id,
         );
-      }
-    });
-
-    this.clientBot.on('callback_query', async (details) => {
-      const canceled = details.data === 'cancel';
-      const chatId = details.message.chat.id;
-      const userId = details.data;
-
-      delete this.tokens[chatId + ''];
-
-      if (!canceled) {
-        await this.userModel.updateOne(
-          { _id: userId },
-          { $set: { telegramChat: chatId } },
-          { upsert: true },
-        );
-        this.fhSocket.server.to(userId).emit('telegram.chat', chatId);
-        this.clientBot.answerCallbackQuery(details.id, {
-          show_alert: true,
-          text: 'Accounts erfolgreich verknüpft!',
-        });
-        this.connectedChats[userId] = chatId;
-      }
-
-      this.clientBot.deleteMessage(
-        details.message.chat.id,
-        details.message.message_id,
-      );
-    });
+      });
+    }
   }
 
   public validateConnection(user: IUser, code: string): void {
+    if (!this.clientBot) return;
     if (!Object.values(this.tokens).includes(code)) {
       this.fhSocket.server
         .to(user._id)

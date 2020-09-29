@@ -11,6 +11,7 @@ export enum Provider {
   AMAZON = 'amazon',
   ADOBE = 'adobe',
   STEAM = 'steam',
+  FITBIT = 'fitbit',
 }
 
 @Injectable()

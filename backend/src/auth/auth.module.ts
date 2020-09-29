@@ -8,6 +8,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AdobeStrategy } from './strategies/adobe.strategy';
 import { AmazonStrategy } from './strategies/amazon.strategy';
+import { FitBitStrategy } from './strategies/fitbit.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { SteamStrategy } from './strategies/steam.strategy';
 
@@ -21,6 +22,7 @@ import { SteamStrategy } from './strategies/steam.strategy';
     AdobeStrategy,
     AmazonStrategy,
     SteamStrategy,
+    FitBitStrategy,
   ],
   imports: [
     UserModule,

@@ -70,4 +70,17 @@ export class AuthController {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
+
+  @Get('fitbit')
+  @UseGuards(AuthGuard('fitbit'))
+  fitbitLogin() {
+    // initiates the fitbit OAuth2 login flow
+  }
+
+  @Get('fitbit/callback')
+  @UseGuards(AuthGuard('fitbit'))
+  fitbitLoginCallback(@Req() req: any, @Res() res) {
+    const jwt: string = req.user.jwt;
+    this.authService.redirect(jwt, res);
+  }
 }

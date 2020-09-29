@@ -16,6 +16,11 @@
           @click="login('google')"
         />
         <tc-list-item
+          title="Sign in with Fitbit"
+          icon="assets/fitbit.svg"
+          @click="login('fitbit')"
+        />
+        <tc-list-item
           title="Sign in with GitHub"
           icon="github"
           @click="login('github')"
