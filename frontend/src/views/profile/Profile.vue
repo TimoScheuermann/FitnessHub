@@ -9,15 +9,11 @@
       <tl-grid gap="0px 20" minWidth="200">
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
-            icon="shield"
-            title="Gruppe"
-            :description="$store.getters.user.group"
-          />
-          <tc-list-item
             title="Einstellungen"
             icon="wrench"
             routeName="settings"
           />
+          <tc-list-item icon="telegram" title="Telegram" routeName="telegram" />
           <tc-badge :value="$store.getters.unreadMessages" position="inside">
             <tc-list-item
               title="Nachrichten"

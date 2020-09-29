@@ -215,6 +215,16 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'telegram',
+          name: 'telegram',
+          component: () => import('@/views/profile/Telegram.vue'),
+          meta: {
+            needsSignIn: true,
+            title: 'Telegram x FitnessHub',
+            level: 1
+          }
+        },
+        {
           path: 'exercises',
           name: 'exercises',
           component: () => import('@/views/profile/exercises/Exercises.vue'),

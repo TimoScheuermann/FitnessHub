@@ -50,6 +50,7 @@ import MessageSocketManager from '@/socketManager/MessageSocket.manager';
 import FriendSocketManager from '@/socketManager/FriendSocket.manager';
 import ExerciseSocketManager from '@/socketManager/ExerciseSocket.manager';
 import WorkoutSocketManager from '@/socketManager/WorkoutSocket.manager';
+import TelegramSocketManager from '@/socketManager/TelegramSocket.manager';
 import FHEditTrainingplan from './components/workout/FH-EditTrainingplan.vue';
 import FHModalExerciseDetails from './components/globalModals/FH-Modal-ExerciseDetails.vue';
 import FHModalRecipeDetails from './components/globalModals/FH-Modal-RecipeDetails.vue';
@@ -96,7 +97,8 @@ export default class App extends Mixins(
   FriendSocketManager,
   MessageSocketManager,
   ExerciseSocketManager,
-  WorkoutSocketManager
+  WorkoutSocketManager,
+  TelegramSocketManager
 ) {
   private swRegistration: ServiceWorkerRegistration | null = null;
 

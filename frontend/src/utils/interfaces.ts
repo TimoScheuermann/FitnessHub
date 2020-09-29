@@ -9,6 +9,8 @@ export interface IUser {
   readonly avatar: string;
   readonly date: number;
   readonly group: string;
+  readonly suspended?: number;
+  readonly telegramChat?: number;
 }
 export interface IUserInfo {
   readonly _id: string;

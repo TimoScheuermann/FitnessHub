@@ -10,4 +10,5 @@ export interface IUser {
   readonly date?: number;
   readonly group?: string;
   readonly suspended?: number;
+  readonly telegramChat?: number;
 }

@@ -25,6 +25,7 @@ export default new Vuex.Store({
   state: {
     user: {} as IUser,
     userValidated: false,
+    telegramChat: null,
     notifications: [] as IFHNotification[],
     isDesktop: false,
     isFullscreen: false,
@@ -166,10 +167,14 @@ export default new Vuex.Store({
     signOut(state: any) {
       state.userValidated = false;
       state.user = undefined;
+      state.telegramChat = null;
     },
     signIn(state: any, user: IUser) {
       state.user = user;
       state.userValidated = true;
+      state.telegramChat = user.telegramChat || null;
+      console.log('User', user);
+      console.log('telegramChat', state.telegramChat);
       if (user.familyName)
         state.user.familyName = user.familyName.split('Ã¼').join('ü');
     },

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AchievementModule } from './achievement/achievement.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -21,7 +22,6 @@ import { TgbotModule } from './tgbot/tgbot.module';
 import { TrainingplanModule } from './trainingplan/trainingplan.module';
 import { UserModule } from './user/user.module';
 import { WorkoutModule } from './workout/workout.module';
-import { AchievementModule } from './achievement/achievement.module';
 
 @Module({
   imports: [
