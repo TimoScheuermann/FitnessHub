@@ -156,6 +156,7 @@ export default class FHExerciseTwo extends Vue {
           margin-top: 10px;
           font-weight: 800;
           font-size: 1.5em;
+          color: #fff;
         }
         .actions {
           margin-top: 10px;
