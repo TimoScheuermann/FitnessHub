@@ -59,10 +59,9 @@ export class MessageService {
       const name = [from.givenName, from.familyName]
         .filter((x) => !!x)
         .join(' ');
-      console.log('Sende telegram');
       this.tgbotService.sendMessageToUser(
         to,
-        '<b>' + name + 'schreibt:</b>\n' + message,
+        '<b>' + name + ' schreibt:</b>\n' + message,
       );
     }
     // TODO: encrypt data
