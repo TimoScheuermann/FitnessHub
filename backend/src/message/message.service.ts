@@ -4,6 +4,8 @@ import { Model } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
 import { FriendsService } from 'src/friends/friends.service';
 import { IFriendship } from 'src/friends/interfaces/IFriendship';
+import { TgbotService } from 'src/tgbot/tgbot.service';
+import { IUser } from 'src/user/interfaces/IUser';
 import { IMessage } from './interfaces/IMessage';
 import { Message } from './schemas/Message.schema';
 
@@ -13,6 +15,7 @@ export class MessageService {
     @InjectModel(Message.name) private messageModel: Model<Message>,
     private readonly friendsService: FriendsService,
     private readonly fhSocket: FHSocket,
+    private readonly tgbotService: TgbotService,
   ) {}
 
   private async getSecret(userA: string, userB: string): Promise<string> {
@@ -36,21 +39,32 @@ export class MessageService {
   }
 
   public async sendMessage(
-    from: string,
+    from: IUser,
     to: string,
     message: string,
   ): Promise<void> {
-    const secret = await this.getSecret(from, to);
+    // const secret = await this.getSecret(from, to);
     const createdMessage: Message = await this.messageModel.create({
       date: new Date().getTime(),
       content: message,
-      from: from,
+      from: from._id,
       to: to,
       type: 'message',
       read: false,
     });
 
-    this.fhSocket.server.to(from).to(to).emit('message', createdMessage);
+    this.fhSocket.server.to(from._id).to(to).emit('message', createdMessage);
+
+    if (!this.fhSocket.server.sockets.adapter.rooms[to]) {
+      const name = [from.givenName, from.familyName]
+        .filter((x) => !!x)
+        .join(' ');
+      console.log('Sende telegram');
+      this.tgbotService.sendMessageToUser(
+        to,
+        '<b>' + name + 'schreibt:</b>\n' + message,
+      );
+    }
     // TODO: encrypt data
   }
 }

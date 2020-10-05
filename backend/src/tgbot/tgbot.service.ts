@@ -131,4 +131,12 @@ export class TgbotService {
         }),
       });
   }
+
+  public sendMessageToUser(userId: string, message: string): void {
+    if (this.clientBot && this.connectedChats[userId]) {
+      this.clientBot.sendMessage(this.connectedChats[userId], message, {
+        parse_mode: 'HTML',
+      });
+    }
+  }
 }

@@ -13,7 +13,10 @@ export class FHSocket {
   server: Server;
 
   @SubscribeMessage('join')
-  handleJoin(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+  handleJoin(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: Socket,
+  ): void {
     client.join(data);
   }
 }

@@ -19,8 +19,21 @@
           :dark="$store.getters.darkmode"
           :name="transformDate(m.date)"
         />
-
-        <div class="content" v-if="m.type === 'message'">{{ m.content }}</div>
+        <template v-if="m.type === 'message'">
+          <div class="content">
+            {{ m.content }}
+            <svg width="16" height="12" viewBox="0 0 16 12">
+              <path
+                d="M-3682.307-2357.992l4.191-6.117v3.3c0,6.08,2.14,7.8,2.81,8.44s-6.3,0-8.181-2.715c-2.048,2.748-5.979,2.974-7.774,2.974l1.417-3.885Z"
+                transform="translate(3691.26 2364.109)"
+              />
+              <path
+                d="M-3676-2354h-15.724c3.491-.048,6.084-1.075,7.5-2.972,1.455,2.1,5.939,2.945,7.564,2.945.421,0,.656-.052.661-.147v.174Zm0-.193a.146.146,0,0,0-.043-.064l-.066-.063-.034-.032a7.275,7.275,0,0,1-2.143-3.647h2.29v3.806Z"
+                transform="translate(3692 2366)"
+              />
+            </svg>
+          </div>
+        </template>
         <div
           class="exercise-published"
           v-else-if="m.type === 'exercisePublish'"
@@ -146,16 +159,6 @@ export default class Chatroom extends Vue {
     .message {
       display: flex;
       flex-direction: column;
-      .content {
-        padding: 5px 10px;
-        background: $success;
-        width: fit-content;
-        align-self: flex-end;
-        box-shadow: $shadow-light;
-        border-radius: $border-radius;
-        max-width: 75%;
-        margin-bottom: 10px;
-      }
       .exercise-published {
         padding: 10px;
         border: 5px solid $paragraph;
@@ -167,19 +170,54 @@ export default class Chatroom extends Vue {
           border-color: $paragraph_dark;
           color: $color_dark;
         }
-        // box-shadow: $shadow-light;
         margin-top: 10px;
         border-radius: $border-radius;
         margin-bottom: 20px;
         .title {
           text-align: center;
-
           font-weight: 600;
           margin: 3px {
             bottom: 8px;
           }
         }
       }
+
+      .content {
+        position: relative;
+        padding: 5px 10px;
+        background: $success;
+        width: fit-content;
+        align-self: flex-end;
+        border-radius: $border-radius;
+        max-width: 75%;
+        margin-bottom: 10px;
+        svg {
+          position: absolute;
+          right: -2.22px;
+          bottom: 0;
+          path {
+            fill: $success;
+            &:nth-child(2) {
+              fill: $background;
+              @media (prefers-color-scheme: dark) {
+                fill: $background_dark;
+              }
+            }
+          }
+        }
+      }
+      &.received svg {
+        transform: scaleX(-1);
+
+        left: -2.22px;
+        path:first-child {
+          fill: $paragraph;
+          @media (prefers-color-scheme: dark) {
+            fill: $paragraph_dark;
+          }
+        }
+      }
+
       &:not(.received) .content {
         color: #fff;
       }
@@ -187,9 +225,9 @@ export default class Chatroom extends Vue {
       &.received .content {
         align-self: flex-start;
         background: $paragraph;
-      }
-      &.received.dark .content {
-        background: $paragraph_dark;
+        @media (prefers-color-scheme: dark) {
+          background: $paragraph_dark;
+        }
       }
       .tc-divider {
         margin: 20px 0 10px;

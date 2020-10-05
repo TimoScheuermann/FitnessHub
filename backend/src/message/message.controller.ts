@@ -34,7 +34,7 @@ export class MessageController {
     @Param('to') to: string,
     @Body() body: { message: string },
   ): Promise<void> {
-    this.messageService.sendMessage(from._id, to, body.message);
+    this.messageService.sendMessage(from, to, body.message);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
