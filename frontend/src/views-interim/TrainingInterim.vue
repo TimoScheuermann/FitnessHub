@@ -6,7 +6,7 @@
         routeName="training"
         name="Training"
       />
-      <tc-input
+      <!-- <tc-input
         slot="input"
         icon="lens"
         placeholder="Übung suchen"
@@ -14,7 +14,7 @@
         :dark="$store.getters.darkmode"
         v-model="query"
         @input="search"
-      />
+      /> -->
     </fh-mobile-header>
 
     <tc-hero :dark="true" :hasFixedHeader="false" :height="200">

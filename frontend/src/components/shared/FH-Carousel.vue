@@ -22,9 +22,12 @@ export default class FHCarousel extends Vue {}
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 
-  @include custom-scrollbar__light();
+  // @include custom-scrollbar__light();
   @media (prefers-color-scheme: dark) {
-    @include custom-scrollbar__dark();
+    // @include custom-scrollbar__dark();
+  }
+  &::-webkit-scrollbar {
+    display: none;
   }
   .fh-carousel__spacer {
     flex-shrink: 0;

@@ -40,32 +40,33 @@
         </tc-link>
       </div>
       <div class="today" v-else>
-        <div class="amount">
-          <div>
-            <span>{{ todaysWorkout.length }}</span>
-            Übung{{ todaysWorkout.length !== 1 ? 'en' : '' }}
+        <tc-revealer :dark="$store.getters.darkmode">
+          <div class="amount" slot="head">
+            <div>
+              <span>{{ todaysWorkout.length }}</span>
+              Übung{{ todaysWorkout.length !== 1 ? 'en' : '' }}
+            </div>
+            <div>
+              <tc-button
+                :disabled="$store.getters.loading"
+                icon="pencil"
+                tfbackground="success"
+                variant="filled"
+                @click.stop="editDay"
+              />
+              <tc-button
+                :disabled="$store.getters.loading"
+                icon="cross"
+                tfbackground="error"
+                variant="filled"
+                @click.stop="removeDay"
+              />
+            </div>
           </div>
-          <div>
-            <tc-button
-              :disabled="$store.getters.loading"
-              icon="pencil"
-              tfbackground="success"
-              variant="filled"
-              @click="editDay"
-            />
-            <tc-button
-              :disabled="$store.getters.loading"
-              icon="cross"
-              tfbackground="error"
-              variant="filled"
-              @click="removeDay"
-            />
-          </div>
-        </div>
-        <ol>
-          <li v-for="e in todaysWorkout" :key="e._id">{{ e.title }}</li>
-        </ol>
-        <br />
+          <ol>
+            <li v-for="e in todaysWorkout" :key="e._id">{{ e.title }}</li>
+          </ol>
+        </tc-revealer>
         <tl-grid minWidth="100">
           <tc-button
             tfbackground="success"

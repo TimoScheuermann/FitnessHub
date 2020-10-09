@@ -63,6 +63,10 @@ export default class FHModalUpdateAvailable extends Mixins(FHModalMixin) {
 
 <style lang="scss" scoped>
 .fh-modal-update-available {
+  &,
+  * {
+    user-select: none;
+  }
   p {
     text-align: center;
   }

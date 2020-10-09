@@ -1,8 +1,13 @@
 <template>
   <div class="training" content>
+    <tl-grid buttons minWidth="50">
+      <fh-button icon="lens" title="Übung" />
+      <fh-button routeName="training-wiki" icon="books" title="Muskelguide" />
+    </tl-grid>
     <fh-todays-workout />
+
     <template v-if="muscleTriplets && muscleTriplets.length > 0">
-      <h3>Muskel</h3>
+      <h2>Muskel</h2>
       <div class="muscles-overview">
         <div
           class="muscle-row"
@@ -25,7 +30,7 @@
     </template>
 
     <template v-if="trendingExercises && trendingExercises.length > 0">
-      <h3>Beliebte Übungen</h3>
+      <h2>Beliebte Übungen</h2>
       <fh-carousel>
         <fh-exercise-two
           v-for="e in trendingExercises"
@@ -35,19 +40,8 @@
       </fh-carousel>
     </template>
 
-    <!-- <template v-if="latestExercises && latestExercises.length > 0">
-      <h3>Neueste Übungen</h3>
-      <fh-carousel>
-        <fh-exercise
-          v-for="(e, i) in latestExercises"
-          :key="i + e._id"
-          :exercise="e"
-        />
-      </fh-carousel>
-    </template> -->
-
     <template v-if="latestExercises && latestExercises.length > 0">
-      <h3>Neueste Übungen</h3>
+      <h2>Neueste Übungen</h2>
       <fh-carousel>
         <fh-exercise-two
           v-for="e in latestExercises"
@@ -58,7 +52,7 @@
     </template>
 
     <template v-if="latestWorkouts && latestWorkouts.length > 0">
-      <h3>Aktuelle Workouts</h3>
+      <h2>Aktuelle Workouts</h2>
       <fh-carousel>
         <fh-workout-preview
           v-for="w in latestWorkouts"
@@ -79,13 +73,15 @@ import FHTodaysWorkout from '@/components/workout/FH-TodaysWorkout.vue';
 import FHExercise from '@/components/exercise/FH-Exercise.vue';
 import { getMuscleNames } from '@/utils/functions';
 import FHExerciseTwo from '@/components/exercise/FH-Exercise-Two.vue';
+import FHButton from '@/components/shared/FH-Button.vue';
 
 @Component({
   components: {
     'fh-exercise': FHExercise,
     'fh-workout-preview': FHWorkoutPreview,
     'fh-todays-workout': FHTodaysWorkout,
-    'fh-exercise-two': FHExerciseTwo
+    'fh-exercise-two': FHExerciseTwo,
+    'fh-button': FHButton
   }
 })
 export default class Training extends Vue {
@@ -132,8 +128,15 @@ export default class Training extends Vue {
 
 <style lang="scss" scoped>
 .training {
-  h3 {
-    margin-bottom: 0px;
+  .tl-grid[buttons] {
+    margin-top: 20px;
+    .fh-button {
+      background: $paragraph;
+      box-shadow: $shadow-light;
+      @media (prefers-color-scheme: dark) {
+        background: $paragraph_dark;
+      }
+    }
   }
   .muscles-overview {
     overflow-y: auto;

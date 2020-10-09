@@ -1,11 +1,15 @@
 <template>
   <div class="nutrition" content>
+    <tl-grid buttons minWidth="50">
+      <fh-button icon="lens" title="Rezept" />
+      <fh-button routeName="nutrition-wiki" icon="lightbulb" title="Tipps" />
+    </tl-grid>
     <template v-if="$store.getters.valid">
       <br />
       <fh-health-water :onlyToday="true" />
     </template>
 
-    <h3>Kategorien</h3>
+    <h2>Kategorien</h2>
 
     <fh-carousel>
       <fh-preview
@@ -21,20 +25,20 @@
     </fh-carousel>
 
     <template v-if="belovedRecipes && belovedRecipes.length > 0">
-      <h3>Beliebte Rezepte</h3>
+      <h2>Beliebte Rezepte</h2>
       <fh-carousel>
         <fh-recipe v-for="r in belovedRecipes" :key="r._id" :recipe="r" />
       </fh-carousel>
     </template>
 
     <template v-if="latestRecipes && latestRecipes.length > 0">
-      <h3>Neuesten Rezepte</h3>
+      <h2>Neuesten Rezepte</h2>
       <fh-carousel>
         <fh-recipe v-for="r in latestRecipes" :key="r._id" :recipe="r" />
       </fh-carousel>
     </template>
 
-    <h3>Ernährungspläne</h3>
+    <h2>Ernährungspläne</h2>
     <p>soon</p>
   </div>
 </template>
@@ -47,12 +51,14 @@ import { Vue, Component } from 'vue-property-decorator';
 import FHRecipe from '@/components/recipe/FH-Recipe.vue';
 import { getCategories } from '@/utils/functions';
 import FHPreview from '@/components/common/FH-Preview.vue';
+import FHButton from '@/components/shared/FH-Button.vue';
 
 @Component({
   components: {
     'fh-health-water': FHHealthWater,
     'fh-recipe': FHRecipe,
-    'fh-preview': FHPreview
+    'fh-preview': FHPreview,
+    'fh-button': FHButton
   }
 })
 export default class Nutrition extends Vue {
@@ -78,6 +84,17 @@ export default class Nutrition extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.tl-grid[buttons] {
+  margin-top: 20px;
+  .fh-button {
+    background: $paragraph;
+    box-shadow: $shadow-light;
+    @media (prefers-color-scheme: dark) {
+      background: $paragraph_dark;
+    }
+  }
+}
+
 .tc-hero img {
   filter: brightness(80%);
 }

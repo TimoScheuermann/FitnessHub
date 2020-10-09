@@ -112,6 +112,10 @@ export default class FHModalWorkoutDetails extends Mixins(FHModalMixin) {
 
 <style lang="scss" scoped>
 .fh-modal-workout-details {
+  &,
+  * {
+    user-select: none;
+  }
   /deep/ .tc-modal--head {
     padding: unset;
   }

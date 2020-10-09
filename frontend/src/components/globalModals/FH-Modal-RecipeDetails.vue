@@ -126,6 +126,10 @@ export default class FHModalRecipeDetails extends Mixins(FHModalMixin) {
 
 <style lang="scss" scoped>
 .fh-modal-recipe-details {
+  &,
+  * {
+    user-select: none;
+  }
   &.content-loaded {
     /deep/ .tc-modal--head__prestyled {
       padding: 0;

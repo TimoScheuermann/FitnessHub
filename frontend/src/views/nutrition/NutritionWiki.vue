@@ -5,7 +5,12 @@
     <h2>Nährstoffe</h2>
 
     <tl-grid>
-      <tc-card title="Ballaststoffe" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Ballaststoffe"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -29,7 +34,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Calcium" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Calcium"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -51,7 +61,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Fette/Lipide" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Fette/Lipide"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>
@@ -64,7 +79,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Kohlenhydrate" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Kohlenhydrate"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>
@@ -76,7 +96,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Magnesium" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Magnesium"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -98,7 +123,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Makronährstoffe" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Makronährstoffe"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>was ist das?:</h3>
           <ul>
@@ -107,7 +137,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Mikronährstoffe" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Mikronährstoffe"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>was ist das?:</h3>
           <ul>
@@ -116,7 +151,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Omega 3" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Omega 3"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -139,7 +179,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Präbiotika" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Präbiotika"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -161,7 +206,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Probiotika" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Probiotika"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -182,14 +232,24 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Proteine/Eiweiß" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Proteine/Eiweiß"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>werden nicht lange vom Körper gespeichert</li>
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Vitamin B7 (Biotin)" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Vitamin B7 (Biotin)"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -207,7 +267,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Vitamin B12" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Vitamin B12"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>wichtig für:</h3>
           <ul>
@@ -223,7 +288,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Vitamin C" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Vitamin C"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -246,7 +316,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Vitamin D3" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Vitamin D3"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -264,7 +339,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Vitamin K2" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Vitamin K2"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <h3>gut für:</h3>
           <ul>
@@ -290,7 +370,12 @@
     <h2>Supplements:</h2>
 
     <tl-grid>
-      <tc-card title="Whey" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Whey"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>aus Molkenprotein der Milch (natürliches Eiweiß)</li>
@@ -317,7 +402,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Casein" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Casein"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>Milchprotein</li>
@@ -325,7 +415,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="Kreatin" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="Kreatin"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>
@@ -342,7 +437,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="L-Glutamin" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="L-Glutamin"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>Beschleunigung der Regenaration</li>
@@ -350,7 +450,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="EAAs" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="EAAs"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>
@@ -369,7 +474,12 @@
           </ul>
         </div>
       </tc-card>
-      <tc-card title="BCAAs" :dark="$store.getters.darkmode">
+      <tc-card
+        :rounded="true"
+        :shadow="false"
+        title="BCAAs"
+        :dark="$store.getters.darkmode"
+      >
         <div class="card-content">
           <ul>
             <li>essentiellen Aminosäuren Valin, Leucin, Isoleucin</li>

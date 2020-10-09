@@ -398,6 +398,10 @@ export default class FHModalStartWorkout extends Vue {
 
 <style lang="scss" scoped>
 .fh-modal-start-workout {
+  &,
+  * {
+    user-select: none;
+  }
   /deep/ .tc-modal--head__prestyled {
     display: none;
   }

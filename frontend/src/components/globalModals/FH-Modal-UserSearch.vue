@@ -62,6 +62,10 @@ export default class FHModalUserSearch extends Mixins(FHModalMixin) {
 
 <style lang="scss" scoped>
 .fh-modal-user-search {
+  &,
+  * {
+    user-select: none;
+  }
   .fh-user-list {
     margin-top: 20px;
     @media #{$isDesktop} {

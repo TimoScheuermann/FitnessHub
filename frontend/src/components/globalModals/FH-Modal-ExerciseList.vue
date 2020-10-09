@@ -80,6 +80,10 @@ export default class FHModalExerciseList extends Vue {
 
 <style lang="scss" scoped>
 .fh-modal-exercise-list {
+  &,
+  * {
+    user-select: none;
+  }
   position: fixed;
   z-index: 500;
   @media #{$isMobile} {

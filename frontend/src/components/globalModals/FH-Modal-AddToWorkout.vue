@@ -90,3 +90,11 @@ export default class FHModalAddToWorkout extends Mixins(FHModalMixin) {
   }
 }
 </script>
+<style lang="scss" scoped>
+.fh-modal-add-to-workout {
+  &,
+  * {
+    user-select: none;
+  }
+}
+</style>

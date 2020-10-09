@@ -91,7 +91,10 @@ export default class FHModalExerciseSearch extends Mixins(FHModalMixin) {
 </script>
 <style lang="scss" scoped>
 .fh-modal-exercise-search {
-  user-select: none !important;
+  &,
+  * {
+    user-select: none;
+  }
   .exercises {
     margin-top: 10px;
     position: relative;

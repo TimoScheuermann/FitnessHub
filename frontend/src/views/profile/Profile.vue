@@ -6,7 +6,7 @@
         <tc-list-item title="Abmelden" icon="logout" @click="signout" />
       </tc-list>
 
-      <tl-grid gap="0px 20" minWidth="200">
+      <tl-grid gap="0px 20" minWidth="230">
         <tc-list :dark="$store.getters.darkmode">
           <tc-list-item
             title="Einstellungen"

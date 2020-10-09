@@ -4,31 +4,27 @@
     :dark="$store.getters.darkmode"
     :maxHeight="$store.getters.valid ? 300 : 250"
   >
-    <div
-      class="magic-card-thumbnail"
-      :style="{ 'background-image': 'url(' + exercise.thumbnail + ')' }"
-      slot="thumbnail"
-    >
-      <div class="preview" />
-      <fh-difficulty :difficulty="exercise.difficulty" />
-      <tl-grid class="container" minWidth="200" gap="0">
+    <div class="thumbnail" slot="thumbnail">
+      <div class="image">
+        <img :src="exercise.thumbnail" alt="" />
+      </div>
+      <tl-grid minWidth="200" gap="0">
         <div class="title">{{ exercise.title }}</div>
-        <tl-grid
-          v-if="$store.getters.valid"
-          minWidth="50"
-          gap="0"
-          class="actions"
-        >
+        <tl-grid v-if="$store.getters.valid" minWidth="50" gap="0">
           <tc-button
-            background="white"
-            color="#111"
+            :tfbackground="
+              $store.getters.darkmode ? 'container' : 'containerDark'
+            "
+            :tfcolor="!$store.getters.darkmode ? 'colorDark' : 'color'"
             icon="plus"
             name="Workout"
             @click.stop="addToWorkout"
           />
           <tc-button
-            background="white"
-            color="#111"
+            :tfbackground="
+              $store.getters.darkmode ? 'container' : 'containerDark'
+            "
+            :tfcolor="!$store.getters.darkmode ? 'colorDark' : 'color'"
             icon="list"
             name="Liste"
             @click.stop="addToList"
@@ -36,6 +32,7 @@
         </tl-grid>
       </tl-grid>
     </div>
+    <fh-difficulty slot="thumbnail" :difficulty="exercise.difficulty" />
 
     <div class="card-content">
       <fh-pd-exercise :exercise="exercise" />
@@ -84,86 +81,45 @@ export default class FHExerciseTwo extends Vue {
 
 <style lang="scss" scoped>
 .fh-exercise-two {
-  .magic-card-thumbnail {
+  .fh-difficulty,
+  .thumbnail {
     position: absolute;
-    top: 0;
     left: 0;
-    right: 0;
+  }
+  .fh-difficulty {
+    top: 0;
+    margin: 10px;
+  }
+  .thumbnail {
     bottom: 0;
-    display: flex;
-    flex-direction: column;
-    .fh-difficulty {
-      position: absolute;
-      top: 20px;
-      left: 20px;
+    right: 0;
+    .image {
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
-    .preview,
-    .container {
-      background-image: inherit;
-      background-size: cover;
-    }
-    .preview {
-      flex-grow: 1;
-    }
-    .container {
-      position: relative;
-      overflow: hidden;
+    .tl-grid {
+      background: $paragraph;
+      @media (prefers-color-scheme: dark) {
+        background: $paragraph_dark;
+      }
+      margin-top: -5px;
       padding: 20px;
-      @include backdrop-blur(#111);
-
       .title {
-        position: relative;
         font-weight: 800;
-        font-size: 1.5em;
+        font-size: 1.3em;
         display: grid;
         place-content: center start;
       }
-      .actions {
-        position: relative;
+      .tl-grid {
         margin-top: 10px;
+        padding: 0;
       }
     }
   }
 
-  .exercise-details {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    display: grid;
-    grid-template-rows: 1fr auto;
-
-    .container {
-      position: relative;
-      .background {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-      .content {
-        @include backdrop-blur(#111);
-        position: relative;
-        padding: 20px;
-        .title {
-          margin-top: 10px;
-          font-weight: 800;
-          font-size: 1.5em;
-          color: #fff;
-        }
-        .actions {
-          margin-top: 10px;
-        }
-      }
-    }
-  }
   .card-content {
     padding: 0 5vw;
   }
