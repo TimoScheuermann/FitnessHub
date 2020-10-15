@@ -16,7 +16,7 @@
 - [Velichka Popp](https://github.com/Velii)
 - [Jan Eger](https://github.com/egerj)
 - [Nicolas Fürhaupter](https://github.com/Salocinf)
-- [Moritz Jürgens](https://github.com/moritzjuergens)
+- [Moritz Jürgens (you served us well)](https://github.com/moritzjuergens)
 - [Timo Scheuermann](https://github.com/TimoScheuermann)
 
 ## Repo
