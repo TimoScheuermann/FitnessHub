@@ -34,6 +34,7 @@ export default class FHShowcase extends Vue {
     transform: translate(-50%, -50%);
     font-size: 1.5em;
     font-weight: bold;
+    color: #fff;
   }
 }
 </style>
