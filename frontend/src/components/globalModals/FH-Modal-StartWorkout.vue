@@ -220,11 +220,16 @@ export default class FHModalStartWorkout extends Vue {
   }
 
   public open(exercises: IExerciseShowcase[]): void {
+    // dont open, unless at least one exercise is in the list
     if (!exercises || exercises.length === 0) return;
+
+    // reset modal
     this.exercises = exercises;
     this.currentExercise = 0;
     this.totalExercises = this.exercises.length;
     this.startTime = new Date().getTime();
+
+    // insert placeholder stats to local store
     this.store = Array.from({ length: this.totalExercises }, (_x, i) => {
       return {
         data: [],
@@ -234,6 +239,8 @@ export default class FHModalStartWorkout extends Vue {
     });
 
     this.loadExistingData();
+
+    // start timer, to evaluate time for every single exercise in local store
     this.timer = setInterval(() => {
       const now = new Date().getTime();
       this.totalTime = this.transformTime((now - this.startTime) / 1000);
@@ -241,10 +248,15 @@ export default class FHModalStartWorkout extends Vue {
       const t = now - c.start + c.time;
       this.currentTime = this.transformTime(t / 1000);
     }, 200);
+
+    // save data ONLY to local storage
     this.save(true);
+
+    // open modal to user
     this.modalOpened = true;
   }
 
+  // transforms seconds to minutes and seconds
   public transformTime(seconds: number): string {
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
@@ -253,18 +265,21 @@ export default class FHModalStartWorkout extends Vue {
     return `${mm}:${ss}`;
   }
 
+  // returns thumbnail of upcoming exercises
   get upcommingThumbnails(): string[] {
     return (this.exercises || [])
       .filter((x, i) => i > this.currentExercise)
       .map(x => x.thumbnail);
   }
 
+  // returns current exercise if exists
   get current(): IExerciseShowcase | null {
     if (!this.exercises) return null;
     if (this.exercises.length < this.currentExercise) return null;
     return this.exercises[this.currentExercise];
   }
 
+  // load data stored in local storage
   public loadExistingData(fromEventBus = false) {
     const data = localStorage.getItem('fitnesshub-cw');
     if (data) {
@@ -279,28 +294,36 @@ export default class FHModalStartWorkout extends Vue {
       this.secondsInput = json.secondsInput;
       this.repsInput = json.repsInput;
       this.weightInput = json.weightInput;
+
+      // open modal if called via eventbus (if app has been accidently closed during workout)
       if (fromEventBus) this.open(this.exercises || []);
     }
   }
 
   public save(onlyLS = false): void {
     if (!onlyLS && this.current) {
+      // set reps and weight
       if (this.current.type === 'gym') {
         this.store[this.currentExercise].data.push({
           reps: +this.repsInput,
           weight: +this.weightInput
         } as IStoreGym);
+
+        // set time
       } else if (this.current.type === 'time') {
         this.store[this.currentExercise].data.push({
           minutes: +this.minutesInput,
           seconds: +this.secondsInput
         } as IStoreTime);
+        // set distance
       } else {
         this.store[this.currentExercise].data.push({
           distance: +this.distanceInput
         } as IStoreDistance);
       }
     }
+
+    // save local store to local storage
     localStorage.setItem(
       'fitnesshub-cw',
       JSON.stringify({
@@ -333,6 +356,7 @@ export default class FHModalStartWorkout extends Vue {
     this.change(-1);
   }
 
+  // save current time for current exercise
   public change(amount: number): void {
     const c = this.store[this.currentExercise];
     c.time += new Date().getTime() - c.start;
@@ -343,6 +367,7 @@ export default class FHModalStartWorkout extends Vue {
   }
 
   public async finish(): Promise<void> {
+    // reset everything and send data to backend
     localStorage.removeItem('fitnesshub-cw');
     this.stopTimer();
     this.change(0);
@@ -361,6 +386,7 @@ export default class FHModalStartWorkout extends Vue {
     });
   }
 
+  // reset
   public cancel(): void {
     localStorage.removeItem('fitnesshub-cw');
     this.stopTimer();
@@ -369,6 +395,7 @@ export default class FHModalStartWorkout extends Vue {
   }
 
   getTransformedStoreToDTO(): FinishExerciseDTO[] {
+    // transform every exercise in the current workout
     return this.store
       .filter(x => x.data.length !== 0)
       .map((x, i) => {

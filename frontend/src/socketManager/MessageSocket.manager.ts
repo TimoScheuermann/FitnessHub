@@ -9,6 +9,10 @@ import { Socket } from 'vue-socket.io-extended';
 
 @Component
 export default class MessageSocketManager extends Vue {
+  /**
+   * message received
+   * @param message IMessage
+   */
   @Socket('message')
   messageReceived(message: IMessage) {
     this.$store.commit('addMessage', message);

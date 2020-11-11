@@ -38,12 +38,18 @@ import { Vue, Component } from 'vue-property-decorator';
   }
 })
 export default class FHProfileSidebar extends Vue {
+  /**
+   * returns users givenname and familyname
+   */
   get name(): string {
     const user = this.$store.getters.user;
     return [user.givenName, user.familyName].filter(x => !!x).join(' ');
   }
 
-  transformDate(timestamp = this.$store.getters.user.date): string {
+  /**
+   * transform given timestamp to Date
+   */
+  public transformDate(timestamp = this.$store.getters.user.date): string {
     const date = new Date(timestamp);
     return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
   }

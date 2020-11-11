@@ -5,6 +5,10 @@ import { Socket } from 'vue-socket.io-extended';
 
 @Component
 export default class FriendSocketManager extends Vue {
+  /**
+   * new friend request received
+   * @param request
+   */
   @Socket('newFriendRequest')
   newFriendRequest(request: IPendingFriendship) {
     this.$store.commit('addFriendRequest', request);
@@ -18,11 +22,19 @@ export default class FriendSocketManager extends Vue {
     }
   }
 
+  /**
+   * friend request rejected
+   * @param id
+   */
   @Socket('removeFriendRequest')
   removeFriendRequest(id: string) {
     this.$store.commit('removeFriendRequest', id);
   }
 
+  /**
+   * friend request sent
+   * @param friend IUserInfo
+   */
   @Socket('addFriend')
   addFriend(friend: IUserInfo) {
     this.$store.commit('addFriend', friend);
@@ -36,6 +48,10 @@ export default class FriendSocketManager extends Vue {
     }
   }
 
+  /**
+   * friend removed
+   * @param id friendId
+   */
   @Socket('removeFriend')
   removeFriend(id: string) {
     this.$store.commit('removeFriend', id);

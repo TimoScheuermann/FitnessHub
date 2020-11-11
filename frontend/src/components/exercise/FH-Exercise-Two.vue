@@ -62,6 +62,7 @@ export default class FHExerciseTwo extends Vue {
       EventBus.$emit('modal-add-to-workout', this.exercise);
     }
   }
+
   public addToList(): void {
     if (this.exercise) {
       EventBus.$emit('modal-exercise-list', {

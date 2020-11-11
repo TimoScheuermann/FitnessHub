@@ -11,6 +11,10 @@ import {
   IWorkout
 } from './interfaces';
 
+/**
+ * copies a string to the clipboard
+ * @param data string
+ */
 export function copyToClipboard(data: string) {
   const el = document.createElement('textarea');
   el.value = data;
@@ -20,6 +24,10 @@ export function copyToClipboard(data: string) {
   document.body.removeChild(el);
 }
 
+/**
+ * returns users full name
+ * @param user IUser | IUserInfo
+ */
 export function getUserName(user: IUserInfo | IUser): string | null {
   if (!user) return null;
   if ((user as IUserInfo).username) return (user as IUserInfo).username;
@@ -28,6 +36,10 @@ export function getUserName(user: IUserInfo | IUser): string | null {
     .join(' ');
 }
 
+/**
+ * returns formatted time string
+ * @param time seconds or timestamp
+ */
 /* eslint-disable */
 export function formatDate(time: any): string {
   switch (typeof time) {
@@ -82,6 +94,10 @@ export function formatDate(time: any): string {
   return time;
 }
 
+/**
+ * returns date or XX minutes ago, depending on time.
+ * @param timestamp number
+ */
 export function formatTimeForMessage(timestamp: number): string {
   if (new Date().getTime() - timestamp < 3 * aHour)
     return formatDate(timestamp);
@@ -124,6 +140,10 @@ export function getFriend(id: string): IUserInfo | undefined {
   return (store.getters.friends as IUserInfo[]).filter(x => x._id === id)[0];
 }
 
+/**
+ * check if a user has liked a specific recipe
+ * @param id recipe id
+ */
 export function hasLikedRecipe(id: string): boolean {
   return (
     (store.getters.favedRecipes as IRecipe[]).filter(x => x._id === id).length >

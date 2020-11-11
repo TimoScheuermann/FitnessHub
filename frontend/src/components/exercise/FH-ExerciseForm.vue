@@ -287,12 +287,14 @@ export default class FHExerciseForm extends Vue {
 
   @Watch('exerciseInput')
   mounted() {
+    // load existing exercise
     if (this.exerciseInput) {
       this.exercise = {
         possibleAtHome: false,
         ...this.exerciseInput,
         ...this.exerciseInput.editedData
       };
+      // delete unnecessary data
       delete this.exercise._id;
       delete this.exercise.author;
       delete this.exercise.reviewed;
@@ -302,17 +304,22 @@ export default class FHExerciseForm extends Vue {
       delete this.exercise.editedData;
       this.timeUnit = 'Sekunden';
 
+      // set reps
       if (this.exercise.reps) {
         const reps = this.exercise.reps.split(' - ');
         this.reps = { min: +reps[0], max: +reps[1] };
         this.selectedCategorie = 0;
       }
+
+      // set sets
       if (this.exercise.sets) {
         const sets = this.exercise.sets.split(' - ');
         this.sets = { min: +sets[0], max: +sets[1] };
         this.selectedCategorie = 0;
       }
+      // set time
       if (this.exercise.time) this.selectedCategorie = 1;
+      // set distance
       if (this.exercise.distance) this.selectedCategorie = 2;
     }
   }

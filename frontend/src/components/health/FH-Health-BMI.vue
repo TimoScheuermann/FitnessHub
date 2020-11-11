@@ -108,10 +108,12 @@ export default class FHHealthBMI extends Vue {
     if (!height || height < 0) return null;
     return height;
   }
+
   get healthData(): IHealth[] | null {
     return this.$store.getters.weight;
   }
 
+  // chart options (see ApexCharts Docs for further informations)
   get options() {
     return {
       chart: {

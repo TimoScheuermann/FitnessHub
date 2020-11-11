@@ -31,6 +31,9 @@ export default class FHNotification extends Vue {
 
   public timer: number | undefined = undefined;
 
+  /**
+   * open notification link
+   */
   public goto() {
     if (this.notification && this.notification.to) {
       this.$router.push(this.notification.to);
@@ -41,11 +44,14 @@ export default class FHNotification extends Vue {
 
   public nextNotification() {
     this.notification = this.$store.state.notifications.shift();
+
+    // reset if display time is up and there are no more notifications
     if (!this.notification && this.timer) {
       this.reset();
       return;
     }
 
+    // show next notification
     this.timer = setTimeout(() => {
       this.nextNotification();
     }, 7000);
@@ -57,6 +63,7 @@ export default class FHNotification extends Vue {
   }
 
   mounted() {
+    // Listen for new notifications
     EventBus.$on('message', () => {
       if (!this.timer) this.nextNotification();
     });

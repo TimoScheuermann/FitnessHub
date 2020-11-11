@@ -78,6 +78,8 @@ export default class FHModalExerciseDetails extends Mixins(FHModalMixin) {
 
     if (typeof id === 'object') {
       this.exercise = id as IExercise;
+
+      // load exercise if not already loaded
       // eslint-disable-next-line
     } else if (!this.exercise || this.exercise!._id !== id) {
       this.exercise = null;

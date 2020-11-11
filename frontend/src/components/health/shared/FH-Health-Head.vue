@@ -31,6 +31,7 @@ export default class FHHealthHead extends Vue {
 
   public multis = [aDay, aWeek, 4 * aWeek, aYear];
 
+  // transforms seconds or timestamp to Date
   get timespanText(): string {
     const date: Date = new Date();
     const now = `${days[date.getDay()].substring(0, 2)}, ${date.getDate()}. ${

@@ -9,26 +9,37 @@ function notifiy(missing: string, info: string) {
 }
 
 export function validate(recipe: CreateRecipeDTO): CreateRecipeDTO | null {
+  // check title
   if (recipe.title.length === 0) {
     notifiy('Name', 'Bitte trage einen Namen für das Rezept ein');
     return null;
   }
+
+  // check time
   if (recipe.time < 0) {
     notifiy('Zeit', 'Bitte füge eine Zubereitungszeit hinzu');
     return null;
   }
+
+  // check ingredients list
   if (recipe.ingredients.length === 0) {
     notifiy('Zutaten', 'Bitte füge mindestens eine Zutat hinzu');
     return null;
   }
+
+  // check nutrition list
   if (recipe.nutrition.length === 0) {
     notifiy('Nährwerte', 'Bitte füge Nährwertinformationen zum Rezept hinzu');
     return null;
   }
+
+  // check category
   if (recipe.category.length === 0) {
     notifiy('Kategorie', 'Bitte wähle mindestens eine Kategorie');
     return null;
   }
+
+  // check thumbnail
   if (recipe.thumbnail.length === 0) {
     notifiy(
       'Thumbnail',
@@ -36,6 +47,8 @@ export function validate(recipe: CreateRecipeDTO): CreateRecipeDTO | null {
     );
     return null;
   }
+
+  // check cooking steps
   if (recipe.steps.length === 0) {
     notifiy('Schritt', 'Bitte füge mindestens einen Zubereitungsschritt hinzu');
     return null;

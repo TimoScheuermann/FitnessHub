@@ -24,6 +24,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class FHExerciseATLButton extends Vue {
   @Prop() info!: IExerciseInfo | IExercise;
 
+  /**
+   * adds an exercise to a temp. list
+   */
   public addToList(): void {
     EventBus.$emit('modal-exercise-list', {
       _id: this.info._id,

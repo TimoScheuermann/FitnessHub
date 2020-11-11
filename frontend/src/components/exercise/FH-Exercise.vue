@@ -45,6 +45,9 @@ export default class FHExercise extends Vue {
   public ex: IExercise = this.exercise || null;
 
   async mounted() {
+    /**
+     * load exercise info if not already loaded
+     */
     if (!this.ex && this.id) {
       axios.get('exercise/' + this.id).then(res => {
         this.ex = res.data;

@@ -50,6 +50,9 @@ export default class FHExerciseSearch extends Vue {
     return this.searchResults.filter(x => !this.skip.includes(x._id));
   }
 
+  /**
+   * find a specific exercise
+   */
   public search(query: string = this.query): void {
     if (query.length > 2) {
       axios.get('exercise/find/' + query).then(res => {

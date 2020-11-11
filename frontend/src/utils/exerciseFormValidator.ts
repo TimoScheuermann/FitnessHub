@@ -18,14 +18,19 @@ export function validate(
   repsMax: number,
   timeUnit: string | null
 ): CreateExerciseDTO | null {
+  // check title
   if (exercise.title.length === 0) {
     notifiy('Name', 'Bitte trage einen Namen für die Übung ein');
     return null;
   }
+
+  // check thumbnail
   if (exercise.thumbnail.length === 0) {
     notifiy('Thumbnail', 'Bitte füge einen Link zu einem Bild der Übung hinzu');
     return null;
   }
+
+  // check muscle length
   if (exercise.affectedMuscles.length === 0) {
     notifiy(
       'Betroffene Muskeln',
@@ -33,6 +38,9 @@ export function validate(
     );
     return null;
   }
+
+  // check categories (sets & reps, time, distance)
+  // sets & reps
   if (selectedCategorie === 0) {
     if (Math.min(setsMin, setsMax, repsMax, repsMin) <= 0) {
       notifiy('Sätze / Wiederholungen', 'Die Angaben müssen größer als 0 sein');
@@ -46,6 +54,7 @@ export function validate(
       return null;
     }
   }
+  // time
   if (selectedCategorie === 1) {
     if (!timeUnit) {
       notifiy('Zeiteinheit', 'Bitte wähle eine Zeiteinheit aus');
@@ -59,6 +68,7 @@ export function validate(
       return null;
     }
   }
+  // distance
   if (selectedCategorie === 2 && (exercise.distance || '').length === 0) {
     notifiy('Strecke', 'Bitte fülle dieses Feld aus');
     return null;

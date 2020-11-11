@@ -53,17 +53,29 @@ export default new Vuex.Store({
     variables: [] as IVariable[]
   },
   getters: {
+    /**
+     * returns if user is authenticated
+     */
     valid: (state: any): boolean => {
       return state.userValidated;
     },
+    /**
+     * returns user data
+     */
     user: (state: any): IUser => {
       return state.user;
     },
+    /**
+     * return user name
+     */
     name: (state: any): string => {
       return [state.user.givenName, state.user.familyName]
         .filter(x => !!x)
         .join(' ');
     },
+    /**
+     * returns amount of unread notifications
+     */
     totalNotifications: (state: any, getters: any): number => {
       return (
         getters.unreadMessages +
@@ -71,37 +83,67 @@ export default new Vuex.Store({
         getters.exerciseSubmissions.length
       );
     },
+    /**
+     * is device desktop browser
+     */
     isDesktop: (state: any): boolean => {
       return state.isDesktop;
     },
+    /**
+     * is device in fullscreen
+     */
     isFullscreen: (state: any): boolean => {
       return state.isFullscreen;
     },
+    /**
+     * darkmode enabled or not
+     */
     darkmode: (state: any): boolean => {
       return state.darkmode;
     },
+    /**
+     * current route transition
+     */
     routeTransition: (state: any): string => {
       return state.routeTransition;
     },
+    /**
+     * returns every message
+     */
     messages: (state: any): IMessage[] => {
       return state.messages;
     },
+    /**
+     * returns every unread message
+     */
     unreadMessages: (state: any, getters: any): number => {
       return (state.messages as IMessage[]).filter(
         x => !x.read && x.to === getters.user._id
       ).length;
     },
+    /**
+     * returns a list of friends
+     */
     friends: (state: any): IUserInfo[] => {
       return state.friends;
     },
+    /**
+     * returns all open friend requests
+     */
     friendRequests: (state: any): IPendingFriendship[] => {
       return state.friendRequests;
     },
+    /**
+     * returns all sent friend requests
+     */
     unansweredFriendRequests: (state: any, getters: any): number => {
       return (state.friendRequests as IPendingFriendship[]).filter(
         x => x.target._id === getters.user._id
       ).length;
     },
+    /**
+     * returns next notification
+     */
     nextNotification: (state: any): IFHNotification | null => {
       const not = state.notifications.shift();
       state.notifications = state.notifications.filter(
@@ -109,56 +151,107 @@ export default new Vuex.Store({
       );
       return not || null;
     },
+    /**
+     * returns if any GET requests is open
+     */
     loading: (state: any): boolean => {
       return state.openRequests !== 0;
     },
+    /**
+     * returns a list of loaded exercises
+     */
     exercises: (state: any): IExercise[] => {
       return state.exercises;
     },
+    /**
+     * returns users recent exercises
+     */
     recentExercises: (state: any): IExercise[] => {
       return state.recentExercises;
     },
+    /**
+     * returns submitted exercises
+     */
     exerciseSubmissions: (state: any): IExercise[] => {
       return state.exerciseSubmissions;
     },
+    /**
+     * returns created workouts
+     */
     workouts: (state: any): IWorkout[] => {
       return state.workouts;
     },
+    /**
+     * returns amount of workouts done in the last 4 weeks
+     */
     chartWorkouts: (state: any): number[][] => {
       return state.chartWorkouts;
     },
+    /**
+     * returns all loaded recipes
+     */
     recipes: (state: any): IRecipe[] => {
       return state.recipes;
     },
+    /**
+     * returns all faved recipes
+     */
     favedRecipes: (state: any): IRecipe[] => {
       return state.favedRecipes;
     },
+    /**
+     * return the current weight (if available)
+     */
     currentWeight: (state: any): number => {
       return ((state.weight || []) as IHealth[]).sort(
         (a, b) => a.date - b.date
       )[0].value;
     },
+    /**
+     * return the current weight (if available)
+     */
     weight: (state: any): IHealth[] => {
       return state.weight;
     },
+    /**
+     * returns current height (if available)
+     */
     height: (state: any): number => {
       return state.height;
     },
+    /**
+     * returns amount of water drunk today
+     */
     water: (state: any): IHealth[] => {
       return state.water;
     },
+    /**
+     * returns trending exercises
+     */
     trendingExercises: (state: any): IExercise[] | null => {
       return state.trendingExercises;
     },
+    /**
+     * returns users latest completed exercises
+     */
     latestExercises: (state: any): IExercise[] | null => {
       return state.latestExercises;
     },
+    /**
+     * returns users latest completed workouts
+     */
     latestWorkouts: (state: any): IWorkout[] | null => {
       return state.latestWorkouts;
     },
+    /**
+     * returns users trainingsplan
+     */
     trainingplan: (state: any): ITrainingplanFull | null => {
       return state.trainingplan;
     },
+    /**
+     * returns all available variables (nutrition categories, exercise muscle types)
+     */
     variables: (state: any): IVariable[] => {
       return state.variables;
     }

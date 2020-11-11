@@ -78,6 +78,9 @@ export default class FHModalAddToWorkout extends Mixins(FHModalMixin) {
     });
   }
 
+  /**
+   * workout selected, adding exercises to workout
+   */
   public useWorkout(workout: IWorkout) {
     if (this.exercise && this.modalOpened) {
       axios

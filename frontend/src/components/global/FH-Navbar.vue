@@ -73,6 +73,9 @@ export default class FHNavbar extends Vue {
     window.removeEventListener('scroll', this.scrollListener);
   }
 
+  /**
+   * check if navbar should be highlighted
+   */
   public scrollListener(): void {
     this.enhancedVisibility = window.scrollY >= this.TRIGGER;
   }
