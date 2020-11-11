@@ -21,6 +21,10 @@ export class WorkoutService {
     private trainingplanModel: Model<Trainingplan>,
   ) {}
 
+  /**
+   * Returns workouts of specific user
+   * @param user author
+   */
   public async getWorkouts(user: IUser): Promise<IWorkout[]> {
     const workouts: Workout[] = await this.workoutModel.find({
       author: user._id,
@@ -28,6 +32,9 @@ export class WorkoutService {
     return Promise.all(workouts.map(async (x) => this.mapWorkoutToInfo(x)));
   }
 
+  /**
+   * Returns latest 10 workouts
+   */
   public async getLatestWorkouts(): Promise<IWorkout[]> {
     const workouts: Workout[] = await this.workoutModel
       .find({ updated: { $exists: true }, 'exercises.1': { $exists: true } })
@@ -36,6 +43,10 @@ export class WorkoutService {
     return Promise.all(workouts.map(async (x) => this.mapWorkoutToInfo(x)));
   }
 
+  /**
+   * Returns workout with specific id
+   * @param id workoutId
+   */
   public async getById(id: string): Promise<IWorkout> {
     const workout = await this.workoutModel.findById(id);
     if (workout) {
@@ -53,6 +64,10 @@ export class WorkoutService {
     return null;
   }
 
+  /**
+   * Replaces exerciseId with full exercise info
+   * @param workout specific workout
+   */
   private async mapWorkoutToInfo(workout: Workout): Promise<IWorkout> {
     return {
       _id: workout._id,
@@ -65,6 +80,11 @@ export class WorkoutService {
     };
   }
 
+  /**
+   * Creates new workout
+   * @param user author
+   * @param createWorkoutDTO new workout
+   */
   public async createWorkout(
     user: IUser,
     createWorkoutDTO: CreateWorkoutDTO,
@@ -79,6 +99,12 @@ export class WorkoutService {
     this.fhSocket.server.to(user._id).emit('workout', info);
   }
 
+  /**
+   * Updates workout with specific author and id
+   * @param user author
+   * @param id workoutId
+   * @param workoutDTO updated workout
+   */
   public async updateWorkout(
     user: IUser,
     id: string,
@@ -102,6 +128,11 @@ export class WorkoutService {
     this.fhSocket.server.to(user._id).emit('workout', info);
   }
 
+  /**
+   * Deletes workout with specific author and id
+   * @param user author
+   * @param id workoutId
+   */
   public async deleteWorkout(user: IUser, id: string): Promise<void> {
     this.fhSocket.server.to(user._id).emit('workout.remove', id);
     await this.workoutModel.deleteOne({ _id: id, author: user._id });
@@ -115,6 +146,10 @@ export class WorkoutService {
     }
   }
 
+  /**
+   * Returns info of exercise with specific id
+   * @param id exerciseId
+   */
   public async getExerciseInfoById(id: string): Promise<IExerciseInfo> {
     const exercise: IExercise = await this.exerciseModel.findById(id);
     return {

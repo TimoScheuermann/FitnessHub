@@ -20,22 +20,38 @@ import { WorkoutService } from './workout.service';
 export class WorkoutController {
   constructor(private readonly workoutService: WorkoutService) {}
 
+  /**
+   * Returns workouts of specific user
+   * @param user author
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('')
   async getAllWorkouts(@FHUser() user: IUser): Promise<IWorkout[]> {
     return this.workoutService.getWorkouts(user);
   }
 
+  /**
+   * Returns latest 10 workouts
+   */
   @Get('latest')
   async getLatestWorkouts(): Promise<IWorkout[]> {
     return this.workoutService.getLatestWorkouts();
   }
 
+  /**
+   * Returns workout with specific ID
+   * @param id workoutId
+   */
   @Get(':id')
   async getById(@Param('id') id: string): Promise<IWorkout> {
     return this.workoutService.getById(id);
   }
 
+  /**
+   * Creates workout with specific user as author
+   * @param user author
+   * @param workout new workout
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('')
   async createWorkout(
@@ -45,6 +61,12 @@ export class WorkoutController {
     this.workoutService.createWorkout(user, workout);
   }
 
+  /**
+   * Updates workout by specific user
+   * @param user author
+   * @param id workoutId
+   * @param workout updated workout
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put(':id')
   async updateWorkout(
@@ -55,6 +77,11 @@ export class WorkoutController {
     this.workoutService.updateWorkout(user, id, workout);
   }
 
+  /**
+   * Deletes workout of specific user
+   * @param user author
+   * @param id workoutId
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
   async deleteWorkout(
