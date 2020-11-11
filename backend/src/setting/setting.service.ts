@@ -23,7 +23,7 @@ export class SettingService {
   ) {}
 
   /**
-   *
+   * Used by decorator to verify user
    * @param userId FHUser
    * @param setting AvailableSetting
    */
