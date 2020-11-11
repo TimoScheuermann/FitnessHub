@@ -19,12 +19,22 @@ import { MessageService } from './message.service';
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
+  /**
+   * returns all message send or received by the sender
+   * @param user sender
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getMessages(@FHUser() user: IUser): Promise<IMessage[]> {
     return this.messageService.getMessages(user._id);
   }
 
+  /**
+   * sends a new message
+   * @param from sender user
+   * @param to friendId string
+   * @param body message
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @FriendIDParam('to')
   @UseGuards(AuthGuard('jwt'), FriendsGuard)
@@ -37,6 +47,11 @@ export class MessageController {
     this.messageService.sendMessage(from, to, body.message);
   }
 
+  /**
+   * marks a message as read
+   * @param user request sender
+   * @param friendId message sender
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @FriendIDParam('friendId')
   @UseGuards(AuthGuard('jwt'), FriendsGuard)
@@ -48,6 +63,10 @@ export class MessageController {
     this.messageService.markAsRead(user._id, friendId);
   }
 
+  /**
+   * marks a message send by the system as read
+   * @param user sender
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('markBotAsRead')
   async markBotAsRead(@FHUser() user: IUser): Promise<void> {

@@ -27,6 +27,18 @@ export class StatisticsService {
     @InjectModel(Variable.name) private variableModel: Model<Variable>,
   ) {}
 
+  /**
+   * returns general statistics including:
+   * total user
+   * total friendships
+   * total messages sent
+   * total workouts created
+   * total exercises created
+   * total recipes created
+   * total exercises completed
+   * total muscle types
+   * total nutrition categories
+   */
   async getGeneralStatistics(): Promise<IGeneralStatistics[]> {
     return [
       {
@@ -72,6 +84,9 @@ export class StatisticsService {
     ];
   }
 
+  /**
+   * returns stats about login provider (shares, etc.)
+   */
   async getLoginProvider(): Promise<ILoginProviderStatistic[]> {
     return Promise.all(
       Object.keys(Provider).map(async (x) => {

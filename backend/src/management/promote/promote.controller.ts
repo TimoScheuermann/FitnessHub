@@ -9,6 +9,11 @@ import { UserService } from 'src/user/user.service';
 export class PromoteController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * Promotes a user to moderator
+   * @param promoter user
+   * @param id new moderator (user id)
+   */
   @Roles(['admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('moderator/:id')
@@ -19,6 +24,11 @@ export class PromoteController {
     this.userService.promoteTo(promoter, id, 'Moderator');
   }
 
+  /**
+   * Promotes a user back to user
+   * @param promoter user
+   * @param id old moderator (user id)
+   */
   @Roles(['admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('user/:id')

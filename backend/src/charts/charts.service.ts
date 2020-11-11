@@ -15,11 +15,14 @@ export class ChartsService {
 
   public async getCharts(user: string): Promise<number[][]> {
     const until = new Date().getTime() - 4 * this.aWeek;
+
+    // load latest data (4 weeks)
     const exercises = await this.completedExerciseModel.find(
       { start: { $gte: until }, user: user },
       { start: 1, end: 1 },
     );
     const data = Array.from({ length: 28 }, () => []);
+
     exercises.forEach((x) => {
       const index = this.getIndex(x.start);
       data[index].push(x.duration / 1000);
@@ -27,6 +30,10 @@ export class ChartsService {
     return data;
   }
 
+  /**
+   * returns how many days have passed since today
+   * @param of timestamp
+   */
   private getIndex(of: number): number {
     const start = new Date().getTime() - 4 * this.aWeek;
     const date = new Date(of).setHours(0, 0, 0, 0);

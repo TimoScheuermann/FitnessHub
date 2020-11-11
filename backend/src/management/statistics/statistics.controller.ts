@@ -9,6 +9,9 @@ import { StatisticsService } from './statistics.service';
 export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
 
+  /**
+   * returns general statistics of fitnesshub
+   */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('/general')
@@ -16,6 +19,9 @@ export class StatisticsController {
     return this.statisticsService.getGeneralStatistics();
   }
 
+  /**
+   * returns login provider statistics of fitnesshub
+   */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('/loginProvider')

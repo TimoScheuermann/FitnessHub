@@ -10,6 +10,10 @@ import { IAchievment } from './interfaces/IAchievement';
 export class AchievementController {
   constructor(private readonly achievementService: AchievementService) {}
 
+  /**
+   * returns achievements of user
+   * @param user IUSer
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getAchievements(@FHUser() user: IUser): Promise<IAchievment[]> {

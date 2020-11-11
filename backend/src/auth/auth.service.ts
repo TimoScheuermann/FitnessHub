@@ -23,12 +23,18 @@ export class AuthService {
   ) {}
 
   public redirect(jwt: any, res: Response): void {
+    /**
+     * redirect to suspension view
+     */
     if (jwt.suspended) {
       res.redirect(
         `${this.configService.get('REDIRECT')}profile/suspended?t=${
           jwt.suspended
         }`,
       );
+      /**
+       * redirect to fitnesshub with token
+       */
     } else if (jwt.token) {
       res.redirect(
         `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
@@ -39,11 +45,14 @@ export class AuthService {
   async validateOAuthLogin(u: IUser): Promise<any> {
     try {
       const user: IUser = await (await this.userService.signIn(u)).toObject();
+      // check if user is stil suspended
       if (user.suspended && user.suspended > new Date().getTime()) {
         return { suspended: user.suspended };
+        // suspension time is over => pardon
       } else {
         await this.userService.pardonUser(user._id);
       }
+      // return token
       return { token: this.jwtService.sign(user) };
     } catch (error) {
       throw new InternalServerErrorException(

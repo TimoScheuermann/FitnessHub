@@ -12,17 +12,25 @@ import { ChartsService } from './charts.service';
 export class ChartsController {
   constructor(private readonly chartService: ChartsService) {}
 
+  /**
+   * returns health and workout charts of requester
+   * @param user request sender
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('')
   async getCharts(@FHUser() user: IUser): Promise<number[][]> {
     return this.chartService.getCharts(user._id);
   }
 
+  /**
+   * returns charts of friend
+   * @param userId friendId
+   */
   @FriendIDParam('userId')
   @FHSetting(AvailableSetting.FRIENDS_SHARE_STATS)
   @UseGuards(AuthGuard('jwt'), RolesGuard, FriendsGuard, SettingGuard)
   @Get(':userId')
-  async getCHartsOf(@Param('userId') userId: string): Promise<number[][]> {
+  async getChartsOf(@Param('userId') userId: string): Promise<number[][]> {
     return this.chartService.getCharts(userId);
   }
 }

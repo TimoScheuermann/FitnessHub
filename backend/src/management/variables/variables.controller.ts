@@ -17,21 +17,34 @@ import { VariablesService } from './variables.service';
 export class VariablesController {
   constructor(private readonly variablesService: VariablesService) {}
 
+  /**
+   * returns all variables
+   */
   @Get('')
   async getAll(): Promise<IVariable[]> {
     return this.variablesService.getAll();
   }
 
+  /**
+   * returns all muscle categories
+   */
   @Get('muscles')
   async getMuscles(): Promise<IVariable[]> {
     return this.variablesService.getMuscles();
   }
 
+  /**
+   * returns all recipe categories
+   */
   @Get('categories')
   async getCategories(): Promise<IVariable[]> {
     return this.variablesService.getCategories();
   }
 
+  /**
+   * adds a new muscle type
+   * @param createVariableDTO
+   */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('muscle')
@@ -41,6 +54,10 @@ export class VariablesController {
     return this.variablesService.addMuscle(createVariableDTO);
   }
 
+  /**
+   * adds a new recipe category
+   * @param createVariableDTO
+   */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('category')
@@ -50,6 +67,10 @@ export class VariablesController {
     return this.variablesService.addCategory(createVariableDTO);
   }
 
+  /**
+   * deletes a muscle type
+   * @param id
+   */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('muscle/:id')
@@ -57,6 +78,10 @@ export class VariablesController {
     this.variablesService.removeMuscle(id);
   }
 
+  /**
+   * deletes a recipe category
+   * @param id
+   */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('category/:id')

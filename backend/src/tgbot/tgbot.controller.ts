@@ -9,6 +9,11 @@ import { TgbotService } from './tgbot.service';
 export class TgbotController {
   constructor(private readonly tgbotService: TgbotService) {}
 
+  /**
+   * validates the 2FA code sent by telegram
+   * @param user request sender
+   * @param body {code: string} code received in telegram
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('code')
   public validateConnection(

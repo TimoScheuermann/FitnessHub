@@ -11,18 +11,33 @@ export class VariablesService {
     @InjectModel(Variable.name) private variableModel: Model<Variable>,
   ) {}
 
+  /**
+   * returns all variables
+   */
   public async getAll(): Promise<IVariable[]> {
     return this.variableModel.find();
   }
 
+  /**
+   * removes a recipe category
+   * @param id
+   */
   public async removeCategory(id: string): Promise<void> {
     await this.variableModel.findOneAndDelete({ _id: id, type: 'category' });
   }
 
+  /**
+   * removes a muscle type
+   * @param id
+   */
   public async removeMuscle(id: string): Promise<void> {
     await this.variableModel.findOneAndDelete({ _id: id, type: 'muscle' });
   }
 
+  /**
+   * adds a new recipe category
+   * @param createVariableDTO
+   */
   public async addCategory(
     createVariableDTO: CreateVariableDTO,
   ): Promise<IVariable[]> {
@@ -34,6 +49,10 @@ export class VariablesService {
     return this.getCategories();
   }
 
+  /**
+   * adds a new muscle type
+   * @param createVariableDTO
+   */
   public async addMuscle(
     createVariableDTO: CreateVariableDTO,
   ): Promise<IVariable[]> {
@@ -45,10 +64,16 @@ export class VariablesService {
     return this.getMuscles();
   }
 
+  /**
+   * returns all recipe categories
+   */
   public async getCategories(): Promise<IVariable[]> {
     return this.variableModel.find({ type: 'category' });
   }
 
+  /**
+   * returns all muscle types
+   */
   public async getMuscles(): Promise<IVariable[]> {
     return this.variableModel.find({ type: 'muscle' });
   }

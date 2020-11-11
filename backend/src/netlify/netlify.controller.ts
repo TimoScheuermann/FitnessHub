@@ -5,6 +5,9 @@ import { TgbotService } from 'src/tgbot/tgbot.service';
 export class NetlifyController {
   constructor(private readonly tgbotService: TgbotService) {}
 
+  /**
+   * gets triggered by netlify if the frontend build succeeds
+   */
   @Post('success')
   public buildSuccess(): void {
     this.tgbotService.sendURLMessage(
@@ -13,6 +16,10 @@ export class NetlifyController {
       'https://fitnesshub.app',
     );
   }
+
+  /**
+   * gets triggered by netlify if the frontend build fails
+   */
   @Post('failed')
   public buildFailed(): void {
     this.tgbotService.sendMessage(

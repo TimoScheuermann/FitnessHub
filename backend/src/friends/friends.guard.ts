@@ -2,7 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  SetMetadata
+  SetMetadata,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
@@ -27,13 +27,18 @@ export class FriendsGuard implements CanActivate {
       context.getHandler(),
     );
 
+    // check if friendId Param ist set
     if (!friendIdParam) return false;
 
     const ctx = context.switchToHttp();
     const req = ctx.getRequest() as Request;
     const user = req.user as IUser;
     const target = req.params[friendIdParam];
+
+    // check if friendId Param is empty
     if (!target) return false;
+
+    // check if user is in a friendship with XY
     return this.friendsService.doesFriendshipExist(user._id, target);
   }
 }

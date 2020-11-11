@@ -5,6 +5,6 @@ export class AppController {
   @Get()
   @Render('index')
   index(): void {
-    //
+    // render api view
   }
 }

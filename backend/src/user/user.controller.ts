@@ -18,17 +18,27 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * verfifys a users authenticaton
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('verify')
   validateUser(): boolean {
     return true;
   }
 
+  /**
+   * returns a list of users matching the query
+   * @param body {query: string} search query
+   */
   @Post('search')
   async findUser(@Body() body: any): Promise<IUserInfo[]> {
     return this.userService.find(body.query);
   }
 
+  /**
+   * returns a list of users in group moderator
+   */
   @Roles(['admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('moderators')
@@ -36,6 +46,9 @@ export class UserController {
     return this.userService.getModerators();
   }
 
+  /**
+   * returns a list of users suspended from logging into their account
+   */
   @Roles(['admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('suspended')
@@ -43,6 +56,12 @@ export class UserController {
     return this.userService.getSuspendedUser();
   }
 
+  /**
+   * suspends a user until a specific date
+   * @param userId suspender user
+   * @param time date untill pardon
+   * @param suspender suspender
+   */
   @Roles(['admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('suspend/:id/:time')
@@ -54,6 +73,10 @@ export class UserController {
     await this.userService.suspendUser(suspender, userId, time);
   }
 
+  /**
+   * pardons a user and reenables its account
+   * @param userId string
+   */
   @Roles(['admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('suspend/:id')
@@ -61,6 +84,10 @@ export class UserController {
     await this.userService.pardonUser(userId);
   }
 
+  /**
+   * returns further information about a specific user ID
+   * @param id
+   */
   @Get(':id')
   async getUserDetails(@Param('id') id: string): Promise<IUserInfo> {
     return this.userService.getUserInfoById(id);

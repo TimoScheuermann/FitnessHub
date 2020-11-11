@@ -18,6 +18,11 @@ export class MessageService {
     private readonly tgbotService: TgbotService,
   ) {}
 
+  /**
+   * returns the encryption secret for a chat room
+   * @param userA string
+   * @param userB string
+   */
   private async getSecret(userA: string, userB: string): Promise<string> {
     const friendship: IFriendship = await this.friendsService.getFriendship(
       userA,
@@ -26,11 +31,21 @@ export class MessageService {
     return friendship._id;
   }
 
+  /**
+   * returns message send or received by a specific user
+   * @param userID string
+   */
   public async getMessages(userID: string): Promise<IMessage[]> {
     return this.messageModel.find({
       $or: [{ from: userID }, { to: userID }],
     });
   }
+
+  /**
+   * marks a message send by friendId to userId as read
+   * @param userId string
+   * @param friendId string
+   */
   public async markAsRead(userId: string, friendId: string): Promise<void> {
     await this.messageModel.updateMany(
       { from: friendId, to: userId },
@@ -38,6 +53,12 @@ export class MessageService {
     );
   }
 
+  /**
+   * sends a message from a specific user to a specific user
+   * @param from sender
+   * @param to receiver
+   * @param message message
+   */
   public async sendMessage(
     from: IUser,
     to: string,

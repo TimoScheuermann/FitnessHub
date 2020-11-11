@@ -17,6 +17,11 @@ export class FriendsService {
     @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
   ) {}
 
+  /**
+   * check if a friendship between two users exists
+   * @param userA string
+   * @param userB string
+   */
   public async doesFriendshipExist(
     userA: string,
     userB: string,
@@ -30,6 +35,10 @@ export class FriendsService {
     }));
   }
 
+  /**
+   * returns a list of XY's friend's user infos
+   * @param id user
+   */
   public async getFriendsOf(id: string): Promise<IUserInfo[]> {
     const friends = await this.friendshipModel.find({
       $or: [
@@ -49,6 +58,11 @@ export class FriendsService {
     );
   }
 
+  /**
+   * remove a friendship
+   * @param userId userA
+   * @param friendId userB
+   */
   public async deleteFriendship(
     userId: string,
     friendId: string,
@@ -61,6 +75,8 @@ export class FriendsService {
         ],
       },
     );
+
+    // remove friends from list
     this.fhSocket.server.to(userId).emit('removeFriend', friendId);
     this.fhSocket.server.to(friendId).emit('removeFriend', userId);
     this.fhSocket.server
@@ -69,6 +85,11 @@ export class FriendsService {
       .emit('removeFriendRequest', friendship._id);
   }
 
+  /**
+   * accepts a friendship with user
+   * @param user string
+   * @param friendshipId id
+   */
   public async acceptFriendship(
     user: IUser,
     friendshipId: string,
@@ -96,6 +117,11 @@ export class FriendsService {
     this.fhSocket.server.to(target._id).emit('addFriend', invitee);
   }
 
+  /**
+   * checks if invitee has invited target
+   * @param invitee userid
+   * @param target userid
+   */
   public async doesInvitationExist(
     invitee: string,
     target: string,
@@ -109,6 +135,10 @@ export class FriendsService {
     }));
   }
 
+  /**
+   * returns pending friendships of a specfic user
+   * @param user userid
+   */
   public async getInvitations(user: string): Promise<IPendingFriendship[]> {
     const friendships = await this.friendshipModel.find({
       $or: [
@@ -127,6 +157,11 @@ export class FriendsService {
     );
   }
 
+  /**
+   * sends a friendship invivtation
+   * @param invitee userid
+   * @param target userid
+   */
   public async sendInvitation(invitee: IUser, target: string): Promise<void> {
     if (await this.doesInvitationExist(invitee._id, target)) {
       return;
@@ -153,6 +188,11 @@ export class FriendsService {
       .emit('newFriendRequest', pending);
   }
 
+  /**
+   * denies a friendship invite
+   * @param targetId string
+   * @param friendshipId string
+   */
   public async denyFriendship(
     targetId: string,
     friendshipId: string,
@@ -166,16 +206,28 @@ export class FriendsService {
       .emit('removeFriendRequest', friendship._id);
   }
 
+  /**
+   * returns the total amount of friendships (admin stats)
+   */
   public async getTotalFriendships(): Promise<number> {
     return this.friendshipModel.find({ accepted: true }).countDocuments();
   }
 
+  /**
+   * returns the total amount of open friendrequests for a specific user
+   * @param id
+   */
   public async getInvitationsCount(id: string): Promise<number> {
     return await this.friendshipModel
       .find({ target: id, accepted: false })
       .countDocuments();
   }
 
+  /**
+   * returns the friendship of two users if exists
+   * @param userA string
+   * @param userB string
+   */
   public async getFriendship(
     userA: string,
     userB: string,
@@ -188,6 +240,10 @@ export class FriendsService {
     });
   }
 
+  /**
+   * returns more information about a specific friend
+   * @param id
+   */
   public async getFriendInformations(id: string): Promise<any> {
     const user: IUser = await this.userService.getUserById(id);
     return {

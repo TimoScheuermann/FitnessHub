@@ -28,13 +28,10 @@ export class RolesGuard implements CanActivate {
     const req = ctx.getRequest() as Request;
 
     const user = req.user as IUser;
-    return roles.some(r => {
+    return roles.some((r) => {
       if (user.group?.toLowerCase().includes(r)) {
         return true;
       }
-      /* if (user.permission.includes(r)) {
-       return true
-     } */
       return false;
     });
   }

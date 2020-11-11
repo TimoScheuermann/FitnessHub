@@ -26,6 +26,9 @@ import { WorkoutModule } from './workout/workout.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    /**
+     * connect to database
+     */
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {

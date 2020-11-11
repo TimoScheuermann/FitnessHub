@@ -21,22 +21,37 @@ import { NutritionplanService } from './nutritionplan.service';
 export class NutritionplanController {
   constructor(private readonly nutritionplanService: NutritionplanService) {}
 
+  /**
+   * returns all nutrition plans
+   */
   @Get()
   async getAll(): Promise<INutritionplan[]> {
     return this.nutritionplanService.getAll();
   }
 
+  /**
+   * returns nutrition plans, created by the request sender
+   * @param user sender
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('mine')
   async getByAuthor(@FHUser() user: IUser): Promise<INutritionplan[]> {
     return this.nutritionplanService.getByAuthor(user._id);
   }
 
+  /**
+   * returns a nutrition plan by ID
+   * @param id
+   */
   @Get(':id')
   async getById(@Param('id') id: string): Promise<INutritionplan> {
     return this.nutritionplanService.getById(id);
   }
 
+  /**
+   * returns nutritionplans with a specific category
+   * @param category
+   */
   @Get('category/:category')
   async getByCategory(
     @Param('category') category: string,
@@ -44,6 +59,11 @@ export class NutritionplanController {
     return this.nutritionplanService.getByCategory(category);
   }
 
+  /**
+   * creates a new nutition plan
+   * @param user sender
+   * @param createNutritionplan nutritionplan
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   async addNutritionplan(
@@ -53,6 +73,12 @@ export class NutritionplanController {
     this.nutritionplanService.addNutritionplan(user, createNutritionplan);
   }
 
+  /**
+   * updates a nutrition plan
+   * @param user sender
+   * @param id nutritionplan id
+   * @param update new nutrition plan
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('update/:id')
   async updateNutritionplan(
@@ -63,6 +89,11 @@ export class NutritionplanController {
     return this.nutritionplanService.updateNutritionplan(id, user._id, update);
   }
 
+  /**
+   * deletes a specific nutrition plan of the sender
+   * @param user sender
+   * @param id nutrtition plan
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
   async deleteNutritionplan(

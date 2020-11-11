@@ -12,6 +12,7 @@ export class TgbotService {
   // Admin Chat
   private CHAT_ID = -473869455;
 
+  // declare bots if enabled via env vars.
   private bot = process.env.IGNORE_BOT
     ? undefined
     : new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
@@ -32,6 +33,7 @@ export class TgbotService {
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly fhSocket: FHSocket,
   ) {
+    // load all connected clients
     this.userModel
       .find({ telegramChat: { $exists: true } })
       .then((res: IUser[]) => {
@@ -42,14 +44,19 @@ export class TgbotService {
 
     if (this.clientBot) {
       this.clientBot.on('message', (details) => {
+        // bot has received a message from a non connected user
         if (!Object.values(this.connectedChats).includes(details.chat.id)) {
+          // check if token hasnt already been created
           if (!Object.keys(this.tokens).includes(details.chat.id + '')) {
+            // create token
             let token = v4();
             while (Object.values(this.tokens).includes(token)) {
               token = v4();
             }
             this.tokens[details.chat.id] = token;
           }
+
+          // send token to user
           this.clientBot.sendMessage(
             details.chat.id,
             `Dein Code lautet:\n${this.tokens[details.chat.id]}`,
@@ -57,6 +64,7 @@ export class TgbotService {
         }
       });
 
+      // connection callback has been triggered
       this.clientBot.on('callback_query', async (details) => {
         const canceled = details.data === 'cancel';
         const chatId = details.message.chat.id;
@@ -64,13 +72,19 @@ export class TgbotService {
 
         delete this.tokens[chatId + ''];
 
+        // user hasnt clicked cancel
         if (!canceled) {
+          // update user model
           await this.userModel.updateOne(
             { _id: userId },
             { $set: { telegramChat: chatId } },
             { upsert: true },
           );
+
+          // send update to frontend
           this.fhSocket.server.to(userId).emit('telegram.chat', chatId);
+
+          // send update via telegram
           this.clientBot.answerCallbackQuery(details.id, {
             show_alert: true,
             text: 'Accounts erfolgreich verknüpft!',
@@ -78,6 +92,7 @@ export class TgbotService {
           this.connectedChats[userId] = chatId;
         }
 
+        // delete callback message
         this.clientBot.deleteMessage(
           details.message.chat.id,
           details.message.message_id,
@@ -88,17 +103,24 @@ export class TgbotService {
 
   public validateConnection(user: IUser, code: string): void {
     if (!this.clientBot) return;
+
+    // validate token sent via frontend
     if (!Object.values(this.tokens).includes(code)) {
       this.fhSocket.server
         .to(user._id)
         .emit('telegram.errorMessage', 'Code existiert nicht.');
       return;
     }
+
+    // ask via telegram if connection is allowed
     for (const key in this.tokens) {
+      // token and key match
       if (this.tokens[key] === code) {
         const name = [user.givenName, user.familyName]
           .filter((x) => !!x)
           .join(' ');
+
+        // create message with callback for accept or deny
         const message = `<a href="${user.avatar}">&#8205;</a>\nDieser Account versucht sich mit deinem Telegram Account zu verknüpfen:\n<b>${name}</b>`;
         const opts = {
           parse_mode: 'HTML',
@@ -112,16 +134,28 @@ export class TgbotService {
             ],
           },
         };
+
+        // send message
         this.clientBot.sendMessage(key, message, opts);
       }
     }
   }
 
+  /**
+   * sends a message to the admin group
+   * @param message message
+   */
   public sendMessage(message: string): void {
     if (this.bot)
       this.bot.sendMessage(this.CHAT_ID, message, { parse_mode: 'HTML' });
   }
 
+  /**
+   * sends a url message to the admin group
+   * @param message message
+   * @param label button label underneath the message
+   * @param url url inserted into the button
+   */
   public sendURLMessage(message: string, label: string, url: string): void {
     if (this.bot)
       this.bot.sendMessage(this.CHAT_ID, message, {
@@ -132,6 +166,11 @@ export class TgbotService {
       });
   }
 
+  /**
+   * send a message via telegram to a specific user
+   * @param userId string
+   * @param message message
+   */
   public sendMessageToUser(userId: string, message: string): void {
     if (this.clientBot && this.connectedChats[userId]) {
       this.clientBot.sendMessage(this.connectedChats[userId], message, {
