@@ -6,9 +6,10 @@
 # Dokumentation der Portfolioarbeit im Fach "Plattformen und Frameworks"
 
 
-## Links (alle https)
+## Das wichtigste auf einen Blick
 
 - [App](https://fitnesshub.app/)
+- [Introduction](https://www.youtube.com/watch?v=9lRLQRGrHpg)
 - [Backend](https://api.timos.design:3000/)
 - [API](https://api.timos.design:3000/api)
 - [Jira](https://fancyfitnessplanner.atlassian.net/)
@@ -26,10 +27,6 @@
 
 ## Inhaltsverzeichnis
 
-- [Dokumentation der Portfolioarbeit im Fach "Plattformen und Frameworks"](#dokumentation-der-portfolioarbeit-im-fach-plattformen-und-frameworks)
-  - [Links (alle https)](#links-alle-https)
-  - [Gruppenmitglieder](#gruppenmitglieder)
-  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
 - [Einführung](#einführung)
 - [Unsere App](#unsere-app)
 - [Vorgehen](#vorgehen)
