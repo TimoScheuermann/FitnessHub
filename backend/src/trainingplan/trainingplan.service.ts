@@ -18,10 +18,18 @@ export class TrainingplanService {
     private workoutModel: Model<Workout>,
   ) {}
 
+  /**
+   * Returns trainingsplan of specific user
+   * @param userId author
+   */
   public async getTrainingplan(userId: string): Promise<ITrainingplan> {
     return this.trainingplanModel.findOne({ author: userId });
   }
 
+  /**
+   * Replaces workoutId or exerciseId with full info
+   * @param userId author
+   */
   public async getFullTrainingplan(userId: string): Promise<ITrainingplanFull> {
     const trainingPlan = (await this.getTrainingplan(userId)) as ITrainingplan;
     if (!trainingPlan) return undefined;
@@ -39,6 +47,8 @@ export class TrainingplanService {
     let uniqueExerciseIds = [];
     days.forEach((x) => {
       const data: string = trainingPlan[x];
+      // exerciseId starts with _ex
+      // else it is a workout
       if (data.startsWith('ex_')) {
         uniqueExerciseIds.push(data.split('ex_')[1]);
       } else {
@@ -80,6 +90,12 @@ export class TrainingplanService {
     return fullPlan;
   }
 
+  /**
+   * Adds workout or exercise to specific day
+   * @param userId author
+   * @param day specific day
+   * @param data workout or exercise id
+   */
   public async setIdForDay(
     userId: string,
     day: number,
@@ -95,6 +111,11 @@ export class TrainingplanService {
     return await this.getFullTrainingplan(userId);
   }
 
+  /**
+   * Removes workout or exercise of specific day
+   * @param userId author
+   * @param day specific day
+   */
   public async removeDay(
     userId: string,
     day: number,

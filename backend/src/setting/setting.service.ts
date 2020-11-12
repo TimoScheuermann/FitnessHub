@@ -22,6 +22,11 @@ export class SettingService {
     private settingModel: Model<Setting>,
   ) {}
 
+  /**
+   * Used by decorator to verify user
+   * @param userId FHUser
+   * @param setting AvailableSetting
+   */
   public async isAllowing(
     userId: string,
     setting: AvailableSetting,
@@ -32,6 +37,11 @@ export class SettingService {
     }));
   }
 
+  /**
+   * Enables setting for specific user
+   * @param user FHUser
+   * @param name AvailableSetting
+   */
   public async enableSetting(
     user: IUser,
     name: AvailableSetting,
@@ -41,6 +51,12 @@ export class SettingService {
       { $pull: { disabled: name } },
     );
   }
+
+  /**
+   * Disables setting for specific user
+   * @param user FHUser
+   * @param name AvailableSetting
+   */
   public async disableSetting(
     user: IUser,
     name: AvailableSetting,
@@ -51,6 +67,11 @@ export class SettingService {
       { upsert: true },
     );
   }
+
+  /**
+   * Returns settings of specific user
+   * @param userId string
+   */
   public async getSettings(userId: string): Promise<AvailableSetting[]> {
     const data = await this.settingModel.findOne({ user: userId });
     if (data.disabled) return data.disabled;

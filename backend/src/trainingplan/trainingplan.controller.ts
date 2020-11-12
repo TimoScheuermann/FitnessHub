@@ -11,18 +11,32 @@ import { TrainingplanService } from './trainingplan.service';
 export class TrainingplanController {
   constructor(private readonly trainingplanService: TrainingplanService) {}
 
+  /**
+   * Returns trainingplan of specific user
+   * @param user author
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getTrainingplan(@FHUser() user: IUser): Promise<ITrainingplan> {
     return this.trainingplanService.getTrainingplan(user._id);
   }
 
+  /**
+   * Returns full traningsplan of specific user
+   * @param user author
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('full')
   async getFullTrainingplan(@FHUser() user: IUser): Promise<ITrainingplanFull> {
     return this.trainingplanService.getFullTrainingplan(user._id);
   }
 
+  /**
+   * Adds workout or exercise to specific day
+   * @param user author
+   * @param day specific day
+   * @param id workout or exercise id
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put(':day/:id')
   async setWorkoutForDay(
@@ -33,6 +47,11 @@ export class TrainingplanController {
     return this.trainingplanService.setIdForDay(user._id, day, id);
   }
 
+  /**
+   * Removes workout or exercise of specific day
+   * @param user author
+   * @param day specific day
+   */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':day')
   async removeDay(
