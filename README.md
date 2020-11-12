@@ -106,8 +106,7 @@ Eine große Herausforderung war die Auswahl optimaler Technologien für die Entw
 |--|--|--|--|--|--|--|
 |Anfängerfreundlich/ Lernkurve|5|3|3|2|2|2|
 |Beliebtheit (nach Anzahl der Stars in GitHub)|5|3|4|1|2|1|
-|Architektur|MVC (Model-View-Controller)
-|MVC|CBA (Component Based Architecture)|-|-|MVC|
+|Architektur|MVC (Model-View-Controller)|MVC|CBA (Component Based Architecture)|-|-|MVC|
 |Dokumentation|5|4|4|1|2|2|
 |--|5|4|4|1|2|2|
 |--|4|5|3|-|-|-|
