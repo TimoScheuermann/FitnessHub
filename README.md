@@ -34,17 +34,13 @@
 - [Unsere App](#unsere-app)
 - [Vorgehen](#vorgehen)
 - [Technologien](#technologien)
+- [High Level Architecture](#high-level-architecture)
 - [Datenbankmodell](#datenbankmodell)
   - [User](#user)
   - [Training](#training)
   - [Nutrition](#nutrition)
 - [Unsere Highlights während der Entwicklung und Planung](#unsere-highlights-während-der-entwicklung-und-planung)
 - [Ausblick](#ausblick)
-- [OLD Readme, TBD](#old-readme-tbd)
-  - [Technologien](#technologien-1)
-  - [Was soll die App können](#was-soll-die-app-können)
-  - [Aufgaben](#aufgaben)
-  - [UI](#ui)
 
 <br>
 
@@ -58,45 +54,48 @@ Im Folgenden werden einmal die Funktionen des FitnessHubs beschrieben und anschl
 
 Zunächst einmal muss gesagt werden, dass die vollständige Nutzung der App ein Login erfordert, welchen wir über verschiedene Dienste wie Google oder Github ermöglicht haben. Somit melden sich die Mitglieder nicht direkt bei unserer App an, sondern können diese mit bereits bestehenden Konten verknüpfen und wir müssen keine persönlichen Login-Daten der Nutzer speichern. Aber auch ohne Login lassen sich die Übungen, Workouts und Rezepte, sowie die Wikis einsehen.
 
-| | | |
-|-|-|-|
-|![](resources/login-framed.png)|![](resources/about2-framed.png)|![](resources/about3-framed.png)|
+<p align="left">
+    <img width="30%" src="resources/login-framed.png" />
+    <img width="30%" src="resources/about2-framed.png" />
+    <img width="30%" src="resources/about3-framed.png" />
+</p>
 
 Als Mitglied der FitnessHub-Community stehen dem Benutzer verschiedene Funktionen zur Verfügung. Die Grundidee war, seine verschiedenen Trainingseinheiten planen, sowie vorgeschlagene Trainingspläne für das eigene Training nutzen zu können. Der User soll ebenfalls bei seiner Ernährung durch Rezeptvorschläge oder interessante Ernährungsfakten unterstützt werden und seine Fortschritte tracken können. Auch Freundschaften kommen in unserer App nicht zu kurz, da man andere User als Freunde hinzufügen und mit diesen über unser Chatsystem kommunizieren kann.
 Unsere Startseite beinhaltet alles, was man für einen schnellen Trainingsstart und während des Trainings benötigt. Diese ist relativ minimalistisch gehalten und zeigt lediglich eine Uhr an, die sich als Timer oder Stoppuhr verwenden lässt, sowie eine Weiterleitung zum direkten Trainingsstart oder der Erstellung eines neuen Workouts.
 
-
-| | | |
-|-|-|-|
-|![](resources/home-framed.png)|![](resources/training-framed.png)|![](resources/exercise-framed.png)|
+<p align="left">
+    <img width="30%" src="resources/home-framed.png" />
+    <img width="30%" src="resources/training-framed.png" />
+    <img width="30%" src="resources/exercise-framed.png" />
+</p>
 
 Der Trainingsreiter gibt einen Überblick über verschiedene Sportarten und Fitnessübungen. Diese lassen sich nach Muskelgruppen sortieren und durch Anklicken um genauere Informationen erweitern. Während man bei verschiedenen Sportarten den durchschnittlichen Kalorienverbrauch angezeigt bekommt, erfährt man bei Cardio-Übungen zusätzlich noch Informationen über die Wirkung der Übung, sowie eventuell eine Warnung bei besonderer Verletzungsgefahr. Die Darstellung der Kraftübungen beinhaltet zum einen die angesprochenen Muskelgruppen und die schrittweise Ausführung der Übung und zum anderen Hinweise zur Übungsvariation und dem Schwierigkeitsgrad. Ebenfalls werden im Trainingsreiter bereits angelegte und geteilte Trainingspläne aufgelistet, die einem bei jedem Training zur Verfügung stehen. Für Neulinge in Sachen Kraftsport findet sich hier ebenfalls der Muskelguide, der die Lage und Funktion der wichtigsten Muskeln kurz beschreibt.
 Möchte man nun eigene Trainingspläne anlegen, gelingt einem dies über den Profilreiter. Hier lassen sich unter „Workouts & Trainingsplan“ eigene Pläne erstellen, bearbeiten und für bestimmte Tage einplanen. Auch können hier unter „Übungen“ bisher fehlende oder selbst kreierte Übungen oder Sportarten definiert und eingereicht werden. Diese werden zunächst uns als Administratoren und den eingestellten Moderatoren zur Überprüfung angezeigt und können anschließend von uns bearbeitet und freigegeben werden. Dasselbe gilt für Rezepte. Auch diese können unter „Meine Rezepte“ eingereicht werden. Um unsere Mitglieder zu motivieren, können diese verschiedene Erfolge freischalten (bspw. beim Eintragen des ersten freien Klimmzuges). Natürlich kann auch jedes Mitglied sein Gewicht tracken und kann sich dieses über „Trainingsstatistik“ in verschiedenen Zeitperioden als Graph mit zugehörigem aktuellen BMI anzeigen lassen.
 
-| | | |
-|-|-|-|
-|![](resources/profile1-framed.png)|![](resources/trainingsstatistik-weight-framed.png)|![](resources/friends-framed.png)|
+<p align="left">
+    <img width="30%" src="resources/profile1-framed.png" />
+    <img width="30%" src="resources/trainingsstatistik-weight-framed.png" />
+    <img width="30%" src="resources/friends-framed.png" />
+</p>
 
 Auch das Freundschaftssystem der App ist unter Profil realisiert. Hier kann man unter „Freunde“ neue Bekanntschaften hinzufügen und einen Chat mit diesen beginnen. Alle Chats befinden sich unter „Nachrichten“ nach Aktualität und Person sortiert. Diese Rubrik ist aufgebaut wie bei vielen anderen Messengerdiensten und erlaubt zudem die Weiterleitung zu Telegram.
 Der Ernährungsreiter beinhaltet zunächst einen „Trinkometer“ mit dessen Hilfe man seine Flüssigkeitszufuhr pro Tag tracken kann. Mit Hilfe eines Kreisdiagramms wird der Nutzer dazu motiviert seinen täglichen Flüssigkeitsbedarf zu decken. Außerdem befinden sich auf dieser Seite die Rezepte. Diese sind nach Kategorien wie glutenfrei, high Protein, vegan oder ähnliches sortiert. Hat der Nutzer sich für ein Rezept entschieden werden ihm eine Zutatencheckliste, die Zubereitungsanleitung, alle enthaltenen Nährwerte und weitere interessante Fakten und Tipps angezeigt. Außerdem findet man über diese Seite verschiedene Ernährungstipps, sowie eine Erklärung verschiedener Supplements.
 
-| | | |
-|-|-|-|
-|![](resources/nutrition-framed.png)|![](resources/recipe-detail-framed.png)|![](resources/nutrition-wiki-framed.png)|
+
+<p align="left">
+    <img width="30%" src="resources/nutrition-framed.png" />
+    <img width="30%" src="resources/recipe-detail-framed.png" />
+    <img width="30%" src="resources/nutrition-wiki-framed.png" />
+</p>
 
 Die folgende Grafik verdeutlicht einmal die Vorteile unserer FitnessHub-App:
 
 <img width="100%" src="./resources/adv.jpg" />
 
-<br />
-<br />
-
 # Vorgehen
 
 Unser gesamtes Projekt planten und organisierten wir über ein Jira-Board und führten wöchentliche Sprint-Meetings ein. Während dieser Sprintmeetings erläuterte jeder kurz, was er die vergangene Woche gemacht hat und wie er dies umsetzte. Dieses Vorgehen führte dazu, dass jeder aktiv am Projekt mitarbeitete und man permanent einen Überblick über das gesamte Projekt hatte. Außerdem wurde während diesen Meetings das weitere Vorgehen geplant, sowie Prioritäten gesetzt und verschiedene Aufgaben analysiert.
 Wir teilten unsere Gruppe in drei gesonderte Teams auf, die sich jeweils um das Backend (Jan Eger, Timo Scheuermann), das Frontend (Moritz Jürgens, Nicolas Fürhaupter) und jegliche Inhalte der Seite (Velichka Popp, Jeannine Bertrand) kümmerten.
-
-<br />
 
 # Technologien
 
@@ -120,7 +119,15 @@ Bei den Backend Frameworks sind wir ähnlich vorgegangen. Dabei muss beachtet we
 
 <img width="100%" src="resources/vgl_fw_b.png" />
 
-<br />
+# High Level Architecture
+
+Im Folgenden soll kurz die grobe Architektur unseres Projektes vorgestellt werden. Als Frontend-Technologie haben wir uns für Vue.js entschieden und beim Backend haben wir uns für Nest entschieden. Als Verbindung zwischen Front- und Backend fungiert Socket.io (http://socket.io/). Socket.io arbeitet mithilfe einer Message-Queue. Diese funktioniert nach dem Publish-Subscribe Pattern. Hierdurch kennen sich Sender und Empfänger nicht. Die Kommunikation erfolgt über Events, dies bietet uns eine dynamische Verbindung. Außerdem wird der Client direkt bei Updates informiert und ist so immer auf dem aktuellen Stand. Diese Socketverbindung wird erst nach erfolgreicher Anmeldung hergestellt.
+Gehostet wird das Frontend von Netlify. Netlify bietet uns eine Versionskontrolle, um die App auf ältere Versionen wiederherzustellen. Außerdem managt Netlify die DNS-Einträge der Property fitnesshub.app. Darüber hinaus bietet Netlify direkt eine Continous-Integration/Continous-Delivery-Pipeline (CI/CD-Pipeline), die Änderungen im Frontendcode direkt veröffentlicht.
+Auf der anderen Seite wird das Backend von Hetzner gehostet. Für das Backend haben wir eine eigene CI/CD-Pipeline mithilfe der GitHub-Actions geschrieben, dass auch die dortigen Änderungen direkt veröffentlicht werden.
+Bei der Datenbank haben wir uns für die nicht-relationale (NoSQL) Datenbank MongoDB entschieden. Diese wird in der MongoDB Cloud gehostet.
+Um die Verbindung zwischen dem Backend und der Datenbank herzustellen, verwenden wir das Node Module Mongoose. Dieses baut die Verbindung zwischen beiden Seiten bei Verbindungsabbrüchen wieder auf. Außerdem bietet Mongoose einen einfachen Schemenaufbau und einfaches Arbeiten mit Klassen.
+
+<img width="100%" src="resources/hla.jpg" />
 
 # Datenbankmodell
 
@@ -148,8 +155,6 @@ enum HealthType {
     HEIGHT = 'height',
 }
 ```
-
-</div>
 
 ```ts
 enum AvailableSetting {
@@ -188,11 +193,7 @@ class UpdateExerciseDTO {
 
 ## Nutrition
 
-<br />
-
 <img width="100%" src="./resources/db_nutrition.jpg" />
-
-<br />
 
 ```ts
 interface IRecipeIngredient {
@@ -231,85 +232,9 @@ interface INutritionplanDay {
 * Bei dem Aufbau der App, der Verknüpfung der Seiten und dem Einfügen verschiedener Funktionen konnte die gesamte Gruppe vom fundierten Wissen der jeweiligen Gruppenmitglieder lernen.
 * Freundschaften und private Einstellungen werden mithilfe mehrerer Decorator realisiert und angezeigt. So wird noch vor dem Ausführen verschiedener Methoden geprüft, ob die bestimmten Nutzer Rechte haben sich bestimmte Inhalte anzeigen zu lassen.
 
-<br />
-
 # Ausblick
 
 Während der Entwicklung kamen uns immer mehr Ideen, wie man die App verbessern oder erweitern kann. Plan war es, eine Community-Seite zu errichten, in der der Nutzer Erfolge oder Rezepte mit seinen Freunden teilen kann, sowie wir als Administratoren verschiedene Beiträge veröffentlichen können. Dieser Teil der Entwicklung fiel jedoch in den Aufgabenbereich eines Gruppenmitgliedes, welches uns im Laufe der Entwicklung leider verlassen musste. Somit wurde dieser Reiter bisher nicht realisiert und in das nächste Semester verschoben.
 Eine weitere noch offene Idee waren Vorlagen für verschiedene Ernährungspläne, um den Nutzern einen Überblick geben zu können, wie beispielsweise die Ernährung für eine Woche aussehen könnte, in der man ein bestimmtes Kaloriendefizit einhält oder eine bestimmte Menge an Proteinen zu sich nimmt.
 Ebenfalls geplant sind Challenges, die wir als Administratoren festlegen können, um die Mitglieder zu motivieren. Diese Challenges könnten beispielsweise so aussehen, dass die User eine Woche lang jeden Tag 50 Liegestütz machen sollen oder möglichst viele Burpees innerhalb einer Minute. Dies soll die Nutzer dazu motivieren, auch mal andere Übungen auszuprobieren und sich selber für eine kurze Zeit herauszufordern.
-
-# OLD Readme, TBD
-
-## Technologien
-
-- Frontend: Vue.js (PWA, mobile first)
-- Backend: Nest.js
-- DB: MongoDB
-- Authentifizierung mit oAuth
-
-## Was soll die App können
-
-- Trainingspläne erstellen und teilen
-- Ernährungspläne
-- Für Trainings verabreden (oder gemeinsame Saunagänge [@michael-spengler ^^])
-- Tutorials (Richtige Trainingsausführung, etc)
-
-## Aufgaben
-
-- Assets finden (Bilder, Videos) (Veli)
-- Texte schreiben (Veli, Jeannine)
-- Beispiel Ernährungspläne (/ healthy Rezeptideen) schreiben (Veli, Jeannine)
-- Workouts (Initital 3 Stück? Moritz', Jeannine's und Timo's)
-- UI Konzeption (Jeannine, Veli)
-- Backend: oAuth, DB, REST (Timo, DB: Eger)
-- Datenmodelle (DTOs)
-- Frontend (Moritz, Nico, Timo?)
-
-## UI
-
-Startseite:
-
-- Stoppuhr
-- Training eintragen
-- Training planen
-
-Profil:
-
-- komplette Pläne erstellen
-- vergangene Trainings einsehen
-- Fortschritte eintragen/einsehen
-- Ziele definieren
-- (private) Galerie mit Fortschrittbildern
-
-Community:
-
-- Freunde hinzufügen
-- Inhalte von Freunden (Trainings, Rezepte, Fortschritte..)
-- Challenges starten
-- Motivationen (Influencer?)
-
-Suchen:
-
-- Kategorische Suche (Muskelgruppen, Splitkategorie, ...)
-- einfache Suche (Geräte, Übungen, ...)
-- Vorschläge (Supersatz, Kombinationen, Muskelreize, ...)
-- Fertige Pläne (Fitnessstudio, Homeworkouts, Joggen, ...)
-
-Ernährung:
-
-- Tipps
-- Kalorientracking
-- Beispiel Ernöhrungsplan
-- Grundlegende Informationen
-- Rezepte
-
-Login:
-
-- Sign in with Google
-- Sign in with GitHub
-- Sign in with Steam
-- Sign in with Adobe
-- Sign in with Amazon
-
-**Readme wird sich im Laufe des Projekts stetig aktualisieren**
+Auch eine Telegram Integration soll das Erhalten von Push-Benachrichtigungen ermöglichen. Da es IOS und Android uns nicht erlauben direkt auf ihre APIs zuzugreifen, da wir eine PWA entwickelt haben und keine native IOS- oder Android-App, muss diese Funktion ausgelagert werden. Auch Discord bietet seit Neustem diese Möglichkeit an. Um unser Portfolio breiter aufzustellen, werden wir so auch die Verbindung zu Discord ermöglichen.
