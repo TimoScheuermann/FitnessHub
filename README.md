@@ -26,13 +26,25 @@
 
 ## Inhaltsverzeichnis
 
-[Einführung]()
-[Unsere App]()
-[Vorgehen]()
-[Technologien]()
-[Datenbankmodell]()
-[Unsere Highlights während der Entwicklung und Planung]()
-[Ausblick]()
+- [Dokumentation der Portfolioarbeit im Fach "Plattformen und Frameworks"](#dokumentation-der-portfolioarbeit-im-fach-plattformen-und-frameworks)
+  - [Links (alle https)](#links-alle-https)
+  - [Gruppenmitglieder](#gruppenmitglieder)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+- [Einführung](#einführung)
+- [Unsere App](#unsere-app)
+- [Vorgehen](#vorgehen)
+- [Technologien](#technologien)
+- [Datenbankmodell](#datenbankmodell)
+  - [User](#user)
+  - [Training](#training)
+  - [Nutrition](#nutrition)
+- [Unsere Highlights während der Entwicklung und Planung](#unsere-highlights-während-der-entwicklung-und-planung)
+- [Ausblick](#ausblick)
+- [OLD Readme, TBD](#old-readme-tbd)
+  - [Technologien](#technologien-1)
+  - [Was soll die App können](#was-soll-die-app-können)
+  - [Aufgaben](#aufgaben)
+  - [UI](#ui)
 
 <br>
 
@@ -46,53 +58,35 @@ Im Folgenden werden einmal die Funktionen des FitnessHubs beschrieben und anschl
 
 Zunächst einmal muss gesagt werden, dass die vollständige Nutzung der App ein Login erfordert, welchen wir über verschiedene Dienste wie Google oder Github ermöglicht haben. Somit melden sich die Mitglieder nicht direkt bei unserer App an, sondern können diese mit bereits bestehenden Konten verknüpfen und wir müssen keine persönlichen Login-Daten der Nutzer speichern. Aber auch ohne Login lassen sich die Übungen, Workouts und Rezepte, sowie die Wikis einsehen.
 
-<br />
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 30px;">
-    <img src="./resources/login-framed.png">
-    <img src="./resources/about2-framed.png">
-    <img src="./resources/about3-framed.png">
-</div>
-<br />
+| | | |
+|-|-|-|
+|![](resources/login-framed.png)|![](resources/about2-framed.png)|![](resources/about3-framed.png)|
 
 Als Mitglied der FitnessHub-Community stehen dem Benutzer verschiedene Funktionen zur Verfügung. Die Grundidee war, seine verschiedenen Trainingseinheiten planen, sowie vorgeschlagene Trainingspläne für das eigene Training nutzen zu können. Der User soll ebenfalls bei seiner Ernährung durch Rezeptvorschläge oder interessante Ernährungsfakten unterstützt werden und seine Fortschritte tracken können. Auch Freundschaften kommen in unserer App nicht zu kurz, da man andere User als Freunde hinzufügen und mit diesen über unser Chatsystem kommunizieren kann.
 Unsere Startseite beinhaltet alles, was man für einen schnellen Trainingsstart und während des Trainings benötigt. Diese ist relativ minimalistisch gehalten und zeigt lediglich eine Uhr an, die sich als Timer oder Stoppuhr verwenden lässt, sowie eine Weiterleitung zum direkten Trainingsstart oder der Erstellung eines neuen Workouts.
 
 
-<br />
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 30px;">
-    <img src="./resources/home-framed.png">
-    <img src="./resources/training-framed.png">
-    <img src="./resources/exercise-framed.png">
-</div>
-<br />
+| | | |
+|-|-|-|
+|![](resources/home-framed.png)|![](resources/training-framed.png)|![](resources/exercise-framed.png)|
 
 Der Trainingsreiter gibt einen Überblick über verschiedene Sportarten und Fitnessübungen. Diese lassen sich nach Muskelgruppen sortieren und durch Anklicken um genauere Informationen erweitern. Während man bei verschiedenen Sportarten den durchschnittlichen Kalorienverbrauch angezeigt bekommt, erfährt man bei Cardio-Übungen zusätzlich noch Informationen über die Wirkung der Übung, sowie eventuell eine Warnung bei besonderer Verletzungsgefahr. Die Darstellung der Kraftübungen beinhaltet zum einen die angesprochenen Muskelgruppen und die schrittweise Ausführung der Übung und zum anderen Hinweise zur Übungsvariation und dem Schwierigkeitsgrad. Ebenfalls werden im Trainingsreiter bereits angelegte und geteilte Trainingspläne aufgelistet, die einem bei jedem Training zur Verfügung stehen. Für Neulinge in Sachen Kraftsport findet sich hier ebenfalls der Muskelguide, der die Lage und Funktion der wichtigsten Muskeln kurz beschreibt.
 Möchte man nun eigene Trainingspläne anlegen, gelingt einem dies über den Profilreiter. Hier lassen sich unter „Workouts & Trainingsplan“ eigene Pläne erstellen, bearbeiten und für bestimmte Tage einplanen. Auch können hier unter „Übungen“ bisher fehlende oder selbst kreierte Übungen oder Sportarten definiert und eingereicht werden. Diese werden zunächst uns als Administratoren und den eingestellten Moderatoren zur Überprüfung angezeigt und können anschließend von uns bearbeitet und freigegeben werden. Dasselbe gilt für Rezepte. Auch diese können unter „Meine Rezepte“ eingereicht werden. Um unsere Mitglieder zu motivieren, können diese verschiedene Erfolge freischalten (bspw. beim Eintragen des ersten freien Klimmzuges). Natürlich kann auch jedes Mitglied sein Gewicht tracken und kann sich dieses über „Trainingsstatistik“ in verschiedenen Zeitperioden als Graph mit zugehörigem aktuellen BMI anzeigen lassen.
 
-<br />
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 30px;">
-    <img src="./resources/profile1-framed.png">
-    <img src="./resources/trainingsstatistik-weight-framed.png">
-    <img src="./resources/friends-framed.png">
-</div>
-<br />
+| | | |
+|-|-|-|
+|![](resources/profile1-framed.png)|![](resources/trainingsstatistik-weight-framed.png)|![](resources/friends-framed.png)|
 
 Auch das Freundschaftssystem der App ist unter Profil realisiert. Hier kann man unter „Freunde“ neue Bekanntschaften hinzufügen und einen Chat mit diesen beginnen. Alle Chats befinden sich unter „Nachrichten“ nach Aktualität und Person sortiert. Diese Rubrik ist aufgebaut wie bei vielen anderen Messengerdiensten und erlaubt zudem die Weiterleitung zu Telegram.
 Der Ernährungsreiter beinhaltet zunächst einen „Trinkometer“ mit dessen Hilfe man seine Flüssigkeitszufuhr pro Tag tracken kann. Mit Hilfe eines Kreisdiagramms wird der Nutzer dazu motiviert seinen täglichen Flüssigkeitsbedarf zu decken. Außerdem befinden sich auf dieser Seite die Rezepte. Diese sind nach Kategorien wie glutenfrei, high Protein, vegan oder ähnliches sortiert. Hat der Nutzer sich für ein Rezept entschieden werden ihm eine Zutatencheckliste, die Zubereitungsanleitung, alle enthaltenen Nährwerte und weitere interessante Fakten und Tipps angezeigt. Außerdem findet man über diese Seite verschiedene Ernährungstipps, sowie eine Erklärung verschiedener Supplements.
 
-<br />
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 30px;">
-    <img src="./resources/nutrition-framed.png">
-    <img src="./resources/recipe-detail-framed.png">
-    <img src="./resources/nutrition-wiki-framed.png">
-</div>
-<br />
+| | | |
+|-|-|-|
+|![](resources/nutrition-framed.png)|![](resources/recipe-detail-framed.png)|![](resources/nutrition-wiki-framed.png)|
 
 Die folgende Grafik verdeutlicht einmal die Vorteile unserer FitnessHub-App:
 
-<br />
-
-<img src="./resources/adv.jpg" />
+<img width="100%" src="./resources/adv.jpg" />
 
 <br />
 <br />
@@ -120,11 +114,12 @@ Eine große Herausforderung war die Auswahl optimaler Technologien für die Entw
 
 Für die Beliebtheit der Frameworks haben wir als Kriterium die Anzahl der Stars der Github Repositories genommen, da dies eine einfache, aber trotzdem aussagekräftige Metrik für die Bekanntheit und die Wertschätzung eines Projekts ist (Vgl. N. Munaiah, S. Kroh, C. Cabrey et al.: Kuratieren von GitHub für technische Softwareprojekte; Empirical Software Engineering 22, S. 3219–3253; 2017. https://doi.org/10.1007/s10664-017-9512-6). Wie man in der untenstehenden Grafik erkennt, ist Vue an erster Stelle, dicht gefolgt von React (Stand 30 Oktober 2020). Weitere Argumente, die Vue hervorgehoben haben, waren die ausführliche und verständliche Dokumentation, die den Einstieg stark erleichterte. Das Einlesen und Ausprobieren hat Spaß gemacht, da dort eine große und zuverlässige Community vorhanden ist, die für jedes Problem eine Lösung kennt. Besonders NativeScript, als relativ junge Technologie, konnte in diesem Punkt nicht überzeugen.
 
-![](resources/vgl_fw.png)
+<img width="100%" src="resources/vgl_fw.png" />
 
 Bei den Backend Frameworks sind wir ähnlich vorgegangen. Dabei muss beachtet werden, dass NestJS grundsätzlich auf NodeJS aufbaut und dessen API verwendet, ähnlich wie Express. Letzendlich geht es bei der Wahl darum, die Alternative auszuwählen, die die Entwicklungsarbeit erleichtert bzw. verbessert. Wir haben uns die Dokumentation und den Community Support, sowie deren Reichweite, angeschaut und festgestellt, dass NestJs momentan führt. Ein Indiz dafür war auch die Anzahl der Watches bei Github, wie die untenstehende Grafik zeigt. Ein anderes Kriterium war auch die Anzahl an Forks als Indiz für den Verbesserungsbedarf des Projekts. Im Vergleich zu den anderen (NodeJS 18,2k | Express 8,4k | Deno 3,6k) hatte NestJs die kleinste Anzahl (2,8k), was die gute Qualität der vorhandenen Projekte verdeutlicht.
 
-![](resources/vgl_fw_b.png)
+
+<img width="100%" src="resources/vgl_fw_b.png" />
 
 <br />
 
@@ -134,10 +129,7 @@ Im Folgenden werden die Datenbankmodelle, aufgeteilt in User, Training und Nutri
 
 ## User
 
-![](resources/db_user.jpg)
-
-
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); grid-gap: 15px;">
+<img width="100%" src="resources/db_user.jpg" />
 
 ```ts
 enum Provider {
@@ -175,7 +167,7 @@ enum AvailableSetting {
 
 ## Training
 
-![](resources/db_training.jpg)
+<img width="100%" src="resources/db_training.jpg" />
 
 ```ts
 class UpdateExerciseDTO {
@@ -203,8 +195,6 @@ class UpdateExerciseDTO {
 
 <br />
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); grid-gap: 15px;">
-
 ```ts
 interface IRecipeIngredient {
     readonly name: string;
@@ -229,8 +219,6 @@ interface INutritionplanDay {
     snacks: IRecipe[];
 }
 ```
-
-</div>
 
 <br />
 
