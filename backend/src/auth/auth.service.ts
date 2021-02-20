@@ -28,7 +28,7 @@ export class AuthService {
      */
     if (jwt.suspended) {
       res.redirect(
-        `${this.configService.get('REDIRECT')}profile/suspended?t=${
+        `${this.configService.get('REDIRECT')}suspended?t=${
           jwt.suspended
         }`,
       );
@@ -37,7 +37,7 @@ export class AuthService {
        */
     } else if (jwt.token) {
       res.send(
-        `<script>window.opener.postMessage('tlt=${jwt}', '*');window.close();self.close();</script>`,
+        `<script>window.opener.postMessage('fht=${jwt.token}', '*');window.close();self.close();</script>`,
       );
       // res.redirect(
       //   `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
