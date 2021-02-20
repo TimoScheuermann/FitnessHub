@@ -39,9 +39,10 @@ export class AuthService {
       res.send(
         `<script>window.opener.postMessage('fht=${jwt.token}', '*');window.close();self.close();</script>`,
       );
-      // res.redirect(
-      //   `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
-      // );
+      // for old ui
+      res.redirect(
+        `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
+      );
     }
   }
 
