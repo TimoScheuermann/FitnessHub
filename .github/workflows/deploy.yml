@@ -14,7 +14,7 @@ jobs:
           username: root
           password: ${{ secrets.PW }}
           script: |
-            cd /root/Timos-Dev/backend
+            cd /root/FitnessHub/backend
             git stash
             git pull
             npm config set ignore-scripts true
