@@ -36,9 +36,12 @@ export class AuthService {
        * redirect to fitnesshub with token
        */
     } else if (jwt.token) {
-      res.redirect(
-        `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
+      res.send(
+        `<script>window.opener.postMessage('tlt=${jwt}', '*');window.close();self.close();</script>`,
       );
+      // res.redirect(
+      //   `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
+      // );
     }
   }
 
