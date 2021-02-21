@@ -3,13 +3,22 @@ name: Deploy
 on: [push]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: git pull, build and deploy
-        if: github.event.commits[0].message != 'synch'
-        run: |
-          echo "Starte deploy",
-          sshpass -p ${{ secrets.pw }} ssh root@api.timos.design -o StrictHostKeyChecking=no < ./deploy.bash
+      - name: SSH and deploy node app
+        uses: appleboy/ssh-action@master
+        with:
+          host: api.timos.design
+          username: root
+          password: ${{ secrets.PW }}
+          script: |
+            cd /root/FitnessHub/backend
+            git stash
+            git pull
+            npm config set ignore-scripts true
+            npm i
+            npm config set ignore-scripts false
+            npm run build
+            pm2 restart FitnessHub
