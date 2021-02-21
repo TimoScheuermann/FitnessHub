@@ -1,0 +1,52 @@
+<template>
+  <div class="interim-training">
+    <tc-hero
+      :dark="$store.getters.darkmode"
+      :hasFixedHeader="$store.getters.isDesktop"
+    >
+      <img src="assets/hero/training.webp" slot="background" alt="" />
+      <h1>{{ $route.params.muscle || $route.meta.hero }}</h1>
+    </tc-hero>
+    <FHRouter />
+  </div>
+</template>
+
+<script lang="ts">
+import FHRouter from '@/components/FHRouter.vue';
+import backend from '@/utils/backend';
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component({
+  components: {
+    FHRouter
+  }
+})
+export default class InterimTraining extends Vue {
+  mounted() {
+    this.loadTrendingExercises();
+    this.loadLatestExercises();
+    this.loadLatestWorkouts();
+  }
+
+  public async loadTrendingExercises(): Promise<void> {
+    if (!this.$store.getters.trendingExercises) {
+      const { data } = await backend.get('exercise/trending');
+      this.$store.commit('trendingExercises', data);
+    }
+  }
+
+  public async loadLatestExercises(): Promise<void> {
+    if (!this.$store.getters.latestExercises) {
+      const { data } = await backend.get('exercise/latest');
+      this.$store.commit('latestExercises', data);
+    }
+  }
+
+  public async loadLatestWorkouts(): Promise<void> {
+    if (!this.$store.getters.latestWorkouts) {
+      const { data } = await backend.get('workout/latest');
+      this.$store.commit('latestWorkouts', data);
+    }
+  }
+}
+</script>

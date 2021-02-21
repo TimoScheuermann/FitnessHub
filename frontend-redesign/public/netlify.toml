@@ -1,0 +1,28 @@
+# The following redirect is intended for use with most SPA's that handles routing internally.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build]
+  publish = "public"
+
+[[plugins]]
+  package = "netlify-plugin-submit-sitemap"
+
+	[plugins.inputs]
+
+	# The base url of your site (optional, default = main URL set in Netlify)
+	baseUrl = "https://fitnesshub.app"
+
+	# Path to the sitemap URL (optional, default = /sitemap.xml)
+	sitemapPath = "/sitemap.xml"
+
+	# Enabled providers to submit sitemap to (optional, default = 'google', 'bing'). Possible providers are currently only 'google' and 'bing'.
+	providers = [
+		"google",
+		"bing"
+	]
+
+[[plugins]]
+package = "netlify-plugin-image-optim"
