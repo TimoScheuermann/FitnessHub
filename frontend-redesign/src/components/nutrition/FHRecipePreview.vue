@@ -6,7 +6,9 @@
     @click="handleClick"
     :style="`--thumbnail: url('${recipe.thumbnail}'`"
   >
-    <div class="media" />
+    <div class="media">
+      <FHHeart />
+    </div>
     <div class="title">{{ recipe.title }}</div>
     <tl-flow horizontal="space-between">
       <div class="time">
@@ -30,8 +32,11 @@
 import { openFullscreen } from '@/utils/functions';
 import { IRecipe } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import FHHeart from './FHHeart.vue';
 
-@Component
+@Component({
+  components: { FHHeart }
+})
 export default class FHRecipePreview extends Vue {
   @Prop() recipe!: IRecipe;
 

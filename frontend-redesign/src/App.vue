@@ -15,6 +15,7 @@ import {
   registerMediaQueries,
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
+import { loadVariables } from './utils/functions';
 
 @Component({
   components: {
@@ -26,6 +27,7 @@ import {
 export default class App extends Vue {
   mounted() {
     registerMediaQueries();
+    loadVariables();
   }
 
   beforeDestroy() {
@@ -79,6 +81,8 @@ body {
   padding: 20px 5vw calc(20px + env(safe-area-inset-bottom));
   @media #{$isMobile} {
     padding-bottom: calc(70px + env(safe-area-inset-bottom));
+    padding-left: calc(5vw + env(safe-area-inset-left));
+    padding-right: calc(5vw + env(safe-area-inset-right));
   }
 }
 

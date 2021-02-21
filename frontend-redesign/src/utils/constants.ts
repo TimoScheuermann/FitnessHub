@@ -24,7 +24,7 @@ export const months = [
 
 export const aSecond = 1000;
 export const aMinute = 1000 * 60;
-export const aHour = 1000 * 60 * 60;
+export const anHour = 1000 * 60 * 60;
 export const aDay = 1000 * 60 * 60 * 24;
 export const aWeek = 1000 * 60 * 60 * 24 * 7;
 export const aMonth = 1000 * 60 * 60 * 24 * 30.43;

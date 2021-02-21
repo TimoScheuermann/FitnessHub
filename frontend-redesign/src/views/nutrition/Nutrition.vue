@@ -7,8 +7,19 @@
       </tl-grid>
 
       <br />
-      <FHHeading subtitle="rezept" title="Kategorien" />
-      <FHCarousel> </FHCarousel>
+
+      <FHAppear>
+        <div v-if="categories && categories.length > 0">
+          <FHHeading subtitle="rezept" title="Kategorien" />
+          <FHCarousel>
+            <FHCategoryPreview
+              v-for="c in categories"
+              :key="c._id"
+              :category="c"
+            />
+          </FHCarousel>
+        </div>
+      </FHAppear>
 
       <FHAppear>
         <div v-if="belovedRecipes && belovedRecipes.length > 0">
@@ -37,6 +48,7 @@
       </FHAppear>
 
       <FHHeading subtitle="ausgewogene" title="Ernährungspläne" />
+      <p>Bald verfügbar!</p>
     </div>
   </div>
 </template>
@@ -46,8 +58,9 @@ import FHAppear from '@/components/FHAppear.vue';
 import FHButton from '@/components/FHButton.vue';
 import FHCarousel from '@/components/FHCarousel.vue';
 import FHHeading from '@/components/FHHeading.vue';
+import FHCategoryPreview from '@/components/nutrition/FHCategoryPreview.vue';
 import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
-import { IRecipe } from '@/utils/interfaces';
+import { IRecipe, IVariable } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -56,7 +69,8 @@ import { Vue, Component } from 'vue-property-decorator';
     FHHeading,
     FHCarousel,
     FHRecipePreview,
-    FHAppear
+    FHAppear,
+    FHCategoryPreview
   }
 })
 export default class Nutrition extends Vue {
@@ -65,6 +79,13 @@ export default class Nutrition extends Vue {
   }
   get belovedRecipes(): IRecipe[] | null {
     return this.$store.getters.belovedRecipes;
+  }
+  get categories(): IVariable[] | null {
+    const vars: IVariable[] | null = this.$store.getters.variables;
+    if (!vars) return null;
+    return vars
+      .filter(x => x.type === 'category')
+      .sort((a, b) => a.title.localeCompare(b.title));
   }
 }
 </script>

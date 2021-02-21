@@ -26,6 +26,13 @@ export default class FHHeart extends Vue {
 .fh-heart {
   position: relative;
   z-index: 10;
+  padding: 10px;
+  border-radius: 0 $border-radius 0 #{2 * $border-radius};
+
+  @include backdrop-blur($color_dark);
+  @media #{$isDark} {
+    @include backdrop-blur($color);
+  }
   height: fit-content;
   svg path {
     transition: all 0.2s ease-in-out;

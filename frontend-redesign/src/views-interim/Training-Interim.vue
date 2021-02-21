@@ -1,11 +1,11 @@
 <template>
   <div class="interim-training">
     <tc-hero
-      :dark="$store.getters.darkmode"
+      :dark="true || $store.getters.darkmode"
       :hasFixedHeader="$store.getters.isDesktop"
     >
       <img src="assets/hero/training.webp" slot="background" alt="" />
-      <h1>{{ $route.params.muscle || $route.meta.hero }}</h1>
+      <h1 center>{{ $route.params.muscle || $route.meta.hero }}</h1>
     </tc-hero>
     <FHRouter />
   </div>

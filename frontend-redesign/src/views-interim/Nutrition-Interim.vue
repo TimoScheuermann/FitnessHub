@@ -1,10 +1,11 @@
 <template>
   <div class="interim-nutrition">
     <tc-hero
-      :dark="$store.getters.darkmode"
+      :dark="true || $store.getters.darkmode"
       :hasFixedHeader="$store.getters.isDesktop"
     >
       <img src="assets/hero/nutrition.webp" slot="background" alt="" />
+      <h1 center>{{ $route.params.category || $route.meta.hero }}</h1>
     </tc-hero>
     <FHRouter />
   </div>

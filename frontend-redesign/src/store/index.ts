@@ -1,5 +1,11 @@
 /* eslint-disable */
-import { IExercise, IRecipe, IUser, IWorkout } from '@/utils/interfaces';
+import {
+  IExercise,
+  IRecipe,
+  IUser,
+  IVariable,
+  IWorkout
+} from '@/utils/interfaces';
 import Vue from 'vue';
 import { Route } from 'vue-router';
 import Vuex from 'vuex';
@@ -13,6 +19,7 @@ const store = new Vuex.Store({
     darkmode: false,
     routeTransition: 'slide-left',
     storedRoutes: {},
+    variables: null,
     trendingExercises: null,
     latestExercises: null,
     latestWorkouts: null,
@@ -42,6 +49,9 @@ const store = new Vuex.Store({
     },
     routeTransition: (state: any): string => {
       return state.routeTransition;
+    },
+    variables: (state: any): IVariable[] | null => {
+      return state.variables;
     },
     trendingExercises: (state: any): IExercise[] | null => {
       return state.trendingExercises;
@@ -81,6 +91,9 @@ const store = new Vuex.Store({
     },
     storeRoute(state: any, data: { key: string; route: Route }) {
       state.storedRoutes[data.key] = data.route;
+    },
+    variables(state: any, vars: IVariable) {
+      state.variables = vars;
     },
     trendingExercises(state: any, exercises: IExercise[]) {
       state.trendingExercises = exercises;

@@ -9,6 +9,7 @@
       <FHTrainingPlan />
 
       <br />
+
       <FHAppear>
         <div v-if="trendingExercises && trendingExercises.length > 0">
           <FHHeading title="Übungen" subtitle="Beliebte" />
@@ -39,12 +40,26 @@
         <div v-if="latestWorkouts && latestWorkouts.length > 0">
           <FHHeading title="Workouts" subtitle="Aktuelle" />
           <FHCarousel>
-            <FHExercisePreview
+            <FHWorkoutPreview
               v-for="w in latestWorkouts"
               :key="w._id"
-              :exercise="w"
+              :workout="w"
             />
           </FHCarousel>
+        </div>
+      </FHAppear>
+
+      <FHAppear>
+        <div v-if="muscles && muscles.length > 0">
+          <FHHeading subtitle="betroffene" title="Muskeln" />
+          <FHVarList>
+            <FHVarListItem
+              v-for="m in muscles"
+              :key="m._id"
+              :title="m.title"
+              :to="{ name: 'muscle-exercises', params: { muscle: m.title } }"
+            />
+          </FHVarList>
         </div>
       </FHAppear>
     </div>
@@ -54,21 +69,27 @@
 <script lang="ts">
 import FHButton from '@/components/FHButton.vue';
 import FHTrainingPlan from '@/components/training/FHTrainingPlan.vue';
-import { IExercise, IWorkout } from '@/utils/interfaces';
+import { IExercise, IVariable, IWorkout } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 import FHExercisePreview from '@/components/training/FHExercisePreview.vue';
 import FHHeading from '@/components/FHHeading.vue';
 import FHCarousel from '@/components/FHCarousel.vue';
 import FHAppear from '@/components/FHAppear.vue';
+import FHVarList from '@/components/variable-list/FHVarList.vue';
+import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
+import FHWorkoutPreview from '@/components/training/FHWorkoutPreview.vue';
 
 @Component({
   components: {
     FHButton,
     FHTrainingPlan,
     FHExercisePreview,
+    FHWorkoutPreview,
     FHHeading,
     FHCarousel,
-    FHAppear
+    FHAppear,
+    FHVarList,
+    FHVarListItem
   }
 })
 export default class Training extends Vue {
@@ -80,6 +101,13 @@ export default class Training extends Vue {
   }
   get latestWorkouts(): IWorkout[] | null {
     return this.$store.getters.latestWorkouts;
+  }
+  get muscles(): IVariable[] | null {
+    const vars: IVariable[] | null = this.$store.getters.variables;
+    if (!vars) return null;
+    return vars
+      .filter(x => x.type === 'muscle')
+      .sort((a, b) => a.title.localeCompare(b.title));
   }
 }
 </script>

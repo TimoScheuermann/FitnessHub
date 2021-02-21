@@ -11,6 +11,57 @@ const router = new VueRouter({
   mode: 'history',
 
   routes: [
+    /**
+     * => Start Fullscreen
+     */
+    {
+      path: '/training/search',
+      name: 'search-exercise',
+      component: () => import('@/views/training/SearchExercise.vue'),
+      meta: {
+        title: prefix + 'Search',
+        fullscreen: true
+      }
+    },
+    {
+      path: '/training/exercise/:id',
+      name: 'exercise-details',
+      component: () => import('@/views/training/Exercise.vue'),
+      meta: {
+        title: prefix + 'Exercise',
+        fullscreen: true
+      }
+    },
+    {
+      path: '/training/workout/:id',
+      name: 'workout-details',
+      component: () => import('@/views/training/Workout.vue'),
+      meta: {
+        title: prefix + 'Workout',
+        fullscreen: true
+      }
+    },
+    {
+      path: '/nutrition/recipe/:id',
+      name: 'recipe-details',
+      component: () => import('@/views/nutrition/Recipe.vue'),
+      meta: {
+        title: prefix + 'Recipe',
+        fullscreen: true
+      }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/login/Login.vue'),
+      meta: {
+        title: prefix + 'Login',
+        fullscreen: true
+      }
+    },
+    /**
+     * <= Ende Fullscreen
+     */
     {
       path: '/community',
       component: () => import('@/views-interim/Community-Interim.vue'),
@@ -35,7 +86,8 @@ const router = new VueRouter({
           name: 'profile',
           component: () => import('@/views/profile/Profile.vue'),
           meta: {
-            title: prefix + 'Profile'
+            title: prefix + 'Profile',
+            needsSignIn: true
           }
         },
         { path: '*', redirect: { name: 'profile' } }
@@ -69,7 +121,7 @@ const router = new VueRouter({
           component: () => import('@/views/training/Muscle.vue'),
           meta: {
             title: prefix + 'Muskel',
-            hero: '%muscle%'
+            hero: 'Muskel'
           }
         },
         { path: '*', redirect: { name: 'training' } }
@@ -84,7 +136,8 @@ const router = new VueRouter({
           name: 'nutrition',
           component: () => import('@/views/nutrition/Nutrition.vue'),
           meta: {
-            title: prefix + 'Nutrition'
+            title: prefix + 'Nutrition',
+            hero: 'Rezepte'
           }
         },
         {
@@ -96,44 +149,17 @@ const router = new VueRouter({
             hero: 'Ernährungstipps'
           }
         },
+        {
+          path: 'category/:category',
+          name: 'recipe-category',
+          component: () => import('@/views/nutrition/Category.vue'),
+          meta: {
+            title: prefix + 'Kategorie',
+            hero: 'Kategorie'
+          }
+        },
         { path: '*', redirect: { name: 'nutrition' } }
       ]
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/login/Login.vue'),
-      meta: {
-        title: prefix + 'Login',
-        fullscreen: true
-      }
-    },
-    {
-      path: '/search-exercise',
-      name: 'search-exercise',
-      component: () => import('@/views/search/SearchExercise.vue'),
-      meta: {
-        title: prefix + 'Search',
-        fullscreen: true
-      }
-    },
-    {
-      path: '/exercise/:id',
-      name: 'exercise-details',
-      component: () => import('@/views/exercise/Exercise.vue'),
-      meta: {
-        title: prefix + 'Exercise',
-        fullscreen: true
-      }
-    },
-    {
-      path: '/recipe/:id',
-      name: 'recipe-details',
-      component: () => import('@/views/recipe/Recipe.vue'),
-      meta: {
-        title: prefix + 'Recipe',
-        fullscreen: true
-      }
     },
     {
       path: '/',

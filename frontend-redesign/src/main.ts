@@ -6,6 +6,7 @@ import * as TCComponents from 'tccomponents_vue';
 import 'tccomponents_vue/lib/tccomponents_vue.css';
 import Vue from 'vue';
 import { Route } from 'vue-router';
+import { VNode } from 'vue/types/umd';
 import './registerServiceWorker';
 import { getUserFromJWT, verfiyUser } from './utils/auth';
 import { closeFullscreen, getDepth, openFullscreen } from './utils/functions';
@@ -40,8 +41,8 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     store.commit('signIn', getUserFromJWT());
   }
 
-  if (to.meta.needsSignIn && !store.getters.valid && from.name !== 'login') {
-    await next({ name: 'login' });
+  if (to.meta.needsSignIn && !store.getters.valid) {
+    openFullscreen('login');
   }
 
   if (to.name === 'login' && store.getters.valid) {
@@ -61,6 +62,22 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
   if (og) og.setAttribute('content', title);
 
   next();
+});
+
+// show specific html-elements only for specfic groups
+// eslint-disable-next-line
+Vue.directive('group', (el: HTMLElement, binding: any, vnode: VNode) => {
+  const showElement =
+    store.getters.valid &&
+    Object.keys(binding.modifiers).includes(
+      store.getters.user.group.toLowerCase()
+    );
+  if (!showElement) {
+    el.innerHTML = '';
+    setTimeout(() => {
+      el.remove();
+    });
+  }
 });
 
 new Vue({

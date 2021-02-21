@@ -1,6 +1,7 @@
 import router from '@/router';
 import store from '@/store';
 import { backendURL } from './constants';
+import { closeFullscreen } from './functions';
 import { IUser } from './interfaces';
 
 const lsKey = 'fitnesshub-auth';
@@ -17,7 +18,7 @@ export function getUserFromJWT(): IUser {
 
 export async function signOut() {
   localStorage.removeItem(lsKey);
-  await router.push({ name: 'login' });
+  await router.push({ name: 'home' });
   store.commit('signOut');
 }
 
@@ -67,7 +68,7 @@ export function signIn(provider = 'google') {
 
         if (!store.getters.valid && (await verfiyUser())) {
           store.commit('signIn', getUserFromJWT());
-          router.push({ name: 'home' });
+          closeFullscreen('home');
         }
       } else {
         console.error('Unallowed origin', e.origin);
