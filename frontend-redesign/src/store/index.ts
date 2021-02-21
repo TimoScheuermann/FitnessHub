@@ -1,11 +1,17 @@
 /* eslint-disable */
+import { socket } from '@/main';
+import { getUserFromJWT } from '@/utils/auth';
 import {
   IExercise,
+  IMessage,
+  IPendingFriendship,
   IRecipe,
   IUser,
+  IUserInfo,
   IVariable,
   IWorkout
 } from '@/utils/interfaces';
+import { UserManagement } from '@/utils/UserManagement';
 import Vue from 'vue';
 import { Route } from 'vue-router';
 import Vuex from 'vuex';
@@ -24,7 +30,10 @@ const store = new Vuex.Store({
     latestExercises: null,
     latestWorkouts: null,
     latestRecipes: null,
-    belovedRecipes: null
+    belovedRecipes: null,
+    messages: null,
+    friends: null,
+    friendRequests: null
   },
   getters: {
     valid: (state: any): boolean => {
@@ -67,6 +76,15 @@ const store = new Vuex.Store({
     },
     belovedRecipes: (state: any): IRecipe[] | null => {
       return state.belovedRecipes;
+    },
+    messages: (state: any): IMessage[] | null => {
+      return state.messages;
+    },
+    friends: (state: any): IUserInfo[] | null => {
+      return state.friends;
+    },
+    friendRequests: (state: any): IPendingFriendship[] | null => {
+      return state.friendRequests;
     }
   },
   mutations: {
@@ -79,6 +97,11 @@ const store = new Vuex.Store({
       state.userValidated = true;
       if (user.familyName)
         state.user.familyName = user.familyName.split('Ã¼').join('ü');
+
+      socket.emit('join', getUserFromJWT()._id);
+      UserManagement.loadMessages();
+      UserManagement.loadFriends();
+      UserManagement.loadFriendRequests();
     },
     isDesktop(state: any, isDesktop: boolean) {
       state.isDesktop = isDesktop;
@@ -109,6 +132,15 @@ const store = new Vuex.Store({
     },
     belovedRecipes(state: any, recipes: IRecipe[]) {
       state.belovedRecipes = recipes;
+    },
+    messages(state: any, messages: IMessage[]) {
+      state.messages = messages;
+    },
+    friends(state: any, friends: IUserInfo[]) {
+      state.friends = friends;
+    },
+    friendRequests(state: any, friendRequests: IPendingFriendship[]) {
+      state.friendRequests = friendRequests;
     }
   }
 });

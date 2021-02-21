@@ -115,10 +115,14 @@ type Query =
 export function openFullscreen(
   name: string,
   params?: Dictionary<string> | undefined,
-  query?: Query
+  query?: Query,
+  destination?: Route
 ): void {
-  if (getCurrentRoute().name !== name) {
-    store.commit('storeRoute', { key: name, route: getCurrentRoute() });
+  if ((destination || getCurrentRoute()).name !== name) {
+    store.commit('storeRoute', {
+      key: name,
+      route: destination || getCurrentRoute()
+    });
     router.push({ name: name, params: params, query: query });
   }
 }

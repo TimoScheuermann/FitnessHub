@@ -1,5 +1,6 @@
 <template>
   <div class="view-Workout">
+    <FHHeader v-if="workout" :title="workout.title" :trigger="250" />
     <FHFullScreenCloser @click="$cFS('training')" />
     <FHSwipeable @swipeDown="$cFS('training')">
       <tc-hero :dark="true || $store.getters.darkmode">
@@ -56,6 +57,7 @@
 <script lang="ts">
 import FHButton from '@/components/FHButton.vue';
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
+import FHHeader from '@/components/FHHeader.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
 import FHWorkoutExercise from '@/components/training/FHWorkoutExercise.vue';
 import backend from '@/utils/backend';
@@ -68,7 +70,8 @@ import { Vue, Component } from 'vue-property-decorator';
     FHFullScreenCloser,
     FHSwipeable,
     FHButton,
-    FHWorkoutExercise
+    FHWorkoutExercise,
+    FHHeader
   }
 })
 export default class Exercise extends Vue {

@@ -16,6 +16,9 @@ import {
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
 import { loadVariables } from './utils/functions';
+import { IMessage } from './utils/interfaces';
+import { UserManagement } from './utils/UserManagement';
+import { Socket } from 'vue-socket.io-extended';
 
 @Component({
   components: {
@@ -32,6 +35,11 @@ export default class App extends Vue {
 
   beforeDestroy() {
     unregisterMediaQueries();
+  }
+
+  @Socket('message')
+  messageReceived(message: IMessage) {
+    UserManagement.storeMessage(message);
   }
 }
 </script>

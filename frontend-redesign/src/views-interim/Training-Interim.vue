@@ -50,3 +50,13 @@ export default class InterimTraining extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.interim-training {
+  .tc-hero {
+    h1 {
+      padding-top: env(safe-area-inset-top);
+    }
+  }
+}
+</style>

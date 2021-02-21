@@ -51,6 +51,26 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/profile/messages/:friendId',
+      name: 'chatroom',
+      component: () => import('@/views/profile/ChatRoom.vue'),
+      meta: {
+        title: prefix + 'ChatRoom',
+        needsSignIn: true,
+        fullscreen: true
+      }
+    },
+    {
+      path: '/profile/friends/add',
+      name: 'add-friend',
+      component: () => import('@/views/profile/AddFriend.vue'),
+      meta: {
+        title: prefix + 'Freund hinzufügen',
+        needsSignIn: true,
+        fullscreen: true
+      }
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/views/login/Login.vue'),
@@ -87,7 +107,38 @@ const router = new VueRouter({
           component: () => import('@/views/profile/Profile.vue'),
           meta: {
             title: prefix + 'Profile',
-            needsSignIn: true
+            needsSignIn: true,
+            hero: 'Profile'
+          }
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/views/profile/Settings.vue'),
+          meta: {
+            title: prefix + 'Settings',
+            needsSignIn: true,
+            hero: 'Settings'
+          }
+        },
+        {
+          path: 'messages',
+          name: 'messages',
+          component: () => import('@/views/profile/Messages.vue'),
+          meta: {
+            title: prefix + 'Messages',
+            needsSignIn: true,
+            hero: 'Messages'
+          }
+        },
+        {
+          path: 'friends',
+          name: 'friends',
+          component: () => import('@/views/profile/Friends.vue'),
+          meta: {
+            title: prefix + 'Friends',
+            needsSignIn: true,
+            hero: 'Friends'
           }
         },
         { path: '*', redirect: { name: 'profile' } }

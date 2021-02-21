@@ -41,3 +41,13 @@ export default class InterimNutrition extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.interim-nutrition {
+  .tc-hero {
+    h1 {
+      padding-top: env(safe-area-inset-top);
+    }
+  }
+}
+</style>

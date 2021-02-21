@@ -1,5 +1,6 @@
 <template>
   <div class="view-Recipe">
+    <FHHeader v-if="recipe" :title="recipe.title" :trigger="250" />
     <FHFullScreenCloser @click="$cFS('nutrition')" />
     <FHSwipeable @swipeDown="$cFS('nutrition')">
       <tc-hero :dark="$store.getters.darkmode">
@@ -157,6 +158,7 @@
 import FHAppear from '@/components/FHAppear.vue';
 import FHButton from '@/components/FHButton.vue';
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
+import FHHeader from '@/components/FHHeader.vue';
 import FHHeading from '@/components/FHHeading.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
 import FHVarList from '@/components/variable-list/FHVarList.vue';
@@ -174,7 +176,8 @@ import { Vue, Component } from 'vue-property-decorator';
     FHHeading,
     FHVarList,
     FHVarListItem,
-    FHAppear
+    FHAppear,
+    FHHeader
   }
 })
 export default class Recipe extends Vue {

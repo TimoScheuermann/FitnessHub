@@ -7,7 +7,7 @@
           icon="wrench"
           routeName="settings"
         />
-        <tc-list-item icon="telegram" title="Telegram" routeName="telegram" />
+        <!-- <tc-list-item icon="telegram" title="Telegram" routeName="telegram" /> -->
         <tc-badge :value="$store.getters.unreadMessages" position="inside">
           <tc-list-item
             title="Nachrichten"

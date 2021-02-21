@@ -20,3 +20,13 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class InterimHome extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+.interim-home {
+  .tc-hero {
+    h1 {
+      padding-top: env(safe-area-inset-top);
+    }
+  }
+}
+</style>
