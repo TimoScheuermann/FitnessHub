@@ -6,23 +6,25 @@
           <p>Füge Freunde hinzu, um mit ihnen zu chatten</p>
         </template>
       </template>
-      <template v-if="activeChats">
+      <template v-if="activeChats && activeChats.length > 0">
         <h3>Nachrichten</h3>
         <FHList>
           <FHListItem
             v-for="m in activeChats"
-            :key="m._id"
-            :avatar="m.avatar"
-            :title="m.username"
+            :key="m.friend._id"
+            :avatar="m.friend.avatar"
+            :title="m.friend.username"
             :subtitle="m.message"
-            :description="m.day"
             :routeName="''"
-            @click="$oFS('chatroom', { friendId: m._id })"
-          />
+            @click="$oFS('chatroom', { friendId: m.friend._id })"
+          >
+            <div :space="m.unread > 0">{{ getDay(m.timestamp) }}</div>
+            <tc-badge tfcolor="success" position="inside" :value="m.unread" />
+          </FHListItem>
         </FHList>
       </template>
 
-      <template v-if="inActiveChats">
+      <template v-if="inActiveChats && inActiveChats.length > 0">
         <h3>Konversation starten</h3>
         <FHList>
           <FHListItem
@@ -30,7 +32,6 @@
             :key="m._id"
             :avatar="m.avatar"
             :title="m.username"
-            :description="m.day"
             :routeName="''"
             @click="$oFS('chatroom', { friendId: m._id })"
           />
@@ -48,13 +49,11 @@ import { IMessage, IUserInfo } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
-interface MessageListItem {
-  _id: string;
-  username: string;
-  avatar: string;
-  message: string | null;
-  day: string;
+interface ActiveChat {
+  friend: IUserInfo;
+  message: string;
   timestamp: number;
+  unread: number;
 }
 
 @Component({
@@ -72,42 +71,33 @@ export default class Messages extends Vue {
     return UserManagement.getFriends();
   }
 
-  get messageList(): MessageListItem[] | null {
+  get activeChats(): ActiveChat[] | null {
     if (!this.friends) return null;
-    return this.friends
+    if (!this.messages) return null;
+    return (this.friends
       .map(f => {
-        const latest = this.getLatestMessageWith(f._id);
-        if (!latest) {
-          return {
-            ...f,
-            message: null,
-            day: '',
-            timestamp: 0
-          };
-        } else {
-          return {
-            ...f,
-            message: latest.content,
-            day: days[new Date(latest.date).getDay()].substring(0, 2),
-            timestamp: latest.date
-          };
-        }
+        const message = this.getLatestMessageWith(f._id);
+        if (!message) return null;
+        return {
+          friend: f,
+          message: message.content,
+          timestamp: message.date,
+          unread: this.getAmountOfUnread(f._id)
+        };
       })
-      .sort((a, b) => b.timestamp - a.timestamp);
+      .filter(x => !!x) as ActiveChat[]).sort(
+      (a, b) => b.timestamp - a.timestamp
+    );
   }
 
-  get activeChats(): MessageListItem[] | null {
-    const messages = this.messageList;
-    if (!messages) return null;
-    return messages.filter(x => x.timestamp !== 0);
+  get inActiveChats(): IUserInfo[] | null {
+    if (!this.messages) return this.friends;
+    if (!this.friends) return null;
+    return this.friends.filter(f => !this.getLatestMessageWith(f._id));
   }
 
-  get inActiveChats(): MessageListItem[] | null {
-    const messages = this.messageList;
-    if (!messages) return null;
-    return messages
-      .filter(x => x.timestamp == 0)
-      .sort((a, b) => a.username.localeCompare(b.username));
+  public getDay(timestamp: number): string {
+    return days[new Date(timestamp).getDay()].substring(0, 2);
   }
 
   public getAmountOfUnread(friendId: string): number {
@@ -119,7 +109,7 @@ export default class Messages extends Vue {
     if (!this.messages) return null;
     const message = this.messages
       .filter(x => x.from === friend || x.to === friend)
-      .sort((a, b) => a.date - b.date)[0];
+      .sort((a, b) => b.date - a.date)[0];
     if (message) return message;
     return null;
   }
@@ -129,5 +119,9 @@ export default class Messages extends Vue {
 <style lang="scss" scoped>
 .view-messages {
   padding-top: 0;
+
+  [space] {
+    margin-right: 30px;
+  }
 }
 </style>

@@ -24,13 +24,6 @@
     </tc-hero>
 
     <div class="input-wrapper" v-if="!this.isBotPartner">
-      <div class="action-wrapper">
-        <tc-action :dark="$store.getters.darkmode">
-          <tc-action-item icon="trophy" title="Herausfordern" />
-          <tc-action-item icon="calendar-alt" title="Training planen" />
-          <tc-action-item success icon="lens" title="Profil ansehen" />
-        </tc-action>
-      </div>
       <form @submit.prevent="sendMessage">
         <textarea
           v-model="newMessage"
@@ -102,6 +95,7 @@ export default class ChatRoom extends Vue {
       }
     }
     UserManagement.loadMessages();
+    UserManagement.markMessagesAsRead(this.$route.params.friendId);
   }
 
   get isBotPartner(): boolean {
@@ -153,11 +147,6 @@ export default class ChatRoom extends Vue {
     margin-top: 10px;
   }
 
-  /deep/ .actions-wrapper {
-    right: unset;
-    left: 40px;
-    bottom: 0px;
-  }
   .input-wrapper {
     position: fixed;
     z-index: 10;
@@ -174,17 +163,6 @@ export default class ChatRoom extends Vue {
     }
     padding: 10px;
     border-radius: 30px;
-
-    .action-wrapper {
-      display: none;
-      position: absolute;
-      padding: 5px;
-      background: $success;
-      border-radius: 30px;
-      right: -10px;
-      top: -30px;
-      transform: translate(-50%, -50%);
-    }
 
     form {
       display: grid;

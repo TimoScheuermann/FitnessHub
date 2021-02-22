@@ -26,6 +26,7 @@
         Suche nach einem Nutzer, um ihm eine Anfrage zu schicken.
       </p>
       <tl-flow v-else-if="results.length === 0" flow="column">
+        <br />
         <i error huge class="ti-exclamation-triangle" />
         <p>Die Suche ergab keine Treffer</p>
       </tl-flow>
@@ -37,25 +38,11 @@
             :key="r._id"
             :avatar="r.avatar"
             :title="r.username"
-            :description="isFriend(r._id) ? 'befreundet' : null"
           >
             <tc-button
-              v-if="!isFriend(r._id) && !isInvited(r._id)"
               tfbackground="success"
               name="einladen"
               @click="sendInvite(r._id)"
-            />
-            <tc-button
-              v-if="isInvited(r._id)"
-              tfbackground="error"
-              name="abbrechen"
-              @click="cancelInvite(r._id)"
-            />
-            <tc-button
-              v-if="hasBeenInvitedBy(r._id)"
-              tfbackground="alarm"
-              name="annehmen"
-              @click="acceptInvite(r._id)"
             />
           </FHListItem>
         </FHList>
@@ -70,7 +57,8 @@ import FHHeader from '@/components/FHHeader.vue';
 import FHList from '@/components/list/FHList.vue';
 import FHListItem from '@/components/list/FHListItem.vue';
 import backend from '@/utils/backend';
-import { IPendingFriendship, IUserInfo } from '@/utils/interfaces';
+import { closeFullscreen } from '@/utils/functions';
+import { IUserInfo } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
@@ -86,46 +74,24 @@ export default class AddFriend extends Vue {
   public query = '';
   public results: IUserInfo[] | null = null;
 
-  mounted() {
-    this.query = 'Jea';
-    this.search();
-  }
-
-  public isFriend(user: string): boolean {
-    const friends = UserManagement.getFriends();
-    if (!friends) return false;
-    return friends.filter(x => x._id === user).length === 1;
-  }
-
-  public isInvited(user: string): boolean {
-    const invites: IPendingFriendship[] =
-      this.$store.getters.friendRequests || [];
-    if (!invites) return false;
-    return invites.filter(x => x.target._id === user).length === 1;
-  }
-
-  public hasBeenInvitedBy(user: string): boolean {
-    const invites: IPendingFriendship[] =
-      this.$store.getters.friendRequests || [];
-    if (!invites) return false;
-    return invites.filter(x => x.invitee._id === user).length === 1;
-  }
-
-  public cancelInvite(userId: string) {
-    UserManagement.cancelInvite(userId);
-  }
-  public acceptInvite(userId: string) {
-    UserManagement.acceptInvite(userId);
-  }
   public sendInvite(userId: string) {
     UserManagement.sendInvite(userId);
+    closeFullscreen('friends');
   }
 
-  public search(): void {
+  public async search(): Promise<void> {
     if (this.query.length > 0) {
-      backend.post('user/search', { query: this.query }).then(res => {
-        this.results = res.data;
-      });
+      const { data } = await backend.post('user/search', { query: this.query });
+      if (!data) this.results = [];
+      else {
+        const friendIds = (UserManagement.getFriends() || []).map(x => x._id);
+        const invites = UserManagement.getInvites() || [];
+        const inviteIds = invites.map(x => [x.invitee._id, x.target._id]);
+
+        const ids = [...new Set([...friendIds, ...inviteIds.flat()])];
+        ids.push(UserManagement.getUserID() || '');
+        this.results = (data as IUserInfo[]).filter(x => !ids.includes(x._id));
+      }
     }
   }
 }

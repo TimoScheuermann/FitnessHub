@@ -1,6 +1,9 @@
+import router from '@/router';
 import store from '@/store';
 import backend from './backend';
+import { fhBotId } from './constants';
 import { IMessage, IPendingFriendship, IUser, IUserInfo } from './interfaces';
+import { NotificationManagement } from './NotificationManagement';
 
 /**
  * Manage all necessary methods with parameters
@@ -19,17 +22,17 @@ export class UserManagement {
     return user._id;
   }
 
-/**
- * get Messages for chat
- */
+  /**
+   * get Messages for chat
+   */
   public static getMessages(): IMessage[] | null {
     return store.getters.messages;
   }
 
-/**
- *  get Message from friend
- * @param friendId: get ID from specific friend
- */
+  /**
+   *  get Message from friend
+   * @param friendId: get ID from specific friend
+   */
   public static getMessagesWith(friendId: string): IMessage[] {
     return (this.getMessages() || []).filter(
       x => x.from === friendId || x.to === friendId
@@ -52,6 +55,7 @@ export class UserManagement {
    */
   public static async storeMessage(message: IMessage): Promise<void> {
     let messages: IMessage[] = this.getMessages() || [];
+
     let exists = false;
     messages = messages.map(m => {
       if (m._id === message._id) {
@@ -62,7 +66,45 @@ export class UserManagement {
     });
     if (!exists) {
       messages.push(message);
+
+      const { name, params } = router.currentRoute;
+      const isInChat = name === 'chatroom' && params.friendId === message.from;
+
+      if (isInChat) {
+        this.markMessagesAsRead(message.from);
+      }
+
+      if (message.from !== this.getUserID() && !isInChat) {
+        const friend = this.getFriend(message.from);
+        if (friend) {
+          NotificationManagement.sendNotification(
+            friend.username + ' schreibt:',
+            message.content,
+            { name: 'chatroom', params: { friendId: message.from } },
+            friend.avatar
+          );
+        }
+      }
     }
+    store.commit('messages', messages);
+  }
+
+  public static markMessagesAsRead(friendId: string): void {
+    if (!friendId) return;
+    if (friendId === fhBotId) {
+      backend.put('message/markBotAsRead');
+    } else {
+      backend.put('message/markAsRead/' + friendId);
+    }
+
+    let messages = this.getMessages() || [];
+    messages = messages.map(x => {
+      if (x.from !== friendId) return x;
+      return {
+        ...x,
+        read: true
+      };
+    });
     store.commit('messages', messages);
   }
 
@@ -73,19 +115,19 @@ export class UserManagement {
     return store.getters.friends;
   }
 
-/**
- * load friensrequest
- */
+  /**
+   * load friensrequest
+   */
   public static async loadFriendRequests(): Promise<void> {
     if (this.getUser() && !store.getters.friendRequests) {
       const { data } = await backend.get('friends/invitations');
       store.commit('friendRequests', data);
     }
   }
-  
-/**
- * show friends
- */
+
+  /**
+   * show friends
+   */
   public static async loadFriends(): Promise<void> {
     if (this.getUser() && !this.getFriends()) {
       const { data } = await backend.get('friends');
@@ -93,19 +135,46 @@ export class UserManagement {
     }
   }
 
+  public static addFriend(friend: IUserInfo): void {
+    if (friend._id === this.getUserID()) return;
+    let friends: IUserInfo[] = this.getFriends() || [];
+
+    let exists = false;
+    friends = friends.map(m => {
+      if (m._id === friend._id) {
+        exists = true;
+        return friend;
+      }
+      return m;
+    });
+    if (!exists) {
+      friends.push(friend);
+      if (friend._id !== this.getUserID()) {
+        NotificationManagement.sendNotification(
+          'Freundschaft',
+          'mit ' + friend.username + ' geschlossen',
+          { name: 'friends' },
+          friend.avatar
+        );
+      }
+    }
+    store.commit('friends', friends);
+  }
+
   /**
    * remove friends
    * @param friendId: ID  of frined to be removed
    */
   public static removeFriend(friendId: string): void {
-    const friends = this.getFriends();
-    if (this.getUser() && friends) {
-      backend.delete('friends/remove/' + friendId);
-      store.commit(
-        'friends',
-        friends.filter(x => x._id !== friendId)
-      );
-    }
+    backend.delete('friends/remove/' + friendId);
+  }
+
+  public static removeFriendFromList(friendId: string): void {
+    const friends = this.getFriends() || [];
+    store.commit(
+      'friends',
+      friends.filter(x => x._id !== friendId)
+    );
   }
 
   /**
@@ -127,40 +196,35 @@ export class UserManagement {
     return store.getters.friendRequests || [];
   }
 
-  /**
-   * open friendrequest
-   * @param withUser: User to accept/reject friendship
-   */
-  private static getPendingFriendship(
-    withUser: string
-  ): IPendingFriendship | null {
-    return (
-      this.getInvites().filter(
-        x => x.invitee._id === withUser || x.target._id === withUser
-      )[0] || null
+  public static addPendingFriendship(friendship: IPendingFriendship): void {
+    const invites: IPendingFriendship[] = this.getInvites() || [];
+    invites.push(friendship);
+    const { _id, username, avatar } = friendship.invitee;
+    if (_id !== this.getUserID()) {
+      NotificationManagement.sendNotification(
+        'Freundschaftsanfrage',
+        username + ' möchte dein Freund werden.',
+        { name: 'friends' },
+        avatar
+      );
+    }
+    store.commit('friendRequests', invites);
+  }
+
+  public static acceptInvite(pendingId: string): void {
+    backend.put('friends/accept/' + pendingId);
+  }
+
+  public static cancelInvite(inviteId: string): void {
+    backend.delete('friends/deny/' + inviteId);
+  }
+
+  public static removeFriendInvite(inviteId: string): void {
+    const invites = this.getInvites();
+    store.commit(
+      'friendRequests',
+      invites.filter(x => x._id !== inviteId)
     );
-  }
-
-  /**
-   * accept friendrequest
-   * @param userId: Id of user who sent friendrequest
-   */
-  public static acceptInvite(userId: string): void {
-    const pending = this.getPendingFriendship(userId);
-    if (pending) {
-      backend.put('friends/accept/' + pending._id);
-    }
-  }
-
-  /**
-   * reject freindrequest
-   * @param userId: Id of user who sent friendrequest
-   */
-  public static cancelInvite(userId: string): void {
-    const pending = this.getPendingFriendship(userId);
-    if (pending) {
-      backend.delete('friends/deny/' + pending._id);
-    }
   }
 
   /**

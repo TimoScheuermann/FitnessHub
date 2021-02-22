@@ -1,5 +1,6 @@
 <template>
   <div class="fitnesshub">
+    <FHNotification />
     <FHTabbar />
     <FHNavbar />
     <FHRouter />
@@ -16,15 +17,17 @@ import {
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
 import { loadVariables } from './utils/functions';
-import { IMessage } from './utils/interfaces';
+import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
 import { UserManagement } from './utils/UserManagement';
 import { Socket } from 'vue-socket.io-extended';
+import FHNotification from './components/FHNotification.vue';
 
 @Component({
   components: {
     FHTabbar,
     FHNavbar,
-    FHRouter
+    FHRouter,
+    FHNotification
   }
 })
 export default class App extends Vue {
@@ -40,6 +43,26 @@ export default class App extends Vue {
   @Socket('message')
   messageReceived(message: IMessage) {
     UserManagement.storeMessage(message);
+  }
+
+  @Socket('removeFriendRequest')
+  removeFriendRequest(requestId: string) {
+    UserManagement.removeFriendInvite(requestId);
+  }
+
+  @Socket('newFriendRequest')
+  newFriendRequest(request: IPendingFriendship) {
+    UserManagement.addPendingFriendship(request);
+  }
+
+  @Socket('addFriend')
+  addFriend(friend: IUserInfo) {
+    UserManagement.addFriend(friend);
+  }
+
+  @Socket('removeFriend')
+  removeFriend(id: string) {
+    UserManagement.removeFriendFromList(id);
   }
 }
 </script>

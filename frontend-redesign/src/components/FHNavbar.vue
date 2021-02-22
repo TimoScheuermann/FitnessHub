@@ -42,7 +42,9 @@
         <tl-flow class="account" cursor>
           <tc-avatar :src="$store.getters.user.avatar" />
           <div class="name" :active="$route.name === 'profile'">Profil</div>
-          <div class="badge">10</div>
+          <div class="badge" v-if="profileNotifications > 0">
+            {{ profileNotifications }}
+          </div>
         </tl-flow>
       </div>
     </tl-flow>
@@ -50,12 +52,17 @@
 </template>
 
 <script lang="ts">
+import { NotificationManagement } from '@/utils/NotificationManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class FHNavbar extends Vue {
   public navProfile(): void {
     if (this.$route.name !== 'profile') this.$router.push({ name: 'profile' });
+  }
+
+  get profileNotifications(): number {
+    return NotificationManagement.getTotalNotifications();
   }
 }
 </script>
@@ -102,7 +109,7 @@ export default class FHNavbar extends Vue {
       border-radius: $scale;
       line-height: $scale;
       text-align: center;
-      background: $error;
+      background: $success;
       margin: 0 5px;
     }
   }

@@ -1,3 +1,4 @@
+import { Location } from 'vue-router';
 import { UpdateExerciseDTO } from './dtos';
 
 export interface IUser {
@@ -121,10 +122,10 @@ export interface IMessage {
 }
 
 export interface IFHNotification {
-  readonly img?: string;
   readonly title: string;
   readonly text: string;
-  readonly to?: object;
+  readonly img?: string;
+  readonly route?: Location;
 }
 
 export interface IExercise {

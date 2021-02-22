@@ -8,7 +8,7 @@
           routeName="settings"
         />
         <!-- <tc-list-item icon="telegram" title="Telegram" routeName="telegram" /> -->
-        <tc-badge :value="$store.getters.unreadMessages" position="inside">
+        <tc-badge :value="unreadMessages" tfcolor="success" position="inside">
           <tc-list-item
             title="Nachrichten"
             icon="chat-bubbles"
@@ -101,6 +101,7 @@
 <script lang="ts">
 import { signOut } from '@/utils/auth';
 import { copyToClipboard } from '@/utils/functions';
+import { NotificationManagement } from '@/utils/NotificationManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
@@ -111,6 +112,10 @@ export default class Profile extends Vue {
 
   public signout(): void {
     signOut();
+  }
+
+  get unreadMessages(): number {
+    return NotificationManagement.getUnreadMessages();
   }
 }
 </script>

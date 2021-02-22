@@ -16,13 +16,18 @@
       title="Feed"
       routeName="community"
     />
-    <tc-tabbar-item
+    <tc-badge
       v-if="$store.getters.valid"
+      :value="profileNotifications"
       tfcolor="success"
-      icon="user-filled"
-      title="Profil"
-      routeName="profile"
-    />
+    >
+      <tc-tabbar-item
+        tfcolor="success"
+        icon="user-filled"
+        title="Profil"
+        routeName="profile"
+      />
+    </tc-badge>
     <tc-tabbar-item
       v-else
       tfcolor="success"
@@ -46,10 +51,15 @@
 </template>
 
 <script lang="ts">
+import { NotificationManagement } from '@/utils/NotificationManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class FHTabbar extends Vue {}
+export default class FHTabbar extends Vue {
+  get profileNotifications(): number {
+    return NotificationManagement.getTotalNotifications();
+  }
+}
 </script>
 
 <style lang="scss" scoped>

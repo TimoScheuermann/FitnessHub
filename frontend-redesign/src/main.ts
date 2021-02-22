@@ -2,7 +2,7 @@
 import App from '@/App.vue';
 import router, { getTitle } from '@/router';
 import store from '@/store';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 import * as TCComponents from 'tccomponents_vue';
 import 'tccomponents_vue/lib/tccomponents_vue.css';
 import Vue from 'vue';

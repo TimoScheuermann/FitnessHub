@@ -137,7 +137,7 @@ const store = new Vuex.Store({
       state.messages = messages;
     },
     friends(state: any, friends: IUserInfo[]) {
-      state.friends = friends;
+      state.friends = friends.filter(x => x._id !== UserManagement.getUserID());
     },
     friendRequests(state: any, friendRequests: IPendingFriendship[]) {
       state.friendRequests = friendRequests;
