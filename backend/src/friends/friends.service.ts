@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
 import { IUser } from 'src/user/interfaces/IUser';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
-import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/schemas/User.schema';
 import { IFriendship } from './interfaces/IFriendship';
 import { IPendingFriendship } from './interfaces/IPendingFriendship';
 import { Friendship } from './schemas/Friendship.schema';
@@ -12,9 +12,9 @@ import { Friendship } from './schemas/Friendship.schema';
 @Injectable()
 export class FriendsService {
   constructor(
-    private userService: UserService,
     private readonly fhSocket: FHSocket,
     @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
   /**
@@ -46,16 +46,16 @@ export class FriendsService {
         { target: id, accepted: true },
       ],
     });
-    return Promise.all(
-      friends
-        .map((x) => x.toObject())
-        .map(
-          async (x: IFriendship) =>
-            await this.userService.getUserInfoById(
-              x.invitee === id ? x.target : x.invitee,
-            ),
-        ),
-    );
+
+    const idPairs = friends.map((x) => [x.invitee, x.target]);
+    const uniqueIds = [...new Set([].concat(...idPairs))];
+    const userIds = uniqueIds.filter((x) => isValidObjectId(x));
+
+    const userInfos = (await this.userModel.find({ _id: { $in: userIds } }))
+      .map((x) => this.getUserInfo(x))
+      .filter((x) => x._id !== id);
+
+    return userInfos;
   }
 
   /**
@@ -104,14 +104,10 @@ export class FriendsService {
       .to(friendship.target)
       .emit('removeFriendRequest', friendship._id);
 
-    const invitee: IUserInfo = await this.userService.getUserInfoById(
-      friendship.invitee,
+    const invitee = this.getUserInfo(
+      await this.userModel.findOne({ _id: friendship.invitee }),
     );
-    const target: IUserInfo = {
-      _id: user._id,
-      username: this.userService.transformName(user),
-      avatar: user.avatar,
-    };
+    const target = this.getUserInfo(user);
 
     this.fhSocket.server.to(invitee._id).emit('addFriend', target);
     this.fhSocket.server.to(target._id).emit('addFriend', invitee);
@@ -146,15 +142,26 @@ export class FriendsService {
         { invitee: user, accepted: false },
       ],
     });
-    return Promise.all(
-      friendships.map(async (x: IFriendship) => {
-        return {
-          _id: x._id,
-          invitee: await this.userService.getUserInfoById(x.invitee),
-          target: await this.userService.getUserInfoById(x.target),
-        } as IPendingFriendship;
-      }),
-    );
+
+    const idPairs = friendships.map((x) => [x.invitee, x.target]);
+    const uniqueIds = [...new Set([].concat(...idPairs))];
+    const userIds = uniqueIds.filter((x) => isValidObjectId(x));
+
+    const users = (
+      await this.userModel.find({ _id: { $in: userIds } })
+    ).map((x) => this.getUserInfo(x));
+
+    const getUser = (id: string): IUserInfo => {
+      return users.filter((x) => x._id == id)[0];
+    };
+
+    return friendships.map((x) => {
+      return {
+        _id: x._id,
+        invitee: getUser(x.invitee),
+        target: getUser(x.target),
+      };
+    });
   }
 
   /**
@@ -166,6 +173,13 @@ export class FriendsService {
     if (await this.doesInvitationExist(invitee._id, target)) {
       return;
     }
+
+    if (!isValidObjectId(invitee) || !isValidObjectId(target)) return;
+
+    const targetUser = await this.userModel.findOne({ _id: target });
+
+    if (!targetUser) return;
+
     const friendship: IFriendship = await this.friendshipModel.create({
       invitee: invitee._id,
       target: target,
@@ -174,12 +188,8 @@ export class FriendsService {
 
     const pending: IPendingFriendship = {
       _id: friendship._id,
-      invitee: {
-        _id: invitee._id,
-        avatar: invitee.avatar,
-        username: this.userService.transformName(invitee),
-      },
-      target: await this.userService.getUserInfoById(target),
+      invitee: this.getUserInfo(invitee),
+      target: this.getUserInfo(targetUser),
     };
 
     this.fhSocket.server
@@ -198,8 +208,9 @@ export class FriendsService {
     friendshipId: string,
   ): Promise<void> {
     const friendship: IFriendship = await this.friendshipModel.findOneAndDelete(
-      { _id: friendshipId, target: targetId },
+      { _id: friendshipId, $or: [{ target: targetId }, { invitee: targetId }] },
     );
+
     this.fhSocket.server
       .to(friendship.target)
       .to(friendship.invitee)
@@ -245,9 +256,25 @@ export class FriendsService {
    * @param id
    */
   public async getFriendInformations(id: string): Promise<any> {
-    const user: IUser = await this.userService.getUserById(id);
+    if (!isValidObjectId(id)) return {};
+
+    const user: IUser = await this.userModel.findOne({ _id: id });
+    if (!user) return {};
+
     return {
       memberSince: user.date,
+    };
+  }
+
+  private transformName(user: IUser | User): string {
+    return [user.givenName, user.familyName].filter((x) => !!x).join(' ');
+  }
+
+  private getUserInfo(user: IUser | User): IUserInfo {
+    return {
+      _id: user._id,
+      avatar: user.avatar,
+      username: this.transformName(user),
     };
   }
 }

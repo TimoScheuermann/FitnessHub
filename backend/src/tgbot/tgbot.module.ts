@@ -10,7 +10,7 @@ import { TgbotService } from './tgbot.service';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   providers: [TgbotService, FHSocket],
-  exports: [TgbotService],
   controllers: [TgbotController],
+  exports: [TgbotService],
 })
 export class TgbotModule {}
