@@ -76,7 +76,7 @@ export class RecipeService {
     user: IUser,
     createRecipeDTO: CreateRecipeDTO,
   ): Promise<IRecipe> {
-    let { category, steps } = createRecipeDTO;
+    let { category, steps, ingredients, nutrition } = createRecipeDTO;
 
     const { difficulty, thumbnail, time, title } = createRecipeDTO;
 
@@ -119,17 +119,19 @@ export class RecipeService {
     );
     FormValidator.checkNumberMinMax(
       time,
-      1000,
+      1,
       Number.MAX_VALUE,
       'Zeit',
       'Die Zubereitungszeit kann nicht unter einer Sekunde liegen',
     );
 
-    this.checkIngredients(createRecipeDTO.ingredients);
-    this.checkNutrition(createRecipeDTO.nutrition);
+    ingredients = this.checkIngredients(createRecipeDTO.ingredients);
+    nutrition = this.checkNutrition(createRecipeDTO.nutrition);
 
     const recipe = await this.recipeModel.create({
       ...createRecipeDTO,
+      ingredients: ingredients,
+      nutrition: nutrition,
       steps: steps,
       category: category,
       created: new Date().getTime(),
@@ -205,59 +207,62 @@ export class RecipeService {
     return [user.givenName, user.familyName].filter((x) => !!x).join(' ');
   }
 
-  private checkIngredients(ing: IRecipeIngredient[]): boolean {
-    if (!ing || ing.length) {
+  private checkIngredients(ing: IRecipeIngredient[]): IRecipeIngredient[] {
+    if (!ing || ing.length === 0) {
       FormValidator.throwEx('Zutaten', 'Bitte gib eine Zutatenliste an');
     }
-    ing.forEach((x, i) => {
-      FormValidator.checkString(
-        x.name,
-        'Zutatenname',
-        'Der Name der Zutat #' + (i + 1) + 'fehlt',
-      );
-      FormValidator.checkString(
-        x.amount,
-        'Zutatenmenge',
-        'Die Mange die an ' + x.name + ' benötigt wird fehlt',
-      );
-      FormValidator.checkString(
-        x.unit,
-        'Zutateneinheit',
-        'Die Einheit der Menge der Zutat ' + x.name + ' fehlt',
-      );
+    return ing.map((x, i) => {
+      return {
+        name: FormValidator.checkString(
+          x.name,
+          'Zutatenname',
+          'Der Name der Zutat #' + (i + 1) + 'fehlt',
+        ),
+        amount: FormValidator.checkString(
+          x.amount,
+          'Zutatenmenge',
+          'Die Mange die an ' + x.name + ' benötigt wird fehlt',
+        ),
+        unit: FormValidator.checkString(
+          x.unit,
+          'Zutateneinheit',
+          'Die Einheit der Menge der Zutat ' + x.name + ' fehlt',
+        ),
+      };
     });
-    return true;
   }
 
-  private checkNutrition(nut: INutrition[]): boolean {
-    if (!nut || nut.length) {
+  private checkNutrition(nut: INutrition[]): INutrition[] {
+    if (!nut || nut.length === 0) {
       FormValidator.throwEx('Nährwerte', 'Bitte gib eine Nährtwertliste an');
     }
-    nut.forEach((x, i) => {
-      FormValidator.checkString(
-        x.title,
-        'Nährwertname',
-        'Der Name des Nährwerts #' + (i + 1) + 'fehlt',
-      );
-      FormValidator.checkNumber(
-        x.amount,
-        'Nährwertmenge',
-        'Die Mange des Nährwerts ' + x.title + ' fehlt',
-      );
+    return nut.map((x, i) => {
+      return {
+        title: FormValidator.checkString(
+          x.title,
+          'Nährwertname',
+          'Der Name des Nährwerts #' + (i + 1) + 'fehlt',
+        ),
 
-      FormValidator.checkNumberMinMax(
-        x.amount,
-        0,
-        Number.MAX_VALUE,
-        'Nährwertmenge',
-        'Die Nährwertsmenge von ' + x.title + ' kann nicht kleiner als 0 sein',
-      );
-      FormValidator.checkString(
-        x.unit,
-        'Nährwerteinheit',
-        'Die Einheit des Nährwerts ' + x.title + ' fehlt',
-      );
+        amount: FormValidator.checkNumberMinMax(
+          FormValidator.checkNumber(
+            x.amount,
+            'Nährwertmenge',
+            'Die Mange des Nährwerts ' + x.title + ' fehlt',
+          ),
+          0,
+          Number.MAX_VALUE,
+          'Nährwertmenge',
+          'Die Nährwertsmenge von ' +
+            x.title +
+            ' kann nicht kleiner als 0 sein',
+        ),
+        unit: FormValidator.checkString(
+          x.unit,
+          'Nährwerteinheit',
+          'Die Einheit des Nährwerts ' + x.title + ' fehlt',
+        ),
+      };
     });
-    return true;
   }
 }

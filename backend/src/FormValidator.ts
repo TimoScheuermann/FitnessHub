@@ -20,12 +20,12 @@ export class FormValidator {
     if (!array || array.length === 0) {
       this.throwEx(key, message);
     }
-
-    if (array.filter((x) => x.length === 0).length === 0) {
+    const filtered = array.filter((x) => x.length > 0);
+    if (filtered.length === 0) {
       this.throwEx(key, message);
     }
 
-    return array.filter((x) => x.length > 0);
+    return filtered;
   }
 
   public static checkNumber(n: number, key: string, message: string): number {

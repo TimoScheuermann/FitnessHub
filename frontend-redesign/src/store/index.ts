@@ -12,6 +12,7 @@ import {
   IVariable,
   IWorkout
 } from '@/utils/interfaces';
+import { RecipeManagement } from '@/utils/RecipeManagement';
 import { TrainingStatistics } from '@/utils/Trainingstatistics';
 import { UserManagement } from '@/utils/UserManagement';
 import Vue from 'vue';
@@ -28,11 +29,16 @@ const store = new Vuex.Store({
     routeTransition: 'slide-left',
     storedRoutes: {},
     variables: null,
+
     trendingExercises: null,
     latestExercises: null,
     latestWorkouts: null,
+
     latestRecipes: null,
     belovedRecipes: null,
+    likedRecipes: null,
+    createdRecipes: null,
+
     messages: null,
     friends: null,
     friendRequests: null,
@@ -69,6 +75,7 @@ const store = new Vuex.Store({
     variables: (state: any): IVariable[] | null => {
       return state.variables;
     },
+
     trendingExercises: (state: any): IExercise[] | null => {
       return state.trendingExercises;
     },
@@ -78,12 +85,20 @@ const store = new Vuex.Store({
     latestWorkouts: (state: any): IWorkout[] | null => {
       return state.latestWorkouts;
     },
+
     latestRecipes: (state: any): IRecipe[] | null => {
       return state.latestRecipes;
     },
     belovedRecipes: (state: any): IRecipe[] | null => {
       return state.belovedRecipes;
     },
+    likedRecipes: (state: any): IRecipe[] | null => {
+      return state.likedRecipes;
+    },
+    createdRecipes: (state: any): IRecipe[] | null => {
+      return state.createdRecipes;
+    },
+
     messages: (state: any): IMessage[] | null => {
       return state.messages;
     },
@@ -93,6 +108,7 @@ const store = new Vuex.Store({
     friendRequests: (state: any): IPendingFriendship[] | null => {
       return state.friendRequests;
     },
+
     trainingStats: (state: any): number[][] | null => {
       return state.trainingStats;
     },
@@ -122,6 +138,8 @@ const store = new Vuex.Store({
       UserManagement.loadMessages();
       UserManagement.loadFriends();
       UserManagement.loadFriendRequests();
+      RecipeManagement.loadLiked();
+      RecipeManagement.loadCreated();
       TrainingStatistics.loadCharts();
       TrainingStatistics.loadWater();
       TrainingStatistics.loadHeights();
@@ -142,6 +160,7 @@ const store = new Vuex.Store({
     variables(state: any, vars: IVariable) {
       state.variables = vars;
     },
+
     trendingExercises(state: any, exercises: IExercise[]) {
       state.trendingExercises = exercises;
     },
@@ -151,12 +170,20 @@ const store = new Vuex.Store({
     latestWorkouts(state: any, workouts: IWorkout[]) {
       state.latestWorkouts = workouts;
     },
+
     latestRecipes(state: any, recipes: IRecipe[]) {
       state.latestRecipes = recipes;
     },
     belovedRecipes(state: any, recipes: IRecipe[]) {
       state.belovedRecipes = recipes;
     },
+    likedRecipes(state: any, recipes: IRecipe[]) {
+      state.likedRecipes = recipes;
+    },
+    createdRecipes(state: any, recipes: IRecipe[]) {
+      state.createdRecipes = recipes;
+    },
+
     messages(state: any, messages: IMessage[]) {
       state.messages = messages;
     },
@@ -166,6 +193,7 @@ const store = new Vuex.Store({
     friendRequests(state: any, friendRequests: IPendingFriendship[]) {
       state.friendRequests = friendRequests;
     },
+
     trainingStats(state: any, trainingStats: number[][]) {
       state.trainingStats = trainingStats;
     },

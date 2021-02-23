@@ -40,9 +40,9 @@ export default class FHRouter extends Vue {}
     right: 0;
     left: 0;
     z-index: 10;
-    background: $background;
+    background-color: $background;
     @media #{$isDark} {
-      background: $background_dark;
+      background-color: $background_dark;
     }
     transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
   }

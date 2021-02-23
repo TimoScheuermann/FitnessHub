@@ -10,14 +10,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { RecipeManagement } from '@/utils/RecipeManagement';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHHeart extends Vue {
-  public liked = false;
+  @Prop() recipeId!: string;
 
-  public handleClick() {
-    this.liked = !this.liked;
+  get liked(): boolean {
+    if (!this.recipeId) return false;
+    return RecipeManagement.hasLiked(this.recipeId);
+  }
+
+  public handleClick(e: MouseEvent) {
+    this.$emit('click', e);
   }
 }
 </script>

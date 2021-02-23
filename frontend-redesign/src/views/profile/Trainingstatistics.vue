@@ -52,4 +52,8 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class Trainingstatistics extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.view-trainingstatistics {
+  padding-top: 0;
+}
+</style>

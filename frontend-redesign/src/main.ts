@@ -10,7 +10,7 @@ import { Route } from 'vue-router';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
 import './registerServiceWorker';
-import { getUserFromJWT, verfiyUser } from './utils/auth';
+import { getToken, getUserFromJWT, verfiyUser } from './utils/auth';
 import { backendURL } from './utils/constants';
 import { closeFullscreen, getDepth, openFullscreen } from './utils/functions';
 
@@ -26,7 +26,7 @@ for (const component in TCComponents) {
 export const socket = io(backendURL);
 Vue.use(VueSocketIOExt, socket);
 
-// console.log(getToken());
+console.log(getToken());
 
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
   const toDepth = getDepth(to);

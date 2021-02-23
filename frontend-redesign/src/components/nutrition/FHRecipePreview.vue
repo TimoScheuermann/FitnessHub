@@ -7,7 +7,7 @@
     :style="`--thumbnail: url('${recipe.thumbnail}'`"
   >
     <div class="media">
-      <FHHeart />
+      <FHHeart :recipeId="recipe._id" @click="toggleLike" />
     </div>
     <div class="title">{{ recipe.title }}</div>
     <tl-flow horizontal="space-between">
@@ -16,7 +16,12 @@
         <span>{{ recipe.time }} min</span>
       </div>
       <tc-action :dark="$store.getters.darkmode">
-        <tc-action-item icon="heart" title="Gefällt mir" />
+        <tc-action-item
+          v-if="$store.getters.valid && $route.name !== 'recipes'"
+          icon="heart"
+          title="Lieblingsrezepte"
+          @click="openRecipes"
+        />
         <tc-action-item
           icon="i-circle-filled"
           title="Details"
@@ -31,6 +36,8 @@
 <script lang="ts">
 import { openFullscreen } from '@/utils/functions';
 import { IRecipe } from '@/utils/interfaces';
+import { RecipeManagement } from '@/utils/RecipeManagement';
+import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHHeart from './FHHeart.vue';
 
@@ -44,6 +51,19 @@ export default class FHRecipePreview extends Vue {
     this.$emit('click', e);
     if (this.recipe) {
       openFullscreen('recipe-details', { id: this.recipe._id });
+    }
+  }
+
+  public openRecipes() {
+    this.$router.push({ name: 'recipes' });
+  }
+
+  public toggleLike() {
+    if (!UserManagement.getUserID()) {
+      openFullscreen('login');
+      return;
+    } else if (this.recipe) {
+      RecipeManagement.toggleLike(this.recipe);
     }
   }
 }

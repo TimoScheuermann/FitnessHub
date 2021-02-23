@@ -151,6 +151,28 @@ const router = new VueRouter({
             hero: 'Trainingsstatistik'
           }
         },
+        {
+          path: 'recipes',
+          name: 'recipes',
+          component: () => import('@/views/profile/Recipes.vue'),
+          meta: {
+            title: prefix + 'Rezepte',
+            needsSignIn: true,
+            hero: 'Rezepte'
+          }
+        },
+        {
+          path: 'recipes/submit',
+          name: 'submit-recipe',
+          component: () => import('@/views/profile/RecipeForm.vue'),
+          meta: {
+            title: prefix + 'Rezept erstellen',
+            needsSignIn: true,
+            hero: 'Erstellen',
+            backTitle: 'Rezepte',
+            backRoute: 'recipes'
+          }
+        },
         { path: '*', redirect: { name: 'profile' } }
       ]
     },

@@ -7,7 +7,7 @@
           <tc-list :dark="$store.getters.darkmode">
             <tc-list-item
               title="Sprache"
-              icon="book"
+              icon="book-filled"
               description="Deutsch"
               value="0"
             />

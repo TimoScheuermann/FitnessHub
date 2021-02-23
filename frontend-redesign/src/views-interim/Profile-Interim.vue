@@ -1,8 +1,8 @@
 <template>
   <div class="interim-profile">
     <FHHeader
-      backTitle="Profil"
-      rootRoute="profile"
+      :backTitle="$route.meta.backTitle || 'Profil'"
+      :rootRoute="$route.meta.backRoute || 'profile'"
       :title="$route.meta.hero"
     />
     <tc-hero

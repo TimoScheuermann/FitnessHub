@@ -140,6 +140,6 @@ body {
     background: $paragraph_dark;
   }
   padding: 10px;
-  border-radius: $border-radius;
+  border-radius: #{1.5 * $border-radius};
 }
 </style>
