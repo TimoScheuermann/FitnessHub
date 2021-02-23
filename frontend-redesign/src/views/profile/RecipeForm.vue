@@ -1,5 +1,6 @@
 <template>
   <div class="view-recipe-form" content>
+    <FHErrorList id="create-recipe" />
     <div max-width>
       <h3>Rezept erstellen</h3>
 
@@ -198,8 +199,10 @@
 
 <script lang="ts">
 import FHAppear from '@/components/FHAppear.vue';
+import FHErrorList from '@/components/FHErrorList.vue';
 import backend from '@/utils/backend';
 import { CreateRecipeDTO } from '@/utils/dtos';
+import { FHEventBus } from '@/utils/FHEventbus';
 import { INutrition, IRecipeIngredient, IVariable } from '@/utils/interfaces';
 import { NotificationManagement } from '@/utils/NotificationManagement';
 import { RecipeManagement } from '@/utils/RecipeManagement';
@@ -207,7 +210,8 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
-    FHAppear
+    FHAppear,
+    FHErrorList
   }
 })
 export default class RecipeForm extends Vue {
@@ -293,12 +297,9 @@ export default class RecipeForm extends Vue {
         this.$router.push({ name: 'recipes' });
       })
       .catch(err => {
-        const { key, message } = err;
-        if (key && message) {
-          NotificationManagement.sendNotification(
-            'Fehler bei: ' + key,
-            message
-          );
+        const { statusCode, message } = err;
+        if (statusCode === 422 && message) {
+          FHEventBus.$emit('fh-error-list-create-recipe', message);
         }
         this.isSubmitting = false;
       });
