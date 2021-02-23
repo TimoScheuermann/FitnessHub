@@ -52,10 +52,19 @@ export default class FHListItem extends Vue {
   display: grid;
   grid-template-columns: 50px 1fr;
   grid-gap: 10px;
-  border-radius: $border-radius;
-  padding: 2.5px;
+  padding: 0 2.5px;
   min-height: 50px;
   padding-right: 10px;
+
+  border-radius: 50px;
+  background: $paragraph;
+  @media #{$isDark} {
+    background: $paragraph_dark;
+  }
+  box-shadow: $shadow;
+  &:not(:first-of-type) {
+    margin-top: 10px;
+  }
 
   &:hover {
     background: rgba(darken($paragraph, 20%), 0.5);
@@ -66,21 +75,10 @@ export default class FHListItem extends Vue {
   .tc-avatar {
     transform: scale(0.8);
   }
-  &:not(:last-child) .content::after {
-    position: absolute;
-    content: '';
-    z-index: 10;
-    bottom: -3.5px;
-    right: -10px;
-    left: 0;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.2;
-  }
 
   .content {
-    position: relative;
     flex-wrap: nowrap;
+    margin-right: 5px;
     .tl-flow {
       &:first-child {
         flex-grow: 1;

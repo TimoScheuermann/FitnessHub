@@ -1,10 +1,12 @@
 <template>
-  <div class="view-Nutrition" content>
+  <div class="view-nutrition" content>
     <div max-width>
       <tl-grid minWidth="150" gap="10">
         <FHButton icon="lens" title="Rezept" routeName="search-exercise" />
         <FHButton icon="lightbulb" title="Tipps" routeName="nutrition-tipps" />
       </tl-grid>
+
+      <FHGraphWater :onlyToday="true" />
 
       <br />
 
@@ -58,6 +60,7 @@ import FHAppear from '@/components/FHAppear.vue';
 import FHButton from '@/components/FHButton.vue';
 import FHCarousel from '@/components/FHCarousel.vue';
 import FHHeading from '@/components/FHHeading.vue';
+import FHGraphWater from '@/components/graphs/FHGraphWater.vue';
 import FHCategoryPreview from '@/components/nutrition/FHCategoryPreview.vue';
 import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
 import { IRecipe, IVariable } from '@/utils/interfaces';
@@ -70,7 +73,8 @@ import { Vue, Component } from 'vue-property-decorator';
     FHCarousel,
     FHRecipePreview,
     FHAppear,
-    FHCategoryPreview
+    FHCategoryPreview,
+    FHGraphWater
   }
 })
 export default class Nutrition extends Vue {
@@ -90,4 +94,10 @@ export default class Nutrition extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.view-nutrition {
+  .fh-graph-water {
+    margin-top: 20px;
+  }
+}
+</style>

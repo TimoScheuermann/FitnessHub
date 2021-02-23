@@ -1,27 +1,37 @@
 <template>
   <div class="view-chat-room">
-    <FHFullScreenCloser @click="$cFS('messages')" />
-    <FHHeader v-if="friend" :title="friend.username" />
-
-    <tc-hero :dark="true">
-      <img src="assets/hero/home.webp" slot="background" alt="" />
-      <tl-flow flow="column">
-        <template v-if="!friend">
-          <tc-spinner
-            variant="dots-spin"
-            size="30"
-            :dark="$store.getters.darkmode"
-          />
-          <p>Freund wird geladen...</p>
-        </template>
-        <template v-else>
-          <tc-avatar :src="friend.avatar" />
-          <tc-link color="#fff">
-            {{ friend.username }}
-          </tc-link>
-        </template>
+    <FHSwipeable class="chat-header" @swipeDown="$cFS('messages')">
+      <tl-flow horizontal="start">
+        <tc-header-button
+          name="close"
+          tfcolor="success"
+          @click="$cFS('messages')"
+        />
       </tl-flow>
-    </tc-hero>
+      <template v-if="friend">
+        <tl-flow flow="column">
+          <tc-avatar size="tiny" :src="friend.avatar" />
+          <span>{{ friend.username }}</span>
+        </tl-flow>
+        <tl-flow horizontal="end">
+          <tc-action :dark="$store.getters.darkmode">
+            <tc-action-item title="Training planen" icon="calendar-alt" />
+            <tc-action-item title="Herausfordern" icon="tropy" />
+            <tc-action-item success title="Profil ansehen" icon="lens" />
+          </tc-action>
+        </tl-flow>
+      </template>
+    </FHSwipeable>
+
+    <tl-flow v-if="!friend" flow="column">
+      <br />
+      <tc-spinner
+        variant="dots-spin"
+        size="30"
+        :dark="$store.getters.darkmode"
+      />
+      <p>Freund wird geladen...</p>
+    </tl-flow>
 
     <div class="input-wrapper" v-if="!this.isBotPartner">
       <form @submit.prevent="sendMessage">
@@ -32,9 +42,7 @@
           :rows="numberOfLineBreaks"
         />
         <tl-flow>
-          <label for="submit" cursor>
-            <i class="ti-reply"></i>
-          </label>
+          <label for="submit" cursor><i class="ti-reply"/></label>
         </tl-flow>
         <input id="submit" type="submit" />
       </form>
@@ -43,6 +51,7 @@
     <div content>
       <div max-width>
         <tl-flow v-if="!messages" flow="column">
+          <br />
           <tc-spinner
             variant="dots-spin"
             size="30"
@@ -134,17 +143,37 @@ export default class ChatRoom extends Vue {
     max-width: 420px;
   }
 
-  .tc-hero {
-    img[src='assets/hero/home.webp'] {
-      filter: blur(10px) brightness(80%);
-    }
-  }
+  .chat-header {
+    position: sticky;
+    display: grid;
+    grid-template-columns: 70px 1fr 70px;
+    padding: env(safe-area-inset-top) 5vw 0;
+    min-height: 50px;
+    top: 0;
+    z-index: 10;
 
-  .tc-avatar {
-    transform: scale(0.8);
-  }
-  .tc-link {
-    margin-top: 10px;
+    border-bottom: 1px solid rgba($color, 0.3);
+    @include backdrop-blur($background);
+
+    @media #{$isDark} {
+      border-color: rgba($color_dark, 0.3);
+      @include backdrop-blur($background_dark);
+    }
+    .tc-avatar {
+      transform: scale(0.8);
+    }
+    span {
+      margin: 5px;
+      font-weight: 500;
+    }
+    .tc-action {
+      z-index: 100;
+      /deep/ .actions-wrapper {
+        bottom: unset;
+        top: 0px;
+        z-index: 110;
+      }
+    }
   }
 
   .input-wrapper {
@@ -203,5 +232,12 @@ export default class ChatRoom extends Vue {
       border-radius: 40px;
     }
   }
+}
+
+/deep/ .wrapper-enter,
+/deep/ .wrapper-leave-to {
+  opacity: 0 !important;
+  transform-origin: top right !important;
+  transform: scale(0) !important;
 }
 </style>

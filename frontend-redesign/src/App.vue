@@ -133,4 +133,13 @@ body {
 [transition] {
   transition: all 0.2s ease-in-out;
 }
+
+.fh-graph-card {
+  background: $paragraph;
+  @media (prefers-color-scheme: dark) {
+    background: $paragraph_dark;
+  }
+  padding: 10px;
+  border-radius: $border-radius;
+}
 </style>

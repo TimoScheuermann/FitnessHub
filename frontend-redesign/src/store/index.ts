@@ -3,6 +3,7 @@ import { socket } from '@/main';
 import { getUserFromJWT } from '@/utils/auth';
 import {
   IExercise,
+  IHealth,
   IMessage,
   IPendingFriendship,
   IRecipe,
@@ -11,6 +12,7 @@ import {
   IVariable,
   IWorkout
 } from '@/utils/interfaces';
+import { TrainingStatistics } from '@/utils/Trainingstatistics';
 import { UserManagement } from '@/utils/UserManagement';
 import Vue from 'vue';
 import { Route } from 'vue-router';
@@ -33,7 +35,12 @@ const store = new Vuex.Store({
     belovedRecipes: null,
     messages: null,
     friends: null,
-    friendRequests: null
+    friendRequests: null,
+
+    trainingStats: null,
+    weight: null,
+    water: null,
+    height: null
   },
   getters: {
     valid: (state: any): boolean => {
@@ -85,6 +92,18 @@ const store = new Vuex.Store({
     },
     friendRequests: (state: any): IPendingFriendship[] | null => {
       return state.friendRequests;
+    },
+    trainingStats: (state: any): number[][] | null => {
+      return state.trainingStats;
+    },
+    weight: (state: any): IHealth[] | null => {
+      return state.weight;
+    },
+    water: (state: any): IHealth[] | null => {
+      return state.water;
+    },
+    height: (state: any): IHealth | null => {
+      return state.height;
     }
   },
   mutations: {
@@ -99,9 +118,14 @@ const store = new Vuex.Store({
         state.user.familyName = user.familyName.split('Ã¼').join('ü');
 
       socket.emit('join', getUserFromJWT()._id);
+
       UserManagement.loadMessages();
       UserManagement.loadFriends();
       UserManagement.loadFriendRequests();
+      TrainingStatistics.loadCharts();
+      TrainingStatistics.loadWater();
+      TrainingStatistics.loadHeights();
+      TrainingStatistics.loadWeights();
     },
     isDesktop(state: any, isDesktop: boolean) {
       state.isDesktop = isDesktop;
@@ -141,6 +165,18 @@ const store = new Vuex.Store({
     },
     friendRequests(state: any, friendRequests: IPendingFriendship[]) {
       state.friendRequests = friendRequests;
+    },
+    trainingStats(state: any, trainingStats: number[][]) {
+      state.trainingStats = trainingStats;
+    },
+    weight(state: any, weight: IHealth[]) {
+      return (state.weight = weight);
+    },
+    water(state: any, water: IHealth[]) {
+      return (state.water = water);
+    },
+    height(state: any, height: IHealth) {
+      return (state.height = height);
     }
   }
 });

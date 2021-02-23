@@ -70,5 +70,9 @@ export default class FHTabbar extends Vue {
   &[moveout] {
     transform: translateY(calc(50px + env(safe-area-inset-bottom)));
   }
+  .tc-badge {
+    flex: 1 1 0px;
+    margin: 0 2.5px;
+  }
 }
 </style>

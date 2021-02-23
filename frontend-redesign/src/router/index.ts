@@ -28,7 +28,7 @@ const router = new VueRouter({
       name: 'exercise-details',
       component: () => import('@/views/training/Exercise.vue'),
       meta: {
-        title: prefix + 'Exercise',
+        title: prefix + 'Übung',
         fullscreen: true
       }
     },
@@ -46,7 +46,7 @@ const router = new VueRouter({
       name: 'recipe-details',
       component: () => import('@/views/nutrition/Recipe.vue'),
       meta: {
-        title: prefix + 'Recipe',
+        title: prefix + 'Rezept',
         fullscreen: true
       }
     },
@@ -106,9 +106,9 @@ const router = new VueRouter({
           name: 'profile',
           component: () => import('@/views/profile/Profile.vue'),
           meta: {
-            title: prefix + 'Profile',
+            title: prefix + 'Profil',
             needsSignIn: true,
-            hero: 'Profile'
+            hero: 'Profil'
           }
         },
         {
@@ -116,9 +116,9 @@ const router = new VueRouter({
           name: 'settings',
           component: () => import('@/views/profile/Settings.vue'),
           meta: {
-            title: prefix + 'Settings',
+            title: prefix + 'Einstellungen',
             needsSignIn: true,
-            hero: 'Settings'
+            hero: 'Einstellungen'
           }
         },
         {
@@ -126,9 +126,9 @@ const router = new VueRouter({
           name: 'messages',
           component: () => import('@/views/profile/Messages.vue'),
           meta: {
-            title: prefix + 'Messages',
+            title: prefix + 'Nachrichten',
             needsSignIn: true,
-            hero: 'Messages'
+            hero: 'Nachrichten'
           }
         },
         {
@@ -136,9 +136,19 @@ const router = new VueRouter({
           name: 'friends',
           component: () => import('@/views/profile/Friends.vue'),
           meta: {
-            title: prefix + 'Friends',
+            title: prefix + 'Freunde',
             needsSignIn: true,
-            hero: 'Friends'
+            hero: 'Freunde'
+          }
+        },
+        {
+          path: 'statistics',
+          name: 'statistics',
+          component: () => import('@/views/profile/Trainingstatistics.vue'),
+          meta: {
+            title: prefix + 'Trainingsstatistik',
+            needsSignIn: true,
+            hero: 'Trainingsstatistik'
           }
         },
         { path: '*', redirect: { name: 'profile' } }

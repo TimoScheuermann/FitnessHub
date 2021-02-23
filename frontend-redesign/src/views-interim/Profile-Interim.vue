@@ -1,7 +1,7 @@
 <template>
   <div class="interim-profile">
     <FHHeader
-      backTitle="Profile"
+      backTitle="Profil"
       rootRoute="profile"
       :title="$route.meta.hero"
     />
@@ -51,6 +51,7 @@ export default class InterimProfile extends Vue {
     filter: brightness(80%);
   }
   .tc-hero {
+    color: #fff;
     h1 {
       padding-top: env(safe-area-inset-top);
     }

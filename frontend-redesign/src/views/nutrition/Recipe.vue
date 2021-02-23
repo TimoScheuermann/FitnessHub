@@ -42,6 +42,7 @@
 
         <template v-if="recipe.description || urlInfo">
           <tc-quote
+            v-if="author"
             :title="author.username"
             :dark="$store.getters.darkmode"
             tfcolor="success"

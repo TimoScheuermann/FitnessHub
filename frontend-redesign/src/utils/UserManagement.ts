@@ -13,6 +13,12 @@ export class UserManagement {
     return store.getters.user;
   }
 
+  public static getName(): string | null {
+    const user = this.getUser();
+    if (!user) return null;
+    return [user.givenName, user.familyName].filter(x => !!x).join(' ');
+  }
+
   /**
    * get UserID from current User
    */

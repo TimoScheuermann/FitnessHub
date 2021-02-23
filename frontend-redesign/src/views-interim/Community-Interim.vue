@@ -24,6 +24,7 @@ export default class InterimCommunity extends Vue {}
 <style lang="scss" scoped>
 .interim-community {
   .tc-hero {
+    color: #fff;
     h1 {
       padding-top: env(safe-area-inset-top);
     }

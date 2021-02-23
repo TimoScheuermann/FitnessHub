@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="fh-header"
-    :class="{ 'fh-header__enhanced': enhanced, 'fh-header__dark': dark }"
-  >
+  <div class="fh-header" :class="{ 'fh-header__enhanced': enhanced }">
     <div
       class="fh-header--container"
       :class="{ dark: $store.getters.darkmode }"
@@ -26,7 +23,6 @@ export default class FHHeader extends Vue {
   @Prop() rootRoute!: string;
   @Prop() backTitle!: string;
   @Prop({ default: 100 }) trigger!: number;
-  @Prop() dark!: boolean;
 
   public TRIGGER = this.trigger;
   public enhanced = window.scrollY > this.TRIGGER;
@@ -62,7 +58,7 @@ export default class FHHeader extends Vue {
   }
   .fh-header--container {
     @include backdrop-blur($background);
-    &.dark {
+    @media #{$isDark} {
       @include backdrop-blur($background_dark);
     }
     top: 0;
@@ -87,9 +83,7 @@ export default class FHHeader extends Vue {
     z-index: 101;
     right: 5vw;
   }
-  &.fh-header__dark a {
-    color: #111;
-  }
+
   &.fh-header__enhanced {
     .fh-header--container {
       transform: translateY(0px);

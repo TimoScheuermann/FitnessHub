@@ -24,6 +24,7 @@ export default class InterimHome extends Vue {}
 <style lang="scss" scoped>
 .interim-home {
   .tc-hero {
+    color: #fff;
     h1 {
       padding-top: env(safe-area-inset-top);
     }

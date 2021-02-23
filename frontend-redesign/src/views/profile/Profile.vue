@@ -8,13 +8,6 @@
           routeName="settings"
         />
         <!-- <tc-list-item icon="telegram" title="Telegram" routeName="telegram" /> -->
-        <tc-badge :value="unreadMessages" tfcolor="success" position="inside">
-          <tc-list-item
-            title="Nachrichten"
-            icon="chat-bubbles"
-            routeName="messages"
-          />
-        </tc-badge>
         <tc-badge
           :value="$store.getters.unansweredFriendRequests"
           position="inside"
@@ -25,10 +18,17 @@
             routeName="friends"
           />
         </tc-badge>
+        <tc-badge :value="unreadMessages" tfcolor="success" position="inside">
+          <tc-list-item
+            title="Nachrichten"
+            icon="chat-bubbles"
+            routeName="messages"
+          />
+        </tc-badge>
         <tc-list-item
           title="Trainingsstatistik"
           icon="chart-bar"
-          routeName="highlights"
+          routeName="statistics"
         />
       </tc-list>
 

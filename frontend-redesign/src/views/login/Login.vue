@@ -75,6 +75,7 @@ export default class Login extends Vue {
 
 <style lang="scss" scoped>
 .view-Login {
+  color: #fff;
   .back-button {
     position: absolute;
     top: calc(20px + env(safe-area-inset-top));

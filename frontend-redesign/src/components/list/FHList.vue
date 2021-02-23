@@ -13,12 +13,12 @@ export default class FHList extends Vue {}
 
 <style lang="scss" scoped>
 .fh-list {
-  padding: 5px;
-  border-radius: $border-radius;
+  // padding: 5px;
+  // border-radius: $border-radius;
 
-  background: $paragraph;
-  @media #{$isDark} {
-    background: $paragraph_dark;
-  }
+  // background: $paragraph;
+  // @media #{$isDark} {
+  //   background: $paragraph_dark;
+  // }
 }
 </style>
