@@ -7,7 +7,15 @@
       </tc-link>
     </tl-flow>
 
-    <p>Du hast noch kein eigenes Rezept veröffentlicht</p>
+    <FHAppear>
+      <p v-if="!submitted || submitted.length === 0">
+        Du hast noch kein eigenes Rezept veröffentlicht
+      </p>
+
+      <FHCarousel v-else>
+        <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
+      </FHCarousel>
+    </FHAppear>
 
     <FHAppear>
       <div v-if="liked">
@@ -42,6 +50,10 @@ import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
 export default class Recipes extends Vue {
   get liked(): IRecipe[] | null {
     return RecipeManagement.getLikedRecipes();
+  }
+
+  get submitted(): IRecipe[] | null {
+    return RecipeManagement.getCreated();
   }
 }
 </script>

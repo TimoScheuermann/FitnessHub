@@ -102,9 +102,10 @@ export default class AddFriend extends Vue {
 <style lang="scss" scoped>
 .view-add-friend {
   min-height: 100vh;
-  background-image: url('/assets/fs-bg-light.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
+  // background-image: url('/assets/fs-bg-light.svg');
+  // background-repeat: no-repeat;
+  // background-size: contain;
+  // @include fs-background();
 
   [max-width] {
     max-width: 500px;
@@ -113,14 +114,8 @@ export default class AddFriend extends Vue {
     padding-bottom: calc(20px + env(safe-area-inset-bottom));
   }
 
-  .fh-list {
-    max-height: 330px;
-    overflow-y: auto;
-
-    @include custom-scrollbar__light();
-    @media #{$isDark} {
-      @include custom-scrollbar__dark();
-    }
+  h1 {
+    padding-top: env(safe-area-inset-top);
   }
 }
 </style>

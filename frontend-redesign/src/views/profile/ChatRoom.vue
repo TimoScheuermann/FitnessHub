@@ -2,11 +2,7 @@
   <div class="view-chat-room">
     <FHSwipeable class="chat-header" @swipeDown="$cFS('messages')">
       <tl-flow horizontal="start">
-        <tc-header-button
-          name="close"
-          tfcolor="success"
-          @click="$cFS('messages')"
-        />
+        <tc-header-button name="" tfcolor="success" @click="$cFS('messages')" />
       </tl-flow>
       <template v-if="friend">
         <tl-flow flow="column">
@@ -146,17 +142,17 @@ export default class ChatRoom extends Vue {
   .chat-header {
     position: sticky;
     display: grid;
-    grid-template-columns: 70px 1fr 70px;
+    grid-template-columns: 30px 1fr 30px;
     padding: env(safe-area-inset-top) 5vw 0;
     min-height: 50px;
     top: 0;
     z-index: 10;
 
-    border-bottom: 1px solid rgba($color, 0.3);
+    border-bottom: 1px solid rgba($color, 0.1);
     @include backdrop-blur($background);
 
     @media #{$isDark} {
-      border-color: rgba($color_dark, 0.3);
+      border-color: rgba($color_dark, 0.1);
       @include backdrop-blur($background_dark);
     }
     .tc-avatar {

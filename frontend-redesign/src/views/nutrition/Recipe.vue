@@ -20,6 +20,22 @@
       </tc-hero>
     </FHSwipeable>
     <div content v-if="recipe">
+      <tl-grid minWidth="150" gap="10" max-width>
+        <FHButton
+          :frosted="true"
+          :icon="liked ? 'heart' : 'heart-empty'"
+          title="Gefällt mir"
+          @click="toggleLike"
+        />
+        <FHButton
+          v-if="isAuthor"
+          :frosted="true"
+          icon="pencil"
+          title="Bearbeiten"
+          @click="$oFS('update-recipe', { id: recipe._id })"
+        />
+      </tl-grid>
+
       <h1 center>{{ recipe.title }}</h1>
       <div max-width>
         <tl-flow horizontal="space-around" class="quick-information">
@@ -165,8 +181,15 @@ import FHSwipeable from '@/components/FHSwipeable.vue';
 import FHVarList from '@/components/variable-list/FHVarList.vue';
 import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
 import backend from '@/utils/backend';
-import { closeFullscreen, extractInfoFromUrl } from '@/utils/functions';
+import {
+  closeFullscreen,
+  extractInfoFromUrl,
+  openFullscreen
+} from '@/utils/functions';
 import { IRecipe, IUserInfo } from '@/utils/interfaces';
+import { NotificationManagement } from '@/utils/NotificationManagement';
+import { RecipeManagement } from '@/utils/RecipeManagement';
+import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -193,8 +216,14 @@ export default class Recipe extends Vue {
       .get('recipe/' + this.$route.params.id)
       .then(async res => {
         this.recipe = res.data;
-
-        if (!this.recipe) return;
+        if (!this.recipe) {
+          NotificationManagement.sendNotification(
+            'Rezept konnte nicht gefunden werden',
+            'Das angegeben Rezept existiert nicht'
+          );
+          closeFullscreen('nutrition');
+          return;
+        }
         const { data } = await backend.get('user/' + this.recipe.author);
         this.author = data;
       })
@@ -216,12 +245,38 @@ export default class Recipe extends Vue {
     if (!video.startsWith('https://www.youtube.com/watch?v=')) return null;
     return video.replace('watch?v=', 'embed/');
   }
+
+  get isAuthor(): boolean {
+    if (!this.recipe) return false;
+    return UserManagement.getUserID() === this.recipe.author;
+  }
+
+  get liked(): boolean {
+    if (!this.recipe) return false;
+    return RecipeManagement.hasLiked(this.recipe._id);
+  }
+
+  public toggleLike() {
+    if (!UserManagement.getUserID()) {
+      openFullscreen('login');
+      return;
+    } else if (this.recipe) {
+      RecipeManagement.toggleLike(this.recipe);
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .view-Recipe {
   min-height: 100vh;
+
+  .tl-grid {
+    left: 50%;
+    transform: translate(-50%, calc(-100% - 40px));
+    position: absolute;
+    z-index: 10;
+  }
 
   [content] {
     padding-top: 0;

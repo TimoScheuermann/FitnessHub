@@ -100,6 +100,11 @@ body {
 [error] {
   color: $error;
 }
+
+[alarm] {
+  color: $alarm;
+}
+
 [success] {
   color: $success;
 }

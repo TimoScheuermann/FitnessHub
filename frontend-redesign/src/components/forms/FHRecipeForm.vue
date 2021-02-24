@@ -1,6 +1,6 @@
 <template>
   <div class="view-recipe-form" content>
-    <FHErrorList id="create-recipe" />
+    <FHErrorList :id="errorList" />
     <div max-width>
       <h3>Rezept erstellen</h3>
 
@@ -186,12 +186,28 @@
 
       <br />
       <tl-flow>
-        <tc-button
-          name="Rezept veröffentlichen"
-          tfbackground="success"
-          :disabled="isSubmitting"
-          @click="submit"
-        />
+        <template v-if="mode === 'create'">
+          <tc-button
+            name="Rezept veröffentlichen"
+            tfbackground="success"
+            :disabled="isSubmitting"
+            @click="createRecipe"
+          />
+        </template>
+        <template v-else-if="mode === 'update'">
+          <tc-button
+            name="Bearbeitung speichern"
+            tfbackground="success"
+            :disabled="isSubmitting"
+            @click="updateRecipe"
+          />
+          <tc-button
+            name="Rezept löschen"
+            tfbackground="error"
+            :disabled="isSubmitting"
+            @click="deleteRecipe"
+          />
+        </template>
       </tl-flow>
     </div>
   </div>
@@ -203,10 +219,15 @@ import FHErrorList from '@/components/FHErrorList.vue';
 import backend from '@/utils/backend';
 import { CreateRecipeDTO } from '@/utils/dtos';
 import { FHEventBus } from '@/utils/FHEventbus';
-import { INutrition, IRecipeIngredient, IVariable } from '@/utils/interfaces';
+import {
+  INutrition,
+  IRecipe,
+  IRecipeIngredient,
+  IVariable
+} from '@/utils/interfaces';
 import { NotificationManagement } from '@/utils/NotificationManagement';
 import { RecipeManagement } from '@/utils/RecipeManagement';
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -214,12 +235,17 @@ import { Vue, Component } from 'vue-property-decorator';
     FHErrorList
   }
 })
-export default class RecipeForm extends Vue {
-  public segment = 1;
+export default class FHRecipeForm extends Vue {
+  @Prop() recipe!: IRecipe;
+
+  public segment = -1;
   public isSubmitting = false;
   public ingredient: IRecipeIngredient = { name: '', amount: '', unit: '' };
   public nutrition: INutrition = { title: '', amount: 0, unit: '' };
   public step = '';
+  public mode: 'update' | 'create' = 'create';
+  public errorList = 'recipe-form';
+
   public dto: CreateRecipeDTO = {
     title: '',
     thumbnail: '',
@@ -233,12 +259,31 @@ export default class RecipeForm extends Vue {
 
   beforeMount() {
     if (!this.categories) {
-      this.$router.push({ name: 'recipes' });
+      this.$emit('close');
       NotificationManagement.sendNotification(
         'Aktion zurzeit nicht möglich',
         'Bitte versuche es zu einem späteren Zeitpunkt'
       );
     }
+  }
+
+  mounted() {
+    this.mode = this.recipe ? 'update' : 'create';
+    if (this.mode === 'update') {
+      this.dto.title = this.recipe.title;
+      this.dto.thumbnail = this.recipe.thumbnail;
+      this.dto.category = this.recipe.category;
+      this.dto.time = this.recipe.time;
+      this.dto.difficulty = this.recipe.difficulty;
+      this.dto.ingredients = this.recipe.ingredients;
+      this.dto.nutrition = this.recipe.nutrition;
+      this.dto.steps = this.recipe.steps;
+
+      this.dto.source = this.recipe.source;
+      this.dto.video = this.recipe.video;
+      this.dto.description = this.recipe.description;
+    }
+    this.segment = 0;
   }
 
   get categories(): string[] | null {
@@ -286,23 +331,46 @@ export default class RecipeForm extends Vue {
     this.dto.steps.splice(index, 1);
   }
 
-  public async submit(): Promise<void> {
+  public async createRecipe(): Promise<void> {
     if (this.isSubmitting) return;
     this.isSubmitting = true;
 
     backend
       .post('recipe', this.dto)
-      .then(res => {
-        RecipeManagement.addCreated(res.data);
-        this.$router.push({ name: 'recipes' });
-      })
-      .catch(err => {
-        const { statusCode, message } = err;
-        if (statusCode === 422 && message) {
-          FHEventBus.$emit('fh-error-list-create-recipe', message);
-        }
-        this.isSubmitting = false;
-      });
+      .then(this.handleResponse)
+      .catch(this.handleCatch);
+  }
+
+  public async updateRecipe() {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+
+    backend
+      .put('recipe/' + this.recipe._id, this.dto)
+      .then(this.handleResponse)
+      .catch(this.handleCatch);
+  }
+
+  public async deleteRecipe() {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+
+    this.$emit('close');
+    RecipeManagement.removeCreate(this.recipe._id);
+    backend.delete('recipe/' + this.recipe._id);
+  }
+
+  private handleResponse(res: { data: IRecipe }): void {
+    RecipeManagement.addCreated(res.data);
+    this.$emit('close');
+  }
+
+  private handleCatch(err: { statusCode: number; message: string }): void {
+    const { statusCode, message } = err;
+    if (statusCode && statusCode === 422 && message) {
+      FHEventBus.$emit('fh-error-list-' + this.errorList, message);
+    }
+    this.isSubmitting = false;
   }
 }
 </script>

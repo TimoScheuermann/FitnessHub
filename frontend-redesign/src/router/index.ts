@@ -5,9 +5,9 @@ Vue.use(VueRouter);
 const prefix = 'FitnessHub | ';
 
 const router = new VueRouter({
-  scrollBehavior() {
-    return { x: 0, y: 0 };
-  },
+  // scrollBehavior() {
+  //   return { x: 0, y: 0 };
+  // },
   mode: 'history',
 
   routes: [
@@ -47,6 +47,16 @@ const router = new VueRouter({
       component: () => import('@/views/nutrition/Recipe.vue'),
       meta: {
         title: prefix + 'Rezept',
+        fullscreen: true
+      }
+    },
+    {
+      path: '/nutrition/recipe/:id/update',
+      name: 'update-recipe',
+      component: () => import('@/views/profile/recipe/UpdateRecipe.vue'),
+      meta: {
+        title: prefix + 'Rezept anpassen',
+        needsSignIn: true,
         fullscreen: true
       }
     },
@@ -164,7 +174,7 @@ const router = new VueRouter({
         {
           path: 'recipes/submit',
           name: 'submit-recipe',
-          component: () => import('@/views/profile/RecipeForm.vue'),
+          component: () => import('@/views/profile/recipe/SubmitRecipe.vue'),
           meta: {
             title: prefix + 'Rezept erstellen',
             needsSignIn: true,

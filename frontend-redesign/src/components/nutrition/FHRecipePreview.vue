@@ -16,6 +16,12 @@
         <span>{{ recipe.time }} min</span>
       </div>
       <tc-action :dark="$store.getters.darkmode">
+        <tc-action-item success icon="share" title="Teilen" />
+        <tc-action-item
+          icon="i-circle-filled"
+          title="Details"
+          @click="handleClick"
+        />
         <tc-action-item
           v-if="$store.getters.valid && $route.name !== 'recipes'"
           icon="heart"
@@ -23,11 +29,12 @@
           @click="openRecipes"
         />
         <tc-action-item
-          icon="i-circle-filled"
-          title="Details"
-          @click="handleClick"
+          v-if="isAuthor"
+          icon="pencil"
+          title="Bearbeiten"
+          alarm
+          @click="$oFS('update-recipe', { id: recipe._id })"
         />
-        <tc-action-item success icon="share" title="Teilen" />
       </tc-action>
     </tl-flow>
   </div>
@@ -46,6 +53,11 @@ import FHHeart from './FHHeart.vue';
 })
 export default class FHRecipePreview extends Vue {
   @Prop() recipe!: IRecipe;
+
+  get isAuthor(): boolean {
+    if (!this.recipe) return false;
+    return UserManagement.getUserID() === this.recipe.author;
+  }
 
   public handleClick(e: Event) {
     this.$emit('click', e);

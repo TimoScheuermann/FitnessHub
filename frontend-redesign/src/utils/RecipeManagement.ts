@@ -27,6 +27,12 @@ export class RecipeManagement {
     store.commit('createdRecipes', recipes);
   }
 
+  public static removeCreate(id: string): void {
+    let recipes = this.getCreated() || [];
+    recipes = recipes.filter(x => x._id !== id);
+    store.commit('createdRecipes', recipes);
+  }
+
   public static getCreated(): IRecipe[] | null {
     return store.getters.createdRecipes;
   }

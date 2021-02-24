@@ -1,33 +1,20 @@
 import { INutrition, INutritionplanDay, IRecipeIngredient } from './interfaces';
 
 export class CreateRecipeDTO {
-  readonly title!: string;
-  readonly category!: string[];
-  readonly time!: number;
-  readonly difficulty!: number;
-  readonly ingredients!: IRecipeIngredient[];
-  readonly nutrition!: INutrition[];
-  readonly thumbnail!: string;
-  readonly steps!: string[];
+  title!: string;
+  category!: string[];
+  time!: number;
+  difficulty!: number;
+  ingredients!: IRecipeIngredient[];
+  nutrition!: INutrition[];
+  thumbnail!: string;
+  steps!: string[];
 
-  readonly source?: string;
-  readonly video?: string;
-  readonly description?: string;
+  source?: string;
+  video?: string;
+  description?: string;
 }
-export class UpdateRecipeDTO {
-  readonly title?: string;
-  readonly category?: string[];
-  readonly time?: number;
-  readonly difficulty?: number;
-  readonly ingredients?: IRecipeIngredient[];
-  readonly nutrition?: INutrition[];
-  readonly thumbnail?: string;
-  readonly steps?: string[];
 
-  readonly source?: string;
-  readonly video?: string;
-  readonly description?: string;
-}
 export class CreateNutritionplanDTO {
   readonly title!: string;
   readonly time!: number;
