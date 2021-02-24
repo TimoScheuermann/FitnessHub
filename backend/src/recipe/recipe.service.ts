@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { FormValidator } from 'src/FormValidator';
+import { isValidObjectId, Model } from 'mongoose';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
-import { UpdateRecipeDTO } from './dtos/UpdateRecipe.dto';
-import { INutrition } from './interfaces/INutrition';
 import { IRecipe } from './interfaces/IRecipe';
-import { IRecipeIngredient } from './interfaces/IRecipeIngredient';
+import { RecipeFormValidator } from './RecipeFormValidator';
 import { LikedRecipe } from './schemas/LikedRecipe.schema';
 import { Recipe } from './schemas/Recipe.schema';
 
@@ -29,6 +26,11 @@ export class RecipeService {
     return this.recipeModel.find().limit(50);
   }
 
+  public async getById(id: string): Promise<IRecipe | null> {
+    if (!isValidObjectId(id)) return null;
+    return await this.recipeModel.findOne({ _id: id });
+  }
+
   public async getByAuthor(author: string): Promise<IRecipe[]> {
     return this.recipeModel.find({
       author: author,
@@ -44,7 +46,12 @@ export class RecipeService {
       .aggregate([{ $unwind: '$recipes' }, { $sortByCount: '$recipes' }])
       .sort({ count: -1 })
       .limit(10);
-    return Promise.all(topTen.map((x) => this.getById(x._id)));
+
+    const recipes: (IRecipe | null)[] = await Promise.all(
+      topTen.map((x) => this.getById(x._id)),
+    );
+
+    return recipes.filter((x) => !!x);
   }
 
   public async find(query: string): Promise<IRecipe[]> {
@@ -63,10 +70,6 @@ export class RecipeService {
       .limit(50);
   }
 
-  public async getById(id: string): Promise<IRecipe> {
-    return this.recipeModel.findById({ _id: id });
-  }
-
   public async getByCategory(category: string): Promise<IRecipe[]> {
     return await this.recipeModel
       .find({
@@ -79,57 +82,11 @@ export class RecipeService {
     user: IUser,
     createRecipeDTO: CreateRecipeDTO,
   ): Promise<IRecipe> {
-    let { category, steps, ingredients, nutrition } = createRecipeDTO;
-
-    const { difficulty, thumbnail, time, title } = createRecipeDTO;
-
-    FormValidator.checkString(title, 'Bitte gib einen Titel an');
-    FormValidator.checkString(thumbnail, 'Bitte gib ein Vorschaubild an');
-
-    category = FormValidator.checkStringArray(
-      category,
-      'Bitte gib eine Kategorie an',
-    );
-
-    FormValidator.checkNumber(difficulty, 'Bitte gib eine Schwierigkeit an');
-    FormValidator.checkNumberMinMax(
-      difficulty,
-      1,
-      3,
-      'Die Schwierigkeit muss zwischen 1 und 3 liegen',
-    );
-
-    steps = FormValidator.checkStringArray(
-      steps,
-      'Bitte gib die Zubereitungsschritte an',
-    );
-
-    FormValidator.checkNumber(
-      time,
-      'Bitte gib eine durchschnittliche Zubereitungszeit an',
-    );
-    FormValidator.checkNumberMinMax(
-      time,
-      1,
-      Number.MAX_VALUE,
-      'Die Zubereitungszeit kann nicht unter einer Sekunde liegen',
-    );
-
-    ingredients = this.checkIngredients(createRecipeDTO.ingredients);
-    nutrition = this.checkNutrition(createRecipeDTO.nutrition);
-
-    category = FormValidator.compareStringArry(
-      category,
-      await this.getAvailableCategories(),
-      ' ist keine verfügbare Kategorie',
-    );
+    const categories = await this.getAvailableCategories();
+    const dto = RecipeFormValidator.validate(createRecipeDTO, categories);
 
     const recipe = await this.recipeModel.create({
-      ...createRecipeDTO,
-      ingredients: ingredients,
-      nutrition: nutrition,
-      steps: steps,
-      category: category,
+      ...dto,
       created: new Date().getTime(),
       updated: new Date().getTime(),
       author: user._id,
@@ -143,31 +100,28 @@ export class RecipeService {
       'Rezept online anschauen',
       url,
     );
+
     return recipe;
   }
 
   public async updateRecipe(
     id: string,
     userId: string,
-    updateRecipeDTO: UpdateRecipeDTO,
-  ): Promise<IRecipe> {
+    createRecipeDTO: CreateRecipeDTO,
+  ): Promise<IRecipe | null> {
+    const categories = await this.getAvailableCategories();
+    const dto = RecipeFormValidator.validate(createRecipeDTO, categories);
+
     await this.recipeModel.updateOne(
       { _id: id, author: userId },
-      {
-        $set: {
-          ...updateRecipeDTO,
-          updated: new Date().getTime(),
-        },
-      },
+      { $set: { ...dto, updated: new Date().getTime() } },
     );
+
     return this.getById(id);
   }
 
   public async deleteRecipe(userId: string, recipeId: string): Promise<void> {
-    await this.recipeModel.findOneAndDelete({
-      author: userId,
-      _id: recipeId,
-    });
+    await this.recipeModel.findOneAndDelete({ author: userId, _id: recipeId });
     await this.likedRecipeModel.updateMany(
       {},
       { $pull: { recipes: recipeId } },
@@ -207,57 +161,5 @@ export class RecipeService {
     return (await this.variableModel.find({ type: 'category' })).map(
       (x) => x.title,
     );
-  }
-
-  private checkIngredients(ing: IRecipeIngredient[]): IRecipeIngredient[] {
-    if (!ing || ing.length === 0) {
-      FormValidator.throwEx('Bitte gib eine Zutatenliste an');
-    }
-    return ing.map((x, i) => {
-      return {
-        name: FormValidator.checkString(
-          x.name,
-          'Der Name der Zutat #' + (i + 1) + 'fehlt',
-        ),
-        amount: FormValidator.checkString(
-          x.amount,
-          'Die Mange die an ' + x.name + ' benötigt wird fehlt',
-        ),
-        unit: FormValidator.checkString(
-          x.unit,
-          'Die Einheit der Menge der Zutat ' + x.name + ' fehlt',
-        ),
-      };
-    });
-  }
-
-  private checkNutrition(nut: INutrition[]): INutrition[] {
-    if (!nut || nut.length === 0) {
-      FormValidator.throwEx('Bitte gib eine Nährtwertliste an');
-    }
-    return nut.map((x, i) => {
-      return {
-        title: FormValidator.checkString(
-          x.title,
-          'Der Name des Nährwerts #' + (i + 1) + 'fehlt',
-        ),
-
-        amount: FormValidator.checkNumberMinMax(
-          FormValidator.checkNumber(
-            x.amount,
-            'Die Mange des Nährwerts ' + x.title + ' fehlt',
-          ),
-          0,
-          Number.MAX_VALUE,
-          'Die Nährwertsmenge von ' +
-            x.title +
-            ' kann nicht kleiner als 0 sein',
-        ),
-        unit: FormValidator.checkString(
-          x.unit,
-          'Die Einheit des Nährwerts ' + x.title + ' fehlt',
-        ),
-      };
-    });
   }
 }

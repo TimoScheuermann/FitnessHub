@@ -13,7 +13,6 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
-import { UpdateRecipeDTO } from './dtos/UpdateRecipe.dto';
 import { IRecipe } from './interfaces/IRecipe';
 import { RecipeService } from './recipe.service';
 
@@ -79,7 +78,7 @@ export class RecipeController {
    * @param id string
    */
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<IRecipe> {
+  async getById(@Param('id') id: string): Promise<IRecipe | null> {
     return this.recipeService.getById(id);
   }
 
@@ -138,12 +137,12 @@ export class RecipeController {
    * @param update UpdateRecipeDTO
    */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Put('update/:id')
+  @Put(':id')
   async updateRecipe(
     @FHUser() user: IUser,
     @Param('id') id: string,
-    @Body() update: UpdateRecipeDTO,
-  ): Promise<IRecipe> {
+    @Body() update: CreateRecipeDTO,
+  ): Promise<IRecipe | null> {
     return this.recipeService.updateRecipe(id, user._id, update);
   }
 
