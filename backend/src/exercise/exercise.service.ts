@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, mongo } from 'mongoose';
+import { isValidObjectId, Model, mongo } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
+import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { Message } from 'src/message/schemas/Message.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
-import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/schemas/User.schema';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
 import { FinishExerciseDTO } from './dtos/FinishExercise.dto';
-import { UpdateExerciseDTO } from './dtos/UpdateExercise.dto';
+import { ExerciseFormValidator } from './ExerciseFormValidator';
 import { IExercise } from './interfaces/IExercise';
 import { IExerciseShowcase } from './interfaces/IExerciseShowcase';
 import { CompletedExercise } from './schemas/CompletedExercise.schema';
@@ -17,13 +18,14 @@ import { Exercise } from './schemas/Exercise.schema';
 @Injectable()
 export class ExerciseService {
   constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
+    @InjectModel(Variable.name) private variableModel: Model<Variable>,
     @InjectModel(CompletedExercise.name)
     private completedExerciseModel: Model<CompletedExercise>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
     private readonly tgbotService: TgbotService,
     private readonly fhSocket: FHSocket,
-    private readonly userService: UserService,
   ) {}
 
   /**
@@ -38,8 +40,9 @@ export class ExerciseService {
    * @param reviewerId string
    */
   public async getSubmissions(reviewerId: string): Promise<IExercise[]> {
+    if (reviewerId.length < 0) return []; // TODO: return only submission not owned by reviewerId
     return this.exerciseModel
-      .find({ $or: [{ reviewed: false }, { editedData: !undefined }] })
+      .find({ $or: [{ reviewed: false }, { editedData: { $exists: true } }] })
       .limit(50);
   }
 
@@ -48,7 +51,7 @@ export class ExerciseService {
    * @param id string
    */
   public async getById(id: string): Promise<IExercise> {
-    return this.exerciseModel.findById({ _id: id });
+    return (await this.getByIds[id])[0];
   }
 
   /**
@@ -78,7 +81,8 @@ export class ExerciseService {
       .find({ user: userId })
       .sort({ start: -1 })
       .limit(10);
-    return Promise.all(recent.map(async (x) => await this.getById(x.exercise)));
+
+    return await this.getByIds(recent.map((x) => x.exercise));
   }
 
   /**
@@ -104,6 +108,21 @@ export class ExerciseService {
     });
   }
 
+  public async getByIds(ids: string[]): Promise<IExercise[]> {
+    const objectIds = ids.filter((x) => !!x && isValidObjectId(x));
+    const unique = [...new Set(...objectIds)];
+    const exercises = await this.exerciseModel.find({ _id: { $in: unique } });
+
+    const getById = (id: string): IExercise | null => {
+      const ex = exercises.filter((x) => x._id === id)[0];
+      if (!ex) return null;
+      delete ex.editedData;
+      return ex;
+    };
+
+    return objectIds.map(getById).filter((x) => !!x) as IExercise[];
+  }
+
   /**
    * returns every exercise containing a given query (limit 50)
    * @param query string
@@ -127,18 +146,27 @@ export class ExerciseService {
    * @param createExerciseDTO
    * @param author
    */
-  public async create(
-    createExerciseDTO: CreateExerciseDTO,
-    author: IUser,
-  ): Promise<void> {
+  public async create(create: CreateExerciseDTO, author: IUser): Promise<void> {
+    const muscles = await this.getAvailableMuscles();
+    create = ExerciseFormValidator.validate(create, muscles);
+    const reps = this.mapSetsReps(create.reps);
+    const sets = this.mapSetsReps(create.sets);
+
+    delete create.reps;
+    delete create.sets;
+
     const exercise = await this.exerciseModel.create({
-      ...createExerciseDTO,
+      ...create,
+      reps: reps,
+      sets: sets,
+
       created: new Date().getTime(),
       reviewedBy: '',
       reviewed: false,
       updated: -1,
       author: author._id,
     });
+
     this.sendUpdateNotifications(exercise, false, false, false);
   }
 
@@ -150,16 +178,26 @@ export class ExerciseService {
    */
   public async publishExercise(
     id: string,
-    update: UpdateExerciseDTO,
+    update: CreateExerciseDTO,
     reviewer: IUser,
   ): Promise<void> {
-    delete (update as any).editedData;
+    const muscles = await this.getAvailableMuscles();
+    update = ExerciseFormValidator.validate(update, muscles);
+    const reps = this.mapSetsReps(update.reps);
+    const sets = this.mapSetsReps(update.sets);
+
+    delete update.reps;
+    delete update.sets;
+
     await this.exerciseModel.updateOne(
       { _id: id },
       {
         $unset: { editedData: true },
         $set: {
           ...update,
+          reps: reps,
+          sets: sets,
+
           updated: new Date().getTime(),
           reviewed: true,
           reviewedBy: reviewer._id,
@@ -193,9 +231,12 @@ export class ExerciseService {
    */
   public async submitChange(
     id: string,
-    update: UpdateExerciseDTO,
+    update: CreateExerciseDTO,
     author: IUser,
   ): Promise<void> {
+    const muscles = await this.getAvailableMuscles();
+    update = ExerciseFormValidator.validate(update, muscles);
+
     await this.exerciseModel.updateOne(
       { _id: id, author: author._id },
       { $set: { editedData: update } },
@@ -241,7 +282,11 @@ export class ExerciseService {
       });
     }
 
-    const ids = await this.userService.getAllIdsExceptUser();
+    const users = await this.userModel.find({
+      $or: [{ group: 'Moderator' }, { group: 'Admin' }],
+    });
+    const ids = users.map((x) => x._id);
+
     const socket = this.fhSocket.server;
     ids.forEach((x) => socket.to(x));
     socket.emit(
@@ -301,7 +346,7 @@ export class ExerciseService {
       ])
       .sort({ count: -1 });
 
-    return Promise.all(finished.map(async (x) => await this.getById(x._id)));
+    return this.getByIds(finished.map((x) => x.exercise));
   }
 
   /**
@@ -312,5 +357,21 @@ export class ExerciseService {
       .find({ reviewed: true })
       .sort({ created: -1 })
       .limit(10);
+  }
+
+  private mapSetsReps(
+    data: { min: number; max: number } | undefined,
+  ): string | undefined {
+    if (!data) return undefined;
+
+    const { min, max } = data;
+    if (min === max) return String(min);
+    return min + ' - ' + max;
+  }
+
+  private async getAvailableMuscles(): Promise<string[]> {
+    return (await this.variableModel.find({ type: 'muscle' })).map(
+      (x) => x.title,
+    );
   }
 }

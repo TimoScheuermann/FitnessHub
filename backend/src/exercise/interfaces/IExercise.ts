@@ -1,27 +1,29 @@
-import { UpdateExerciseDTO } from '../dtos/UpdateExercise.dto';
+import { CreateExerciseDTO } from '../dtos/CreateExercise.dto';
 
 export interface IExercise {
-  readonly _id?: string;
-  readonly author: string;
-  readonly reviewed: boolean;
-  readonly reviewedBy: string;
-  readonly created: number;
-  readonly updated: number;
-  readonly editedData?: UpdateExerciseDTO;
+  _id: string;
 
-  readonly title: string;
-  readonly affectedMuscles: string[];
-  readonly thumbnail: string;
-  readonly explanatoryVideo?: string;
+  author: string;
+  reviewed: boolean;
+  reviewedBy: string;
+  created: number;
+  updated: number;
 
-  readonly difficulty: number;
-  readonly warnings: string[];
-  readonly steps: string[];
-  readonly possibleAtHome?: boolean;
+  title: string;
+  thumbnail: string;
+  difficulty: number;
+  affectedMuscles: string[];
 
-  // Variable, depending on exercise
-  readonly time?: number;
-  readonly distance?: string;
-  readonly sets?: string;
-  readonly reps?: string;
+  explanatoryVideo?: string;
+  warnings?: string[];
+  steps?: string[];
+
+  possibleAtHome?: boolean;
+
+  editedData?: CreateExerciseDTO;
+
+  time?: number;
+  distance?: string;
+  sets?: string;
+  reps?: string;
 }

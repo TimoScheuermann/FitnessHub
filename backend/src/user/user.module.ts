@@ -8,11 +8,11 @@ import { UserService } from './user.service';
 
 @Module({
   imports: [
-    TgbotModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Message.name, schema: MessageSchema },
     ]),
+    TgbotModule,
   ],
   providers: [UserService],
   controllers: [UserController],

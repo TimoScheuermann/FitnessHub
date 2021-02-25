@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UpdateExerciseDTO } from '../dtos/UpdateExercise.dto';
-
+import { CreateExerciseDTO } from '../dtos/CreateExercise.dto';
 @Schema()
 export class Exercise extends Document {
   @Prop()
@@ -34,17 +33,17 @@ export class Exercise extends Document {
   @Prop()
   difficulty: number;
 
-  @Prop()
-  warnings: string[];
+  @Prop({ required: false })
+  warnings?: string[];
 
-  @Prop()
-  steps: string[];
+  @Prop({ required: false })
+  steps?: string[];
 
   @Prop({ required: false })
   possibleAtHome?: boolean;
 
   @Prop({ required: false })
-  editedData?: UpdateExerciseDTO;
+  editedData?: CreateExerciseDTO;
 
   @Prop({ required: false })
   time?: number;

@@ -5,8 +5,8 @@ export class FormValidator {
     throw new UnprocessableEntityException(message);
   }
 
-  public static checkString(s: string, message: string): string {
-    if (!s || s.length === 0) {
+  public static checkString(s: string, message: string, minLength = 0): string {
+    if (!s || s.length < minLength) {
       this.throwEx(message);
     }
     return s;

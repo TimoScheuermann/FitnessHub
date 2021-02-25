@@ -5,13 +5,13 @@ export class CreateExerciseDTO {
   readonly explanatoryVideo?: string;
 
   readonly difficulty: number;
-  readonly warnings: string[];
-  readonly steps: string[];
+  warnings?: string[];
+  steps?: string[];
   readonly possibleAtHome?: boolean;
 
   // Variable, depending on exercise
-  readonly time?: number;
-  readonly distance?: string;
-  readonly sets?: string;
-  readonly reps?: string;
+  time?: number;
+  distance?: string;
+  sets?: { min: number; max: number };
+  reps?: { min: number; max: number };
 }
