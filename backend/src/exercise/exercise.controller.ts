@@ -213,4 +213,13 @@ export class ExerciseController {
   async deleteExercise(@Param('id') id: string): Promise<void> {
     this.exerciseService.deleteExercise(id);
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Delete('cancelSubmission/:id')
+  async cancelSubmission(
+    @FHUser() user: IUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    this.exerciseService.cancelSubmission(user, id);
+  }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, mongo } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
+import { FormValidator } from 'src/FormValidator';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { Message } from 'src/message/schemas/Message.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
@@ -234,6 +235,18 @@ export class ExerciseService {
     update: CreateExerciseDTO,
     author: IUser,
   ): Promise<void> {
+    if (!isValidObjectId(id)) {
+      FormValidator.throwEx('Falsche Id');
+    }
+    const ex = await this.exerciseModel.findOne({
+      _id: id,
+      author: author._id,
+      reviewed: false,
+    });
+    if (ex) {
+      FormValidator.throwEx('Bitte warte bis deine Übung geprüft wurde');
+    }
+
     const muscles = await this.getAvailableMuscles();
     update = ExerciseFormValidator.validate(update, muscles);
 
@@ -255,7 +268,20 @@ export class ExerciseService {
       _id: id,
       reviewed: false,
     });
-    this.sendUpdateNotifications(exercise, false, true, true);
+    if (exercise) {
+      this.sendUpdateNotifications(exercise, false, true, true);
+    }
+  }
+
+  public async cancelSubmission(user: IUser, id: string): Promise<void> {
+    const exercise = await this.exerciseModel.findOneAndDelete({
+      _id: id,
+      reviewed: false,
+      author: user._id,
+    });
+    if (exercise) {
+      this.sendUpdateNotifications(exercise, false, true, true);
+    }
   }
 
   /**
