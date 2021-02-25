@@ -147,7 +147,10 @@ export class ExerciseService {
    * @param createExerciseDTO
    * @param author
    */
-  public async create(create: CreateExerciseDTO, author: IUser): Promise<void> {
+  public async create(
+    create: CreateExerciseDTO,
+    author: IUser,
+  ): Promise<boolean> {
     const muscles = await this.getAvailableMuscles();
     create = ExerciseFormValidator.validate(create, muscles);
     const reps = this.mapSetsReps(create.reps);
@@ -169,6 +172,7 @@ export class ExerciseService {
     });
 
     this.sendUpdateNotifications(exercise, false, false, false);
+    return true;
   }
 
   /**
@@ -181,7 +185,7 @@ export class ExerciseService {
     id: string,
     update: CreateExerciseDTO,
     reviewer: IUser,
-  ): Promise<void> {
+  ): Promise<boolean> {
     const muscles = await this.getAvailableMuscles();
     update = ExerciseFormValidator.validate(update, muscles);
     const reps = this.mapSetsReps(update.reps);
@@ -190,7 +194,7 @@ export class ExerciseService {
     delete update.reps;
     delete update.sets;
 
-    await this.exerciseModel.updateOne(
+    const exercise = await this.exerciseModel.findOneAndUpdate(
       { _id: id },
       {
         $unset: { editedData: true },
@@ -206,22 +210,28 @@ export class ExerciseService {
       },
     );
 
-    const exercise: IExercise = await this.getById(id);
-    this.sendUpdateNotifications(exercise, true, false, true);
+    if (exercise) {
+      this.sendUpdateNotifications(exercise, true, false, true);
+      return true;
+    }
+    return false;
   }
 
   /**
    * reject changes of a given exercise
    * @param id
    */
-  public async rejectChanges(id: string): Promise<void> {
-    await this.exerciseModel.updateOne(
+  public async rejectChanges(id: string): Promise<boolean> {
+    const exercise = await this.exerciseModel.findOneAndUpdate(
       { _id: id },
       { $unset: { editedData: 1 } },
     );
 
-    const exercise: IExercise = await this.getById(id);
-    this.sendUpdateNotifications(exercise, false, false, true);
+    if (exercise) {
+      this.sendUpdateNotifications(exercise, false, false, true);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -234,7 +244,7 @@ export class ExerciseService {
     id: string,
     update: CreateExerciseDTO,
     author: IUser,
-  ): Promise<void> {
+  ): Promise<boolean> {
     if (!isValidObjectId(id)) {
       FormValidator.throwEx('Falsche Id');
     }
@@ -250,30 +260,34 @@ export class ExerciseService {
     const muscles = await this.getAvailableMuscles();
     update = ExerciseFormValidator.validate(update, muscles);
 
-    await this.exerciseModel.updateOne(
+    const exercise = await this.exerciseModel.findOneAndUpdate(
       { _id: id, author: author._id },
       { $set: { editedData: update } },
     );
-
-    const exercise: IExercise = await this.getById(id);
-    this.sendUpdateNotifications(exercise, false, false, false);
+    if (exercise) {
+      this.sendUpdateNotifications(exercise, false, false, false);
+      return true;
+    }
+    return false;
   }
 
   /**
    * deletes an exercise
    * @param id
    */
-  public async deleteExercise(id: string): Promise<void> {
+  public async deleteExercise(id: string): Promise<boolean> {
     const exercise = await this.exerciseModel.findOneAndDelete({
       _id: id,
       reviewed: false,
     });
     if (exercise) {
       this.sendUpdateNotifications(exercise, false, true, true);
+      return true;
     }
+    return false;
   }
 
-  public async cancelSubmission(user: IUser, id: string): Promise<void> {
+  public async cancelSubmission(user: IUser, id: string): Promise<boolean> {
     const exercise = await this.exerciseModel.findOneAndDelete({
       _id: id,
       reviewed: false,
@@ -281,7 +295,9 @@ export class ExerciseService {
     });
     if (exercise) {
       this.sendUpdateNotifications(exercise, false, true, true);
+      return true;
     }
+    return false;
   }
 
   /**

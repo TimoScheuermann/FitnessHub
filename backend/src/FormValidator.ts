@@ -56,6 +56,7 @@ export class FormValidator {
     max: number,
     message: string,
   ): number {
+    n = Math.round(n);
     if (n < min || n > max) {
       this.throwEx(message);
     }

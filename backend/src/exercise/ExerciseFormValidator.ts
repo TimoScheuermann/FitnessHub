@@ -9,7 +9,6 @@ export class ExerciseFormValidator extends FormValidator {
 
     this.checkString(title, 'Bitte gib einen Titel an');
     this.checkString(thumbnail, 'Bitte gib ein Vorschaubild an');
-
     this.checkNumber(difficulty, 'Bitte gib eine Schwierigkeit an');
     this.checkNumberMinMax(difficulty, 1, 3, 'Die Schwierigkeit muss zwischen 1 und 3 liegen');
 
@@ -59,6 +58,7 @@ export class ExerciseFormValidator extends FormValidator {
       if (dto.steps.length === 0) delete dto.steps;
     }
 
+    affectedMuscles = this.checkStringArray(affectedMuscles, 'Bitte gib einen Muskel an');
     affectedMuscles = this.compareStringArry(affectedMuscles, muscles, ' ist kein verfügbarer Muskel');
 
     return {

@@ -155,8 +155,8 @@ export class ExerciseController {
   async createExercise(
     @FHUser() user: IUser,
     @Body() create: CreateExerciseDTO,
-  ): Promise<void> {
-    this.exerciseService.create(create, user);
+  ): Promise<boolean> {
+    return this.exerciseService.create(create, user);
   }
 
   /**
@@ -171,7 +171,7 @@ export class ExerciseController {
     @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() update: CreateExerciseDTO,
-  ): Promise<void> {
+  ): Promise<boolean> {
     return this.exerciseService.submitChange(id, update, user);
   }
 
@@ -188,8 +188,8 @@ export class ExerciseController {
     @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() update: CreateExerciseDTO,
-  ): Promise<void> {
-    this.exerciseService.publishExercise(id, update, user);
+  ): Promise<boolean> {
+    return this.exerciseService.publishExercise(id, update, user);
   }
 
   /**
@@ -199,8 +199,8 @@ export class ExerciseController {
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('rejectChanges/:id')
-  async rejectChanges(@Param('id') id: string): Promise<void> {
-    this.exerciseService.rejectChanges(id);
+  async rejectChanges(@Param('id') id: string): Promise<boolean> {
+    return this.exerciseService.rejectChanges(id);
   }
 
   /**
@@ -210,8 +210,8 @@ export class ExerciseController {
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
-  async deleteExercise(@Param('id') id: string): Promise<void> {
-    this.exerciseService.deleteExercise(id);
+  async deleteExercise(@Param('id') id: string): Promise<boolean> {
+    return this.exerciseService.deleteExercise(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -219,7 +219,7 @@ export class ExerciseController {
   async cancelSubmission(
     @FHUser() user: IUser,
     @Param('id') id: string,
-  ): Promise<void> {
-    this.exerciseService.cancelSubmission(user, id);
+  ): Promise<boolean> {
+    return this.exerciseService.cancelSubmission(user, id);
   }
 }
