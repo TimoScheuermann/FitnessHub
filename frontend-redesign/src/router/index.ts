@@ -5,9 +5,9 @@ Vue.use(VueRouter);
 const prefix = 'FitnessHub | ';
 
 const router = new VueRouter({
-  // scrollBehavior() {
-  //   return { x: 0, y: 0 };
-  // },
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   mode: 'history',
 
   routes: [
@@ -61,6 +61,16 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/training/exercise/:id/update',
+      name: 'update-exercise',
+      component: () => import('@/views/profile/exercise/UpdateExercise.vue'),
+      meta: {
+        title: prefix + 'Übung anpassen',
+        needsSignIn: true,
+        fullscreen: true
+      }
+    },
+    {
       path: '/profile/messages/:friendId',
       name: 'chatroom',
       component: () => import('@/views/profile/ChatRoom.vue'),
@@ -77,6 +87,18 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Freund hinzufügen',
         needsSignIn: true,
+        fullscreen: true
+      }
+    },
+
+    {
+      path: '/profile/management/submissions/:id',
+      name: 'exercise-submission',
+      component: () =>
+        import('@/views/profile/management/ExerciseSubmission.vue'),
+      meta: {
+        needsSignIn: true,
+        groups: ['Admin', 'Moderator'],
         fullscreen: true
       }
     },
@@ -181,6 +203,42 @@ const router = new VueRouter({
             hero: 'Erstellen',
             backTitle: 'Rezepte',
             backRoute: 'recipes'
+          }
+        },
+        {
+          path: 'exercises',
+          name: 'exercises',
+          component: () => import('@/views/profile/Exercises.vue'),
+          meta: {
+            title: prefix + 'Übungen',
+            needsSignIn: true,
+            hero: 'Übungen'
+          }
+        },
+        {
+          path: 'exercises/submit',
+          name: 'submit-exercise',
+          component: () =>
+            import('@/views/profile/exercise/SubmitExercise.vue'),
+          meta: {
+            title: prefix + 'Übung erstellen',
+            needsSignIn: true,
+            hero: 'Erstellen',
+            backTitle: 'Übungen',
+            backRoute: 'home'
+          }
+        },
+
+        {
+          path: 'management/submissions',
+          name: 'exercise-submissions',
+          component: () =>
+            import('@/views/profile/management/ExerciseSubmissions.vue'),
+          meta: {
+            title: prefix + 'Eingereichte Übungen',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator'],
+            hero: 'Eingereichte Übungen'
           }
         },
         { path: '*', redirect: { name: 'profile' } }

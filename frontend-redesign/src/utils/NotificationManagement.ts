@@ -1,4 +1,5 @@
 import { Location } from 'vue-router';
+import { ExerciseManagement } from './ExerciseManagement';
 import { FHEventBus } from './FHEventbus';
 import { IFHNotification } from './interfaces';
 import { UserManagement } from './UserManagement';
@@ -13,8 +14,12 @@ export class NotificationManagement {
       .length;
   }
 
+  public static getExerciseSubmissions(): number {
+    return (ExerciseManagement.getSubmissions() || []).length;
+  }
+
   public static getTotalNotifications(): number {
-    return this.getUnreadMessages();
+    return this.getUnreadMessages() + this.getExerciseSubmissions();
   }
 
   public static sendNotification(

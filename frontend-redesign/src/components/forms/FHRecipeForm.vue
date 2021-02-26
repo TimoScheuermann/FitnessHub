@@ -269,7 +269,7 @@ export default class FHRecipeForm extends Vue {
 
   mounted() {
     this.mode = this.recipe ? 'update' : 'create';
-    if (this.mode === 'update') {
+    if (this.recipe) {
       this.dto.title = this.recipe.title;
       this.dto.thumbnail = this.recipe.thumbnail;
       this.dto.category = this.recipe.category;

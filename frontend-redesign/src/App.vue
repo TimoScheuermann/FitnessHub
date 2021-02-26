@@ -17,10 +17,16 @@ import {
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
 import { loadVariables } from './utils/functions';
-import { IMessage, IPendingFriendship, IUserInfo } from './utils/interfaces';
+import {
+  IExercise,
+  IMessage,
+  IPendingFriendship,
+  IUserInfo
+} from './utils/interfaces';
 import { UserManagement } from './utils/UserManagement';
 import { Socket } from 'vue-socket.io-extended';
 import FHNotification from './components/FHNotification.vue';
+import { ExerciseManagement } from './utils/ExerciseManagement';
 
 @Component({
   components: {
@@ -63,6 +69,26 @@ export default class App extends Vue {
   @Socket('removeFriend')
   removeFriend(id: string) {
     UserManagement.removeFriendFromList(id);
+  }
+
+  @Socket('exercise')
+  addCreatedExercise(exercise: IExercise) {
+    ExerciseManagement.addCreated(exercise);
+  }
+
+  @Socket('exercise.remove')
+  removeCreatedExercise(exercise: IExercise) {
+    ExerciseManagement.removeCreated(exercise._id);
+  }
+
+  @Socket('exerciseSubmission')
+  addExerciseSubmission(exercise: IExercise) {
+    ExerciseManagement.addSubmission(exercise);
+  }
+
+  @Socket('exerciseSubmission.remove')
+  removeExerciseSubmission(exercise: IExercise) {
+    ExerciseManagement.removeSubmission(exercise._id);
   }
 }
 </script>

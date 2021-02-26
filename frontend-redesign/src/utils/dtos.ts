@@ -54,47 +54,23 @@ export class FinishExerciseDTO {
   setsWeights?: number[];
 }
 
-export class UpdateExerciseDTO {
-  readonly title?: string;
-  readonly affectedMuscles?: string[];
-  readonly thumbnail?: string;
-  readonly explanatoryVideo?: string;
-
-  readonly difficulty?: number;
-  readonly warnings?: string[];
-  readonly steps?: string[];
-
-  // Variable, depending on exercise
-  readonly time?: number;
-  readonly distance?: string;
-  readonly sets?: string;
-  readonly reps?: string;
-}
 export class CreateExerciseDTO {
-  _id?: string;
-  author?: string;
-  reviewed?: boolean;
-  reviewedBy?: string;
-  created?: number;
-  updated?: number;
-  editedData?: UpdateExerciseDTO;
-
   title!: string;
   affectedMuscles!: string[];
   thumbnail!: string;
-  explanatoryVideo?: string;
-
   difficulty!: number;
-  warnings!: string[];
-  steps!: string[];
-  possibleAtHome!: boolean;
 
-  // Variable, depending on exercise
+  explanatoryVideo?: string;
+  warnings!: string[]; // actually optional
+  steps!: string[]; // actually optional
+  possibleAtHome?: boolean;
+
   time?: number;
   distance?: string;
-  sets?: string;
-  reps?: string;
+  sets?: { min: number; max: number };
+  reps?: { min: number; max: number };
 }
+
 export class CreateWorkoutDTO {
   title!: string;
   exercises!: string[];

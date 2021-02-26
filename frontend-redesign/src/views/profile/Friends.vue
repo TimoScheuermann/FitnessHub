@@ -103,6 +103,7 @@
 import FHAppear from '@/components/FHAppear.vue';
 import FHList from '@/components/list/FHList.vue';
 import FHListItem from '@/components/list/FHListItem.vue';
+import { fhBotId } from '@/utils/constants';
 import { openFullscreen } from '@/utils/functions';
 import { IPendingFriendship, IUserInfo } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
@@ -117,7 +118,11 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class Friends extends Vue {
   get friends(): IUserInfo[] | null {
-    return UserManagement.getFriends();
+    let friends = UserManagement.getFriends();
+    if (!friends) return null;
+    friends = friends.filter(x => x._id !== fhBotId);
+    if (friends.length === 0) return null;
+    return friends;
   }
 
   get friendRequests(): IPendingFriendship[] | null {

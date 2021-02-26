@@ -9,7 +9,7 @@ import { NotificationManagement } from './NotificationManagement';
  * Manage all necessary methods with parameters
  */
 export class UserManagement {
-  private static getUser(): IUser | null {
+  public static getUser(): IUser | null {
     return store.getters.user;
   }
 
@@ -83,9 +83,17 @@ export class UserManagement {
       if (message.from !== this.getUserID() && !isInChat) {
         const friend = this.getFriend(message.from);
         if (friend) {
+          let content = message.content;
+          if (message.type === 'exercisePublish') {
+            content =
+              'Deine Übung ' +
+              JSON.parse(message.content).title +
+              ' wurde veröffentlicht!';
+          }
+
           NotificationManagement.sendNotification(
             friend.username + ' schreibt:',
-            message.content,
+            content,
             { name: 'chatroom', params: { friendId: message.from } },
             friend.avatar
           );
@@ -136,8 +144,13 @@ export class UserManagement {
    */
   public static async loadFriends(): Promise<void> {
     if (this.getUser() && !this.getFriends()) {
-      const { data } = await backend.get('friends');
-      store.commit('friends', data);
+      const friends: IUserInfo[] = (await backend.get('friends')).data;
+      friends.push({
+        _id: fhBotId,
+        avatar: 'pwa/splash/manifest-icon-512.jpg',
+        username: 'FitnessHub'
+      });
+      store.commit('friends', friends);
     }
   }
 

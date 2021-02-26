@@ -1,12 +1,8 @@
 <template>
   <div class="view-profile" content>
     <div max-width>
+      <h4>Social</h4>
       <tc-list :dark="$store.getters.darkmode">
-        <tc-list-item
-          title="Einstellungen"
-          icon="wrench"
-          routeName="settings"
-        />
         <!-- <tc-list-item icon="telegram" title="Telegram" routeName="telegram" /> -->
         <tc-badge
           :value="$store.getters.unansweredFriendRequests"
@@ -26,43 +22,50 @@
           />
         </tc-badge>
         <tc-list-item
-          title="Trainingsstatistik"
-          icon="chart-bar"
-          routeName="statistics"
-        />
-      </tc-list>
-
-      <tc-list :dark="$store.getters.darkmode">
-        <tc-list-item
-          title="Meine Rezepte"
-          icon="book-cook-filled"
-          routeName="recipes"
-        />
-        <tc-list-item
-          title="Workouts & Trainingsplan"
-          icon="heartbeat"
-          routeName="workouts"
-        />
-        <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
-        <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
-        <tc-list-item
           title="Herausforderungen"
           icon="trophy"
           description="bald"
         />
       </tc-list>
 
+      <h4>Trainingsstatistik & co</h4>
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item
+          title="Workouts & Trainingsplan"
+          icon="heartbeat"
+          routeName="workouts"
+        />
+        <tc-list-item
+          title="Trainingsstatistik"
+          icon="chart-bar"
+          routeName="statistics"
+        />
+        <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
+      </tc-list>
+
+      <h4>Management</h4>
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item
+          title="Rezepte"
+          icon="book-cook-filled"
+          routeName="recipes"
+        />
+        <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
+        <tc-list-item
+          title="Einstellungen"
+          icon="wrench"
+          routeName="settings"
+        />
+      </tc-list>
+
       <div v-group.admin.moderator>
-        <h3>Management</h3>
+        <h4>Admin panel</h4>
         <tc-list :dark="$store.getters.darkmode">
-          <tc-badge
-            :value="($store.getters.exerciseSubmissions || []).length"
-            position="inside"
-          >
+          <tc-badge :value="submissions" tfcolor="success" position="inside">
             <tc-list-item
               title="Eingereichte Übungen"
               icon="reply"
-              routeName="submittedExercises"
+              routeName="exercise-submissions"
             />
           </tc-badge>
           <tc-list-item
@@ -117,11 +120,23 @@ export default class Profile extends Vue {
   get unreadMessages(): number {
     return NotificationManagement.getUnreadMessages();
   }
+
+  get submissions(): number {
+    return NotificationManagement.getExerciseSubmissions();
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .view-profile {
+  h4 {
+    margin-bottom: 4px;
+    margin-left: 5px;
+    opacity: 0.75;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
   .tc-list {
     margin-bottom: 20px;
     .tc-badge:after {

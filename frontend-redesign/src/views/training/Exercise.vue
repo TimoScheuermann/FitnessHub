@@ -27,7 +27,13 @@
           title="Workout"
           @click="addToWorkout"
         />
-        <FHButton :frosted="true" icon="list" title="Liste" />
+        <FHButton
+          v-if="isAuthor"
+          :frosted="true"
+          icon="pencil"
+          title="Bearbeiten"
+          @click="$oFS('update-exercise', { id: exercise._id })"
+        />
       </tl-grid>
 
       <h1 center>{{ exercise.title }}</h1>
@@ -103,6 +109,7 @@ import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
 import backend from '@/utils/backend';
 import { addExerciseToWorkout, closeFullscreen } from '@/utils/functions';
 import { IExercise } from '@/utils/interfaces';
+import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -125,11 +132,19 @@ export default class Exercise extends Vue {
       .get('exercise/' + this.$route.params.id)
       .then(res => {
         this.exercise = res.data;
+        if (!this.exercise) {
+          closeFullscreen('training');
+        }
       })
       .catch(() => {
         this.error = true;
         closeFullscreen('training');
       });
+  }
+
+  get isAuthor(): boolean {
+    if (!this.exercise) return false;
+    return this.exercise.author === UserManagement.getUserID();
   }
 
   public addToWorkout(): void {

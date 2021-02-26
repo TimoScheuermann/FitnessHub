@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { socket } from '@/main';
 import { getUserFromJWT } from '@/utils/auth';
+import { ExerciseManagement } from '@/utils/ExerciseManagement';
 import {
   IExercise,
   IHealth,
@@ -30,9 +31,12 @@ const store = new Vuex.Store({
     storedRoutes: {},
     variables: null,
 
-    trendingExercises: null,
-    latestExercises: null,
     latestWorkouts: null,
+    latestExercises: null,
+    trendingExercises: null,
+    createdExercises: null,
+    submittedExercises: null,
+    recentExercises: null,
 
     latestRecipes: null,
     belovedRecipes: null,
@@ -76,14 +80,23 @@ const store = new Vuex.Store({
       return state.variables;
     },
 
+    latestWorkouts: (state: any): IWorkout[] | null => {
+      return state.latestWorkouts;
+    },
     trendingExercises: (state: any): IExercise[] | null => {
       return state.trendingExercises;
     },
     latestExercises: (state: any): IExercise[] | null => {
       return state.latestExercises;
     },
-    latestWorkouts: (state: any): IWorkout[] | null => {
-      return state.latestWorkouts;
+    createdExercises: (state: any): IExercise[] | null => {
+      return state.createdExercises;
+    },
+    submittedExercises: (state: any): IExercise[] | null => {
+      return state.submittedExercises;
+    },
+    recentExercises: (state: any): IExercise[] | null => {
+      return state.recentExercises;
     },
 
     latestRecipes: (state: any): IRecipe[] | null => {
@@ -140,6 +153,8 @@ const store = new Vuex.Store({
       UserManagement.loadFriendRequests();
       RecipeManagement.loadLiked();
       RecipeManagement.loadCreated();
+      ExerciseManagement.loadSubmissions();
+      ExerciseManagement.loadCreated();
       TrainingStatistics.loadCharts();
       TrainingStatistics.loadWater();
       TrainingStatistics.loadHeights();
@@ -161,14 +176,23 @@ const store = new Vuex.Store({
       state.variables = vars;
     },
 
+    latestWorkouts(state: any, workouts: IWorkout[]) {
+      state.latestWorkouts = workouts;
+    },
     trendingExercises(state: any, exercises: IExercise[]) {
       state.trendingExercises = exercises;
     },
     latestExercises(state: any, exercises: IExercise[]) {
       state.latestExercises = exercises;
     },
-    latestWorkouts(state: any, workouts: IWorkout[]) {
-      state.latestWorkouts = workouts;
+    createdExercises(state: any, exercises: IExercise[]) {
+      state.createdExercises = exercises;
+    },
+    submittedExercises(state: any, exercises: IExercise[]) {
+      state.submittedExercises = exercises;
+    },
+    recentExercises(state: any, exercises: IExercise[]) {
+      state.submittedExercises = exercises;
     },
 
     latestRecipes(state: any, recipes: IRecipe[]) {

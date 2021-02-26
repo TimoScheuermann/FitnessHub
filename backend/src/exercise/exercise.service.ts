@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, mongo } from 'mongoose';
+import { Namespace, Server } from 'socket.io';
 import { FHSocket } from 'src/FHSocket';
-import { FormValidator } from 'src/FormValidator';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { Message } from 'src/message/schemas/Message.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
@@ -51,8 +51,11 @@ export class ExerciseService {
    * returns an exercise by id
    * @param id string
    */
-  public async getById(id: string): Promise<IExercise> {
-    return (await this.getByIds[id])[0];
+  public async getById(
+    id: string,
+    deleteEditedData = true,
+  ): Promise<Exercise | null> {
+    return (await this.getByIds([id], deleteEditedData))[0] || null;
   }
 
   /**
@@ -109,19 +112,22 @@ export class ExerciseService {
     });
   }
 
-  public async getByIds(ids: string[]): Promise<IExercise[]> {
+  public async getByIds(
+    ids: string[],
+    deleteEditedData = true,
+  ): Promise<Exercise[]> {
     const objectIds = ids.filter((x) => !!x && isValidObjectId(x));
-    const unique = [...new Set(...objectIds)];
+    const unique = [...new Set(objectIds)];
     const exercises = await this.exerciseModel.find({ _id: { $in: unique } });
 
     const getById = (id: string): IExercise | null => {
-      const ex = exercises.filter((x) => x._id === id)[0];
+      const ex = exercises.filter((x) => x._id.equals(id))[0];
       if (!ex) return null;
-      delete ex.editedData;
+      if (deleteEditedData) delete ex.editedData;
       return ex;
     };
 
-    return objectIds.map(getById).filter((x) => !!x) as IExercise[];
+    return objectIds.map(getById).filter((x) => !!x) as Exercise[];
   }
 
   /**
@@ -194,7 +200,7 @@ export class ExerciseService {
     delete update.reps;
     delete update.sets;
 
-    const exercise = await this.exerciseModel.findOneAndUpdate(
+    await this.exerciseModel.findOneAndUpdate(
       { _id: id },
       {
         $unset: { editedData: true },
@@ -210,6 +216,7 @@ export class ExerciseService {
       },
     );
 
+    const exercise = await this.getById(id);
     if (exercise) {
       this.sendUpdateNotifications(exercise, true, false, true);
       return true;
@@ -222,13 +229,10 @@ export class ExerciseService {
    * @param id
    */
   public async rejectChanges(id: string): Promise<boolean> {
-    const exercise = await this.exerciseModel.findOneAndUpdate(
-      { _id: id },
-      { $unset: { editedData: 1 } },
-    );
-
+    const exercise = await this.getById(id, false);
     if (exercise) {
-      this.sendUpdateNotifications(exercise, false, false, true);
+      await exercise.updateOne({ $unset: { editedData: 1 } });
+      this.sendUpdateNotifications(await this.getById(id), false, false, true);
       return true;
     }
     return false;
@@ -245,30 +249,27 @@ export class ExerciseService {
     update: CreateExerciseDTO,
     author: IUser,
   ): Promise<boolean> {
-    if (!isValidObjectId(id)) {
-      FormValidator.throwEx('Falsche Id');
+    const exercise = await this.getById(id, false);
+    if (!exercise) {
+      return false;
     }
-    const ex = await this.exerciseModel.findOne({
-      _id: id,
-      author: author._id,
-      reviewed: false,
-    });
-    if (ex) {
-      FormValidator.throwEx('Bitte warte bis deine Übung geprüft wurde');
+
+    if (exercise.author !== author._id || !exercise.reviewed) {
+      return false;
     }
 
     const muscles = await this.getAvailableMuscles();
     update = ExerciseFormValidator.validate(update, muscles);
 
-    const exercise = await this.exerciseModel.findOneAndUpdate(
-      { _id: id, author: author._id },
-      { $set: { editedData: update } },
+    await exercise.updateOne({ $set: { editedData: update } });
+    this.sendUpdateNotifications(
+      await this.getById(id, false),
+      false,
+      false,
+      false,
     );
-    if (exercise) {
-      this.sendUpdateNotifications(exercise, false, false, false);
-      return true;
-    }
-    return false;
+
+    return true;
   }
 
   /**
@@ -276,26 +277,23 @@ export class ExerciseService {
    * @param id
    */
   public async deleteExercise(id: string): Promise<boolean> {
-    const exercise = await this.exerciseModel.findOneAndDelete({
-      _id: id,
-      reviewed: false,
-    });
-    if (exercise) {
+    const exercise = await this.getById(id, false);
+    if (exercise && !exercise.reviewed) {
       this.sendUpdateNotifications(exercise, false, true, true);
+      exercise.deleteOne();
       return true;
     }
     return false;
   }
 
   public async cancelSubmission(user: IUser, id: string): Promise<boolean> {
-    const exercise = await this.exerciseModel.findOneAndDelete({
-      _id: id,
-      reviewed: false,
-      author: user._id,
-    });
+    const exercise = await this.getById(id, false);
     if (exercise) {
-      this.sendUpdateNotifications(exercise, false, true, true);
-      return true;
+      if (!exercise.reviewed && exercise.author === user._id) {
+        this.sendUpdateNotifications(exercise, false, true, true);
+        await exercise.deleteOne();
+        return true;
+      }
     }
     return false;
   }
@@ -308,11 +306,16 @@ export class ExerciseService {
    * @param removeSubmisison boolean
    */
   private async sendUpdateNotifications(
-    exercise: IExercise,
+    exercise: Exercise | null,
     accepted: boolean,
     removeLocaly: boolean,
     removeSubmisison: boolean,
   ) {
+    if (!exercise) {
+      console.log('no exercise given');
+      return;
+    }
+
     this.fhSocket.server
       .to(exercise.author)
       .emit('exercise' + (removeLocaly ? '.remove' : ''), exercise);
@@ -329,9 +332,10 @@ export class ExerciseService {
     });
     const ids = users.map((x) => x._id);
 
-    const socket = this.fhSocket.server;
-    ids.forEach((x) => socket.to(x));
-    socket.emit(
+    let adminSocket: Namespace | Server = this.fhSocket.server;
+    ids.forEach((x) => (adminSocket = adminSocket.to(x)));
+
+    adminSocket.emit(
       'exerciseSubmission' + (removeSubmisison ? '.remove' : ''),
       exercise,
     );

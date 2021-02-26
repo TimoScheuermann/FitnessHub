@@ -14,7 +14,7 @@
     </tl-flow>
 
     <div v-else max-width>
-      <tl-grid minWidth="200">
+      <tl-grid arrangement="auto-fill" minWidth="200">
         <FHRecipePreview v-for="r in recipes" :key="r._id" :recipe="r" />
       </tl-grid>
     </div>

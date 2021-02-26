@@ -19,38 +19,85 @@
         />
       </div>
       <tc-action :dark="$store.getters.darkmode">
-        <tc-action-item icon="plus" title="Workout" @click="addToWO" />
-        <tc-action-item icon="list" title="Liste" />
-        <tc-action-item
-          icon="i-circle-filled"
-          title="Details"
-          @click="handleClick"
-        />
-        <tc-action-item success icon="share" title="Teilen" />
+        <template v-if="exercise.reviewed">
+          <tc-action-item icon="plus" title="Workout" @click="addToWO" />
+          <tc-action-item icon="list" title="Liste" />
+          <tc-action-item
+            icon="i-circle-filled"
+            title="Details"
+            @click="handleClick"
+          />
+          <tc-action-item
+            v-if="isAuthor"
+            alarm
+            title="Übung bearbeiten"
+            icon="pencil"
+            @click="updateExercise"
+          />
+          <tc-action-item success icon="share" title="Teilen" />
+        </template>
+        <template v-else-if="$route.name === 'exercise-submissions'">
+          <tc-action-item
+            icon="pencil"
+            title="Anfrage bearbeiten"
+            @click="handleClick"
+          />
+        </template>
+        <template v-else>
+          <tc-action-item
+            error
+            icon="trashcan-alt"
+            title="Übung löschen"
+            @click="cancelSubmission"
+          />
+        </template>
       </tc-action>
     </tl-flow>
   </div>
 </template>
 
 <script lang="ts">
+import backend from '@/utils/backend';
 import { addExerciseToWorkout, openFullscreen } from '@/utils/functions';
 import { IExercise } from '@/utils/interfaces';
+import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHExercisePreview extends Vue {
   @Prop() exercise!: IExercise;
 
+  get isAuthor(): boolean {
+    if (!this.exercise) return false;
+    return this.exercise.author === UserManagement.getUserID();
+  }
+
   public handleClick(e: Event) {
     this.$emit('click', e);
-    if (this.exercise) {
+    if (
+      this.exercise &&
+      this.exercise.reviewed &&
+      this.$route.name !== 'exercise-submissions'
+    ) {
       openFullscreen('exercise-details', { id: this.exercise._id });
+    }
+  }
+
+  public updateExercise(): void {
+    if (this.isAuthor) {
+      openFullscreen('update-exercise', { id: this.exercise._id });
     }
   }
 
   public addToWO(): void {
     if (this.exercise) {
       addExerciseToWorkout(this.exercise._id);
+    }
+  }
+
+  public cancelSubmission(): void {
+    if (this.exercise) {
+      backend.delete('exercise/cancelSubmission/' + this.exercise._id);
     }
   }
 }

@@ -14,7 +14,7 @@
     </tl-flow>
 
     <div v-else max-width>
-      <tl-grid minWidth="200">
+      <tl-grid arrangement="auto-fill" minWidth="200">
         <FHExercisePreview v-for="e in exercises" :key="e._id" :exercise="e" />
       </tl-grid>
     </div>

@@ -1,5 +1,5 @@
 import { Location } from 'vue-router';
-import { UpdateExerciseDTO } from './dtos';
+import { CreateExerciseDTO } from './dtos';
 
 export interface IUser {
   readonly _id: string;
@@ -135,19 +135,16 @@ export interface IExercise {
   readonly reviewedBy: string;
   readonly created: number;
   readonly updated: number;
-  readonly editedData?: UpdateExerciseDTO;
-
   readonly title: string;
-  readonly affectedMuscles: string[];
   readonly thumbnail: string;
-  readonly explanatoryVideo?: string;
-
   readonly difficulty: number;
-  readonly warnings: string[];
-  readonly steps: string[];
-  readonly possibleAtHome?: boolean;
+  readonly affectedMuscles: string[];
 
-  // Variable, depending on exercise
+  readonly explanatoryVideo?: string;
+  readonly warnings?: string[];
+  readonly steps?: string[];
+  readonly possibleAtHome?: boolean;
+  readonly editedData?: CreateExerciseDTO;
   readonly time?: number;
   readonly distance?: string;
   readonly sets?: string;

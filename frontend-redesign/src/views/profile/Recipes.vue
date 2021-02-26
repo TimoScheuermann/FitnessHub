@@ -1,34 +1,36 @@
 <template>
   <div class="view-recipes" content>
-    <tl-flow horizontal="space-between">
-      <h3>Meine Rezepte</h3>
-      <tc-link routeName="submit-recipe" tfcolor="success">
-        Rezept erstellen
-      </tc-link>
-    </tl-flow>
+    <div max-width>
+      <tl-flow horizontal="space-between">
+        <h3>Meine Rezepte</h3>
+        <tc-link routeName="submit-recipe" tfcolor="success">
+          Rezept erstellen
+        </tc-link>
+      </tl-flow>
 
-    <FHAppear>
-      <p v-if="!submitted || submitted.length === 0">
-        Du hast noch kein eigenes Rezept veröffentlicht
-      </p>
-
-      <FHCarousel v-else>
-        <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
-      </FHCarousel>
-    </FHAppear>
-
-    <FHAppear>
-      <div v-if="liked">
-        <br />
-        <h3>Lieblingsrezepte</h3>
-        <p v-if="liked.length === 0">
-          Du hast noch kein Rezept zu deinem Favoriten hinzugefügt
+      <FHAppear>
+        <p v-if="!submitted || submitted.length === 0">
+          Du hast noch kein eigenes Rezept veröffentlicht
         </p>
+
         <FHCarousel v-else>
-          <FHRecipePreview v-for="l in liked" :key="l._id" :recipe="l" />
+          <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
         </FHCarousel>
-      </div>
-    </FHAppear>
+      </FHAppear>
+
+      <FHAppear>
+        <div v-if="liked">
+          <br />
+          <h3>Lieblingsrezepte</h3>
+          <p v-if="liked.length === 0">
+            Du hast noch kein Rezept zu deinem Favoriten hinzugefügt
+          </p>
+          <FHCarousel v-else>
+            <FHRecipePreview v-for="l in liked" :key="l._id" :recipe="l" />
+          </FHCarousel>
+        </div>
+      </FHAppear>
+    </div>
   </div>
 </template>
 

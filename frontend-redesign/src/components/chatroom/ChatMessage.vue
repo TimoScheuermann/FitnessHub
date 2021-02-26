@@ -1,15 +1,27 @@
 <template>
   <div class="fh-chat-message" v-if="message">
     <div v-if="showDate" center class="date">{{ date }}</div>
-    <div class="message-wrapper" :isSender="isSender">
+    <div
+      v-if="message.type === 'message'"
+      class="message-wrapper"
+      :isSender="isSender"
+    >
       <div line-break class="message-container">{{ message.content }}</div>
+    </div>
+
+    <div v-else-if="exercise" class="message-exercise-publish">
+      <tc-avatar size="tiny" :src="exercise.thumbnail" />
+      <div class="content">
+        Deine Übung {{ exercise.title }} wurde veröffentlicht!
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { months } from '@/utils/constants';
-import { IMessage } from '@/utils/interfaces';
+import { ExerciseManagement } from '@/utils/ExerciseManagement';
+import { IExercise, IMessage } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
@@ -42,6 +54,24 @@ export default class FHChatMessage extends Vue {
   get isSender(): boolean {
     if (!this.message) return true;
     return this.message.from === UserManagement.getUserID();
+  }
+
+  get exercise(): IExercise | null {
+    if (!this.message) return null;
+    if (this.message.type !== 'exercisePublish') return null;
+    let created:
+      | IExercise[]
+      | IExercise
+      | null = ExerciseManagement.getCreated();
+    if (!created) return null;
+    created = created.filter(
+      x => x._id === JSON.parse(this.message.content).id
+    )[0];
+    if (!created) return null;
+    return {
+      ...created,
+      title: JSON.parse(this.message.content).title
+    };
   }
 }
 </script>
@@ -80,6 +110,25 @@ export default class FHChatMessage extends Vue {
       min-width: 50px;
       padding: 10px;
       border-radius: 20px;
+    }
+  }
+
+  .message-exercise-publish {
+    .tc-avatar {
+      margin: 0 auto 10px;
+    }
+
+    .content {
+      margin: 0 auto 20px;
+      background: $paragraph;
+      @media #{$isDark} {
+        background: $paragraph_dark;
+      }
+      max-width: calc(100% - 50px);
+      min-width: 50px;
+      padding: 10px;
+      border-radius: 20px;
+      text-align: center;
     }
   }
 }

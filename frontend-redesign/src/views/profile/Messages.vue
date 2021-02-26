@@ -78,9 +78,16 @@ export default class Messages extends Vue {
       .map(f => {
         const message = this.getLatestMessageWith(f._id);
         if (!message) return null;
+        let content = message.content;
+        if (message.type === 'exercisePublish') {
+          content =
+            'Deine Übung ' +
+            JSON.parse(message.content).title +
+            ' wurde veröffentlicht!';
+        }
         return {
           friend: f,
-          message: message.content,
+          message: content,
           timestamp: message.date,
           unread: this.getAmountOfUnread(f._id)
         };
