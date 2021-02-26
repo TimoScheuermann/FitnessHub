@@ -2,7 +2,8 @@
   <div class="view-recipe-form" content>
     <FHErrorList :id="errorList" />
     <div max-width>
-      <h3>Rezept erstellen</h3>
+      <h3 v-if="mode === 'create'">Rezept erstellen</h3>
+      <h3 v-if="mode === 'update'">Rezept bearbeiten</h3>
 
       <tc-segments :dark="$store.getters.darkmode" v-model="segment">
         <tc-segment-item title="Infos" />

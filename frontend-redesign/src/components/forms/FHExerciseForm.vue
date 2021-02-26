@@ -2,7 +2,10 @@
   <div class="view-exercise-form" content>
     <FHErrorList :id="errorList" />
     <div max-width>
-      <h3>Übung einreichen</h3>
+      <h3 v-if="mode === 'create'">Übung einreichen</h3>
+      <h3 v-if="mode === 'update'">Übung bearbeiten</h3>
+      <h3 v-if="mode === 'change'">Änderungen überprüfen</h3>
+      <h3 v-if="mode === 'publish'">Übung veröffentlichen</h3>
 
       <tc-segments :dark="$store.getters.darkmode" v-model="segment">
         <tc-segment-item title="Infos" />
