@@ -94,7 +94,7 @@
           </tc-action>
         </FHListItem>
       </FHList>
-      <p v-else>Füge Freunde hinzu TODO:</p>
+      <p v-else>Bisher trainierst du nur für dich. Füge Freunde hinzu um deine Erfolge zu teilen und Unterhaltungen zu beginnen.</p>
     </div>
   </div>
 </template>
