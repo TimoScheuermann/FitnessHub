@@ -170,7 +170,7 @@
           </tc-table>
           <div class="fh-graph-card">
             <div class="title" small>Weiterer Hinweis</div>
-            <tc-textarea v-model="step" :dark="$store.getters.darkmode" />
+            <tc-textarea v-model="warning" :dark="$store.getters.darkmode" />
             <tl-flow>
               <tc-link tfcolor="success" @click="addWarning">
                 Schritt hinzufügen
