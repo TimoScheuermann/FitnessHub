@@ -102,9 +102,11 @@ html {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
 
+  @include custom-scrollbar__light();
   background: $background;
   color: $color;
   @media #{$isDark} {
+    @include custom-scrollbar__dark();
     background: $background_dark;
     color: $color_dark;
   }

@@ -94,7 +94,10 @@
           </tc-action>
         </FHListItem>
       </FHList>
-      <p v-else>Bisher trainierst du nur für dich. Füge Freunde hinzu um deine Erfolge zu teilen und Unterhaltungen zu beginnen.</p>
+      <p v-else>
+        Bisher trainierst du nur für dich. Füge Freunde hinzu um deine Erfolge
+        zu teilen und Unterhaltungen zu beginnen.
+      </p>
     </div>
   </div>
 </template>

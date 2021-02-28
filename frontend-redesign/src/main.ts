@@ -10,9 +10,9 @@ import { Route } from 'vue-router';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
 import './registerServiceWorker';
-import { getToken, getUserFromJWT, verfiyUser } from './utils/auth';
+import { getUserFromJWT, verfiyUser } from './utils/auth';
 import { backendURL } from './utils/constants';
-import { closeFullscreen, getDepth, openFullscreen } from './utils/functions';
+import { closeFullscreen, openFullscreen } from './utils/functions';
 
 Vue.config.productionTip = false;
 
@@ -26,25 +26,7 @@ for (const component in TCComponents) {
 export const socket = io(backendURL);
 Vue.use(VueSocketIOExt, socket);
 
-console.log(getToken());
-
-router.beforeEach(async (to: Route, from: Route, next: Function) => {
-  const toDepth = getDepth(to);
-  const fromDepth = getDepth(from);
-  const toPath = to.fullPath.split('/').slice(0, 2);
-  const fromPath = from.fullPath.split('/').slice(0, 2);
-
-  if (to.meta.fullscreen) {
-    store.commit('routeTransition', 'slide-fullscreen');
-  } else if (fromPath.join('/') !== toPath.join('/')) {
-    store.commit('routeTransition', 'slide-bottom');
-  } else {
-    store.commit(
-      'routeTransition',
-      toDepth < fromDepth ? 'slide-right' : 'slide-left'
-    );
-  }
-
+router.beforeEach(async (to: Route, _from: Route, next: Function) => {
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
   }

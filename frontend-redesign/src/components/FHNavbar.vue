@@ -1,9 +1,5 @@
 <template>
-  <tc-navbar
-    transition
-    :moveout="$route.meta.fullscreen"
-    :dark="$store.getters.darkmode"
-  >
+  <tc-navbar :moveout="$route.meta.fullscreen" :dark="$store.getters.darkmode">
     <tc-navbar-item
       tfcolor="success"
       icon="house"
@@ -72,8 +68,12 @@ export default class FHNavbar extends Vue {
   @media #{$isMobile} {
     display: none !important;
   }
+
+  transition: all 0.5s ease-in-out !important;
   &[moveout] {
-    transform: translateY(calc(-50px - env(safe-area-inset-top)));
+    transition-delay: 0.3s !important;
+    transform: translateY(calc(-50px - env(safe-area-inset-bottom)));
+    opacity: 0;
   }
 
   .account {

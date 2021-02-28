@@ -27,7 +27,6 @@ const store = new Vuex.Store({
     user: {} as IUser,
     isDesktop: false,
     darkmode: false,
-    routeTransition: 'slide-left',
     storedRoutes: {},
     variables: null,
 
@@ -72,9 +71,6 @@ const store = new Vuex.Store({
     },
     darkmode: (state: any): boolean => {
       return state.darkmode;
-    },
-    routeTransition: (state: any): string => {
-      return state.routeTransition;
     },
     variables: (state: any): IVariable[] | null => {
       return state.variables;
@@ -165,9 +161,6 @@ const store = new Vuex.Store({
     },
     darkmode(state: any, darkmode: boolean) {
       state.darkmode = darkmode;
-    },
-    routeTransition(state: any, trans: string) {
-      state.routeTransition = trans;
     },
     storeRoute(state: any, data: { key: string; route: Route }) {
       state.storedRoutes[data.key] = data.route;

@@ -173,7 +173,7 @@
             <tc-textarea v-model="warning" :dark="$store.getters.darkmode" />
             <tl-flow>
               <tc-link tfcolor="success" @click="addWarning">
-                Schritt hinzufügen
+                Hinweis hinzufügen
               </tc-link>
             </tl-flow>
           </div>

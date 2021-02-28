@@ -1,9 +1,5 @@
 <template>
-  <tc-tabbar
-    transition
-    :moveout="$route.meta.fullscreen"
-    :dark="$store.getters.darkmode"
-  >
+  <tc-tabbar :moveout="$route.meta.fullscreen" :dark="$store.getters.darkmode">
     <tc-tabbar-item
       tfcolor="success"
       icon="house"
@@ -67,8 +63,10 @@ export default class FHTabbar extends Vue {
   @media #{$isDesktop} {
     display: none !important;
   }
+  transition: all 0.5s ease-in-out !important;
   &[moveout] {
     transform: translateY(calc(50px + env(safe-area-inset-bottom)));
+    opacity: 0;
   }
   .tc-badge {
     flex: 1 1 0px;
