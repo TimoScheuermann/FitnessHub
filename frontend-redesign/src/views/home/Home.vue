@@ -1,5 +1,7 @@
 <template>
-  <div class="view-Home">Home</div>
+  <div class="view-Home">
+    <h1 v-for="(k, i) in Array(50)" :key="i">{{ i }}</h1>
+  </div>
 </template>
 
 <script lang="ts">

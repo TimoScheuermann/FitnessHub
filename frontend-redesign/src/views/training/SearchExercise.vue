@@ -1,7 +1,9 @@
 <template>
   <div class="view-SearchExercise">
     <div content max-width>
-      <FHFullScreenCloser prev="training" />
+      <FHHeader title="Übung suchen">
+        <FHFullScreenCloser prev="training" />
+      </FHHeader>
       <br />
       <h1 center>Übung suchen</h1>
       <div class="image-wrapper">
@@ -26,13 +28,15 @@
 import FHBodyBack from '@/components/anatomy/FHBodyBack.vue';
 import FHBodyFront from '@/components/anatomy/FHBodyFront.vue';
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
+import FHHeader from '@/components/FHHeader.vue';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
     FHFullScreenCloser,
     FHBodyFront,
-    FHBodyBack
+    FHBodyBack,
+    FHHeader
   }
 })
 export default class SearchExercise extends Vue {

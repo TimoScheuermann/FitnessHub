@@ -1,7 +1,8 @@
 <template>
   <div class="view-add-friend">
-    <FHFullScreenCloser @click="$cFS('friends')" />
-    <FHHeader title="Freund hinzufügen" />
+    <FHHeader title="Freund hinzufügen">
+      <FHFullScreenCloser @click="$cFS('friends')" />
+    </FHHeader>
 
     <div content>
       <div max-width>

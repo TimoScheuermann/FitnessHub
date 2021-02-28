@@ -20,7 +20,8 @@ const router = new VueRouter({
       component: () => import('@/views/training/SearchExercise.vue'),
       meta: {
         title: prefix + 'Search',
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'training'
       }
     },
     {
@@ -29,7 +30,8 @@ const router = new VueRouter({
       component: () => import('@/views/training/Exercise.vue'),
       meta: {
         title: prefix + 'Übung',
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'training'
       }
     },
     {
@@ -38,7 +40,8 @@ const router = new VueRouter({
       component: () => import('@/views/training/Workout.vue'),
       meta: {
         title: prefix + 'Workout',
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'training'
       }
     },
     {
@@ -47,7 +50,8 @@ const router = new VueRouter({
       component: () => import('@/views/nutrition/Recipe.vue'),
       meta: {
         title: prefix + 'Rezept',
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'nutrition'
       }
     },
     {
@@ -67,7 +71,8 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Übung anpassen',
         needsSignIn: true,
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'exercises'
       }
     },
     {
@@ -77,7 +82,8 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'ChatRoom',
         needsSignIn: true,
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'messages'
       }
     },
     {
@@ -87,7 +93,8 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Freund hinzufügen',
         needsSignIn: true,
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'friends'
       }
     },
 
@@ -99,7 +106,8 @@ const router = new VueRouter({
       meta: {
         needsSignIn: true,
         groups: ['Admin', 'Moderator'],
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'exercise-submissions'
       }
     },
     {
@@ -108,7 +116,8 @@ const router = new VueRouter({
       component: () => import('@/views/login/Login.vue'),
       meta: {
         title: prefix + 'Login',
-        fullscreen: true
+        fullscreen: true,
+        fsFallback: 'home'
       }
     },
     /**
@@ -321,7 +330,8 @@ const router = new VueRouter({
           name: 'home',
           component: () => import('@/views/home/Home.vue'),
           meta: {
-            title: prefix + 'Home'
+            title: prefix + 'Home',
+            hero: 'FitnessHub'
           }
         },
         { path: '*', redirect: { name: 'home' } }

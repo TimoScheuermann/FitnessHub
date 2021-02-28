@@ -20,11 +20,7 @@ export default class FHFullScreenCloser extends Vue {
 
 <style lang="scss" scoped>
 .fh-full-screen-closer {
-  position: fixed;
-  z-index: 1000;
-  top: calc(7.5px + env(safe-area-inset-top));
-  right: calc(7.5px + env(safe-area-inset-right));
-  font-size: 2em;
+  font-size: 1.8em;
   opacity: 0.75;
 
   &:hover,

@@ -1,5 +1,6 @@
 <template>
   <tc-navbar :moveout="$route.meta.fullscreen" :dark="$store.getters.darkmode">
+    <b slot="logo">{{ $route.meta.hero }}</b>
     <tc-navbar-item
       tfcolor="success"
       icon="house"

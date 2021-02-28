@@ -1,7 +1,8 @@
 <template>
   <div class="view-Exercise">
-    <FHHeader v-if="exercise" :title="exercise.title" :trigger="250" />
-    <FHFullScreenCloser @click="$cFS('training')" />
+    <FHHeader v-if="exercise" :title="exercise.title" :trigger="250">
+      <FHFullScreenCloser @click="$cFS('training')" />
+    </FHHeader>
     <FHSwipeable @swipeDown="$cFS('training')">
       <tc-hero :dark="$store.getters.darkmode">
         <img v-if="exercise" :src="exercise.thumbnail" slot="background" />

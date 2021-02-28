@@ -105,11 +105,13 @@ html {
   @include custom-scrollbar__light();
   background: $background;
   color: $color;
+
   @media #{$isDark} {
     @include custom-scrollbar__dark();
     background: $background_dark;
     color: $color_dark;
   }
+
   overflow-x: hidden;
 }
 

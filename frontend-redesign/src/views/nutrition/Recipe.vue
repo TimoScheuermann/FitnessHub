@@ -1,7 +1,8 @@
 <template>
   <div class="view-Recipe">
-    <FHHeader v-if="recipe" :title="recipe.title" :trigger="250" />
-    <FHFullScreenCloser @click="$cFS('nutrition')" />
+    <FHHeader v-if="recipe" :title="recipe.title" :trigger="250">
+      <FHFullScreenCloser @click="$cFS('nutrition')" />
+    </FHHeader>
     <FHSwipeable @swipeDown="$cFS('nutrition')">
       <tc-hero :dark="$store.getters.darkmode">
         <img v-if="recipe" :src="recipe.thumbnail" slot="background" />

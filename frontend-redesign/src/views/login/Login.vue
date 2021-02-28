@@ -1,8 +1,9 @@
 <template>
   <div class="view-Login">
-    <div class="back-button">
+    <FHHeader title="Login">
       <FHFullScreenCloser @click="$cFS('home')" />
-    </div>
+    </FHHeader>
+
     <div class="login-wrapper">
       <FHSwipeable @swipeDown="$cFS('home')">
         <tl-flow flow="column">
@@ -56,6 +57,7 @@
 
 <script lang="ts">
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
+import FHHeader from '@/components/FHHeader.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
 import { signIn } from '@/utils/auth';
 import { Vue, Component } from 'vue-property-decorator';
@@ -63,7 +65,8 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component({
   components: {
     FHFullScreenCloser,
-    FHSwipeable
+    FHSwipeable,
+    FHHeader
   }
 })
 export default class Login extends Vue {
@@ -76,11 +79,6 @@ export default class Login extends Vue {
 <style lang="scss" scoped>
 .view-Login {
   color: #fff;
-  .back-button {
-    position: absolute;
-    top: calc(20px + env(safe-area-inset-top));
-    left: calc(20px + env(safe-area-inset-left));
-  }
 
   .login-wrapper {
     min-height: 100vh;
