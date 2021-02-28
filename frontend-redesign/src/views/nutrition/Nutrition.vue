@@ -2,7 +2,7 @@
   <div class="view-nutrition" content>
     <div max-width>
       <tl-grid minWidth="150" gap="10">
-        <FHButton icon="lens" title="Rezept" />
+        <FHButton icon="lens" title="Rezept" routeName="search-recipe" />
         <FHButton icon="lightbulb" title="Tipps" routeName="nutrition-tipps" />
       </tl-grid>
 

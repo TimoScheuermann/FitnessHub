@@ -2,7 +2,7 @@
   <div class="view-SearchExercise">
     <div content max-width>
       <FHHeader title="Übung suchen">
-        <FHFullScreenCloser prev="training" />
+        <FHFullScreenCloser @click="$cFS('training')" />
       </FHHeader>
       <br />
       <h1 center>Übung suchen</h1>

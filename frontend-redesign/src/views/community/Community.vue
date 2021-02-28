@@ -1,5 +1,9 @@
 <template>
-  <div class="view-Community">Community</div>
+  <div class="view-Community" content>
+    <div max-width>
+      Community
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

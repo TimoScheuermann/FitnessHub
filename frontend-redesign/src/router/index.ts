@@ -25,6 +25,16 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/nutrition/search',
+      name: 'search-recipe',
+      component: () => import('@/views/nutrition/SearchRecipe.vue'),
+      meta: {
+        title: prefix + 'Search',
+        fullscreen: true,
+        fsFallback: 'nutrition'
+      }
+    },
+    {
       path: '/training/exercise/:id',
       name: 'exercise-details',
       component: () => import('@/views/training/Exercise.vue'),
@@ -316,6 +326,15 @@ const router = new VueRouter({
           meta: {
             title: prefix + 'Kategorie',
             hero: 'Kategorie'
+          }
+        },
+        {
+          path: 'search-results',
+          name: 'recipe-search-results',
+          component: () => import('@/views/nutrition/SearchResults.vue'),
+          meta: {
+            title: prefix + 'Rezept Suche',
+            hero: 'Rezept Suche'
           }
         },
         { path: '*', redirect: { name: 'nutrition' } }

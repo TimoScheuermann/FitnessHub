@@ -2,11 +2,9 @@
   <div class="interim-home">
     <FHHeader
       :backTitle="$route.meta.backTitle || 'Home'"
-      :rootRoute="$route.meta.backRoute || 'home2'"
+      :rootRoute="$route.meta.backRoute || 'home'"
       :title="$route.meta.hero"
-    >
-      <tc-action :dark="$store.getters.darkmode"></tc-action>
-    </FHHeader>
+    />
 
     <tc-hero
       :dark="$store.getters.darkmode"
