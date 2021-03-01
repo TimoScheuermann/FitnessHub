@@ -1,8 +1,8 @@
 <template>
   <div class="interim-nutrition">
     <FHHeader
-      backTitle="Ernährung"
-      rootRoute="nutrition"
+      :backTitle="$route.meta.backTitle || 'Ernährung'"
+      :rootRoute="$route.meta.backRoute || 'nutrition'"
       :title="$route.params.category || $route.meta.hero"
     />
 
