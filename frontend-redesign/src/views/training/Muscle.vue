@@ -14,6 +14,8 @@
     </tl-flow>
 
     <div v-else max-width>
+      <FHHeading subtitle="Ergebnisse für" :title="this.$route.params.muscle" />
+      <br />
       <tl-grid arrangement="auto-fill" minWidth="200">
         <FHExercisePreview v-for="e in exercises" :key="e._id" :exercise="e" />
       </tl-grid>
@@ -22,6 +24,7 @@
 </template>
 
 <script lang="ts">
+import FHHeading from '@/components/FHHeading.vue';
 import FHExercisePreview from '@/components/training/FHExercisePreview.vue';
 import backend from '@/utils/backend';
 import { IExercise } from '@/utils/interfaces';
@@ -29,7 +32,8 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
-    FHExercisePreview
+    FHExercisePreview,
+    FHHeading
   }
 })
 export default class MuscleExercises extends Vue {
@@ -47,13 +51,3 @@ export default class MuscleExercises extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.view-muscle-exercises {
-  .tl-grid {
-    .fh-exercise-preview {
-      width: unset;
-    }
-  }
-}
-</style>

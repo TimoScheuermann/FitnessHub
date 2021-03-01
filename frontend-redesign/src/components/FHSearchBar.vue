@@ -41,20 +41,24 @@ export default class FHSearchBar extends Vue {
 
 <style lang="scss" scoped>
 .fh-search-bar {
-  padding: 5px 5vw;
+  position: sticky;
+  top: calc(env(safe-area-inset-top) + 50px);
   z-index: 20;
+  margin-top: 20px;
+  padding: 5px 5vw;
 
   form {
     max-width: 400px;
     margin: 0 auto;
   }
 
+  .tc-input {
+    color: inherit;
+  }
+
   @include backdrop-blur($background);
   @media #{$isDark} {
     @include backdrop-blur($background_dark);
   }
-
-  position: sticky;
-  top: calc(env(safe-area-inset-top) + 50px);
 }
 </style>

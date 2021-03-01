@@ -44,10 +44,5 @@ export default class ExerciseSubmissions extends Vue {
 <style lang="scss" scoped>
 .view-exercise-submissions {
   padding-top: 0;
-  .tl-grid {
-    .fh-exercise-preview {
-      width: unset;
-    }
-  }
 }
 </style>

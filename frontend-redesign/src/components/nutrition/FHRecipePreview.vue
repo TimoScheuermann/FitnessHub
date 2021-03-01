@@ -84,7 +84,6 @@ export default class FHRecipePreview extends Vue {
 <style lang="scss" scoped>
 .fh-recipe-preview {
   border-radius: $border-radius;
-  width: 280px;
   height: fit-content;
 
   background: $paragraph;

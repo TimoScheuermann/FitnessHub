@@ -294,6 +294,17 @@ const router = new VueRouter({
             hero: 'Muskel'
           }
         },
+        {
+          path: 'search-results',
+          name: 'exercise-search-results',
+          component: () => import('@/components/FHSearchResults.vue'),
+          meta: {
+            title: prefix + 'Suchergebnisse',
+            hero: 'Suchergebnisse',
+            backTitle: 'Suche',
+            backRoute: 'search-exercise'
+          }
+        },
         { path: '*', redirect: { name: 'training' } }
       ]
     },
@@ -331,10 +342,12 @@ const router = new VueRouter({
         {
           path: 'search-results',
           name: 'recipe-search-results',
-          component: () => import('@/views/nutrition/SearchResults.vue'),
+          component: () => import('@/components/FHSearchResults.vue'),
           meta: {
-            title: prefix + 'Rezept Suche',
-            hero: 'Rezept Suche'
+            title: prefix + 'Suchergebnisse',
+            hero: 'Suchergebnisse',
+            backTitle: 'Suche',
+            backRoute: 'search-recipe'
           }
         },
         { path: '*', redirect: { name: 'nutrition' } }

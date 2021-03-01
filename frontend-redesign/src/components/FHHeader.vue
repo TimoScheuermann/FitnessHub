@@ -84,6 +84,8 @@ export default class FHHeader extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #fff;
+
     i {
       margin-right: 2.5px;
       font-size: 14px;

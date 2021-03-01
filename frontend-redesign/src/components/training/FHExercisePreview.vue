@@ -106,7 +106,6 @@ export default class FHExercisePreview extends Vue {
 <style lang="scss" scoped>
 .fh-exercise-preview {
   border-radius: $border-radius;
-  width: 280px;
   height: fit-content;
 
   background: $paragraph;

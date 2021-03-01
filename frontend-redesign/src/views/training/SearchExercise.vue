@@ -6,6 +6,17 @@
       </FHHeader>
       <br />
       <h1 center>Übung suchen</h1>
+      <form @submit.prevent="submit">
+        <tc-input
+          pattern=".{3,}"
+          v-model="query"
+          icon="lens"
+          :frosted="true"
+          :dark="true"
+          placeholder="Suchbegriff eingeben"
+        />
+      </form>
+      <h3 center>oder Muskel wählen</h3>
       <div class="image-wrapper">
         <transition name="fade">
           <FHBodyFront v-if="front" key="front" @muscle="muscleSelected" />
@@ -41,9 +52,19 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class SearchExercise extends Vue {
   public front = true;
+  public query = '';
 
   public muscleSelected(muscle: string) {
     this.$router.push({ name: 'muscle-exercises', params: { muscle: muscle } });
+  }
+
+  public submit(): void {
+    if (this.query.length < 2) return;
+
+    this.$router.push({
+      name: 'exercise-search-results',
+      query: { q: this.query }
+    });
   }
 }
 </script>
@@ -51,6 +72,25 @@ export default class SearchExercise extends Vue {
 <style lang="scss" scoped>
 .view-SearchExercise {
   min-height: 100vh;
+  color: #fff;
+
+  background: linear-gradient(rgba($color, 0.5), rgba($color, 0.5)),
+    url('/assets/exercise-search-bg.webp');
+  background-size: cover;
+  background-position: center center;
+
+  [content] {
+    padding-bottom: 20px;
+  }
+
+  form {
+    margin: 0 auto;
+    max-width: 400px;
+    margin-top: 20px;
+    .tc-input {
+      padding: 10px 20px;
+    }
+  }
 
   .image-wrapper {
     margin-top: 40px;

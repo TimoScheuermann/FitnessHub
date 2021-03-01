@@ -16,19 +16,40 @@
           placeholder="Suchbegriff eingeben"
         />
       </form>
+
+      <FHAppear>
+        <div v-if="categories">
+          <h3 center>oder Kategorie wählen</h3>
+          <FHVarList>
+            <FHVarListItem
+              v-for="c in categories"
+              :key="c._id"
+              :title="c.title"
+              :to="{ name: 'recipe-category', params: { category: c.title } }"
+            />
+          </FHVarList>
+        </div>
+      </FHAppear>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import FHAppear from '@/components/FHAppear.vue';
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
 import FHHeader from '@/components/FHHeader.vue';
+import FHVarList from '@/components/variable-list/FHVarList.vue';
+import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
+import { IVariable } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
     FHFullScreenCloser,
-    FHHeader
+    FHHeader,
+    FHVarList,
+    FHVarListItem,
+    FHAppear
   }
 })
 export default class SearchRecipe extends Vue {
@@ -42,20 +63,56 @@ export default class SearchRecipe extends Vue {
       query: { q: this.query }
     });
   }
+
+  get categories(): IVariable[] | null {
+    const vars: IVariable[] | null = this.$store.getters.variables;
+    if (!vars) return null;
+    return vars
+      .filter(x => x.type === 'category')
+      .sort((a, b) => a.title.localeCompare(b.title));
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .view-SearchRecipe {
   min-height: 100vh;
-  background: url('/assets/recipe-search-bg.webp');
+  color: #fff;
+
+  background: linear-gradient(rgba($color, 0.6), rgba($success, 0.08)),
+    url('/assets/recipe-search-bg.webp');
   background-size: cover;
   background-position: center center;
 
+  [content] {
+    padding-bottom: 20px;
+  }
+
   form {
-    margin-top: 100px;
+    margin: 0 auto;
+    max-width: 400px;
+    margin-top: 20px;
     .tc-input {
       padding: 10px 20px;
+    }
+  }
+
+  .fh-var-list {
+    margin: 0 auto;
+    margin-top: 40px;
+    max-width: 400px;
+
+    .fh-var-list-item {
+      @include backdrop-blur(lighten($color, 10%));
+      color: #fff;
+      border: 1px solid hsla(0, 0%, 100%, 0.1);
+      padding: 7.5px 15px;
+      margin: 0 5px 10px;
+
+      &:hover,
+      &:active {
+        border-color: hsla(0, 0%, 100%, 0.4);
+      }
     }
   }
 }

@@ -82,6 +82,7 @@ export default class FHCarousel extends Vue {}
     margin-left: 30px;
     scroll-snap-align: center;
     flex-shrink: 0;
+    width: 280px;
 
     &:nth-child(3) {
       margin-left: 0px;

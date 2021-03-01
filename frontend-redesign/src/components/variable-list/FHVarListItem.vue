@@ -27,7 +27,7 @@ export default class FHVarListItem extends Vue {
 <style lang="scss" scoped>
 .fh-var-list-item {
   padding: 5px 10px;
-  margin: 0 5px 5px;
+  margin: 0 5px 10px;
   border-radius: $border-radius;
   flex-grow: 1;
   text-align: center;

@@ -14,6 +14,11 @@
     </tl-flow>
 
     <div v-else max-width>
+      <FHHeading
+        subtitle="Ergebnisse für"
+        :title="this.$route.params.category"
+      />
+      <br />
       <tl-grid arrangement="auto-fill" minWidth="200">
         <FHRecipePreview v-for="r in recipes" :key="r._id" :recipe="r" />
       </tl-grid>
@@ -22,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import FHHeading from '@/components/FHHeading.vue';
 import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
 import backend from '@/utils/backend';
 import { IRecipe } from '@/utils/interfaces';
@@ -29,7 +35,8 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
-    FHRecipePreview
+    FHRecipePreview,
+    FHHeading
   }
 })
 export default class RecipeCategory extends Vue {
@@ -47,13 +54,3 @@ export default class RecipeCategory extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.view-recipe-category {
-  .tl-grid {
-    .fh-recipe-preview {
-      width: unset;
-    }
-  }
-}
-</style>

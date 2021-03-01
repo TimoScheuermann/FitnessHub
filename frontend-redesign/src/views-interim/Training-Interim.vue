@@ -1,8 +1,8 @@
 <template>
   <div class="interim-training">
     <FHHeader
-      backTitle="Training"
-      rootRoute="training"
+      :backTitle="$route.meta.backTitle || 'Training'"
+      :rootRoute="$route.meta.backRoute || 'training'"
       :title="$route.params.muscle || $route.meta.hero"
     />
 

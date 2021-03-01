@@ -99,10 +99,8 @@
 
 @mixin muscle-colors {
   path {
-    fill: $color;
-    @media #{$isDark} {
-      fill: $color_dark;
-    }
+    fill: $color_dark;
+    filter: url(#drop);
 
     &[ignore] {
       opacity: .5;
@@ -120,108 +118,4 @@
       }
     }
   }
-}
-
-@mixin fs-background {
-  @include fs-background__light();
-  @media #{$isDark} {
-    @include fs-background__dark();
-  }
-}
-
-@mixin fs-background__light {
-  background-image: repeating-linear-gradient(
-      89deg,
-      rgba($color, 0.02) 0px,
-      rgba($color, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color, 0.02) 11px,
-      rgba($color, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    repeating-linear-gradient(
-      134deg,
-      rgba($color, 0.02) 0px,
-      rgba($color, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color, 0.02) 11px,
-      rgba($color, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    repeating-linear-gradient(
-      44deg,
-      rgba($color, 0.02) 0px,
-      rgba($color, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color, 0.02) 11px,
-      rgba($color, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    repeating-linear-gradient(
-      179deg,
-      rgba($color, 0.02) 0px,
-      rgba($color, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color, 0.02) 11px,
-      rgba($color, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    linear-gradient(134deg, $background, $paragraph);
-}
-
-
-@mixin fs-background__dark {
-  background-image: repeating-linear-gradient(
-      89deg,
-      rgba($color_dark, 0.02) 0px,
-      rgba($color_dark, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color_dark, 0.02) 11px,
-      rgba($color_dark, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    repeating-linear-gradient(
-      134deg,
-      rgba($color_dark, 0.02) 0px,
-      rgba($color_dark, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color_dark, 0.02) 11px,
-      rgba($color_dark, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    repeating-linear-gradient(
-      44deg,
-      rgba($color_dark, 0.02) 0px,
-      rgba($color_dark, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color_dark, 0.02) 11px,
-      rgba($color_dark, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    repeating-linear-gradient(
-      179deg,
-      rgba($color_dark, 0.02) 0px,
-      rgba($color_dark, 0.02) 1px,
-      transparent 1px,
-      transparent 11px,
-      rgba($color_dark, 0.02) 11px,
-      rgba($color_dark, 0.02) 12px,
-      transparent 12px,
-      transparent 32px
-    ),
-    linear-gradient(134deg, $background_dark, $paragraph_dark);
 }
