@@ -43,28 +43,24 @@ export class VariablesController {
 
   /**
    * adds a new muscle type
-   * @param createVariableDTO
+   * @param dto
    */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('muscle')
-  async addMuscle(
-    @Body() createVariableDTO: CreateVariableDTO,
-  ): Promise<IVariable[]> {
-    return this.variablesService.addMuscle(createVariableDTO);
+  async addMuscle(@Body() dto: CreateVariableDTO): Promise<IVariable> {
+    return this.variablesService.addMuscle(dto);
   }
 
   /**
    * adds a new recipe category
-   * @param createVariableDTO
+   * @param dto
    */
   @Roles(['admin', 'moderator'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('category')
-  async addCategory(
-    @Body() createVariableDTO: CreateVariableDTO,
-  ): Promise<IVariable[]> {
-    return this.variablesService.addCategory(createVariableDTO);
+  async addCategory(@Body() dto: CreateVariableDTO): Promise<IVariable> {
+    return this.variablesService.addCategory(dto);
   }
 
   /**
