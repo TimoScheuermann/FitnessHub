@@ -26,32 +26,37 @@ for (const component in TCComponents) {
 export const socket = io(backendURL);
 Vue.use(VueSocketIOExt, socket);
 
-router.beforeEach(async (to: Route, _from: Route, next: Function) => {
+router.beforeEach(async (to: Route, from: Route, next: Function) => {
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
   }
 
   if (to.meta.needsSignIn && !store.getters.valid) {
     openFullscreen('login', undefined, undefined, to);
-  }
-
-  if (to.name === 'login' && store.getters.valid) {
+  } else if (
+    to.meta.groups &&
+    !(to.meta.groups as string[]).some(
+      t => t.toLowerCase() === getUserFromJWT().group.toLowerCase()
+    )
+  ) {
+    await next(from);
+  } else if (to.name === 'login' && store.getters.valid) {
     await next({ name: 'profile' });
+  } else {
+    const title = getTitle(to);
+    document.title = title;
+
+    const gt = document.querySelector('meta[name="title"]');
+    if (gt) gt.setAttribute('content', title);
+
+    const twitter = document.querySelector('meta[property="twitter:title"]');
+    if (twitter) twitter.setAttribute('content', title);
+
+    const og = document.querySelector('meta[property="og:title"]');
+    if (og) og.setAttribute('content', title);
+
+    next();
   }
-
-  const title = getTitle(to);
-  document.title = title;
-
-  const gt = document.querySelector('meta[name="title"]');
-  if (gt) gt.setAttribute('content', title);
-
-  const twitter = document.querySelector('meta[property="twitter:title"]');
-  if (twitter) twitter.setAttribute('content', title);
-
-  const og = document.querySelector('meta[property="og:title"]');
-  if (og) og.setAttribute('content', title);
-
-  next();
 });
 
 // show specific html-elements only for specfic groups

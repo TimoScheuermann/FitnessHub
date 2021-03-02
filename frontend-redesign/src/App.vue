@@ -16,7 +16,6 @@ import {
   registerMediaQueries,
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
-import { loadVariables } from './utils/functions';
 import {
   IExercise,
   IMessage,
@@ -27,6 +26,7 @@ import { UserManagement } from './utils/UserManagement';
 import { Socket } from 'vue-socket.io-extended';
 import FHNotification from './components/FHNotification.vue';
 import { ExerciseManagement } from './utils/ExerciseManagement';
+import { VariableManagement } from './utils/VariableManagement';
 
 @Component({
   components: {
@@ -39,7 +39,7 @@ import { ExerciseManagement } from './utils/ExerciseManagement';
 export default class App extends Vue {
   mounted() {
     registerMediaQueries();
-    loadVariables();
+    VariableManagement.loadVariables();
   }
 
   beforeDestroy() {

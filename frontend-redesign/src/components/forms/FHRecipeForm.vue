@@ -220,14 +220,10 @@ import FHErrorList from '@/components/FHErrorList.vue';
 import backend from '@/utils/backend';
 import { CreateRecipeDTO } from '@/utils/dtos';
 import { FHEventBus } from '@/utils/FHEventbus';
-import {
-  INutrition,
-  IRecipe,
-  IRecipeIngredient,
-  IVariable
-} from '@/utils/interfaces';
+import { INutrition, IRecipe, IRecipeIngredient } from '@/utils/interfaces';
 import { NotificationManagement } from '@/utils/NotificationManagement';
 import { RecipeManagement } from '@/utils/RecipeManagement';
+import { VariableManagement } from '@/utils/VariableManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
@@ -288,12 +284,7 @@ export default class FHRecipeForm extends Vue {
   }
 
   get categories(): string[] | null {
-    const vars: IVariable[] | null = this.$store.getters.variables;
-    if (!vars) return null;
-    return vars
-      .filter(x => x.type === 'category')
-      .map(x => x.title)
-      .sort((a, b) => a.localeCompare(b));
+    return VariableManagement.getCategoryNames();
   }
 
   public addIngredient(): void {

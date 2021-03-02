@@ -78,6 +78,7 @@ import FHAppear from '@/components/FHAppear.vue';
 import FHVarList from '@/components/variable-list/FHVarList.vue';
 import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
 import FHWorkoutPreview from '@/components/training/FHWorkoutPreview.vue';
+import { VariableManagement } from '@/utils/VariableManagement';
 
 @Component({
   components: {
@@ -103,11 +104,7 @@ export default class Training extends Vue {
     return this.$store.getters.latestWorkouts;
   }
   get muscles(): IVariable[] | null {
-    const vars: IVariable[] | null = this.$store.getters.variables;
-    if (!vars) return null;
-    return vars
-      .filter(x => x.type === 'muscle')
-      .sort((a, b) => a.title.localeCompare(b.title));
+    return VariableManagement.getMuscles();
   }
 }
 </script>

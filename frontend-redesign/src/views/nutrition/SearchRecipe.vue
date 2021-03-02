@@ -41,6 +41,7 @@ import FHHeader from '@/components/FHHeader.vue';
 import FHVarList from '@/components/variable-list/FHVarList.vue';
 import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
 import { IVariable } from '@/utils/interfaces';
+import { VariableManagement } from '@/utils/VariableManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -65,11 +66,7 @@ export default class SearchRecipe extends Vue {
   }
 
   get categories(): IVariable[] | null {
-    const vars: IVariable[] | null = this.$store.getters.variables;
-    if (!vars) return null;
-    return vars
-      .filter(x => x.type === 'category')
-      .sort((a, b) => a.title.localeCompare(b.title));
+    return VariableManagement.getCategories();
   }
 }
 </script>

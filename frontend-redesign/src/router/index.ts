@@ -114,10 +114,24 @@ const router = new VueRouter({
       component: () =>
         import('@/views/profile/management/ExerciseSubmission.vue'),
       meta: {
+        title: prefix + 'Eingereichte Übung',
         needsSignIn: true,
         groups: ['Admin', 'Moderator'],
         fullscreen: true,
         fsFallback: 'exercise-submissions'
+      }
+    },
+
+    {
+      path: '/profile/management/user-search',
+      name: 'mgmt-user-search',
+      component: () => import('@/views/profile/management/UserSearch.vue'),
+      meta: {
+        title: prefix + 'Nutzer finden',
+        needsSignIn: true,
+        groups: ['Admin', 'Moderator'],
+        fullscreen: true,
+        fsFallback: 'profile'
       }
     },
     {
@@ -258,6 +272,50 @@ const router = new VueRouter({
             needsSignIn: true,
             groups: ['Admin', 'Moderator'],
             hero: 'Eingereichte Übungen'
+          }
+        },
+        {
+          path: 'management/statistics',
+          name: 'mgmt-statistics',
+          component: () => import('@/views/profile/management/Statistics.vue'),
+          meta: {
+            title: prefix + 'Statistik',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator'],
+            hero: 'Statistik'
+          }
+        },
+        {
+          path: 'management/suspend-user',
+          name: 'mgmt-suspend-user',
+          component: () => import('@/views/profile/management/SuspendUser.vue'),
+          meta: {
+            title: prefix + 'Nutzer sperren',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator'],
+            hero: 'Nutzer sperren'
+          }
+        },
+        {
+          path: 'management/promote-user',
+          name: 'mgmt-promote-user',
+          component: () => import('@/views/profile/management/PromoteUser.vue'),
+          meta: {
+            title: prefix + 'Nutzer befördern',
+            needsSignIn: true,
+            groups: ['Admin'],
+            hero: 'Nutzer befördern'
+          }
+        },
+        {
+          path: 'management/variables',
+          name: 'mgmt-variables',
+          component: () => import('@/views/profile/management/Variables.vue'),
+          meta: {
+            title: prefix + 'Variablen',
+            needsSignIn: true,
+            groups: ['Admin'],
+            hero: 'Variablen'
           }
         },
         { path: '*', redirect: { name: 'profile' } }

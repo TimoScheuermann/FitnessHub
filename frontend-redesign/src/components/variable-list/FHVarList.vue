@@ -17,5 +17,6 @@ export default class FHVarList extends Vue {}
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  overflow: visible;
 }
 </style>

@@ -71,20 +71,23 @@
           <tc-list-item
             title="Statistik"
             icon="chart-bar"
-            routeName="statistics"
+            routeName="mgmt-statistics"
           />
-          <tc-list-item title="Variablen" icon="gears" routeName="variables" />
           <tc-list-item
-            v-group.admin
-            title="Suspend User"
+            title="Variablen"
+            icon="gears"
+            routeName="mgmt-variables"
+          />
+          <tc-list-item
+            title="Nutzer sperren"
             icon="blocked"
-            routeName="suspendUser"
+            routeName="mgmt-suspend-user"
           />
           <tc-list-item
             v-group.admin
-            title="Promote User"
+            title="Nutzer befördern"
             icon="user-shield-filled"
-            routeName="promoteUser"
+            routeName="mgmt-promote-user"
           />
         </tc-list>
       </div>

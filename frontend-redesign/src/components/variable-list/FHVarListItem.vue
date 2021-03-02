@@ -1,7 +1,12 @@
 <template>
-  <router-link class="fh-var-list-item" v-if="route" transition :to="route">
-    {{ title }}
+  <router-link v-if="route" class="fh-var-list-item" transition :to="route">
+    <span>{{ title }}</span>
+    <slot />
   </router-link>
+  <span v-else class="fh-var-list-item" transition>
+    <span>{{ title }}</span>
+    <slot />
+  </span>
 </template>
 
 <script lang="ts">

@@ -64,6 +64,7 @@ import FHGraphWater from '@/components/graphs/FHGraphWater.vue';
 import FHCategoryPreview from '@/components/nutrition/FHCategoryPreview.vue';
 import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
 import { IRecipe, IVariable } from '@/utils/interfaces';
+import { VariableManagement } from '@/utils/VariableManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -85,11 +86,7 @@ export default class Nutrition extends Vue {
     return this.$store.getters.belovedRecipes;
   }
   get categories(): IVariable[] | null {
-    const vars: IVariable[] | null = this.$store.getters.variables;
-    if (!vars) return null;
-    return vars
-      .filter(x => x.type === 'category')
-      .sort((a, b) => a.title.localeCompare(b.title));
+    return VariableManagement.getCategories();
   }
 }
 </script>

@@ -2,7 +2,6 @@ import router from '@/router';
 import store from '@/store';
 import { Route } from 'vue-router';
 import { Dictionary } from 'vue-router/types/router';
-import backend from './backend';
 import { anHour, days } from './constants';
 
 function getCurrentRoute(): Route {
@@ -127,7 +126,7 @@ export function openFullscreen(
   }
 }
 
-export function closeFullscreen(fallback: string): void {
+export function closeFullscreen(fallback: string, replaceQuery?: Query): void {
   const key = getCurrentRoute().name || '';
   const storedRoute: Route | null = { ...store.state.storedRoutes[key] };
 
@@ -137,7 +136,7 @@ export function closeFullscreen(fallback: string): void {
     const { name, params, query } = storedRoute;
 
     if (name && name !== getCurrentRoute().name) {
-      router.push({ name: name, params: params, query: query });
+      router.push({ name: name, params: params, query: replaceQuery || query });
       return;
     }
   }
@@ -153,12 +152,6 @@ export async function addExerciseToWorkout(id: string): Promise<void> {
     return;
   }
   console.log(id);
-}
-
-export async function loadVariables(): Promise<void> {
-  if (store.getters.variables) return;
-  const { data } = await backend.get('variables');
-  store.commit('variables', data);
 }
 
 export function extractInfoFromUrl(
