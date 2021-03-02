@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account gesperrt</title>
+
+    <link rel="stylesheet" href="scss/style.css">
+</head>
+
+<body>
+    <div class="hero">
+        <h1>Gesperrt</h1>
+    </div>
+
+    <h1>Anmeldung aktuell nicht möglich</h1>
+    <p>Dein Account wurde gesperrt, da du gegen unsere Richtlinien verstoßen hast.</p>
+
+    <br>
+    <div class="divider"></div>
+    <br>
+
+    <p><b>Die Sperrung endet am</b></p>
+    <h2>{{ timestamp }}</h2>
+</body>
+
+</html>
+
+<style>
+    html {
+        font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI,
+            Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji,
+            Segoe UI Symbol;
+        scroll-behavior: smooth;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        background: #f5f5f7;
+        color: #111;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html {
+            background: #1f2024;
+            color: #eee;
+        }
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .hero {
+        height: 200px;
+        background: url("https://images.unsplash.com/photo-1569514195436-85d36b8d0f47?q=40");
+        -webkit-background-size: cover;
+        background-size: cover;
+        display: -ms-grid;
+        display: grid;
+        place-content: center;
+        padding-top: env(safe-area-inset-top);
+    }
+
+    h1,
+    p,
+    .divider {
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h2 {
+        color: #ff4757;
+    }
+
+    .divider {
+        height: 1px;
+        background: currentColor;
+        opacity: .5;
+    }
+</style>

@@ -26,6 +26,9 @@ export class User extends Document {
   date: number;
 
   @Prop({ required: false })
+  suspendedBy?: string;
+
+  @Prop({ required: false })
   suspended?: number;
 
   @Prop({ required: false })

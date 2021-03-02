@@ -1,6 +1,9 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+
+type LoginRequest = Request & { user: { jwt: string } };
 
 @Controller('auth')
 export class AuthController {
@@ -8,78 +11,78 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  googleLogin() {
+  googleLogin(): void {
     // initiates the google OAuth2 login flow
   }
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  googleLoginCallback(@Req() req: any, @Res() res) {
+  googleLoginCallback(@Req() req: LoginRequest, @Res() res: Response): void {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
 
   @Get('github')
   @UseGuards(AuthGuard('github'))
-  githubLogin() {
+  githubLogin(): void {
     // initiates the github OAuth2 login flow
   }
 
   @Get('github/callback')
   @UseGuards(AuthGuard('github'))
-  githubLoginCallback(@Req() req: any, @Res() res) {
+  githubLoginCallback(@Req() req: LoginRequest, @Res() res: Response): void {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
 
   @Get('adobe')
   @UseGuards(AuthGuard('adobe'))
-  adobeLogin() {
+  adobeLogin(): void {
     // initiates the adobe OAuth2 login flow
   }
 
   @Get('adobe/callback')
   @UseGuards(AuthGuard('adobe'))
-  adobeLoginCallback(@Req() req: any, @Res() res) {
+  adobeLoginCallback(@Req() req: LoginRequest, @Res() res: Response): void {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
 
   @Get('amazon')
   @UseGuards(AuthGuard('amazon'))
-  amazonLogin() {
+  amazonLogin(): void {
     // initiates the amazon OAuth2 login flow
   }
 
   @Get('amazon/callback')
   @UseGuards(AuthGuard('amazon'))
-  amazonLoginCallback(@Req() req: any, @Res() res) {
+  amazonLoginCallback(@Req() req: LoginRequest, @Res() res: Response): void {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
 
   @Get('steam')
   @UseGuards(AuthGuard('steam'))
-  steamLogin() {
+  steamLogin(): void {
     // initiates the steam OAuth2 login flow
   }
 
   @Get('steam/callback')
   @UseGuards(AuthGuard('steam'))
-  steamLoginCallback(@Req() req: any, @Res() res) {
+  steamLoginCallback(@Req() req: LoginRequest, @Res() res: Response): void {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }
 
   @Get('fitbit')
   @UseGuards(AuthGuard('fitbit'))
-  fitbitLogin() {
+  fitbitLogin(): void {
     // initiates the fitbit OAuth2 login flow
   }
 
   @Get('fitbit/callback')
   @UseGuards(AuthGuard('fitbit'))
-  fitbitLoginCallback(@Req() req: any, @Res() res) {
+  fitbitLoginCallback(@Req() req: LoginRequest, @Res() res: Response): void {
     const jwt: string = req.user.jwt;
     this.authService.redirect(jwt, res);
   }

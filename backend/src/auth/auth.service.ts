@@ -23,25 +23,23 @@ export class AuthService {
   ) {}
 
   public redirect(jwt: any, res: Response): void {
-    /**
-     * redirect to suspension view
-     */
     if (jwt.suspended) {
-      res.redirect(
-        `${this.configService.get('REDIRECT')}suspended?t=${
-          jwt.suspended
-        }`,
+      /**
+       * redirect to suspension view
+       */
+      res.render(
+        'suspended',
+        { timestamp: new Date(jwt.suspended).toLocaleDateString() },
+        (_err, html) => {
+          res.send(html);
+        },
       );
+    } else if (jwt.token) {
       /**
        * redirect to fitnesshub with token
        */
-    } else if (jwt.token) {
       res.send(
         `<script>window.opener.postMessage('fht=${jwt.token}', '*');window.close();self.close();</script>`,
-      );
-      // for old ui
-      res.redirect(
-        `${this.configService.get('REDIRECT')}?fhToken=${jwt.token}`,
       );
     }
   }

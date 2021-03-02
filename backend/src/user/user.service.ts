@@ -232,6 +232,7 @@ export class UserService {
           avatar: x.avatar,
           username: this.transformName(x),
           suspended: x.suspended,
+          suspendedBy: x.suspendedBy,
         } as IUserInfo;
       })
       .sort((a, b) => a.username.localeCompare(b.username));
@@ -268,7 +269,9 @@ export class UserService {
   ): Promise<void> {
     const user = await this.getUserById(id);
     if (user) {
-      await user.updateOne({ $set: { suspended: time } });
+      await user.updateOne({
+        $set: { suspended: time, suspendedBy: suspender._id },
+      });
       this.tgbotService.sendURLMessage(
         `<b>${this.transformName(suspender)}</b> hat ${this.transformName(
           user,
