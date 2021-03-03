@@ -1,20 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { IExercise } from 'src/exercise/interfaces/IExercise';
 import { IExerciseInfo } from 'src/exercise/interfaces/IExerciseInfo';
 import { Exercise } from 'src/exercise/schemas/Exercise.schema';
-import { FHSocket } from 'src/FHSocket';
 import { Trainingplan } from 'src/trainingplan/schemas/Trainingplan.schema';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateWorkoutDTO } from './dtos/CreateWorkout.dto';
 import { IWorkout } from './interfaces/IWorkout';
 import { Workout } from './schemas/Workout.schema';
+import { WorkoutFormValidator } from './WorkoutFormValidator';
 
 @Injectable()
 export class WorkoutService {
   constructor(
-    private readonly fhSocket: FHSocket,
     @InjectModel(Workout.name) private workoutModel: Model<Workout>,
     @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
     @InjectModel(Trainingplan.name)
@@ -29,7 +28,8 @@ export class WorkoutService {
     const workouts: Workout[] = await this.workoutModel.find({
       author: user._id,
     });
-    return Promise.all(workouts.map(async (x) => this.mapWorkoutToInfo(x)));
+
+    return await this.mapWorkouts(workouts);
   }
 
   /**
@@ -40,7 +40,8 @@ export class WorkoutService {
       .find({ updated: { $exists: true }, 'exercises.1': { $exists: true } })
       .sort({ updated: -1 })
       .limit(10);
-    return Promise.all(workouts.map(async (x) => this.mapWorkoutToInfo(x)));
+
+    return await this.mapWorkouts(workouts);
   }
 
   /**
@@ -50,34 +51,9 @@ export class WorkoutService {
   public async getById(id: string): Promise<IWorkout> {
     const workout = await this.workoutModel.findById(id);
     if (workout) {
-      const exercises: IExerciseInfo[] = await Promise.all(
-        workout.exercises.map(async (x) => await this.getExerciseInfoById(x)),
-      );
-      return {
-        author: workout.author,
-        exercises: exercises,
-        title: workout.title,
-        updated: workout.updated,
-        _id: workout._id,
-      };
+      return (await this.mapWorkouts([workout]))[0];
     }
     return null;
-  }
-
-  /**
-   * Replaces exerciseId with full exercise info
-   * @param workout specific workout
-   */
-  private async mapWorkoutToInfo(workout: Workout): Promise<IWorkout> {
-    return {
-      _id: workout._id,
-      updated: workout.updated,
-      author: workout.author,
-      title: workout.title,
-      exercises: await Promise.all(
-        workout.exercises.map(async (x) => await this.getExerciseInfoById(x)),
-      ),
-    };
   }
 
   /**
@@ -87,16 +63,17 @@ export class WorkoutService {
    */
   public async createWorkout(
     user: IUser,
-    createWorkoutDTO: CreateWorkoutDTO,
-  ): Promise<void> {
+    dto: CreateWorkoutDTO,
+  ): Promise<IWorkout> {
+    dto = WorkoutFormValidator.validate(dto);
+
     const workout = await this.workoutModel.create({
+      ...dto,
       author: user._id,
-      exercises: createWorkoutDTO.exercises,
-      title: createWorkoutDTO.title,
       updated: new Date().getTime(),
     });
-    const info = await this.mapWorkoutToInfo(workout);
-    this.fhSocket.server.to(user._id).emit('workout', info);
+
+    return (await this.mapWorkouts([workout]))[0];
   }
 
   /**
@@ -108,24 +85,26 @@ export class WorkoutService {
   public async updateWorkout(
     user: IUser,
     id: string,
-    workoutDTO: CreateWorkoutDTO,
-  ): Promise<void> {
+    dto: CreateWorkoutDTO,
+  ): Promise<IWorkout> {
+    dto = WorkoutFormValidator.validate(dto);
+
     await this.workoutModel.updateOne(
       { author: user._id, _id: id },
       {
         $set: {
-          exercises: workoutDTO.exercises,
-          title: workoutDTO.title,
+          ...dto,
           updated: new Date().getTime(),
         },
       },
     );
+
     const workout = await this.workoutModel.findOne({
       _id: id,
       author: user._id,
     });
-    const info = await this.mapWorkoutToInfo(workout);
-    this.fhSocket.server.to(user._id).emit('workout', info);
+
+    return (await this.mapWorkouts([workout]))[0];
   }
 
   /**
@@ -134,8 +113,14 @@ export class WorkoutService {
    * @param id workoutId
    */
   public async deleteWorkout(user: IUser, id: string): Promise<void> {
-    this.fhSocket.server.to(user._id).emit('workout.remove', id);
+    const workout = await this.workoutModel.findOne({
+      _id: id,
+      author: user._id,
+    });
+    if (!workout) return;
+
     await this.workoutModel.deleteOne({ _id: id, author: user._id });
+
     for (let i = 0; i < 7; i++) {
       const object = {};
       object[i] = id;
@@ -146,19 +131,41 @@ export class WorkoutService {
     }
   }
 
-  /**
-   * Returns info of exercise with specific id
-   * @param id exerciseId
-   */
-  public async getExerciseInfoById(id: string): Promise<IExerciseInfo> {
-    const exercise: IExercise = await this.exerciseModel.findById(id);
-    return {
-      _id: exercise._id,
-      thumbnail: exercise.thumbnail,
-      title: exercise.title,
-      difficulty: exercise.difficulty,
-      type: exercise.distance ? 'distance' : exercise.sets ? 'gym' : 'time',
-      affectedMuscles: exercise.affectedMuscles,
+  private async mapWorkouts(workouts: Workout[]): Promise<IWorkout[]> {
+    const uniqueIds = [
+      ...new Set([].concat(...workouts.map((x) => x.exercises))),
+    ].filter((x) => x && isValidObjectId(x));
+
+    const exercises = await this.exerciseModel.find({
+      _id: { $in: uniqueIds },
+    });
+
+    const getExercise = (id: string): IExercise | null => {
+      return exercises.filter((x) => x._id === id)[0] || null;
     };
+
+    const getExerciseInfo = (ex: IExercise | null): IExerciseInfo | null => {
+      if (!ex) return null;
+      return {
+        affectedMuscles: ex.affectedMuscles,
+        difficulty: ex.difficulty,
+        thumbnail: ex.thumbnail,
+        title: ex.title,
+        type: ex.distance ? 'distance' : ex.sets ? 'gym' : 'time',
+        _id: ex._id,
+      };
+    };
+
+    return workouts.map((x) => {
+      return {
+        author: x.author,
+        exercises: x.exercises
+          .map((e) => getExerciseInfo(getExercise(e)))
+          .filter((x) => !!x),
+        title: x.title,
+        updated: x.updated,
+        _id: x._id,
+      };
+    });
   }
 }

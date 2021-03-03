@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Exercise, ExerciseSchema } from 'src/exercise/schemas/Exercise.schema';
-import { FHSocket } from 'src/FHSocket';
 import {
   Trainingplan,
   TrainingplanSchema,
@@ -18,7 +17,7 @@ import { WorkoutService } from './workout.service';
       { name: Exercise.name, schema: ExerciseSchema },
     ]),
   ],
-  providers: [WorkoutService, FHSocket],
+  providers: [WorkoutService],
   controllers: [WorkoutController],
 })
 export class WorkoutModule {}

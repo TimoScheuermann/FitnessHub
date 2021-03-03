@@ -12,11 +12,7 @@ export class FormValidator {
     return s;
   }
 
-  public static checkStringArray(
-    array: string[],
-
-    message: string,
-  ): string[] {
+  public static checkStringArray(array: string[], message: string): string[] {
     if (!array || array.length === 0) {
       this.throwEx(message);
     }
