@@ -141,7 +141,7 @@ export class WorkoutService {
     });
 
     const getExercise = (id: string): IExercise | null => {
-      return exercises.filter((x) => x._id === id)[0] || null;
+      return exercises.filter((x) => x._id == id)[0] || null;
     };
 
     const getExerciseInfo = (ex: IExercise | null): IExerciseInfo | null => {
