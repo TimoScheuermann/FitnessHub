@@ -9,13 +9,16 @@
       </tl-flow>
 
       <FHAppear>
-        <p v-if="!submitted || submitted.length === 0">
+        <p v-if="!submitted">
           Du hast noch kein eigenes Rezept veröffentlicht
         </p>
 
-        <FHCarousel v-else>
-          <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
-        </FHCarousel>
+          <div v-else>
+            <FHSearchBar v-model="query" />
+            <tl-grid arrangement="auto-fill" minWidth="200">
+              <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
+            </tl-grid> 
+          </div>        
       </FHAppear>
 
       <FHAppear>
@@ -41,21 +44,34 @@ import { RecipeManagement } from '@/utils/RecipeManagement';
 import FHAppear from '@/components/FHAppear.vue';
 import FHCarousel from '@/components/FHCarousel.vue';
 import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
+import FHSearchBar from '@/components/FHSearchBar.vue';
 
 @Component({
   components: {
     FHAppear,
     FHCarousel,
-    FHRecipePreview
+    FHRecipePreview,
+    FHSearchBar
   }
 })
 export default class Recipes extends Vue {
+  public query=""; 
   get liked(): IRecipe[] | null {
     return RecipeManagement.getLikedRecipes();
   }
 
   get submitted(): IRecipe[] | null {
-    return RecipeManagement.getCreated();
+    const submitted: IRecipe[] | null = RecipeManagement.getCreated();
+    if (!submitted) return null;
+    else if (this.query.length > 2) {
+      return submitted.filter(x =>
+        JSON.stringify(x)
+          .toLowerCase()
+          .includes(this.query.toLowerCase())
+      );
+    } else {
+      return submitted;
+    }
   }
 }
 </script>
@@ -63,5 +79,11 @@ export default class Recipes extends Vue {
 <style lang="scss" scoped>
 .view-recipes {
   padding-top: 0;
+
+.fh-search-bar {
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
 }
+
 </style>

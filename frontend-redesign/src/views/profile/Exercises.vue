@@ -22,7 +22,7 @@
       </tl-flow>
 
       <FHAppear>
-        <p v-if="!accepted || accepted.length === 0">
+        <p v-if="!accepted">
           Du hast noch keine eigene Übung veröffentlicht
         </p>
 
