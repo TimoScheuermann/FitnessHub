@@ -57,8 +57,8 @@ export class WorkoutController {
   async createWorkout(
     @FHUser() user: IUser,
     @Body() workout: CreateWorkoutDTO,
-  ): Promise<void> {
-    this.workoutService.createWorkout(user, workout);
+  ): Promise<IWorkout> {
+    return this.workoutService.createWorkout(user, workout);
   }
 
   /**
@@ -73,8 +73,8 @@ export class WorkoutController {
     @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() workout: CreateWorkoutDTO,
-  ): Promise<void> {
-    this.workoutService.updateWorkout(user, id, workout);
+  ): Promise<IWorkout> {
+    return this.workoutService.updateWorkout(user, id, workout);
   }
 
   /**
