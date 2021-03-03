@@ -12,9 +12,7 @@
         <img src="assets/team.svg" height="100" alt="" />
       </tl-flow>
       <p center>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis esse
-        consequuntur unde ad amet deleniti rem ex! Delectus voluptatum sit dolor
-        aperiam error similique, in vitae maiores, deserunt fugit et!
+        Füge Deine Freunde hinzu und lass Dich von Ihnen inspirieren und motivieren, indem Ihr Nachrichten, Trainingspläne, Rezepte und Erfahrungen austauscht.
       </p>
       <br />
 
