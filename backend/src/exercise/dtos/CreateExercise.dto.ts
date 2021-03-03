@@ -8,6 +8,7 @@ export class CreateExerciseDTO {
   warnings?: string[];
   steps?: string[];
   readonly possibleAtHome?: boolean;
+  readonly kneeFriendly?: boolean;
 
   // Variable, depending on exercise
   time?: number;

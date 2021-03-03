@@ -19,6 +19,7 @@ export interface IExercise {
   steps?: string[];
 
   possibleAtHome?: boolean;
+  kneeFriendly?: boolean;
 
   editedData?: CreateExerciseDTO;
 

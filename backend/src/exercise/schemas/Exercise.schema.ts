@@ -43,6 +43,9 @@ export class Exercise extends Document {
   possibleAtHome?: boolean;
 
   @Prop({ required: false })
+  kneeFriendly?: boolean;
+
+  @Prop({ required: false })
   editedData?: CreateExerciseDTO;
 
   @Prop({ required: false })
