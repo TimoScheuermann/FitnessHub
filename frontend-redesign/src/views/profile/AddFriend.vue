@@ -12,7 +12,9 @@
         <img src="assets/team.svg" height="100" alt="" />
       </tl-flow>
       <p center>
-        Füge Deine Freunde hinzu und lass Dich von Ihnen inspirieren und motivieren, indem Ihr Nachrichten, Trainingspläne, Rezepte und Erfahrungen austauscht.
+        Füge Deine Freunde hinzu und lass Dich von Ihnen inspirieren und
+        motivieren, indem Ihr Nachrichten, Trainingspläne, Rezepte und
+        Erfahrungen austauscht.
       </p>
       <br />
 

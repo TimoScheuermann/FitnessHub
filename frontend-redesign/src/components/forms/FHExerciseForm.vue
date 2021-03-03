@@ -295,8 +295,11 @@ export default class FHExeciseForm extends Vue {
       this.dto.possibleAtHome = (edited || ex).possibleAtHome;
       this.dto.time = (edited || ex).time;
       this.dto.distance = (edited || ex).distance;
-      this.dto.sets = edited ? edited.sets : this.mapMinMaxString(ex.sets);
-      this.dto.reps = edited ? edited.reps : this.mapMinMaxString(ex.reps);
+
+      this.dto.sets =
+        edited && edited.sets ? edited.sets : this.mapMinMaxString(ex.sets);
+      this.dto.reps =
+        edited && edited.reps ? edited.reps : this.mapMinMaxString(ex.reps);
     }
 
     if (!this.exercise) {
@@ -339,7 +342,7 @@ export default class FHExeciseForm extends Vue {
   }
 
   public mapMinMaxString(s?: string): { min: number; max: number } {
-    if (!s) return { min: 1, max: 4 };
+    if (!s) return { min: 0, max: 0 };
     if (s.includes('-')) {
       const split = s.split(' - ');
       return { min: +split[0], max: +split[1] };
