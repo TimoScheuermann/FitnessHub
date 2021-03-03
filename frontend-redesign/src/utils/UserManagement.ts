@@ -2,7 +2,13 @@ import router from '@/router';
 import store from '@/store';
 import backend from './backend';
 import { fhBotId } from './constants';
-import { IMessage, IPendingFriendship, IUser, IUserInfo } from './interfaces';
+import {
+  IMessage,
+  IPendingFriendship,
+  IUser,
+  IUserInfo,
+  IWorkout
+} from './interfaces';
 import { NotificationManagement } from './NotificationManagement';
 
 /**
@@ -252,5 +258,41 @@ export class UserManagement {
    */
   public static sendInvite(userId: string): void {
     backend.post('friends/invite/' + userId);
+  }
+
+  public static getWorkouts(): IWorkout[] | null {
+    return store.getters.workouts;
+  }
+
+  public static setWorkouts(workouts: IWorkout[]): void {
+    if (workouts) {
+      store.commit('workouts', workouts);
+    }
+  }
+
+  public static async loadWorkouts(): Promise<void> {
+    if (!this.getWorkouts() && this.getUser()) {
+      const { data } = await backend.get('workout');
+      this.setWorkouts(data);
+    }
+  }
+
+  public static addWorkout(workout: IWorkout): void {
+    let workouts = this.getWorkouts() || [];
+    let exists = false;
+    workouts = workouts.map(x => {
+      if (x._id === workout._id) {
+        exists = true;
+        return workout;
+      }
+      return x;
+    });
+    if (!exists) workouts.push(workout);
+    this.setWorkouts(workouts);
+  }
+
+  public static removeWorkout(id: string): void {
+    const workouts = this.getWorkouts() || [];
+    this.setWorkouts(workouts.filter(x => x._id !== id));
   }
 }

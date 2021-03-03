@@ -28,21 +28,6 @@
         />
       </tc-list>
 
-      <h4>Trainingsstatistik & co</h4>
-      <tc-list :dark="$store.getters.darkmode">
-        <tc-list-item
-          title="Workouts & Trainingsplan"
-          icon="heartbeat"
-          routeName="workouts"
-        />
-        <tc-list-item
-          title="Trainingsstatistik"
-          icon="chart-bar"
-          routeName="statistics"
-        />
-        <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
-      </tc-list>
-
       <h4>Management</h4>
       <tc-list :dark="$store.getters.darkmode">
         <tc-list-item
@@ -51,11 +36,28 @@
           routeName="recipes"
         />
         <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
+        <tc-list-item title="Workouts" icon="heartbeat" routeName="workouts" />
         <tc-list-item
           title="Einstellungen"
           icon="wrench"
           routeName="settings"
         />
+      </tc-list>
+
+      <h4>Training</h4>
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item
+          title="Trainingsplan"
+          icon="list"
+          routeName="trainingplan"
+        />
+
+        <tc-list-item
+          title="Trainingsstatistik"
+          icon="chart-bar"
+          routeName="statistics"
+        />
+        <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
       </tc-list>
 
       <div v-group.admin.moderator>

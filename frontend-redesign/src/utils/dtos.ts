@@ -64,6 +64,7 @@ export class CreateExerciseDTO {
   warnings!: string[]; // actually optional
   steps!: string[]; // actually optional
   possibleAtHome?: boolean;
+  kneeFriendly?: boolean;
 
   time?: number;
   distance?: string;

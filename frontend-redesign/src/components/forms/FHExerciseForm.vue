@@ -128,13 +128,26 @@
             :dark="$store.getters.darkmode"
           />
 
-          <div class="title" sub>Zuhause ausführbar</div>
-          <tc-checkbox
-            :dark="$store.getters.darkmode"
-            v-model="dto.possibleAtHome"
-            title="Homeworkout geeignet"
-            tfbackground="success"
-          />
+          <tl-grid minWidth="250" gap="0 20">
+            <div>
+              <div class="title" sub>Zuhause ausführbar</div>
+              <tc-checkbox
+                :dark="$store.getters.darkmode"
+                v-model="dto.possibleAtHome"
+                title="Homeworkout geeignet"
+                tfbackground="success"
+              />
+            </div>
+            <div>
+              <div class="title" sub>Kniefreundlich</div>
+              <tc-checkbox
+                :dark="$store.getters.darkmode"
+                v-model="dto.kneeFriendly"
+                title="Kniefreundlich"
+                tfbackground="success"
+              />
+            </div>
+          </tl-grid>
 
           <div class="title">Ausführungsschritte</div>
           <tc-table :dark="$store.getters.darkmode">
@@ -293,6 +306,7 @@ export default class FHExeciseForm extends Vue {
       this.dto.steps = (edited || ex).steps || [];
       this.dto.explanatoryVideo = (edited || ex).explanatoryVideo;
       this.dto.possibleAtHome = (edited || ex).possibleAtHome;
+      this.dto.kneeFriendly = (edited || ex).kneeFriendly;
       this.dto.time = (edited || ex).time;
       this.dto.distance = (edited || ex).distance;
 

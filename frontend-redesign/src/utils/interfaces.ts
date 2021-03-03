@@ -144,6 +144,7 @@ export interface IExercise {
   readonly warnings?: string[];
   readonly steps?: string[];
   readonly possibleAtHome?: boolean;
+  readonly kneeFriendly?: boolean;
   readonly editedData?: CreateExerciseDTO;
   readonly time?: number;
   readonly distance?: string;

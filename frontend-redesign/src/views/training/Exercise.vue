@@ -57,6 +57,22 @@
           </tl-flow>
         </tl-flow>
 
+        <template v-if="exercise.kneeFriendly || exercise.possibleAtHome">
+          <FHVarList>
+            <FHVarListItem
+              optional
+              v-if="exercise.kneeFriendly"
+              title="Kniefreundlich"
+            />
+            <FHVarListItem
+              optional
+              v-if="exercise.possibleAtHome"
+              title="Homeworkout geeignet"
+            />
+          </FHVarList>
+          <br />
+        </template>
+
         <FHHeading title="Muskeln" subtitle="betroffene" />
         <FHVarList>
           <FHVarListItem
@@ -69,7 +85,7 @@
 
         <template v-if="exercise.warnings && exercise.warnings.length > 0">
           <br />
-          <FHHeading title="Hinweise" subtitle="authoren" />
+          <FHHeading title="Hinweise" subtitle="autoren" />
           <tc-quote
             :dark="$store.getters.darkmode"
             v-for="(w, i) in exercise.warnings"
@@ -184,18 +200,23 @@ export default class Exercise extends Vue {
         padding: 0 10px;
         .title {
           text-transform: uppercase;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: bold;
-          opacity: 0.75;
+          opacity: 0.5;
         }
         i {
-          margin: 7.5px 0;
-          font-size: 2em;
+          margin: 10px 0;
+          font-size: 1.5em;
         }
         .value {
-          font-weight: 500;
+          font-weight: bold;
         }
       }
+    }
+
+    .fh-var-list-item[optional] {
+      background: $success;
+      color: #fff;
     }
 
     .exercise-steps {

@@ -31,6 +31,8 @@ const store = new Vuex.Store({
     variables: null,
 
     latestWorkouts: null,
+    workouts: null,
+
     latestExercises: null,
     trendingExercises: null,
     createdExercises: null,
@@ -79,6 +81,10 @@ const store = new Vuex.Store({
     latestWorkouts: (state: any): IWorkout[] | null => {
       return state.latestWorkouts;
     },
+    workouts: (state: any): IWorkout[] | null => {
+      return state.workouts;
+    },
+
     trendingExercises: (state: any): IExercise[] | null => {
       return state.trendingExercises;
     },
@@ -147,6 +153,7 @@ const store = new Vuex.Store({
       UserManagement.loadMessages();
       UserManagement.loadFriends();
       UserManagement.loadFriendRequests();
+      UserManagement.loadWorkouts();
       RecipeManagement.loadLiked();
       RecipeManagement.loadCreated();
       ExerciseManagement.loadSubmissions();
@@ -172,6 +179,10 @@ const store = new Vuex.Store({
     latestWorkouts(state: any, workouts: IWorkout[]) {
       state.latestWorkouts = workouts;
     },
+    workouts(state: any, workouts: IWorkout[]) {
+      state.workouts = workouts;
+    },
+
     trendingExercises(state: any, exercises: IExercise[]) {
       state.trendingExercises = exercises;
     },

@@ -26,6 +26,14 @@
           title="Details"
           @click="handleClick"
         />
+        <tc-action-item
+          v-if="isAuthor"
+          alarm
+          title="Bearbeiten"
+          icon="pencil"
+          @click="updateWorkout"
+        />
+
         <tc-action-item success icon="share" title="Teilen" />
       </tc-action>
     </tl-flow>
@@ -35,16 +43,28 @@
 <script lang="ts">
 import { openFullscreen } from '@/utils/functions';
 import { IExerciseInfo, IWorkout } from '@/utils/interfaces';
+import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHWorkoutPreview extends Vue {
   @Prop() workout!: IWorkout;
 
+  get isAuthor(): boolean {
+    if (!this.workout) return false;
+    return this.workout.author === UserManagement.getUserID();
+  }
+
   public handleClick(e: Event) {
     this.$emit('click', e);
     if (this.workout) {
       openFullscreen('workout-details', { id: this.workout._id });
+    }
+  }
+
+  public updateWorkout() {
+    if (this.workout) {
+      openFullscreen('update-workout', { id: this.workout._id });
     }
   }
 

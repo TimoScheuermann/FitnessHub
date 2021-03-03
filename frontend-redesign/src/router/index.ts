@@ -55,6 +55,17 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/training/workout/:id/update',
+      name: 'update-workout',
+      component: () => import('@/views/profile/workout/UpdateWorkout.vue'),
+      meta: {
+        title: prefix + 'Workout bearbeiten',
+        fullscreen: true,
+        needsSignIn: true,
+        fsFallback: 'workouts'
+      }
+    },
+    {
       path: '/nutrition/recipe/:id',
       name: 'recipe-details',
       component: () => import('@/views/nutrition/Recipe.vue'),
@@ -105,6 +116,17 @@ const router = new VueRouter({
         needsSignIn: true,
         fullscreen: true,
         fsFallback: 'friends'
+      }
+    },
+    {
+      path: '/profile/workouts/create',
+      name: 'create-workout',
+      component: () => import('@/views/profile/workout/CreateWorkout.vue'),
+      meta: {
+        title: prefix + 'Workout erstellen',
+        needsSignIn: true,
+        fullscreen: true,
+        fsFallback: 'workouts'
       }
     },
 
@@ -204,6 +226,37 @@ const router = new VueRouter({
             title: prefix + 'Freunde',
             needsSignIn: true,
             hero: 'Freunde'
+          }
+        },
+
+        {
+          path: 'workouts',
+          name: 'workouts',
+          component: () => import('@/views/profile/workout/Workouts.vue'),
+          meta: {
+            title: prefix + 'Workouts',
+            needsSignIn: true,
+            hero: 'Workouts'
+          }
+        },
+        {
+          path: 'trainingplan',
+          name: 'trainingplan',
+          component: () => import('@/views/profile/Trainingplan.vue'),
+          meta: {
+            title: prefix + 'Trainingsplan',
+            needsSignIn: true,
+            hero: 'Trainingsplan'
+          }
+        },
+        {
+          path: 'achievements',
+          name: 'achievements',
+          component: () => import('@/views/profile/Achievements.vue'),
+          meta: {
+            title: prefix + 'Erfolge',
+            needsSignIn: true,
+            hero: 'Erfolge'
           }
         },
         {
