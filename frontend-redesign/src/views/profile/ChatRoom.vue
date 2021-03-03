@@ -9,7 +9,7 @@
           <tc-avatar size="tiny" :src="friend.avatar" />
           <span>{{ friend.username }}</span>
         </tl-flow>
-        <tl-flow horizontal="end">
+        <tl-flow horizontal="end" v-if="!isBotPartner">
           <tc-action :dark="$store.getters.darkmode">
             <tc-action-item title="Training planen" icon="calendar-alt" />
             <tc-action-item title="Herausfordern" icon="tropy" />
@@ -29,7 +29,7 @@
       <p>Freund wird geladen...</p>
     </tl-flow>
 
-    <div class="input-wrapper" v-if="!this.isBotPartner">
+    <div class="input-wrapper" v-if="!isBotPartner">
       <form @submit.prevent="sendMessage">
         <textarea
           v-model="newMessage"
@@ -91,6 +91,7 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class ChatRoom extends Vue {
   public newMessage = '';
+  public fhBotId = fhBotId;
 
   async mounted() {
     if (!this.friend) {

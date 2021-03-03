@@ -17,6 +17,7 @@
           :key="m._id"
           :avatar="m.avatar"
           :title="m.username"
+          :subtitle="getSubtitle(m)"
         >
           <tc-button tfbackground="alarm" name="pardon" @click="pardon(m)" />
         </FHListItem>
@@ -74,9 +75,10 @@
 import FHList from '@/components/list/FHList.vue';
 import FHListItem from '@/components/list/FHListItem.vue';
 import backend from '@/utils/backend';
-import { aMonth } from '@/utils/constants';
 import { IUserInfo } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
+
+type IBanInfo = IUserInfo & { suspended: number; suspendedBy: string };
 
 @Component({
   components: {
@@ -85,14 +87,15 @@ import { Vue, Component } from 'vue-property-decorator';
   }
 })
 export default class SuspendUser extends Vue {
-  public suspensions: IUserInfo[] | null = null;
+  public suspensions: IBanInfo[] | null = null;
   public until = '';
+  public users: IUserInfo[] = [];
 
   mounted() {
     this.loadSuspensions();
 
-    const date = new Date(new Date().getTime() + aMonth);
-    const month = ('0' + date.getMonth()).slice(-2);
+    const date = new Date();
+    const month = ('0' + (((date.getMonth() + 1) % 12) + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     this.until = date.getFullYear() + '-' + month + '-' + day;
   }
@@ -105,6 +108,32 @@ export default class SuspendUser extends Vue {
 
   public async loadSuspensions(): Promise<void> {
     this.suspensions = (await backend.get('user/suspended')).data;
+
+    if (this.suspensions) {
+      const ids = [...new Set(this.suspensions.map(x => x.suspendedBy))];
+      this.users = [];
+      ids.forEach(x => {
+        backend.get('user/' + x).then(res => this.users.push(res.data));
+      });
+    }
+  }
+
+  public getSubtitle(item: IBanInfo): string | null {
+    const username = this.getUserName(item.suspendedBy);
+    const date = this.getBanDate(item.suspended);
+    let returnString = '';
+    if (username) returnString = 'von ' + username + ' ';
+    return returnString + 'bis ' + date;
+  }
+
+  public getUserName(id: string): string | null {
+    const user = this.users.filter(x => x._id === id)[0];
+    if (!user) return null;
+    return user.username;
+  }
+
+  public getBanDate(timestamp: number): string {
+    return new Date(timestamp).toLocaleDateString();
   }
 
   public async pardon(user: IUserInfo): Promise<void> {
