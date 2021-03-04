@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { addExerciseToWorkout } from '@/utils/functions';
+import { ExerciseManagement } from '@/utils/ExerciseManagement';
 import { IExerciseInfo } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
@@ -42,7 +42,7 @@ export default class FHWorkoutExercise extends Vue {
 
   public addToWO(): void {
     if (this.exercise) {
-      addExerciseToWorkout(this.exercise._id);
+      ExerciseManagement.addToWorkout(this.exercise);
     }
   }
 }

@@ -1,6 +1,7 @@
 import store from '@/store';
 import backend from './backend';
-import { IExercise } from './interfaces';
+import { openFullscreen } from './functions';
+import { IExercise, IExerciseInfo } from './interfaces';
 import { UserManagement } from './UserManagement';
 
 export class ExerciseManagement {
@@ -96,5 +97,13 @@ export class ExerciseManagement {
   public static removeSubmission(id: string): void {
     const exercises = this.getSubmissions() || [];
     this.setSubmissions(exercises.filter(x => x._id !== id));
+  }
+
+  public static addToWorkout(ex: IExercise | IExerciseInfo): void {
+    if (!store.getters.valid) {
+      openFullscreen('login');
+      return;
+    }
+    store.commit('addToWorkout', ex);
   }
 }

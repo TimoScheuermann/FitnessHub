@@ -2,6 +2,7 @@
 import { socket } from '@/main';
 import { getUserFromJWT } from '@/utils/auth';
 import { ExerciseManagement } from '@/utils/ExerciseManagement';
+import { openFullscreen } from '@/utils/functions';
 import {
   IExercise,
   IHealth,
@@ -32,6 +33,7 @@ const store = new Vuex.Store({
 
     latestWorkouts: null,
     workouts: null,
+    addToWorkout: null,
 
     latestExercises: null,
     trendingExercises: null,
@@ -83,6 +85,9 @@ const store = new Vuex.Store({
     },
     workouts: (state: any): IWorkout[] | null => {
       return state.workouts;
+    },
+    addToWorkout: (state: any): IExercise | null => {
+      return state.addToWorkout;
     },
 
     trendingExercises: (state: any): IExercise[] | null => {
@@ -181,6 +186,12 @@ const store = new Vuex.Store({
     },
     workouts(state: any, workouts: IWorkout[]) {
       state.workouts = workouts;
+    },
+    addToWorkout(state: any, exercise: IExercise) {
+      state.addToWorkout = exercise;
+      if (exercise) {
+        openFullscreen('add-to-workout');
+      }
     },
 
     trendingExercises(state: any, exercises: IExercise[]) {

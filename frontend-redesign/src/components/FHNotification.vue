@@ -101,7 +101,7 @@ export default class FHNotification extends Vue {
     max-width: 500px;
     margin-top: calc(20px + env(safe-area-inset-top));
 
-    border-radius: 50px;
+    border-radius: 20px;
     user-select: none;
 
     @include backdrop-blur($color_dark);

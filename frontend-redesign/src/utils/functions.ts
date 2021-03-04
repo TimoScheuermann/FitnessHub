@@ -146,14 +146,6 @@ export function closeFullscreen(fallback: string, replaceQuery?: Query): void {
   }
 }
 
-export async function addExerciseToWorkout(id: string): Promise<void> {
-  if (!store.getters.valid) {
-    openFullscreen('login');
-    return;
-  }
-  console.log(id);
-}
-
 export function extractInfoFromUrl(
   url: string
 ): { icon: string; name: string } | null {

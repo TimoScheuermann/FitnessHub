@@ -20,7 +20,7 @@
       </div>
       <tc-action :dark="$store.getters.darkmode">
         <template v-if="exercise.reviewed">
-          <tc-action-item icon="plus" title="Workout" @click="addToWO" />
+          <tc-action-item icon="plus" title="Workout" @click="addToWo" />
           <tc-action-item icon="list" title="Liste" />
           <tc-action-item
             icon="i-circle-filled"
@@ -58,7 +58,8 @@
 
 <script lang="ts">
 import backend from '@/utils/backend';
-import { addExerciseToWorkout, openFullscreen } from '@/utils/functions';
+import { ExerciseManagement } from '@/utils/ExerciseManagement';
+import { openFullscreen } from '@/utils/functions';
 import { IExercise } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
@@ -89,9 +90,9 @@ export default class FHExercisePreview extends Vue {
     }
   }
 
-  public addToWO(): void {
+  public addToWo(): void {
     if (this.exercise) {
-      addExerciseToWorkout(this.exercise._id);
+      ExerciseManagement.addToWorkout(this.exercise);
     }
   }
 

@@ -124,7 +124,8 @@ import FHSwipeable from '@/components/FHSwipeable.vue';
 import FHVarList from '@/components/variable-list/FHVarList.vue';
 import FHVarListItem from '@/components/variable-list/FHVarListItem.vue';
 import backend from '@/utils/backend';
-import { addExerciseToWorkout, closeFullscreen } from '@/utils/functions';
+import { ExerciseManagement } from '@/utils/ExerciseManagement';
+import { closeFullscreen } from '@/utils/functions';
 import { IExercise } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component } from 'vue-property-decorator';
@@ -166,7 +167,7 @@ export default class Exercise extends Vue {
 
   public addToWorkout(): void {
     if (this.exercise) {
-      addExerciseToWorkout(this.exercise._id);
+      ExerciseManagement.addToWorkout(this.exercise);
     }
   }
 }

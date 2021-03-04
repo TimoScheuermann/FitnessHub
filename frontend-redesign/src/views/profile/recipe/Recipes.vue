@@ -13,12 +13,12 @@
           Du hast noch kein eigenes Rezept veröffentlicht
         </p>
 
-          <div v-else>
-            <FHSearchBar v-model="query" />
-            <tl-grid arrangement="auto-fill" minWidth="200">
-              <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
-            </tl-grid> 
-          </div>        
+        <div v-else>
+          <FHSearchBar v-model="query" />
+          <tl-grid arrangement="auto-fill" minWidth="200">
+            <FHRecipePreview v-for="s in submitted" :key="s._id" :recipe="s" />
+          </tl-grid>
+        </div>
       </FHAppear>
 
       <FHAppear>
@@ -55,7 +55,7 @@ import FHSearchBar from '@/components/FHSearchBar.vue';
   }
 })
 export default class Recipes extends Vue {
-  public query=""; 
+  public query = '';
   get liked(): IRecipe[] | null {
     return RecipeManagement.getLikedRecipes();
   }
@@ -80,10 +80,9 @@ export default class Recipes extends Vue {
 .view-recipes {
   padding-top: 0;
 
-.fh-search-bar {
+  .fh-search-bar {
     margin-top: -10px;
     margin-bottom: 10px;
   }
 }
-
 </style>

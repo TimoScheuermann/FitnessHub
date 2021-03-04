@@ -1,6 +1,8 @@
 <template>
   <div class="fh-list">
-    <slot />
+    <transition-group name="slide">
+      <slot />
+    </transition-group>
   </div>
 </template>
 
@@ -20,5 +22,18 @@ export default class FHList extends Vue {}
   // @media #{$isDark} {
   //   background: $paragraph_dark;
   // }
+}
+
+.slide-move,
+.slide-leave-active,
+.slide-enter-active {
+  transition: 1s;
+}
+.slide-enter {
+  transform: translate(0, 100%);
+}
+.slide-leave-to {
+  transform: translate(0, -100%);
+  opacity: 0;
 }
 </style>

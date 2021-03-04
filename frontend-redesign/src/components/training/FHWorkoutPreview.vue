@@ -33,6 +33,13 @@
           icon="pencil"
           @click="updateWorkout"
         />
+        <tc-action-item
+          v-if="isAuthor"
+          error
+          title="Löschen"
+          icon="trashcan-alt"
+          @click="deleteWorkout"
+        />
 
         <tc-action-item success icon="share" title="Teilen" />
       </tc-action>
@@ -41,6 +48,7 @@
 </template>
 
 <script lang="ts">
+import backend from '@/utils/backend';
 import { openFullscreen } from '@/utils/functions';
 import { IExerciseInfo, IWorkout } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
@@ -65,6 +73,13 @@ export default class FHWorkoutPreview extends Vue {
   public updateWorkout() {
     if (this.workout) {
       openFullscreen('update-workout', { id: this.workout._id });
+    }
+  }
+
+  public deleteWorkout() {
+    if (this.workout) {
+      backend.delete('workout/' + this.workout._id);
+      UserManagement.removeWorkout(this.workout._id);
     }
   }
 

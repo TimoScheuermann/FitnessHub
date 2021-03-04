@@ -264,6 +264,10 @@ export class UserManagement {
     return store.getters.workouts;
   }
 
+  public static getWorkout(id: string): IWorkout | null {
+    return (this.getWorkouts() || []).filter(x => x._id == id)[0] || null;
+  }
+
   public static setWorkouts(workouts: IWorkout[]): void {
     if (workouts) {
       store.commit('workouts', workouts);

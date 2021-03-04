@@ -1,3 +1,18 @@
+import Login from '@/views/login/Login.vue';
+import Recipe from '@/views/nutrition/Recipe.vue';
+import SearchRecipe from '@/views/nutrition/SearchRecipe.vue';
+import AddFriend from '@/views/profile/AddFriend.vue';
+import ChatRoom from '@/views/profile/ChatRoom.vue';
+import UpdateExercise from '@/views/profile/exercise/UpdateExercise.vue';
+import ExerciseSubmission from '@/views/profile/management/ExerciseSubmission.vue';
+import UserSearch from '@/views/profile/management/UserSearch.vue';
+import UpdateRecipe from '@/views/profile/recipe/UpdateRecipe.vue';
+import AddToWorkout from '@/views/profile/workout/AddToWorkout.vue';
+import CreateWorkout from '@/views/profile/workout/CreateWorkout.vue';
+import UpdateWorkout from '@/views/profile/workout/UpdateWorkout.vue';
+import Exercise from '@/views/training/Exercise.vue';
+import SearchExercise from '@/views/training/SearchExercise.vue';
+import Workout from '@/views/training/Workout.vue';
 import Vue from 'vue';
 import VueRouter, { Route } from 'vue-router';
 
@@ -17,7 +32,7 @@ const router = new VueRouter({
     {
       path: '/training/search',
       name: 'search-exercise',
-      component: () => import('@/views/training/SearchExercise.vue'),
+      component: SearchExercise,
       meta: {
         title: prefix + 'Search',
         fullscreen: true,
@@ -27,7 +42,7 @@ const router = new VueRouter({
     {
       path: '/nutrition/search',
       name: 'search-recipe',
-      component: () => import('@/views/nutrition/SearchRecipe.vue'),
+      component: SearchRecipe,
       meta: {
         title: prefix + 'Search',
         fullscreen: true,
@@ -37,7 +52,7 @@ const router = new VueRouter({
     {
       path: '/training/exercise/:id',
       name: 'exercise-details',
-      component: () => import('@/views/training/Exercise.vue'),
+      component: Exercise,
       meta: {
         title: prefix + 'Übung',
         fullscreen: true,
@@ -47,7 +62,7 @@ const router = new VueRouter({
     {
       path: '/training/workout/:id',
       name: 'workout-details',
-      component: () => import('@/views/training/Workout.vue'),
+      component: Workout,
       meta: {
         title: prefix + 'Workout',
         fullscreen: true,
@@ -57,7 +72,7 @@ const router = new VueRouter({
     {
       path: '/training/workout/:id/update',
       name: 'update-workout',
-      component: () => import('@/views/profile/workout/UpdateWorkout.vue'),
+      component: UpdateWorkout,
       meta: {
         title: prefix + 'Workout bearbeiten',
         fullscreen: true,
@@ -68,7 +83,7 @@ const router = new VueRouter({
     {
       path: '/nutrition/recipe/:id',
       name: 'recipe-details',
-      component: () => import('@/views/nutrition/Recipe.vue'),
+      component: Recipe,
       meta: {
         title: prefix + 'Rezept',
         fullscreen: true,
@@ -78,7 +93,7 @@ const router = new VueRouter({
     {
       path: '/nutrition/recipe/:id/update',
       name: 'update-recipe',
-      component: () => import('@/views/profile/recipe/UpdateRecipe.vue'),
+      component: UpdateRecipe,
       meta: {
         title: prefix + 'Rezept anpassen',
         needsSignIn: true,
@@ -88,7 +103,7 @@ const router = new VueRouter({
     {
       path: '/training/exercise/:id/update',
       name: 'update-exercise',
-      component: () => import('@/views/profile/exercise/UpdateExercise.vue'),
+      component: UpdateExercise,
       meta: {
         title: prefix + 'Übung anpassen',
         needsSignIn: true,
@@ -99,7 +114,7 @@ const router = new VueRouter({
     {
       path: '/profile/messages/:friendId',
       name: 'chatroom',
-      component: () => import('@/views/profile/ChatRoom.vue'),
+      component: ChatRoom,
       meta: {
         title: prefix + 'ChatRoom',
         needsSignIn: true,
@@ -110,7 +125,7 @@ const router = new VueRouter({
     {
       path: '/profile/friends/add',
       name: 'add-friend',
-      component: () => import('@/views/profile/AddFriend.vue'),
+      component: AddFriend,
       meta: {
         title: prefix + 'Freund hinzufügen',
         needsSignIn: true,
@@ -121,7 +136,7 @@ const router = new VueRouter({
     {
       path: '/profile/workouts/create',
       name: 'create-workout',
-      component: () => import('@/views/profile/workout/CreateWorkout.vue'),
+      component: CreateWorkout,
       meta: {
         title: prefix + 'Workout erstellen',
         needsSignIn: true,
@@ -133,8 +148,7 @@ const router = new VueRouter({
     {
       path: '/profile/management/submissions/:id',
       name: 'exercise-submission',
-      component: () =>
-        import('@/views/profile/management/ExerciseSubmission.vue'),
+      component: ExerciseSubmission,
       meta: {
         title: prefix + 'Eingereichte Übung',
         needsSignIn: true,
@@ -147,7 +161,7 @@ const router = new VueRouter({
     {
       path: '/profile/management/user-search',
       name: 'mgmt-user-search',
-      component: () => import('@/views/profile/management/UserSearch.vue'),
+      component: UserSearch,
       meta: {
         title: prefix + 'Nutzer finden',
         needsSignIn: true,
@@ -159,7 +173,7 @@ const router = new VueRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/login/Login.vue'),
+      component: Login,
       meta: {
         title: prefix + 'Login',
         fullscreen: true,
@@ -272,7 +286,7 @@ const router = new VueRouter({
         {
           path: 'recipes',
           name: 'recipes',
-          component: () => import('@/views/profile/Recipes.vue'),
+          component: () => import('@/views/profile/recipe/Recipes.vue'),
           meta: {
             title: prefix + 'Rezepte',
             needsSignIn: true,
@@ -294,7 +308,7 @@ const router = new VueRouter({
         {
           path: 'exercises',
           name: 'exercises',
-          component: () => import('@/views/profile/Exercises.vue'),
+          component: () => import('@/views/profile/exercise/Exercises.vue'),
           meta: {
             title: prefix + 'Übungen',
             needsSignIn: true,
@@ -479,6 +493,17 @@ const router = new VueRouter({
         },
         { path: '*', redirect: { name: 'home' } }
       ]
+    },
+    {
+      path: '',
+      name: 'add-to-workout',
+      component: AddToWorkout,
+      meta: {
+        title: prefix + 'Übung hinzufügen',
+        fullscreen: true,
+        needsSignIn: true,
+        fsFallback: 'training'
+      }
     },
     { path: '*', redirect: { name: 'home' } }
   ]
