@@ -1,5 +1,5 @@
 <template>
-  <div class="fh-training-plan" max-width>
+  <div class="fh-training-plan" v-if="$store.getters.valid" max-width>
     <br />
     <FHHeading title="Trainingsplan" subtitle="Dein persönlicher" />
     <div class="day-tiles">
@@ -14,8 +14,14 @@
       >
         <div class="day-name">{{ dayNames[i].substring(0, 2) }}</div>
         <div class="day-date">{{ getDateInXDays(index) }}</div>
-        <i class="ti-dot" v-if="i % 3 === 0" />
+        <i class="ti-dot" v-if="hasExercises(i)" />
       </div>
+    </div>
+
+    <div class="day-wrapper">
+      <transition name="fade">
+        <FHTrainingplanDay :key="selected" :daynumber="selected" />
+      </transition>
     </div>
   </div>
 </template>
@@ -23,11 +29,16 @@
 <script lang="ts">
 import { aDay, days } from '@/utils/constants';
 import { Vue, Component } from 'vue-property-decorator';
+import FHAppear from '../FHAppear.vue';
+import FHTrainingplanDay from './FHTrainingplanDay.vue';
 import FHHeading from '../FHHeading.vue';
+import { UserManagement } from '@/utils/UserManagement';
 
 @Component({
   components: {
-    FHHeading
+    FHHeading,
+    FHAppear,
+    FHTrainingplanDay
   }
 })
 export default class FHTrainingPlan extends Vue {
@@ -41,6 +52,17 @@ export default class FHTrainingPlan extends Vue {
       days.push((today + i) % 7);
     }
     return days;
+  }
+
+  public hasExercises(day: number): boolean {
+    const plan = UserManagement.getTrainingplan();
+    if (!plan) return false;
+    for (const [key, value] of Object.entries(plan)) {
+      if (new String(day) == key) {
+        if (value.exercises.length > 0) return true;
+      }
+    }
+    return false;
   }
 
   getDateInXDays(days: number): number {
@@ -85,5 +107,28 @@ export default class FHTrainingPlan extends Vue {
       }
     }
   }
+
+  .day-wrapper {
+    margin-top: 10px;
+    margin-bottom: -20px;
+    position: relative;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+.fade-leave-active {
+  // z-index: -1;
+  position: absolute;
+}
+.fade-enter {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
 }
 </style>

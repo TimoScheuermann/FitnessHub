@@ -28,24 +28,10 @@
         />
       </tc-list>
 
-      <h4>Management</h4>
-      <tc-list :dark="$store.getters.darkmode">
-        <tc-list-item
-          title="Rezepte"
-          icon="book-cook-filled"
-          routeName="recipes"
-        />
-        <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
-        <tc-list-item title="Workouts" icon="heartbeat" routeName="workouts" />
-        <tc-list-item
-          title="Einstellungen"
-          icon="wrench"
-          routeName="settings"
-        />
-      </tc-list>
-
       <h4>Training</h4>
       <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item title="Workouts" icon="heartbeat" routeName="workouts" />
+
         <tc-list-item
           title="Trainingsplan"
           icon="list"
@@ -58,6 +44,21 @@
           routeName="statistics"
         />
         <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
+      </tc-list>
+
+      <h4>Management</h4>
+      <tc-list :dark="$store.getters.darkmode">
+        <tc-list-item
+          title="Rezepte"
+          icon="book-cook-filled"
+          routeName="recipes"
+        />
+        <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
+        <tc-list-item
+          title="Einstellungen"
+          icon="wrench"
+          routeName="settings"
+        />
       </tc-list>
 
       <div v-group.admin.moderator>
@@ -134,6 +135,7 @@ export default class Profile extends Vue {
 
 <style lang="scss" scoped>
 .view-profile {
+  padding-top: 0;
   h4 {
     margin-bottom: 4px;
     margin-left: 5px;

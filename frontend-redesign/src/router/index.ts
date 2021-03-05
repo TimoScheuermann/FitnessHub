@@ -7,6 +7,7 @@ import UpdateExercise from '@/views/profile/exercise/UpdateExercise.vue';
 import ExerciseSubmission from '@/views/profile/management/ExerciseSubmission.vue';
 import UserSearch from '@/views/profile/management/UserSearch.vue';
 import UpdateRecipe from '@/views/profile/recipe/UpdateRecipe.vue';
+import UpdateTrainingplan from '@/views/profile/trainingplan/UpdateTrainingplan.vue';
 import AddToWorkout from '@/views/profile/workout/AddToWorkout.vue';
 import CreateWorkout from '@/views/profile/workout/CreateWorkout.vue';
 import UpdateWorkout from '@/views/profile/workout/UpdateWorkout.vue';
@@ -144,6 +145,17 @@ const router = new VueRouter({
         fsFallback: 'workouts'
       }
     },
+    {
+      path: '/profile/trainingplan/update/:day',
+      name: 'update-trainingplan',
+      component: UpdateTrainingplan,
+      meta: {
+        title: prefix + 'Trainingsplan ändern',
+        needsSignIn: true,
+        fullscreen: true,
+        fsFallback: 'trainingplan'
+      }
+    },
 
     {
       path: '/profile/management/submissions/:id',
@@ -256,7 +268,8 @@ const router = new VueRouter({
         {
           path: 'trainingplan',
           name: 'trainingplan',
-          component: () => import('@/views/profile/Trainingplan.vue'),
+          component: () =>
+            import('@/views/profile/trainingplan/Trainingplan.vue'),
           meta: {
             title: prefix + 'Trainingsplan',
             needsSignIn: true,

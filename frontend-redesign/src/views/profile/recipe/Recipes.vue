@@ -9,7 +9,7 @@
       </tl-flow>
 
       <FHAppear>
-        <p v-if="!submitted">
+        <p v-if="!submitted || (submitted.length === 0 && query.length === 0)">
           Du hast noch kein eigenes Rezept veröffentlicht
         </p>
 

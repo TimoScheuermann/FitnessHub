@@ -9,6 +9,7 @@ import {
   IMessage,
   IPendingFriendship,
   IRecipe,
+  ITrainingplanFull,
   IUser,
   IUserInfo,
   IVariable,
@@ -50,6 +51,7 @@ const store = new Vuex.Store({
     friends: null,
     friendRequests: null,
 
+    trainingplan: null,
     trainingStats: null,
     weight: null,
     water: null,
@@ -129,6 +131,9 @@ const store = new Vuex.Store({
       return state.friendRequests;
     },
 
+    trainingplan: (state: any): ITrainingplanFull | null => {
+      return state.trainingplan;
+    },
     trainingStats: (state: any): number[][] | null => {
       return state.trainingStats;
     },
@@ -167,6 +172,7 @@ const store = new Vuex.Store({
       TrainingStatistics.loadWater();
       TrainingStatistics.loadHeights();
       TrainingStatistics.loadWeights();
+      UserManagement.loadTrainingplan();
     },
     isDesktop(state: any, isDesktop: boolean) {
       state.isDesktop = isDesktop;
@@ -233,6 +239,9 @@ const store = new Vuex.Store({
       state.friendRequests = friendRequests;
     },
 
+    trainingplan(state: any, trainingplan: ITrainingplanFull) {
+      state.trainingplan = trainingplan;
+    },
     trainingStats(state: any, trainingStats: number[][]) {
       state.trainingStats = trainingStats;
     },

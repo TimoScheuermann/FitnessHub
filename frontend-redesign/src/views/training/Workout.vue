@@ -20,14 +20,7 @@
         </tl-flow>
 
         <div class="hero-container" v-if="workout">
-          <div class="media" v-if="thumbnails" :thumbnails="thumbnails.length">
-            <div
-              class="exercise-thumbnail"
-              v-for="(t, i) in thumbnails"
-              :key="i"
-              :style="`background-image: url('${t}')`"
-            />
-          </div>
+          <FHWorkoutThumbnail :exercises="workout.exercises" />
           <div class="workout-information" center>
             <template v-if="author">
               <tc-avatar :src="author.avatar" size="tiny" />
@@ -40,7 +33,12 @@
     </FHSwipeable>
     <div content v-if="workout">
       <tl-grid minWidth="150" gap="10" max-width>
-        <FHButton :frosted="true" icon="play" title="Start" />
+        <FHButton
+          :frosted="true"
+          icon="play"
+          title="Start"
+          @click="startWorkout"
+        />
         <FHButton :frosted="true" icon="cloud-dowbload" title="Download" />
       </tl-grid>
       <h1 center>{{ workout.title }}</h1>
@@ -61,9 +59,11 @@ import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
 import FHHeader from '@/components/FHHeader.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
 import FHWorkoutExercise from '@/components/training/FHWorkoutExercise.vue';
+import FHWorkoutThumbnail from '@/components/training/FHWorkoutThumbnail.vue';
 import backend from '@/utils/backend';
 import { closeFullscreen, formatTimeForMessage } from '@/utils/functions';
-import { IExerciseInfo, IUserInfo, IWorkout } from '@/utils/interfaces';
+import { IUserInfo, IWorkout } from '@/utils/interfaces';
+import { WorkoutManagement } from '@/utils/WorkoutManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -72,7 +72,8 @@ import { Vue, Component } from 'vue-property-decorator';
     FHSwipeable,
     FHButton,
     FHWorkoutExercise,
-    FHHeader
+    FHHeader,
+    FHWorkoutThumbnail
   }
 })
 export default class Exercise extends Vue {
@@ -96,25 +97,15 @@ export default class Exercise extends Vue {
       });
   }
 
-  get thumbnails(): string[] | null {
-    if (!this.workout || !this.workout.exercises) {
-      return null;
-    }
-
-    const { exercises } = this.workout;
-    const length = exercises.length;
-    if (length === 0) return null;
-
-    let selection: IExerciseInfo[] = [];
-    if (length < 4) selection = exercises.slice(0, 1);
-    else if (length < 9) selection = exercises.slice(0, 4);
-    else selection = exercises.slice(0, 9);
-    return selection.map(x => x.thumbnail);
-  }
-
   get tsUpdated(): string {
     if (!this.workout) return '';
     return formatTimeForMessage(this.workout.updated);
+  }
+
+  public startWorkout(): void {
+    if (this.workout) {
+      WorkoutManagement.startWorkout(this.workout.exercises);
+    }
   }
 }
 </script>
@@ -131,7 +122,7 @@ export default class Exercise extends Vue {
     padding-top: env(safe-area-inset-top);
     @media only screen and(max-width: 599px) {
       height: 400px;
-      .media {
+      .fh-workout-thumbnail {
         margin-top: -40px;
         margin-bottom: 10px;
       }
@@ -168,26 +159,9 @@ export default class Exercise extends Vue {
           text-transform: uppercase;
         }
       }
-      .media {
+      .fh-workout-thumbnail {
         height: 200px;
         width: 200px;
-        overflow: hidden;
-        border-radius: $border-radius;
-        display: grid;
-        &[thumbnails='1'] {
-          grid-template-columns: 1fr;
-        }
-        &[thumbnails='4'] {
-          grid-template-columns: 1fr 1fr;
-        }
-        &[thumbnails='9'] {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        div {
-          background-position: center;
-          background-size: cover;
-        }
       }
     }
   }

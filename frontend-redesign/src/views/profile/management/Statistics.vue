@@ -105,7 +105,7 @@ export default class Statistics extends Vue {
       },
       colors: this.loginProvider.map(x => this.colors[x.provider]),
       theme: { mode: this.$store.getters.darkmode ? 'dark' : 'light' },
-
+      stroke: { show: false },
       labels: this.loginProvider.map(x => x.provider)
     };
   }

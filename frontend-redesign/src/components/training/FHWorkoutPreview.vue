@@ -1,18 +1,6 @@
 <template>
-  <div
-    class="fh-workout-preview"
-    cursor
-    v-if="workout && thumbnails"
-    @click="handleClick"
-  >
-    <div class="media" :thumbnails="thumbnails.length">
-      <div
-        class="exercise-thumbnail"
-        v-for="(t, i) in thumbnails"
-        :key="i"
-        :style="`background-image: url('${t}')`"
-      />
-    </div>
+  <div class="fh-workout-preview" cursor v-if="workout" @click="handleClick">
+    <FHWorkoutThumbnail :exercises="workout.exercises" />
     <div class="title">{{ workout.title }}</div>
     <tl-flow horizontal="space-between">
       <div class="exercise-amount">
@@ -20,7 +8,11 @@
         <span>Übungen: {{ workout.exercises.length }}</span>
       </div>
       <tc-action :dark="$store.getters.darkmode">
-        <tc-action-item icon="play" title="Workout starten" />
+        <tc-action-item
+          icon="play"
+          title="Workout starten"
+          @click="startWorkout"
+        />
         <tc-action-item
           icon="i-circle-filled"
           title="Details"
@@ -50,11 +42,17 @@
 <script lang="ts">
 import backend from '@/utils/backend';
 import { openFullscreen } from '@/utils/functions';
-import { IExerciseInfo, IWorkout } from '@/utils/interfaces';
+import { IWorkout } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
+import { WorkoutManagement } from '@/utils/WorkoutManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import FHWorkoutThumbnail from './FHWorkoutThumbnail.vue';
 
-@Component
+@Component({
+  components: {
+    FHWorkoutThumbnail
+  }
+})
 export default class FHWorkoutPreview extends Vue {
   @Prop() workout!: IWorkout;
 
@@ -83,20 +81,10 @@ export default class FHWorkoutPreview extends Vue {
     }
   }
 
-  get thumbnails(): string[] | null {
-    if (!this.workout || !this.workout.exercises) {
-      return null;
+  public startWorkout() {
+    if (this.workout) {
+      WorkoutManagement.startWorkout(this.workout.exercises);
     }
-
-    const { exercises } = this.workout;
-    const length = exercises.length;
-    if (length === 0) return null;
-
-    let selection: IExerciseInfo[] = [];
-    if (length < 4) selection = exercises.slice(0, 1);
-    else if (length < 9) selection = exercises.slice(0, 4);
-    else selection = exercises.slice(0, 9);
-    return selection.map(x => x.thumbnail);
   }
 }
 </script>
@@ -112,25 +100,8 @@ export default class FHWorkoutPreview extends Vue {
   }
   box-shadow: $shadow-light;
 
-  .media {
+  .fh-workout-thumbnail {
     height: 210px;
-
-    display: grid;
-    &[thumbnails='1'] {
-      grid-template-columns: 1fr;
-    }
-    &[thumbnails='4'] {
-      grid-template-columns: 1fr 1fr;
-    }
-    &[thumbnails='9'] {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-
-    div {
-      background-position: center;
-      background-size: cover;
-    }
-    overflow: hidden;
     border-radius: $border-radius $border-radius 0 0;
   }
 

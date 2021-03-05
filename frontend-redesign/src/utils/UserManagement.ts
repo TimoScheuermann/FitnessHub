@@ -5,6 +5,7 @@ import { fhBotId } from './constants';
 import {
   IMessage,
   IPendingFriendship,
+  ITrainingplanFull,
   IUser,
   IUserInfo,
   IWorkout
@@ -298,5 +299,19 @@ export class UserManagement {
   public static removeWorkout(id: string): void {
     const workouts = this.getWorkouts() || [];
     this.setWorkouts(workouts.filter(x => x._id !== id));
+  }
+
+  public static async loadTrainingplan(): Promise<void> {
+    const { data } = await backend.get('trainingplan/full');
+    this.setTrainingplan(data);
+  }
+
+  public static setTrainingplan(plan: ITrainingplanFull): void {
+    if (!plan) return;
+    store.commit('trainingplan', plan);
+  }
+
+  public static getTrainingplan(): ITrainingplanFull | null {
+    return store.getters.trainingplan;
   }
 }

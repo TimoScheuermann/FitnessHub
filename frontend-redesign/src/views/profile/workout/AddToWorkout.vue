@@ -16,10 +16,10 @@
         <tc-divider :dark="true" />
 
         <tl-flow horizontal="space-between">
-          <h3 center>Workout wählen</h3>
+          <h3>Workout wählen</h3>
           <tc-button
-            tfbackground="success"
-            variant="filled"
+            background="white"
+            variant="opaque"
             icon="plus"
             name="erstellen"
             @click="$oFS('create-workout')"

@@ -79,7 +79,7 @@ import { fhBotId } from '@/utils/constants';
 import { closeFullscreen } from '@/utils/functions';
 import { IMessage, IUserInfo } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -102,6 +102,19 @@ export default class ChatRoom extends Vue {
     }
     UserManagement.loadMessages();
     UserManagement.markMessagesAsRead(this.$route.params.friendId);
+
+    window.scrollTo(0, document.body.scrollHeight);
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 100);
+  }
+
+  @Watch('messages', { deep: true, immediate: true })
+  public messagesChanged() {
+    window.scrollTo(0, document.body.scrollHeight);
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 100);
   }
 
   get isBotPartner(): boolean {
