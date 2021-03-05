@@ -103,13 +103,31 @@
 
         <FHAppear>
           <div v-if="(recipe.nutrition || []).length > 0">
+            <svg width="0" height="0">
+              <clipPath id="nut" clipPathUnits="objectBoundingBox">
+                <path
+                  d="M-11213.573-8941.19l-.335-.1c-.056-.015-.093-.048-.093-.082V-8942c0-.033.037-.067.093-.081l.335-.1a.31.31,0,0,1,.146,0l.335.1c.057.014.093.048.093.081v.628c0,.034-.036.067-.093.082l-.335.1a.255.255,0,0,1-.073.01A.255.255,0,0,1-11213.573-8941.19Z"
+                  transform="translate(11214.001 8942.182)"
+                />
+              </clipPath>
+            </svg>
             <FHHeading subtitle="angaben" title="Nährwerte" />
-            <tc-table :dark="$store.getters.darkmode">
-              <tc-tr v-for="n in recipe.nutrition" :key="n.title">
-                <tc-td>{{ n.title }}</tc-td>
-                <tc-td>{{ n.amount }} {{ n.unit }}</tc-td>
-              </tc-tr>
-            </tc-table>
+            <div
+              class="nutrition-items"
+              :style="'--amount: ' + recipe.nutrition.length"
+            >
+              <div
+                class="nutrition-item"
+                v-for="n in recipe.nutrition"
+                :key="n.title"
+              >
+                <div class="name">
+                  {{ n.title.replace('Kohlenhydrate', 'Carbs') }}
+                </div>
+                <div class="amount">{{ n.amount }}</div>
+                <div class="unit">{{ n.unit }}</div>
+              </div>
+            </div>
             <br />
             <br />
           </div>
@@ -332,6 +350,42 @@ export default class Recipe extends Vue {
       }
       /deep/ .tc-checkbox svg #background {
         fill: $success;
+      }
+    }
+  }
+
+  svg {
+    position: absolute;
+  }
+
+  .nutrition-items {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(var(--amount), 1fr);
+    .nutrition-item {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 5px;
+      text-align: center;
+      clip-path: url(#nut);
+
+      max-width: 90px;
+      width: 100%;
+      margin: 0 auto;
+
+      background: $container;
+      @media #{$isDark} {
+        background: $container_dark;
+      }
+      .name {
+        font-weight: bold;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .amount {
+        margin-top: 5px;
+        color: $success;
+        font-weight: bold;
       }
     }
   }
