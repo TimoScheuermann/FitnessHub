@@ -2,24 +2,17 @@
   <FHFeedItemWrapper
     v-if="item"
     :bgImage="item.thumbnail"
-    :user="item.user"
+    :user="user"
     :timestamp="item.timestamp"
   >
-    <div class="fh-feed-item-recipe-created">
+    <div class="fh-feed-item-fh-update">
       <tl-grid gap="20">
         <div class="image" v-if="item.thumbnail">
           <img :src="item.thumbnail" />
         </div>
         <div class="info">
-          <h2 v-if="item.title">{{ item.title }}</h2>
+          <h2 v-if="item.title" :bg="!!item.thumbnail">{{ item.title }}</h2>
           <p>{{ item.text }}</p>
-          <tc-link
-            v-if="item.actionId"
-            tfcolor="success"
-            @click="$oFS('recipe-details', { id: item.actionId })"
-          >
-            Rezept ansehen
-          </tc-link>
         </div>
       </tl-grid>
     </div>
@@ -27,7 +20,8 @@
 </template>
 
 <script lang="ts">
-import { IFeedItem } from '@/utils/interfaces';
+import { fhBotId } from '@/utils/constants';
+import { IFeedItem, IUserInfo } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHFeedItemWrapper from './FHFeedItemWrapper.vue';
 
@@ -36,13 +30,19 @@ import FHFeedItemWrapper from './FHFeedItemWrapper.vue';
     FHFeedItemWrapper
   }
 })
-export default class FHFeedItemRecipeCreated extends Vue {
+export default class FHFeedItemFHUpdate extends Vue {
   @Prop() item!: IFeedItem;
+
+  public user: IUserInfo = {
+    _id: fhBotId,
+    username: 'FitnessHub',
+    avatar: 'pwa/splash/manifest-icon-512.jpg'
+  };
 }
 </script>
 
 <style lang="scss" scoped>
-.fh-feed-item-recipe-created {
+.fh-feed-item-fh-update {
   .image img {
     border-radius: 10px;
     width: 100%;
@@ -51,7 +51,7 @@ export default class FHFeedItemRecipeCreated extends Vue {
   }
   .info {
     margin: 0 20px;
-    h2 {
+    h2[bg='true'] {
       margin-top: 0;
     }
   }

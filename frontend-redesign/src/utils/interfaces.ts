@@ -230,3 +230,14 @@ export interface IAchievment {
   date: number;
   asset: string;
 }
+
+export interface IFeedItem {
+  _id: string;
+  type: string;
+  user?: IUserInfo;
+  timestamp: number;
+  thumbnail?: string;
+  title?: string;
+  text: string;
+  actionId?: string;
+}
