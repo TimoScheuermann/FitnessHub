@@ -62,7 +62,7 @@ export default class FHFeedItemExerciseCreated extends Vue {
 <style lang="scss" scoped>
 .fh-feed-item-exercise-created {
   .image img {
-    border-radius: 10px;
+    border-radius: $border-radius;
     width: 100%;
     max-height: 200px;
     object-fit: cover;

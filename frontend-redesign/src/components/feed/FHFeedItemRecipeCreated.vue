@@ -44,7 +44,7 @@ export default class FHFeedItemRecipeCreated extends Vue {
 <style lang="scss" scoped>
 .fh-feed-item-recipe-created {
   .image img {
-    border-radius: 10px;
+    border-radius: $border-radius;
     width: 100%;
     max-height: 200px;
     object-fit: cover;

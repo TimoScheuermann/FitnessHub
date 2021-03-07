@@ -38,7 +38,7 @@
 import backend from '@/utils/backend';
 import { days } from '@/utils/constants';
 import { openFullscreen } from '@/utils/functions';
-import { IExercise } from '@/utils/interfaces';
+import { IExercise, IExerciseInfo } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { WorkoutManagement } from '@/utils/WorkoutManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
@@ -96,7 +96,17 @@ export default class TrainingplanDay extends Vue {
   public startWorkout(): void {
     const day = this.day;
     if (!day) return;
-    WorkoutManagement.startWorkout(day.exercises);
+    const info: IExerciseInfo[] = day.exercises.map(ex => {
+      return {
+        affectedMuscles: ex.affectedMuscles,
+        difficulty: ex.difficulty,
+        thumbnail: ex.thumbnail,
+        title: ex.title,
+        type: ex.distance ? 'distance' : ex.sets ? 'gym' : 'time',
+        _id: ex._id
+      };
+    });
+    WorkoutManagement.startWorkout(info);
   }
 
   public updateDay(): void {
