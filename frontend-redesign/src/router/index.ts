@@ -1,6 +1,7 @@
 import Login from '@/views/login/Login.vue';
 import Recipe from '@/views/nutrition/Recipe.vue';
 import SearchRecipe from '@/views/nutrition/SearchRecipe.vue';
+import WikiItem from '@/views/nutrition/WikiItem.vue';
 import AddFriend from '@/views/profile/AddFriend.vue';
 import ChatRoom from '@/views/profile/ChatRoom.vue';
 import UpdateExercise from '@/views/profile/exercise/UpdateExercise.vue';
@@ -98,6 +99,15 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Rezept anpassen',
         needsSignIn: true,
+        fullscreen: true
+      }
+    },
+    {
+      path: '/nutrition/wiki/:id',
+      name: 'nutrition-wiki-item',
+      component: WikiItem,
+      meta: {
+        title: prefix + 'Ernährungswiki',
         fullscreen: true
       }
     },
@@ -460,12 +470,12 @@ const router = new VueRouter({
           }
         },
         {
-          path: 'tipps',
-          name: 'nutrition-tipps',
-          component: () => import('@/views/nutrition/Tipps.vue'),
+          path: 'wiki',
+          name: 'nutrition-wiki',
+          component: () => import('@/views/nutrition/Wiki.vue'),
           meta: {
-            title: prefix + 'Ernährungstipps',
-            hero: 'Ernährungstipps'
+            title: prefix + 'Ernährungswiki',
+            hero: 'Ernährungswiki'
           }
         },
         {
@@ -494,18 +504,11 @@ const router = new VueRouter({
     {
       path: '/',
       component: () => import('@/views-interim/Home-Interim.vue'),
-      children: [
-        {
-          path: '',
-          name: 'home',
-          component: () => import('@/views/home/Home.vue'),
-          meta: {
-            title: prefix + 'Home',
-            hero: 'FitnessHub'
-          }
-        },
-        { path: '*', redirect: { name: 'home' } }
-      ]
+      name: 'home',
+      meta: {
+        title: prefix + 'Home',
+        hero: 'FitnessHub'
+      },
     },
     {
       path: '',

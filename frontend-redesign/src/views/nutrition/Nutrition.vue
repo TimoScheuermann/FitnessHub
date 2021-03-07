@@ -3,7 +3,7 @@
     <div max-width>
       <tl-grid minWidth="150" gap="10">
         <FHButton icon="lens" title="Rezept" routeName="search-recipe" />
-        <FHButton icon="lightbulb" title="Tipps" routeName="nutrition-tipps" />
+        <FHButton icon="book-filled" title="Wiki" routeName="nutrition-wiki" />
       </tl-grid>
 
       <FHGraphWater :onlyToday="true" />
