@@ -13,6 +13,7 @@ import './registerServiceWorker';
 import { getUserFromJWT, verfiyUser } from './utils/auth';
 import { backendURL } from './utils/constants';
 import { closeFullscreen, openFullscreen } from './utils/functions';
+import { WorkoutManagement } from './utils/WorkoutManagement';
 
 Vue.config.productionTip = false;
 
@@ -42,6 +43,11 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     await next(from);
   } else if (to.name === 'login' && store.getters.valid) {
     await next({ name: 'profile' });
+  } else if (
+    WorkoutManagement.hasActiveWorkout() &&
+    to.name !== 'run-workout'
+  ) {
+    await next({ name: 'run-workout' });
   } else {
     const title = getTitle(to);
     document.title = title;

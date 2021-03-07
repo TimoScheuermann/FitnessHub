@@ -37,7 +37,6 @@
           <div class="emote">🙉</div>
           <div class="amount">8</div>
         </div>
-        <div class="spacer" />
       </div>
     </div>
   </div>
@@ -135,13 +134,11 @@ export default class FHFeedItemWrapper extends Vue {
 
   .fh-feed-item--footer {
     margin: 10px;
-    padding: 10px;
+    padding: 10px 5px;
 
     border-radius: inherit;
-
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: nowrap;
+    text-align: center;
+    white-space: nowrap;
     overflow-y: auto;
 
     background: rgba($color_dark, 0.5);
@@ -149,12 +146,6 @@ export default class FHFeedItemWrapper extends Vue {
     @media #{$isDark} {
       background: rgba($color, 0.5);
       @include custom-scrollbar__dark();
-    }
-
-    .spacer {
-      width: 10px;
-      height: 20px;
-      flex-shrink: 0;
     }
 
     .reaction {
@@ -170,18 +161,12 @@ export default class FHFeedItemWrapper extends Vue {
       &:hover {
         opacity: 1;
       }
-
+      margin: 0 5px;
+      width: max-content;
       padding: 5px;
       border-radius: inherit;
-      margin: 0 5px;
-      &:first-child {
-        margin-left: 0;
-      }
-      &:nth-last-child(2) {
-        margin-right: 0;
-      }
 
-      display: flex;
+      display: inline-flex;
       justify-content: space-between;
       align-items: center;
 

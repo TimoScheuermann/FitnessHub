@@ -11,6 +11,7 @@ import UpdateRecipe from '@/views/profile/recipe/UpdateRecipe.vue';
 import UpdateTrainingplan from '@/views/profile/trainingplan/UpdateTrainingplan.vue';
 import AddToWorkout from '@/views/profile/workout/AddToWorkout.vue';
 import CreateWorkout from '@/views/profile/workout/CreateWorkout.vue';
+import RunningWorkout from '@/views/profile/workout/RunningWorkout.vue';
 import UpdateWorkout from '@/views/profile/workout/UpdateWorkout.vue';
 import Exercise from '@/views/training/Exercise.vue';
 import SearchExercise from '@/views/training/SearchExercise.vue';
@@ -519,6 +520,17 @@ const router = new VueRouter({
         fullscreen: true,
         needsSignIn: true,
         fsFallback: 'training'
+      }
+    },
+    {
+      path: '',
+      name: 'run-workout',
+      component: RunningWorkout,
+      meta: {
+        title: prefix + 'Workout',
+        fullscreen: true,
+        needsSignIn: true,
+        fsFallback: 'workouts'
       }
     },
     { path: '*', redirect: { name: 'home' } }
