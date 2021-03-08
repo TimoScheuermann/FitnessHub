@@ -4,10 +4,10 @@ import { Document } from 'mongoose';
 @Schema()
 export class CompletedExercise extends Document {
   @Prop()
-  user: string;
+  userId: string;
 
   @Prop()
-  exercise: string;
+  exerciseId: string;
 
   @Prop()
   start: number;
@@ -16,7 +16,7 @@ export class CompletedExercise extends Document {
   duration: number;
 
   @Prop({ required: false })
-  distances?: number[];
+  distances?: string[];
 
   @Prop({ required: false })
   times?: number[];

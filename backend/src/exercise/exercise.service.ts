@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, mongo } from 'mongoose';
 import { Namespace, Server } from 'socket.io';
@@ -374,35 +374,56 @@ export class ExerciseService {
     user: IUser,
     finish: FinishExerciseDTO[],
   ): Promise<void> {
-    const transformed = finish
-      .map((x) => {
-        return { ...x, userId: user._id };
-      })
-      .filter(
-        (x) =>
-          x.duration &&
-          x.exerciseId &&
-          x.start &&
-          x.userId &&
-          (x.distances || x.setsReps || x.times),
-      )
-      .filter(
-        (x) =>
-          x.distances.length > 0 || x.setsReps.length > 0 || x.times.length > 0,
-      );
+    finish = finish.map((x) => {
+      const dto: any = {};
+      if (!(x.exerciseId || x.duration || x.start)) {
+        throw new UnprocessableEntityException(
+          'Missing exerciseId, duration or start time',
+        );
+      }
+
+      if (
+        x.setsReps &&
+        x.setsReps.length > 0 &&
+        x.setsWeights &&
+        x.setsWeights.length === x.setsReps.length
+      ) {
+        dto.setsReps = x.setsReps;
+        dto.setsWeights = x.setsWeights;
+      } else if (x.distances && x.distances.length > 0) {
+        dto.distances = x.distances;
+      } else if (x.times && x.times.length > 0) {
+        dto.times = x.times;
+      } else {
+        throw new UnprocessableEntityException(
+          'Missing reps, weights, distances or times',
+        );
+      }
+      if (!isValidObjectId(x.exerciseId)) {
+        throw new UnprocessableEntityException('Invalid exerciseId');
+      }
+      dto.exerciseId = x.exerciseId;
+      dto.duration = x.duration;
+      dto.start = x.start;
+      return dto;
+    });
 
     const now = new Date().getTime();
-    const ids = [...new Set(finish.map((x) => x.exerciseId))].filter(
-      (x) => !!x && x.length > 0 && isValidObjectId(x),
-    );
+    const ids = [...new Set(finish.map((x) => x.exerciseId))];
 
     await this.exerciseModel.updateMany(
       { _id: { $in: ids } },
-      { lastExecution: now },
-      { upsert: true },
+      { $set: { lastExecution: now } },
     );
 
-    await this.completedExerciseModel.insertMany(transformed);
+    await this.completedExerciseModel.insertMany(
+      finish.map((x) => {
+        return {
+          ...x,
+          userId: user._id,
+        };
+      }),
+    );
 
     // TODO: Inform friends?
   }
