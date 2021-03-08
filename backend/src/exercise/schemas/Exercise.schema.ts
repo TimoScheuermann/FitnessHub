@@ -19,6 +19,9 @@ export class Exercise extends Document {
   updated: number;
 
   @Prop()
+  lastExecution: number;
+
+  @Prop()
   title: string;
 
   @Prop()

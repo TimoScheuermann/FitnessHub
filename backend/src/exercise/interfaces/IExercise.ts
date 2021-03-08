@@ -8,6 +8,7 @@ export interface IExercise {
   reviewedBy: string;
   created: number;
   updated: number;
+  lastExecution: number;
 
   title: string;
   thumbnail: string;

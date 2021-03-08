@@ -1,15 +1,11 @@
-export interface ISet {
-  readonly reps: number;
-  readonly weight: number;
-}
-
 export interface ICompletedExercise {
   readonly _id?: string;
-  readonly exercise: string;
-  readonly user: string;
+  readonly userId: string;
+  readonly exerciseId: string;
   readonly start: number;
-  readonly end: number;
-
-  readonly sets?: ISet[];
-  readonly distance?: string;
+  readonly duration: number;
+  readonly distances?: string[];
+  readonly times?: number[];
+  readonly setsReps?: number[];
+  readonly setsWeights?: number[];
 }

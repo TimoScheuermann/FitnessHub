@@ -82,11 +82,11 @@ export class ExerciseService {
    */
   public async getRecent(userId: string): Promise<IExercise[]> {
     const recent = await this.completedExerciseModel
-      .find({ user: userId })
+      .find({ userId: userId })
       .sort({ start: -1 })
       .limit(10);
 
-    return await this.getByIds(recent.map((x) => x.exercise));
+    return await this.getByIds(recent.map((x) => x.exerciseId));
   }
 
   /**
@@ -171,6 +171,7 @@ export class ExerciseService {
       sets: sets,
 
       created: new Date().getTime(),
+      lastExecution: 0,
       reviewedBy: '',
       reviewed: false,
       updated: -1,
@@ -373,10 +374,36 @@ export class ExerciseService {
     user: IUser,
     finish: FinishExerciseDTO[],
   ): Promise<void> {
-    const transformed = finish.map((x) => {
-      return { ...x, user: user._id };
-    });
+    const transformed = finish
+      .map((x) => {
+        return { ...x, userId: user._id };
+      })
+      .filter(
+        (x) =>
+          x.duration &&
+          x.exerciseId &&
+          x.start &&
+          x.userId &&
+          (x.distances || x.setsReps || x.times),
+      )
+      .filter(
+        (x) =>
+          x.distances.length > 0 || x.setsReps.length > 0 || x.times.length > 0,
+      );
+
+    const now = new Date().getTime();
+    const ids = [...new Set(finish.map((x) => x.exerciseId))].filter(
+      (x) => !!x && x.length > 0 && isValidObjectId(x),
+    );
+
+    await this.exerciseModel.updateMany(
+      { _id: { $in: ids } },
+      { lastExecution: now },
+      { upsert: true },
+    );
+
     await this.completedExerciseModel.insertMany(transformed);
+
     // TODO: Inform friends?
   }
 
@@ -384,15 +411,10 @@ export class ExerciseService {
    * returns the most completed exercise of the last week
    */
   public async getTrendingExercises(): Promise<IExercise[]> {
-    const weekStart = new Date().getTime() - 1000 * 60 * 60 * 24 * 7; // a week before
-    const finished = await this.completedExerciseModel
-      .aggregate([
-        { $match: { start: { $gte: weekStart } } },
-        { $sortByCount: '$exercise' },
-      ])
-      .sort({ count: -1 });
-
-    return this.getByIds(finished.map((x) => x.exercise));
+    return await this.exerciseModel
+      .find({ lastExecution: { $exists: true } })
+      .sort({ lastExecution: -1 })
+      .limit(10);
   }
 
   /**
