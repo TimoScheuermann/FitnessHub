@@ -509,7 +509,7 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Home',
         hero: 'FitnessHub'
-      },
+      }
     },
     {
       path: '',

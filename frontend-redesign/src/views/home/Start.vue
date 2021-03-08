@@ -2,16 +2,16 @@
   <div class="view-start" content>
     <div max-width>
       <tl-flow>
-      <tc-segments :dark="$store.getters.darkmode">
-        <tc-segment-item title="Timer">
-          <FHTimer />
-        </tc-segment-item>
-        <tc-segment-item title="Stoppuhr">
-          <FHStopwatch />
-        </tc-segment-item>
-      </tc-segments>
-    </tl-flow>
-    <!-- <h1>Workout</h1>
+        <tc-segments :dark="$store.getters.darkmode">
+          <tc-segment-item title="Timer">
+            <FHTimer />
+          </tc-segment-item>
+          <tc-segment-item title="Stoppuhr">
+            <FHStopwatch />
+          </tc-segment-item>
+        </tc-segments>
+      </tl-flow>
+      <!-- <h1>Workout</h1>
     <tl-grid minWidth="100">
       <FHHomePreview
         title="Training starten"

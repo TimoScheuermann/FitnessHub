@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { openFullscreen } from '@/utils/functions';
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHWikiPreview extends Vue {
@@ -19,7 +19,7 @@ export default class FHWikiPreview extends Vue {
   public handleClick(e: Event) {
     this.$emit('click', e);
     if (this.title) {
-      openFullscreen('nutrition-wiki-item', {id:this.title})
+      openFullscreen('nutrition-wiki-item', { id: this.title });
     }
   }
 }

@@ -13,7 +13,7 @@
       <img src="assets/hero/home.webp" slot="background" alt="" />
       <h1>{{ $route.meta.hero }}</h1>
     </tc-hero>
-    <Start v-if="$store.getters.valid"/>
+    <Start v-if="$store.getters.valid" />
     <Home v-else />
   </div>
 </template>

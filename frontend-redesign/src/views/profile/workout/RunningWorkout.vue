@@ -78,7 +78,6 @@
           </div>
           <h3>Offenes Ziel</h3>
           <tc-input
-            type="number"
             v-model="stats[index].distance"
             :dark="$store.getters.darkmode"
           />
@@ -306,11 +305,11 @@ export default class RunningWorkout extends Vue {
   }
 
   public next(): void {
-    this.index = Math.min(this.exercises.length, ++this.index);
+    this.index = Math.min(this.exercises.length, this.index + 1);
   }
 
   public prev(): void {
-    this.index = Math.max(0, --this.index);
+    this.index = Math.max(0, this.index - 1);
   }
 
   public save(): void {

@@ -11,7 +11,7 @@ export interface WorkoutStats {
   start: number;
   reps: number[];
   weights: number[];
-  distance: number;
+  distance: string;
   time: number;
 }
 export class WorkoutManagement {
@@ -42,7 +42,7 @@ export class WorkoutManagement {
         duration: 0,
         reps: [],
         weights: [],
-        distance: -1,
+        distance: '',
         time: -1
       };
     });
@@ -95,13 +95,13 @@ export class WorkoutManagement {
       .map(x => {
         const d: FinishExerciseDTO = {
           duration: x.duration,
-          exercise: x.exerciseId,
+          exerciseId: x.exerciseId,
           start: this.getStartTime()
         };
         if (x.reps.length > 0) {
           d.setsReps = x.reps;
           d.setsWeights = x.weights;
-        } else if (x.distance > 0) {
+        } else if (x.distance.length > 0) {
           d.distances = [x.distance];
         } else if (x.time > 0) {
           d.times = [x.time];
