@@ -13,17 +13,20 @@
       <img src="assets/hero/home.webp" slot="background" alt="" />
       <h1>{{ $route.meta.hero }}</h1>
     </tc-hero>
-    <FHRouter />
+    <Start v-if="$store.getters.valid"/>
+    <Home v-else />
   </div>
 </template>
 
 <script lang="ts">
 import FHHeader from '@/components/FHHeader.vue';
-import FHRouter from '@/components/FHRouter.vue';
+import Home from '@/views/home/Home.vue';
+import Start from '@/views/home/Start.vue';
 import { Vue, Component } from 'vue-property-decorator';
 @Component({
   components: {
-    FHRouter,
+    Start,
+    Home,
     FHHeader
   }
 })

@@ -241,3 +241,12 @@ export interface IFeedItem {
   text: string;
   actionId?: string;
 }
+
+export interface INutritionWikiItem {
+  title: string;
+  category: string;
+  thumbnail: string;
+  general?: string[];
+  goodFor?: string[];
+  containedIn?: string[];
+}
