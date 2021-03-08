@@ -1,7 +1,12 @@
 <template>
-  <div class="view-Home" content>
+  <div class="view-home" content>
     <div max-width>
-      <h1>About</h1>
+      <tl-flow class="header" horizontal="start">
+        <tl-flow>
+          <img src="assets/fh.svg" alt="" />
+        </tl-flow>
+        <h1>About</h1>
+      </tl-flow>
       <p>
         FitnessHub ist eine Online-Oase für alle Sportenthusiasten, Sportmuffel
         und Profis, die unabhängig von Ihrem Geschlecht, Alter und Fitnesslevel
@@ -10,144 +15,207 @@
         FitnessHub eine digitale und personalisierte Begleitung bei der
         Erreichung der persönlichen Fitnessziele.
       </p>
-      <br />
-      <br />
-      <FHLargeHeadline title="Workouts" />
-      <br />
-      <tl-flow>
-        <FHFeatureCard
-          title="Trainingspläne"
-          image="https://cdn2.pixstash.net/2020/09/10/1iAQb.png"
-        >
-          Erstelle Trainingspläne, die dir helfen, dein Trainingsziel zu
-          erreichen.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Übungen"
-          image="https://cdn2.pixstash.net/2020/09/10/1iGh8.png"
-        >
-          Kreiere Übungen, die du deinen Trainingsplänen hinzufügen kannst.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Timer / Stoppuhr"
-          image="https://cdn2.pixstash.net/2020/09/10/1iEZd.png"
-        >
-          Stelle dir einen Timer für deine Übung. Starte die Stoppuhr.
-        </FHFeatureCard>
-      </tl-flow>
-      <br />
-      <br />
-      <FHLargeHeadline title="Ernährung" />
-      <br />
-      <tl-flow>
-        <FHFeatureCard title="Ernährungspläne" image="later">
-          Ernährungspläne geben dir eine Hilfestellung beim Erreichen deiner
-          Traumfigur.
-        </FHFeatureCard>
-        <FHFeatureCard title="Kochrezepte" image="later">
-          Finde Kochrezepte, die dein Training unterstützen und dir beim
-          Abnehmen helfen.
-        </FHFeatureCard>
-        <FHFeatureCard title="Ernährungstipps" image="later">
-          Informiere dich über Ernährungstipps, die dir helfen, deinen Alltag
-          gesünder zu gestalten.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Trinkometer"
-          image="https://cdn2.pixstash.net/2020/09/10/1iyE9.png"
-        >
-          Stay hydrated!
-        </FHFeatureCard>
-      </tl-flow>
-      <br />
-      <br />
-      <FHLargeHeadline title="Statistik" />
-      <br />
-      <tl-flow>
-        <FHFeatureCard title="Trainingsstatistik" image="later">
-          Sieh ein, wie viel du bereits trainiert hast. Diese Daten kannst du
-          dir für die vergangene Woche oder den vergangenen Monat anzeigen
-          lassen.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Vergleich"
-          image="https://cdn2.pixstash.net/2020/09/10/1izmW.png"
-        >
-          Vergleiche die Trainingsdaten der aktuellen Woche mit denen der
-          letzten Woche.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Gewicht tracken"
-          image="https://cdn2.pixstash.net/2020/09/10/1ig5h.png"
-        >
-          Tracke dein Gewicht, um deinen Fortschritt zu verfolgen.
-        </FHFeatureCard>
-      </tl-flow>
-      <br />
-      <br />
-      <FHLargeHeadline title="Freunde" />
-      <br />
-      <tl-flow>
-        <FHFeatureCard
-          title="Freunde hinzufügen"
-          image="https://cdn2.pixstash.net/2020/09/10/1ipNB.png"
-        >
-          Füge Freunde in deinem FitnessHub hinzu.
-        </FHFeatureCard>
-        <FHFeatureCard title="Challenges" image="later">
-          Stelle deinen Freunden Herausforderungen, um motiviert zu bleiben.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Chat"
-          image="https://cdn2.pixstash.net/2020/09/10/1i9C5.png"
-        >
-          Chatte mit deinen Freunden live über FitnessHub.
-        </FHFeatureCard>
-        <FHFeatureCard
-          title="Profil ansehen"
-          image="https://cdn2.pixstash.net/2020/09/10/1iN0a.png"
-        >
-          Sieh die Profile deiner Freunde an.
-        </FHFeatureCard>
-        <FHFeatureCard title="Teilen" image="later">
-          Teile Übungen, Statistiken oder Erfolge mit deinen Freunden.
-        </FHFeatureCard>
-      </tl-flow>
-      <br />
-      <br />
-      <FHLargeHeadline title="Erfolge" />
-      <br />
-      <tl-flow>
-        <FHFeatureCard title="Erfolge freischalten" image="later">
-          Schalte Erfolge für verschiedene Ziele frei.
-        </FHFeatureCard>
-      </tl-flow>
-      <br />
-      <br />
-      <FHLargeHeadline title="Feed" />
-      <br />
-      <tl-flow>
-        <FHFeatureCard title="Aktivitätsfeed" image="later">
-          Verfolge die Aktivitäten deiner Freunde. Erfahre, was sie für Übungen
-          erstellt, Erfolge freigeschaltet oder Workouts abgeschlossen haben.
-        </FHFeatureCard>
-      </tl-flow>
+
+      <section :dark="$store.getters.darkmode">
+        <div class="subtitle">Erstellen, Planen, Teilen</div>
+        <div class="title">Workouts</div>
+        <tl-grid minWidth="250" arrangement="auto-fill">
+          <FHSectionCardNormal
+            title="Trainingspläne"
+            description="Erstelle Trainingspläne, die dir helfen, dein Trainingsziel zu erreichen."
+            asset="https://cdn2.pixstash.net/2020/09/10/1iAQb.png"
+          />
+          <FHSectionCardNormal
+            title="Übungen"
+            description="Kreiere Übungen, die du deinen Trainingsplänen hinzufügen kannst."
+            asset="https://cdn2.pixstash.net/2020/09/10/1iGh8.png"
+          />
+          <FHSectionCardNormal
+            title="Trainingspläne"
+            description="Stelle dir einen Timer für deine Übung. Starte die Stoppuhr."
+            asset="https://cdn2.pixstash.net/2020/09/10/1iEZd.png"
+          />
+        </tl-grid>
+        <div class="spacer" />
+      </section>
+
+      <section :dark="$store.getters.darkmode">
+        <div class="subtitle">Rezepte, Tipps & mehr</div>
+        <div class="title">Ernährung</div>
+        <tl-grid minWidth="250" arrangement="auto-fill">
+          <FHSectionCardNormal
+            title="Ernährungspläne"
+            description="Ernährungspläne geben dir eine Hilfestellung beim Erreichen deiner Traumfigur."
+            asset="later"
+          />
+          <FHSectionCardNormal
+            title="Kochrezepte"
+            description="Finde Kochrezepte, die dein Training unterstützen und dir beim Abnehmen helfen."
+            asset="later"
+          />
+          <FHSectionCardNormal
+            title="Ernährungstipps"
+            description="Informiere dich über Ernährungstipps, die dir helfen, deinen Alltag gesünder zu gestalten."
+            asset="later"
+          />
+          <FHSectionCardNormal
+            title="Trinkometer"
+            description="Stay hydrated!"
+            asset="https://cdn2.pixstash.net/2020/09/10/1iyE9.png"
+          />
+        </tl-grid>
+        <div class="spacer" />
+      </section>
+
+      <section :dark="$store.getters.darkmode">
+        <div class="subtitle">Verfolgen, Vergleichen, Verbessern</div>
+        <div class="title">Statistik</div>
+        <tl-grid minWidth="250" arrangement="auto-fill">
+          <FHSectionCardNormal
+            title="Trainingsstatistik"
+            description="Sieh ein, wie viel du bereits trainiert hast. Diese Daten kannst du dir für die vergangene Woche oder den vergangenen Monat anzeigen lassen."
+            asset="later"
+          />
+
+          <FHSectionCardNormal
+            title="Vergleich"
+            description="Vergleiche die Trainingsdaten der aktuellen Woche mit denen der letzten Woche."
+            asset="https://cdn2.pixstash.net/2020/09/10/1izmW.png"
+          />
+
+          <FHSectionCardNormal
+            title="Gewicht tracken"
+            description="Tracke dein Gewicht, um deinen Fortschritt zu verfolgen."
+            asset="https://cdn2.pixstash.net/2020/09/10/1ig5h.png"
+          />
+        </tl-grid>
+        <div class="spacer" />
+      </section>
+
+      <section :dark="$store.getters.darkmode">
+        <div class="subtitle">Better together</div>
+        <div class="title">Freunde</div>
+        <tl-grid minWidth="250" arrangement="auto-fill">
+          <FHSectionCardNormal
+            title="Freunde hinzufügen"
+            description="Füge Freunde in deinem FitnessHub hinzu."
+            asset="https://cdn2.pixstash.net/2020/09/10/1ipNB.png"
+          />
+          <FHSectionCardNormal
+            title="Challenges"
+            description="Stelle deinen Freunden Herausforderungen, um motiviert zu bleiben."
+            asset="later"
+          />
+          <FHSectionCardNormal
+            title="Chat"
+            description="Chatte mit deinen Freunden live über FitnessHub."
+            asset="https://cdn2.pixstash.net/2020/09/10/1i9C5.png"
+          />
+          <FHSectionCardNormal
+            title="Profil ansehen"
+            description="Sieh die Profile deiner Freunde an."
+            asset="https://cdn2.pixstash.net/2020/09/10/1iN0a.png"
+          />
+          <FHSectionCardNormal
+            title="Teilen"
+            description="Teile Übungen, Statistiken oder Erfolge mit deinen Freunden."
+            asset="later"
+          />
+        </tl-grid>
+        <div class="spacer" />
+      </section>
+
+      <section :dark="$store.getters.darkmode">
+        <div class="subtitle">schnapp sie dir alle</div>
+        <div class="title">Erfolge</div>
+        <tl-grid minWidth="250" arrangement="auto-fill">
+          <FHSectionCardNormal
+            title="Erfolge freischalten"
+            description="Erfolge für verschiedene Ziele frei."
+            assets="later"
+          />
+        </tl-grid>
+        <div class="spacer" />
+      </section>
+
+      <section :dark="$store.getters.darkmode">
+        <div class="subtitle">schnapp sie dir alle</div>
+        <div class="title">Erfolge</div>
+        <tl-grid minWidth="250" arrangement="auto-fill">
+          <FHSectionCardNormal
+            title="Aktivitätsfeed"
+            assets="later"
+            description="Verfolge die Aktivitäten deiner Freunde. Erfahre, was sie für Übungen erstellt, Erfolge freigeschaltet oder Workouts abgeschlossen haben."
+          />
+        </tl-grid>
+
+        <div class="spacer" />
+      </section>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import FHFeatureCard from '@/components/home/FHFeatureCard.vue';
-import FHLargeHeadline from '@/components/home/FHLargeHeadline.vue';
+import FHSectionCardLarge from '@/components/home/FHSectionCardLarge.vue';
+import FHSectionCardNormal from '@/components/home/FHSectionCardNormal.vue';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
-    FHFeatureCard,
-    FHLargeHeadline
+    FHSectionCardNormal,
+    FHSectionCardLarge
   }
 })
 export default class Home extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.view-home {
+  .header {
+    .tl-flow {
+      margin-right: 10px;
+      img {
+        height: 40px;
+        filter: brightness(0%);
+        @media #{$isDark} {
+          filter: brightness(100%);
+        }
+      }
+    }
+  }
+  section {
+    animation: move-up 0.4s ease-in-out 0.3s both;
+    background: $paragraph;
+    &[dark] {
+      background: $paragraph_dark;
+    }
+    text-align: center;
+    border-radius: $border-radius;
+    margin: 30px -5vw;
+    padding: 20px 5vw 0;
+    .spacer {
+      height: 5vw;
+      max-height: 60px;
+    }
+    .spacer-small {
+      height: 30px;
+    }
+    .title,
+    .subtitle {
+      text-align: center;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 25px;
+      margin-bottom: 30px;
+    }
+    .subtitle {
+      font-size: 13px;
+      font-weight: bold;
+      opacity: 0.75;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+  }
+}
+</style>

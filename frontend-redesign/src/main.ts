@@ -43,26 +43,26 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
     await next(from);
   } else if (to.name === 'login' && store.getters.valid) {
     await next({ name: 'profile' });
-  } else if (
-    WorkoutManagement.hasActiveWorkout() &&
-    to.name !== 'run-workout'
-  ) {
-    await next({ name: 'run-workout' });
   } else {
-    const title = getTitle(to);
-    document.title = title;
-
-    const gt = document.querySelector('meta[name="title"]');
-    if (gt) gt.setAttribute('content', title);
-
-    const twitter = document.querySelector('meta[property="twitter:title"]');
-    if (twitter) twitter.setAttribute('content', title);
-
-    const og = document.querySelector('meta[property="og:title"]');
-    if (og) og.setAttribute('content', title);
-
     next();
   }
+});
+
+router.afterEach((to: Route) => {
+  if (WorkoutManagement.hasActiveWorkout() && to.name !== 'run-workout') {
+    openFullscreen('run-workout');
+  }
+  const title = getTitle(to);
+  document.title = title;
+
+  const gt = document.querySelector('meta[name="title"]');
+  if (gt) gt.setAttribute('content', title);
+
+  const twitter = document.querySelector('meta[property="twitter:title"]');
+  if (twitter) twitter.setAttribute('content', title);
+
+  const og = document.querySelector('meta[property="og:title"]');
+  if (og) og.setAttribute('content', title);
 });
 
 // show specific html-elements only for specfic groups
