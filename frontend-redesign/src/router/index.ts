@@ -215,7 +215,8 @@ const router = new VueRouter({
           name: 'community',
           component: () => import('@/views/community/Community.vue'),
           meta: {
-            title: prefix + 'Community'
+            title: prefix + 'Community',
+            hero: 'Neueste Nachrichten'
           }
         },
         { path: '*', redirect: { name: 'community' } }

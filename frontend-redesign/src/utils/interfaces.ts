@@ -242,6 +242,17 @@ export interface IFeedItem {
   actionId?: string;
 }
 
+export interface IFeed {
+  _id: string;
+  user?: IUserInfo;
+  timestamp: number;
+  thumbnail?: string;
+  title?: string;
+  text: string;
+  recipeId?: string;
+  exerciseId?: string;
+}
+
 export interface INutritionWikiItem {
   title: string;
   category: string;
