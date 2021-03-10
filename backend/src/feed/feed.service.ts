@@ -5,7 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
+import { IExercise } from 'src/exercise/interfaces/IExercise';
 import { FHSocket } from 'src/FHSocket';
+import { IRecipe } from 'src/recipe/interfaces/IRecipe';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
 import { User } from 'src/user/schemas/User.schema';
 import { CreatePostDto } from './dtos/CreatePost.dto';
@@ -13,6 +15,9 @@ import { FeedValidator } from './FeedValidator';
 import { IFeed } from './interfaces/IFeed.interface';
 import { Feed } from './schemas/Feed.schema';
 
+const VALID_REACTIONS = ['hot', 'like', 'strong', 'thumbsup', 'monkey'];
+const RECIPE_CREATE_TEXT = 'Ich habe ein neues Rezept veröffentlicht!';
+const EXERCISE_CREATE_TEXT = 'Ich habe eine neue Übung veröffentlicht!';
 @Injectable()
 export class FeedService {
   constructor(
@@ -21,20 +26,23 @@ export class FeedService {
     private readonly fhSocket: FHSocket,
   ) {}
 
-  public async getFeed(oldest?: number): Promise<IFeed[]> {
-    let posts: Feed[] = [];
+  public async getFeed(
+    oldest?: number,
+    limit?: number,
+    userId?: string,
+  ): Promise<IFeed[]> {
+    if (!limit || isNaN(+limit)) limit = 20;
+    else limit = +limit;
 
-    if (oldest && !isNaN(+oldest)) {
-      posts = await this.feedModel
-        .find()
-        .sort({ timestamp: -1 })
-        .find({ timestamp: { $lt: +oldest } })
-        .limit(5);
-    } else {
-      posts = await this.feedModel.find().sort({ timestamp: -1 }).limit(5);
-    }
+    if (!oldest || isNaN(+oldest)) oldest = new Date().getTime();
+    else oldest = +oldest;
 
-    return this.mapPost(posts);
+    const posts = await this.feedModel
+      .find({ timestamp: { $lt: oldest } })
+      .sort({ timestamp: -1 })
+      .limit(limit);
+
+    return this.mapPost(posts, userId || null);
   }
 
   public async getPost(id: string): Promise<Feed> {
@@ -82,13 +90,112 @@ export class FeedService {
     return true;
   }
 
-  private async mapPost(posts: Feed[]): Promise<IFeed[]> {
+  public async exerciseUpdate(e: IExercise): Promise<void> {
+    await this.feedModel.updateMany(
+      { exerciseId: e._id },
+      { $set: { thumbnail: e.thumbnail, title: e.title } },
+    );
+    const feed = await this.feedModel.find({ exerciseId: e._id });
+    (await this.mapPost(feed)).forEach((x) => {
+      this.fhSocket.server.emit('feed-update', x);
+    });
+
+    // exercise didnt exist before
+    if (
+      !(await this.feedModel.findOne({
+        text: EXERCISE_CREATE_TEXT,
+        title: e.title,
+      }))
+    ) {
+      const newFeed = await this.feedModel.create({
+        text: EXERCISE_CREATE_TEXT,
+        timestamp: new Date().getTime(),
+        exerciseId: e._id,
+        thumbnail: e.thumbnail,
+        title: e.title,
+        user: e.author,
+      });
+      const mapped = (await this.mapPost([newFeed]))[0];
+      this.fhSocket.server.emit('feed-create', mapped);
+    }
+  }
+
+  public async recipeUpdate(r: IRecipe): Promise<void> {
+    await this.feedModel.updateMany(
+      { recipeId: r._id },
+      { $set: { thumbnail: r.thumbnail, title: r.title } },
+    );
+    const feed = await this.feedModel.find({ recipeId: r._id });
+    (await this.mapPost(feed)).forEach((x) => {
+      this.fhSocket.server.emit('feed-update', x);
+    });
+  }
+
+  public async recipeCreated(r: IRecipe): Promise<void> {
+    const newFeed = await this.feedModel.create({
+      text: RECIPE_CREATE_TEXT,
+      timestamp: new Date().getTime(),
+      recipeId: r._id,
+      thumbnail: r.thumbnail,
+      title: r.title,
+      user: r.author,
+    });
+    const mapped = (await this.mapPost([newFeed]))[0];
+    this.fhSocket.server.emit('feed-create', mapped);
+  }
+
+  public async recipeDelete(id: string): Promise<void> {
+    await this.feedModel.deleteMany({ recipeId: id });
+  }
+
+  public async addReaction(
+    feedId: string,
+    type: string,
+    userId: string,
+  ): Promise<void> {
+    if (!feedId || !isValidObjectId(feedId)) return;
+    if (!VALID_REACTIONS.includes(type)) return;
+    if (!(await this.feedModel.findOne({ _id: feedId }))) return;
+
+    const object = {};
+    object[type] = userId;
+
+    await this.feedModel.updateOne(
+      { _id: feedId },
+      { $addToSet: object },
+      { upsert: true },
+    );
+  }
+  public async removeReaction(
+    feedId: string,
+    type: string,
+    userId: string,
+  ): Promise<void> {
+    if (!feedId || !isValidObjectId(feedId)) return;
+    if (!VALID_REACTIONS.includes(type)) return;
+    if (!(await this.feedModel.findOne({ _id: feedId }))) return;
+
+    const object = {};
+    object[type] = userId;
+
+    await this.feedModel.updateOne(
+      { _id: feedId },
+      { $pull: object },
+      { upsert: true },
+    );
+  }
+
+  private async mapPost(
+    posts: Feed[],
+    userId: string | null = null,
+  ): Promise<IFeed[]> {
     if (posts.length === 0 || !posts) return [];
 
     const userIds = [...new Set(posts.map((x) => x.user).filter((x) => !!x))];
+
     let users = [];
     if (userIds.length > 0) {
-      users = await this.userModel.find({ _id: { $in: [userIds] } });
+      users = await this.userModel.find({ _id: { $in: userIds } });
     }
 
     const getUser = (id?: string): IUserInfo | undefined => {
@@ -103,11 +210,36 @@ export class FeedService {
           .join(' '),
       };
     };
-    
+
     posts = posts.map((x) => x.toJSON());
 
     return posts.map((x) => {
-      return { ...x, user: getUser(x.user) } as IFeed;
+      let { hot, like, strong, thumbsup, monkey } = x;
+      hot = hot || [];
+      like = like || [];
+      strong = strong || [];
+      thumbsup = thumbsup || [];
+      monkey = monkey || [];
+
+      const reactions: string[] = [];
+      if (userId) {
+        if (hot.includes(userId)) reactions.push('hot');
+        if (like.includes(userId)) reactions.push('like');
+        if (strong.includes(userId)) reactions.push('strong');
+        if (thumbsup.includes(userId)) reactions.push('thumbsup');
+        if (monkey.includes(userId)) reactions.push('monkey');
+      }
+
+      return {
+        ...x,
+        user: getUser(x.user),
+        hot: hot.length,
+        like: like.length,
+        strong: strong.length,
+        thumbsup: thumbsup.length,
+        monkey: monkey.length,
+        reactions: reactions,
+      } as IFeed;
     });
   }
 }

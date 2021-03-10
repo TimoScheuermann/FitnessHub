@@ -13,6 +13,7 @@ import { Feed, FeedSchema } from './schemas/Feed.schema';
       { name: User.name, schema: UserSchema },
     ]),
   ],
+  exports: [FeedService],
   controllers: [FeedController],
   providers: [FeedService, FHSocket],
 })

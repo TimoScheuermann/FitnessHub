@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FeedModule } from 'src/feed/feed.module';
 import { FHSocket } from 'src/FHSocket';
 import { FriendsModule } from 'src/friends/friends.module';
 import {
@@ -29,6 +30,7 @@ import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
     ]),
     FriendsModule,
     SettingModule,
+    FeedModule,
   ],
   controllers: [ExerciseController],
   providers: [ExerciseService, FHSocket, TgbotService],

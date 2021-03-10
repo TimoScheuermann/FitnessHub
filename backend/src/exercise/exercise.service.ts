@@ -2,6 +2,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, mongo } from 'mongoose';
 import { Namespace, Server } from 'socket.io';
+import { FeedService } from 'src/feed/feed.service';
 import { FHSocket } from 'src/FHSocket';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { Message } from 'src/message/schemas/Message.schema';
@@ -27,6 +28,7 @@ export class ExerciseService {
     @InjectModel(Message.name) private messageModel: Model<Message>,
     private readonly tgbotService: TgbotService,
     private readonly fhSocket: FHSocket,
+    private readonly feedService: FeedService,
   ) {}
 
   /**
@@ -220,6 +222,7 @@ export class ExerciseService {
     const exercise = await this.getById(id);
     if (exercise) {
       this.sendUpdateNotifications(exercise, true, false, true);
+      this.feedService.exerciseUpdate(exercise.toJSON());
       return true;
     }
     return false;
@@ -312,10 +315,7 @@ export class ExerciseService {
     removeLocaly: boolean,
     removeSubmisison: boolean,
   ) {
-    if (!exercise) {
-      console.log('no exercise given');
-      return;
-    }
+    if (!exercise) return;
 
     this.fhSocket.server
       .to(exercise.author)

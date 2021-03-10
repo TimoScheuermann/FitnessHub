@@ -49,26 +49,11 @@
       </div>
 
       <div class="fh-feed-item--footer">
-        <div class="reaction">
-          <div class="emote">🔥</div>
-          <div class="amount">20</div>
-        </div>
-        <div class="reaction">
-          <div class="emote">❤️</div>
-          <div class="amount">25</div>
-        </div>
-        <div class="reaction">
-          <div class="emote">💪</div>
-          <div class="amount">33</div>
-        </div>
-        <div class="reaction">
-          <div class="emote">👍</div>
-          <div class="amount">100</div>
-        </div>
-        <div class="reaction">
-          <div class="emote">🙉</div>
-          <div class="amount">8</div>
-        </div>
+        <FHFeedReaction icon="🔥" :item="feed" reaction="hot" />
+        <FHFeedReaction icon="❤️" :item="feed" reaction="like" />
+        <FHFeedReaction icon="💪" :item="feed" reaction="strong" />
+        <FHFeedReaction icon="👍" :item="feed" reaction="thumbsup" />
+        <FHFeedReaction icon="🙉" :item="feed" reaction="monkey" />
       </div>
     </div>
   </div>
@@ -79,8 +64,13 @@ import { fhBotId, months } from '@/utils/constants';
 import { ExerciseManagement } from '@/utils/ExerciseManagement';
 import { IFeed, IUserInfo } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import FHFeedReaction from './FHFeedReaction.vue';
 
-@Component
+@Component({
+  components: {
+    FHFeedReaction
+  }
+})
 export default class FHFeedCard extends Vue {
   @Prop() feed!: IFeed;
 
@@ -199,36 +189,6 @@ export default class FHFeedCard extends Vue {
       @media #{$isDark} {
         background: rgba($color, 0.5);
         @include custom-scrollbar__dark();
-      }
-
-      .reaction {
-        background: rgba($color, 0.15);
-        @media #{$isDark} {
-          background: rgba($color_dark, 0.15);
-        }
-
-        cursor: pointer;
-
-        opacity: 0.7;
-        transition: 0.2s ease-in-out;
-        &:hover {
-          opacity: 1;
-        }
-        margin: 0 5px;
-        width: max-content;
-        padding: 5px;
-        border-radius: inherit;
-
-        display: inline-flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .amount {
-          margin-left: 5px;
-          font-size: 12px;
-          font-weight: bold;
-          opacity: 0.5;
-        }
       }
     }
 

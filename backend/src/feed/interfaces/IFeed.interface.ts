@@ -9,4 +9,11 @@ export interface IFeed {
   text: string;
   recipeId?: string;
   exerciseId?: string;
+
+  hot: number;
+  like: number;
+  strong: number;
+  thumbsup: number;
+  monkey: number;
+  reactions: string[];
 }

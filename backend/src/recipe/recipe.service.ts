@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
+import { FeedService } from 'src/feed/feed.service';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -20,6 +21,7 @@ export class RecipeService {
     @InjectModel(Variable.name)
     private variableModel: Model<Variable>,
     private readonly tgbotService: TgbotService,
+    private readonly feedService: FeedService,
   ) {}
 
   public async getAll(): Promise<IRecipe[]> {
@@ -101,6 +103,8 @@ export class RecipeService {
       url,
     );
 
+    this.feedService.recipeCreated(recipe.toJSON());
+
     return recipe;
   }
 
@@ -117,10 +121,26 @@ export class RecipeService {
       { $set: { ...dto, updated: new Date().getTime() } },
     );
 
+    const recipe = await this.recipeModel.findOne({ _id: id, author: userId });
+    if (recipe) {
+      this.feedService.recipeUpdate(recipe.toJSON());
+      return recipe;
+    }
+
     return this.getById(id);
   }
 
   public async deleteRecipe(userId: string, recipeId: string): Promise<void> {
+    if (!recipeId || !isValidObjectId(recipeId)) return;
+
+    const recipe = await this.recipeModel.findOne({
+      _id: recipeId,
+      author: userId,
+    });
+    if (recipe) {
+      this.feedService.recipeDelete(recipeId);
+    }
+
     await this.recipeModel.findOneAndDelete({ author: userId, _id: recipeId });
     await this.likedRecipeModel.updateMany(
       {},

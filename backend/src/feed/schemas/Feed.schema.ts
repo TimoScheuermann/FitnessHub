@@ -23,6 +23,21 @@ export class Feed extends Document {
 
   @Prop()
   exerciseId?: string;
+
+  @Prop()
+  hot?: string[];
+
+  @Prop()
+  like?: string[];
+
+  @Prop()
+  strong?: string[];
+
+  @Prop()
+  thumbsup?: string[];
+
+  @Prop()
+  monkey?: string[];
 }
 
 export const FeedSchema = SchemaFactory.createForClass(Feed);

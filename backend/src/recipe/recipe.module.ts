@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FeedModule } from 'src/feed/feed.module';
 import {
   Variable,
   VariableSchema,
@@ -18,6 +19,7 @@ import { Recipe, RecipeSchema } from './schemas/Recipe.schema';
       { name: Variable.name, schema: VariableSchema },
     ]),
     TgbotModule,
+    FeedModule,
   ],
   controllers: [RecipeController],
   providers: [RecipeService],

@@ -4,6 +4,13 @@ import { IFeed } from './interfaces';
 
 export class FeedManagement {
   private static loading = false;
+  private static limit = 20;
+  private static endpoint = (): string => {
+    if (store.getters.valid) {
+      return 'feed/personal';
+    }
+    return 'feed';
+  };
 
   private static commit(items: IFeed[]): void {
     if (items) {
@@ -23,18 +30,22 @@ export class FeedManagement {
 
     this.loading = true;
     if (!this.getPosts()) {
-      const { data } = await backend.get('feed');
+      const { data } = await backend.get(
+        this.endpoint() + '?limit=' + this.limit
+      );
       this.commit(data);
     } else if (append) {
       const posts = this.getPosts();
       if (posts) {
         const oldest = posts.map(x => x.timestamp).sort((a, b) => a - b)[0];
-        const { data } = await backend.get('feed?oldest=' + oldest);
+        const { data } = await backend.get(
+          this.endpoint() + '?oldest=' + oldest + '&limit=' + this.limit
+        );
 
         posts.push(...data);
         this.commit(posts);
 
-        if (data.length < 5) {
+        if (data.length < this.limit) {
           store.commit('canLoadPosts', false);
         }
       }
@@ -50,7 +61,10 @@ export class FeedManagement {
     posts = posts.map(x => {
       if (x._id === post._id) {
         exists = true;
-        return post;
+        return {
+          ...post,
+          reactions: x.reactions
+        };
       }
       return x;
     });
@@ -73,5 +87,29 @@ export class FeedManagement {
 
   public static markAsRead(): void {
     store.commit('readPosts');
+  }
+
+  public static addReaction(id: string, reaction: string): void {
+    backend.put('feed/' + id + '/reaction/' + reaction);
+    const posts = this.getPosts();
+    if (!posts) return;
+    const post = posts.filter(x => x._id === id)[0];
+    if (!post) return;
+    post.reactions.push(reaction);
+    // eslint-disable-next-line
+    (post as any)[reaction]++;
+    this.updatePost(post);
+  }
+
+  public static removeReaction(id: string, reaction: string): void {
+    backend.delete('feed/' + id + '/reaction/' + reaction);
+    const posts = this.getPosts();
+    if (!posts) return;
+    const post = posts.filter(x => x._id === id)[0];
+    if (!post) return;
+    post.reactions = post.reactions.filter(x => x !== reaction);
+    // eslint-disable-next-line
+    (post as any)[reaction]--;
+    this.updatePost(post);
   }
 }

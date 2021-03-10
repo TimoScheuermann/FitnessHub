@@ -20,7 +20,6 @@ export class TgbotController {
     @FHUser() user: IUser,
     @Body() body: { code: string },
   ): void {
-    console.log('Code', body.code);
     this.tgbotService.validateConnection(user, body.code);
   }
 }

@@ -1,15 +1,19 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
+import FHUser from 'src/auth/user.decorator';
+import { IUser } from 'src/user/interfaces/IUser';
 import { CreatePostDto } from './dtos/CreatePost.dto';
 import { FeedService } from './feed.service';
 import { IFeed } from './interfaces/IFeed.interface';
@@ -20,8 +24,21 @@ export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
   @Get()
-  async getFeed(@Query('oldest') oldest?: number): Promise<IFeed[]> {
-    return this.feedService.getFeed(oldest);
+  async getFeed(
+    @Query('oldest') oldest?: number,
+    @Query('limit') limit?: number,
+  ): Promise<IFeed[]> {
+    return this.feedService.getFeed(oldest, limit);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('personal')
+  async getFeedPersonal(
+    @FHUser() user: IUser,
+    @Query('oldest') oldest?: number,
+    @Query('limit') limit?: number,
+  ): Promise<IFeed[]> {
+    return this.feedService.getFeed(oldest, limit, user._id);
   }
 
   @Roles(['admin', 'moderator'])
@@ -46,5 +63,25 @@ export class FeedController {
     @Body() dto: CreatePostDto,
   ): Promise<boolean> {
     return this.feedService.patchPost(id, dto);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':id/reaction/:type')
+  async removeReaction(
+    @Param('id') id: string,
+    @Param('type') type: string,
+    @FHUser() user: IUser,
+  ): Promise<void> {
+    this.feedService.removeReaction(id, type, user._id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put(':id/reaction/:type')
+  async addReaction(
+    @Param('id') id: string,
+    @Param('type') type: string,
+    @FHUser() user: IUser,
+  ): Promise<void> {
+    this.feedService.addReaction(id, type, user._id);
   }
 }
