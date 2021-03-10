@@ -25,14 +25,14 @@
       </router-link>
 
       <FHAppear>
-        <tl-flow flow="column" v-if="canAppend && appending">
+        <tl-flow flow="column" v-if="canLoad && appending">
           <br />
           <tc-spinner :dark="$store.getters.darkmode" size="20" />
           <p>Weitere Beiträge werden geladen</p>
           <br />
         </tl-flow>
       </FHAppear>
-      <p v-if="!canAppend" center style="opacity: .4">
+      <p v-if="!canLoad" center style="opacity: .4">
         Du hast alle Beiträge geladen
       </p>
     </div>
@@ -54,10 +54,10 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class Community extends Vue {
   public appending = false;
-  public canAppend = true;
 
   mounted() {
     FeedManagement.loadPosts();
+    FeedManagement.markAsRead();
     window.addEventListener('scroll', this.scrollListener);
   }
 
@@ -69,6 +69,10 @@ export default class Community extends Vue {
     return FeedManagement.getPosts();
   }
 
+  get canLoad(): boolean {
+    return this.$store.getters.canLoadPosts;
+  }
+
   public scrollListener() {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     if (scrollTop + clientHeight >= scrollHeight - 300) {
@@ -77,13 +81,11 @@ export default class Community extends Vue {
   }
 
   public async appendData(): Promise<void> {
-    if (this.appending || !this.canAppend) return;
-    console.log('Appending', this.canAppend);
+    if (this.appending || !this.canLoad) return;
 
     this.appending = true;
-    const can = await FeedManagement.loadPosts(true);
-    if (can === 2) {
-      this.canAppend = false;
+    await FeedManagement.loadPosts(true);
+    if (!this.canLoad) {
       window.removeEventListener('scroll', this.scrollListener);
     }
 

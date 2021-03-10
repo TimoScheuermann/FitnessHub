@@ -18,14 +18,13 @@ export class FeedManagement {
     return store.getters.feed;
   }
 
-  public static async loadPosts(append = false): Promise<number> {
-    if (this.loading) return 1;
+  public static async loadPosts(append = false): Promise<void> {
+    if (this.loading) return;
 
     this.loading = true;
     if (!this.getPosts()) {
       const { data } = await backend.get('feed');
       this.commit(data);
-      this.loading = false;
     } else if (append) {
       const posts = this.getPosts();
       if (posts) {
@@ -34,14 +33,13 @@ export class FeedManagement {
 
         posts.push(...data);
         this.commit(posts);
-        this.loading = false;
 
         if (data.length < 5) {
-          return 2;
+          store.commit('canLoadPosts', false);
         }
       }
     }
-    return 1;
+    this.loading = false;
   }
 
   public static updatePost(post: IFeed) {
