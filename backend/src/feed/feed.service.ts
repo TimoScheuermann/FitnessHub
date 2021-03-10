@@ -34,8 +34,6 @@ export class FeedService {
       posts = await this.feedModel.find().sort({ timestamp: -1 }).limit(5);
     }
 
-    posts = posts.map((x) => x.toJSON());
-
     return this.mapPost(posts);
   }
 
@@ -105,6 +103,8 @@ export class FeedService {
           .join(' '),
       };
     };
+    
+    posts = posts.map((x) => x.toJSON());
 
     return posts.map((x) => {
       return { ...x, user: getUser(x.user) } as IFeed;
