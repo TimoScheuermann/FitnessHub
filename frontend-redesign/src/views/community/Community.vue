@@ -75,7 +75,7 @@ export default class Community extends Vue {
 
   public scrollListener() {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 300) {
+    if (scrollTop + clientHeight >= scrollHeight - 666) {
       this.appendData();
     }
   }
