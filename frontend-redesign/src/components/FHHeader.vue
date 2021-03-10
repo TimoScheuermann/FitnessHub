@@ -95,8 +95,16 @@ export default class FHHeader extends Vue {
   .title {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
-    line-height: 50px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+
     font-weight: 600;
     font-size: 18px;
   }

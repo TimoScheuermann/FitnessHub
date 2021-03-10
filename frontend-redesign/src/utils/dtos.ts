@@ -80,3 +80,12 @@ export class CreateVariableDTO {
   title!: string;
   thumbnail!: string;
 }
+
+export class CreatePostDto {
+  title?: string;
+  thumbnail?: string;
+  text!: string;
+
+  recipeId?: string;
+  exerciseId?: string;
+}

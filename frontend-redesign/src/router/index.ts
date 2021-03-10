@@ -219,6 +219,28 @@ const router = new VueRouter({
             hero: 'Neueste Nachrichten'
           }
         },
+        {
+          path: 'create',
+          name: 'create-post',
+          component: () => import('@/views/community/CreatePost.vue'),
+          meta: {
+            title: prefix + 'Post erstellen',
+            hero: 'Post erstellen',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator']
+          }
+        },
+        {
+          path: 'edit/:id',
+          name: 'edit-post',
+          component: () => import('@/views/community/EditPost.vue'),
+          meta: {
+            title: prefix + 'Post bearbeiten',
+            hero: 'Post bearbeiten',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator']
+          }
+        },
         { path: '*', redirect: { name: 'community' } }
       ]
     },

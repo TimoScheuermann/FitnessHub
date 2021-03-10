@@ -21,7 +21,7 @@
           </div>
           <div>
             <h2 v-if="feed.title">{{ feed.title }}</h2>
-            <p>{{ feed.text }}</p>
+            <p line-break>{{ feed.text }}</p>
 
             <tl-flow horizontal="space-between">
               <template v-if="feed.recipeId">
@@ -125,7 +125,7 @@ export default class FHFeedCard extends Vue {
 <style lang="scss" scoped>
 .fh-feed-card {
   border-radius: $border-radius;
-  // margin-bottom: 20px;
+  margin-bottom: 20px;
   position: relative;
 
   box-shadow: $shadow-light;

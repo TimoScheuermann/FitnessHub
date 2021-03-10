@@ -18,6 +18,7 @@ import {
 } from '@/utils/mediaQueries';
 import {
   IExercise,
+  IFeed,
   IMessage,
   IPendingFriendship,
   IUserInfo
@@ -27,6 +28,7 @@ import { Socket } from 'vue-socket.io-extended';
 import FHNotification from './components/FHNotification.vue';
 import { ExerciseManagement } from './utils/ExerciseManagement';
 import { VariableManagement } from './utils/VariableManagement';
+import { FeedManagement } from './utils/FeedManagement';
 
 @Component({
   components: {
@@ -89,6 +91,16 @@ export default class App extends Vue {
   @Socket('exerciseSubmission.remove')
   removeExerciseSubmission(exercise: IExercise) {
     ExerciseManagement.removeSubmission(exercise._id);
+  }
+
+  @Socket('feed-created')
+  feedCreated(feed: IFeed) {
+    FeedManagement.addPost(feed);
+  }
+
+  @Socket('feed-updated')
+  feedUpdated(feed: IFeed) {
+    FeedManagement.updatePost(feed);
   }
 }
 </script>

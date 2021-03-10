@@ -7,12 +7,18 @@
       name="Start"
       routeName="home"
     />
-    <tc-navbar-item
-      tfcolor="success"
-      icon="star"
-      name="Feed"
-      routeName="community"
-    />
+
+    <tl-flow>
+      <tc-navbar-item
+        tfcolor="success"
+        icon="star"
+        name="Feed"
+        routeName="community"
+      />
+      <div class="badge" v-if="$store.getters.unreadPosts > 0">
+        {{ $store.getters.unreadPosts }}
+      </div>
+    </tl-flow>
     <tc-navbar-item
       tfcolor="success"
       icon="gym"
@@ -100,19 +106,19 @@ export default class FHNavbar extends Vue {
         opacity: 1;
       }
     }
-    .badge {
-      font-size: 12px;
-      color: #fff;
-      $scale: 20px;
-      height: $scale;
-      padding: 0px #{$scale / 3};
-      min-width: #{$scale / 3};
-      border-radius: $scale;
-      line-height: $scale;
-      text-align: center;
-      background: $success;
-      margin: 0 5px;
-    }
+  }
+  .badge {
+    font-size: 12px;
+    color: #fff;
+    $scale: 20px;
+    height: $scale;
+    padding: 0px #{$scale / 3};
+    min-width: #{$scale / 3};
+    border-radius: $scale;
+    line-height: $scale;
+    text-align: center;
+    background: $success;
+    margin: 0 5px;
   }
 }
 </style>

@@ -6,12 +6,14 @@
       title="Start"
       routeName="home"
     />
-    <tc-tabbar-item
-      tfcolor="success"
-      icon="star"
-      title="Feed"
-      routeName="community"
-    />
+    <tc-badge :value="$store.getters.unreadPosts" tfcolor="success">
+      <tc-tabbar-item
+        tfcolor="success"
+        icon="star"
+        title="Feed"
+        routeName="community"
+      />
+    </tc-badge>
     <tc-badge
       v-if="$store.getters.valid"
       :value="profileNotifications"

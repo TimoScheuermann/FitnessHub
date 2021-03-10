@@ -5,6 +5,7 @@ import { ExerciseManagement } from '@/utils/ExerciseManagement';
 import { openFullscreen } from '@/utils/functions';
 import {
   IExercise,
+  IFeed,
   IHealth,
   IMessage,
   IPendingFriendship,
@@ -31,6 +32,9 @@ const store = new Vuex.Store({
     darkmode: false,
     storedRoutes: {},
     variables: null,
+
+    feed: null,
+    unreadPosts: 0,
 
     latestWorkouts: null,
     workouts: null,
@@ -80,6 +84,13 @@ const store = new Vuex.Store({
     },
     variables: (state: any): IVariable[] | null => {
       return state.variables;
+    },
+
+    feed: (state: any): IFeed[] | null => {
+      return state.feed;
+    },
+    unreadPosts: (state: any): number => {
+      return state.unreadPosts || 0;
     },
 
     latestWorkouts: (state: any): IWorkout[] | null => {
@@ -185,6 +196,16 @@ const store = new Vuex.Store({
     },
     variables(state: any, vars: IVariable) {
       state.variables = vars;
+    },
+
+    feed(state: any, feed: IFeed[]) {
+      state.feed = feed;
+    },
+    unreadPosts(state: any) {
+      state.unreadPosts++;
+    },
+    readPosts(state: any) {
+      state.unreadPosts = 0;
     },
 
     latestWorkouts(state: any, workouts: IWorkout[]) {

@@ -231,17 +231,6 @@ export interface IAchievment {
   asset: string;
 }
 
-export interface IFeedItem {
-  _id: string;
-  type: string;
-  user?: IUserInfo;
-  timestamp: number;
-  thumbnail?: string;
-  title?: string;
-  text: string;
-  actionId?: string;
-}
-
 export interface IFeed {
   _id: string;
   user?: IUserInfo;
