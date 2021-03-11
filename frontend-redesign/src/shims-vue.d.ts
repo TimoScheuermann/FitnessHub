@@ -4,3 +4,4 @@ declare module '*.vue' {
 }
 
 declare module 'tccomponents_vue';
+declare module 'vue-masonry-css';

@@ -3,7 +3,6 @@
     <FHAppear>
       <tl-flow v-if="!post" flow="column">
         <br />
-        <br />
         <tc-spinner :dark="$store.getters.darkmode" size="20" />
         <p>Post wird geladen</p>
       </tl-flow>
@@ -55,6 +54,6 @@ export default class EditPost extends Vue {
 
 <style lang="scss" scoped>
 .view-edit-post {
-  padding-top: 0;
+  padding-top: 20px;
 }
 </style>

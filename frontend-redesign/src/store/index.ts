@@ -36,6 +36,7 @@ const store = new Vuex.Store({
     feed: null,
     unreadPosts: 0,
     canLoadPosts: true,
+    feedLoading: false,
 
     latestWorkouts: null,
     workouts: null,
@@ -95,6 +96,9 @@ const store = new Vuex.Store({
     },
     canLoadPosts: (state: any): boolean => {
       return state.canLoadPosts;
+    },
+    feedLoading: (state: any): boolean => {
+      return state.feedLoading;
     },
 
     latestWorkouts: (state: any): IWorkout[] | null => {
@@ -213,6 +217,9 @@ const store = new Vuex.Store({
     },
     canLoadPosts(state: any, canLoadPosts: boolean) {
       state.canLoadPosts = canLoadPosts;
+    },
+    feedLoading(state: any, feedLoading: boolean) {
+      state.feedLoading = feedLoading;
     },
 
     latestWorkouts(state: any, workouts: IWorkout[]) {

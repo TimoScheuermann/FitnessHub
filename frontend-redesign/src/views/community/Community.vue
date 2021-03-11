@@ -12,9 +12,9 @@
         <i huge success class="ti-star"></i>
         <p>Zurzeit existieren noch keine Posts</p>
       </tl-flow>
-      <template v-else>
+      <masonry v-else :cols="{ default: 2, 600: 1 }" gutter="20px">
         <FHFeedCard v-for="p in posts" :key="p._id" :feed="p" />
-      </template>
+      </masonry>
 
       <router-link
         v-group.admin.moderator
@@ -24,14 +24,12 @@
         <i class="ti-plus"></i>
       </router-link>
 
-      <FHAppear>
-        <tl-flow flow="column" v-if="canLoad && appending">
-          <br />
-          <tc-spinner :dark="$store.getters.darkmode" size="20" />
-          <p>Weitere Beiträge werden geladen</p>
-          <br />
-        </tl-flow>
-      </FHAppear>
+      <tl-flow flow="column" v-if="posts && loading">
+        <br />
+        <tc-spinner :dark="$store.getters.darkmode" size="20" />
+        <p>Weitere Beiträge werden geladen</p>
+        <br />
+      </tl-flow>
       <p v-if="!canLoad" center style="opacity: .4">
         Du hast alle Beiträge geladen
       </p>
@@ -62,41 +60,38 @@ export default class Community extends Vue {
   }
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollListener);
+    removeEventListener('scroll', this.scrollListener);
+  }
+
+  public async scrollListener() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 666) {
+      this.$nextTick(() => {
+        this.appendData();
+      });
+    }
   }
 
   get posts(): IFeed[] | null {
-    return FeedManagement.getPosts();
+    return this.$store.getters.feed;
+  }
+
+  get loading(): boolean {
+    return this.$store.getters.feedLoading;
   }
 
   get canLoad(): boolean {
     return this.$store.getters.canLoadPosts;
   }
 
-  public scrollListener() {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 666) {
-      this.appendData();
-    }
-  }
-
   public async appendData(): Promise<void> {
-    if (this.appending || !this.canLoad) return;
-
-    this.appending = true;
-    await FeedManagement.loadPosts(true);
-    if (!this.canLoad) {
-      window.removeEventListener('scroll', this.scrollListener);
-    }
-
-    this.appending = false;
+    await FeedManagement.loadPosts();
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .view-community {
-  //
   .create-post-button {
     position: fixed;
     z-index: 100;

@@ -95,12 +95,12 @@ export default class App extends Vue {
 
   @Socket('feed-created')
   feedCreated(feed: IFeed) {
-    FeedManagement.addPost(feed);
+    FeedManagement.addPosts([feed]);
   }
 
   @Socket('feed-updated')
   feedUpdated(feed: IFeed) {
-    FeedManagement.updatePost(feed);
+    FeedManagement.addPosts([feed]);
   }
 }
 </script>

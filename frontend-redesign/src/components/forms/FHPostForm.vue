@@ -9,7 +9,7 @@
     <tl-grid gap="0 10">
       <tc-input
         :dark="$store.getters.darkmode"
-        title="Titel*"
+        title="Titel"
         v-model="dto.title"
       />
       <tc-input
@@ -21,7 +21,7 @@
 
     <tc-textarea
       :dark="$store.getters.darkmode"
-      title="Text"
+      title="Text*"
       v-model="dto.text"
     />
 
@@ -120,8 +120,6 @@ export default class FHPostForm extends Vue {
   }
 
   private handleResponse(): void {
-    console.log('test');
-
     this.$router.push({ name: 'community' });
     this.submitting = false;
   }
@@ -136,4 +134,8 @@ export default class FHPostForm extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.fh-feed-card {
+  margin-bottom: 0;
+}
+</style>

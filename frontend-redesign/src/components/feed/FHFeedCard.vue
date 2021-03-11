@@ -12,10 +12,18 @@
           <div class="name">{{ user.username }}</div>
           <div class="time">{{ time }}</div>
         </div>
+        <tc-button
+          v-group.admin.moderator
+          v-if="user._id === fhBotId && $route.name === 'community'"
+          icon="pencil"
+          tfbackground="success"
+          variant="opaque"
+          :to="{ name: 'edit-post', params: { id: feed._id } }"
+        />
       </div>
 
       <div class="fh-feed-item--content">
-        <tl-grid gap="20">
+        <tl-grid minWidth="200" gap="20">
           <div v-if="feed.thumbnail">
             <img :src="feed.thumbnail" />
           </div>
@@ -73,6 +81,8 @@ import FHFeedReaction from './FHFeedReaction.vue';
 })
 export default class FHFeedCard extends Vue {
   @Prop() feed!: IFeed;
+
+  public fhBotId = fhBotId;
 
   get user(): IUserInfo {
     return (
@@ -155,7 +165,7 @@ export default class FHFeedCard extends Vue {
 
     .fh-feed-item--head {
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       grid-gap: 10px;
       padding: 10px;
       .tc-avatar {

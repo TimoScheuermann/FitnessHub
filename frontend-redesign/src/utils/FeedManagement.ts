@@ -3,81 +3,72 @@ import backend from './backend';
 import { IFeed } from './interfaces';
 
 export class FeedManagement {
-  private static loading = false;
-  private static limit = 20;
-  private static endpoint = (): string => {
+  private static limit = 33;
+
+  private static get endpoint(): string {
     if (store.getters.valid) {
       return 'feed/personal';
     }
     return 'feed';
-  };
-
-  private static commit(items: IFeed[]): void {
-    if (items) {
-      store.commit(
-        'feed',
-        items.sort((a, b) => b.timestamp - a.timestamp)
-      );
-    }
   }
 
-  public static getPosts(): IFeed[] | null {
+  private static get loading(): boolean {
+    return store.getters.feedLoading;
+  }
+
+  public static get posts(): IFeed[] | null {
     return store.getters.feed;
   }
 
-  public static async loadPosts(append = false): Promise<void> {
-    if (this.loading) return;
-
-    this.loading = true;
-    if (!this.getPosts()) {
-      const { data } = await backend.get(
-        this.endpoint() + '?limit=' + this.limit
-      );
-      this.commit(data);
-    } else if (append) {
-      const posts = this.getPosts();
-      if (posts) {
-        const oldest = posts.map(x => x.timestamp).sort((a, b) => a - b)[0];
-        const { data } = await backend.get(
-          this.endpoint() + '?oldest=' + oldest + '&limit=' + this.limit
-        );
-
-        posts.push(...data);
-        this.commit(posts);
-
-        if (data.length < this.limit) {
-          store.commit('canLoadPosts', false);
-        }
-      }
-    }
-    this.loading = false;
+  public static get canLoad(): boolean {
+    return store.getters.canLoadPosts;
   }
 
-  public static updatePost(post: IFeed) {
-    if (!post) return;
-    let posts = this.getPosts();
-    if (!posts) return;
-    let exists = false;
-    posts = posts.map(x => {
-      if (x._id === post._id) {
-        exists = true;
-        return {
-          ...post,
-          reactions: x.reactions
-        };
-      }
-      return x;
-    });
-    if (!exists) this.addPost(post);
-  }
+  public static async loadPosts(): Promise<void> {
+    if (this.loading || !this.canLoad) return;
 
-  public static addPost(post: IFeed) {
-    if (!post) return;
-    const posts = this.getPosts();
+    store.commit('feedLoading', true);
+
+    let oldest = new Date().getTime();
+    const posts = this.posts;
     if (posts) {
-      posts.push(post);
-      this.commit(posts);
-      store.commit('unreadPosts');
+      oldest = posts.map(x => x.timestamp).sort((a, b) => a - b)[0];
+    }
+
+    const { data } = await backend.get(
+      this.endpoint + '?oldest=' + oldest + '&limit=' + this.limit
+    );
+
+    this.addPosts(data);
+
+    if (data && data.length === 0) {
+      console.log('H');
+      store.commit('canLoadPosts', false);
+    }
+
+    store.commit('feedLoading', false);
+  }
+
+  public static addPosts(newPosts: IFeed[]) {
+    if (newPosts && newPosts.length > 0) {
+      const posts = this.posts || [];
+      console.log('Appending', newPosts.length);
+
+      newPosts.forEach(x => {
+        let exsits = false;
+        posts.forEach(p => {
+          if (p._id === x._id) {
+            exsits = true;
+            return { ...x, reactions: p.reactions };
+          }
+          return p;
+        });
+        if (!exsits) posts.push(x);
+      });
+
+      store.commit('feed', posts);
+
+      console.log('New length', (this.posts || []).length);
     }
   }
 
@@ -91,25 +82,31 @@ export class FeedManagement {
 
   public static addReaction(id: string, reaction: string): void {
     backend.put('feed/' + id + '/reaction/' + reaction);
-    const posts = this.getPosts();
+
+    const posts = this.posts;
     if (!posts) return;
+
     const post = posts.filter(x => x._id === id)[0];
     if (!post) return;
+
     post.reactions.push(reaction);
     // eslint-disable-next-line
     (post as any)[reaction]++;
-    this.updatePost(post);
+    this.addPosts([post]);
   }
 
   public static removeReaction(id: string, reaction: string): void {
     backend.delete('feed/' + id + '/reaction/' + reaction);
-    const posts = this.getPosts();
+
+    const posts = this.posts;
     if (!posts) return;
+
     const post = posts.filter(x => x._id === id)[0];
     if (!post) return;
+
     post.reactions = post.reactions.filter(x => x !== reaction);
     // eslint-disable-next-line
     (post as any)[reaction]--;
-    this.updatePost(post);
+    this.addPosts([post]);
   }
 }

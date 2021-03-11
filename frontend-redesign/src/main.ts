@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import * as TCComponents from 'tccomponents_vue';
 import 'tccomponents_vue/lib/tccomponents_vue.css';
 import Vue from 'vue';
+import VueMasonry from 'vue-masonry-css';
 import { Route } from 'vue-router';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
@@ -19,6 +20,8 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$oFS = openFullscreen;
 Vue.prototype.$cFS = closeFullscreen;
+
+Vue.use(VueMasonry);
 
 for (const component in TCComponents) {
   Vue.component(component, TCComponents[component]);
