@@ -29,7 +29,7 @@ Vue.use(VueScrollReveal, {
   opacity: 0,
   distance: '350px',
   delay: 0,
-  origin: 'top',
+  origin: 'bottom',
   viewOffset: {
     bottom: 200
   }
