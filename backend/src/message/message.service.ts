@@ -91,20 +91,10 @@ export class MessageService {
       read: false,
     });
 
-    const { _id } = createdMessage;
-    const encrypted = Array.from(
-      (await this.encrypt(message, _id)).map((x) => x),
-    );
-
-    await this.messageModel.updateOne(
-      { _id: _id },
-      { $set: { content: encrypted } },
-    );
-
     this.fhSocket.server
       .to(from._id)
       .to(to)
-      .emit('message', { ...createdMessage, message: message });
+      .emit('message', { ...createdMessage, content: message });
 
     if (!this.fhSocket.server.sockets.adapter.rooms[to]) {
       const name = [from.givenName, from.familyName]
@@ -115,5 +105,15 @@ export class MessageService {
         '<b>' + name + ' schreibt:</b>\n' + message,
       );
     }
+
+    const { _id } = createdMessage;
+    const encrypted = Array.from(
+      (await this.encrypt(message, _id)).map((x) => x),
+    );
+
+    await this.messageModel.updateOne(
+      { _id: _id },
+      { $set: { content: encrypted } },
+    );
   }
 }
