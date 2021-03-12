@@ -82,7 +82,7 @@ export class MessageService {
     message: string,
     type = 'message',
   ): Promise<void> {
-    const createdMessage: Message = await this.messageModel.create({
+    const createdMessage = await this.messageModel.create({
       date: new Date().getTime(),
       content: [],
       from: from._id,
@@ -94,7 +94,7 @@ export class MessageService {
     this.fhSocket.server
       .to(from._id)
       .to(to)
-      .emit('message', { ...createdMessage, content: message });
+      .emit('message', { ...createdMessage.toJSON(), content: message });
 
     if (!this.fhSocket.server.sockets.adapter.rooms[to]) {
       const name = [from.givenName, from.familyName]
