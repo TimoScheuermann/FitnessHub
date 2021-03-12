@@ -3,8 +3,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
-import { ITrainingplan } from './interfaces/ITrainingplan';
 import { ITrainingplanFull } from './interfaces/ITrainingplanFull';
+import { Trainingplan } from './schemas/Trainingplan.schema';
 import { TrainingplanService } from './trainingplan.service';
 
 @Controller('trainingplan')
@@ -17,7 +17,7 @@ export class TrainingplanController {
    */
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
-  async getTrainingplan(@FHUser() user: IUser): Promise<ITrainingplan> {
+  async getTrainingplan(@FHUser() user: IUser): Promise<Trainingplan> {
     return this.trainingplanService.getTrainingplan(user._id);
   }
 

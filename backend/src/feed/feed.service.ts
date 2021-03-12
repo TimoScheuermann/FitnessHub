@@ -211,7 +211,7 @@ export class FeedService {
       };
     };
 
-    posts = posts.map((x) => x.toJSON());
+    posts = (posts.map((x) => x.toJSON()) as unknown) as Feed[];
 
     return posts.map((x) => {
       let { hot, like, strong, thumbsup, monkey } = x;

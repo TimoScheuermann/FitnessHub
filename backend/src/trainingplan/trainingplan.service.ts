@@ -22,7 +22,7 @@ export class TrainingplanService {
    * Returns trainingsplan of specific user
    * @param userId author
    */
-  public async getTrainingplan(userId: string): Promise<ITrainingplan> {
+  public async getTrainingplan(userId: string): Promise<Trainingplan> {
     return this.trainingplanModel.findOne({ author: userId });
   }
 

@@ -56,7 +56,7 @@ export class UserService {
 
       this.tgbotService.sendMessage(
         `Ein neuer User hat sich angemeldet!
-      <b>Name</b> ${user.toJSON().username}`,
+      <b>Name</b> ${((user.toJSON() as unknown) as IUserInfo).username}`,
       );
 
       this.messageService.sendMessage(
@@ -109,7 +109,7 @@ export class UserService {
    * @param id string
    */
   async getUserInfoById(id: string): Promise<IUserInfo> {
-    return (await this.getUserById(id)).toJSON();
+    return ((await this.getUserById(id)).toJSON() as unknown) as IUserInfo;
   }
 
   /**
@@ -126,7 +126,7 @@ export class UserService {
         })
         .limit(30)
     )
-      .map((x) => x.toJSON())
+      .map((x) => (x.toJSON() as unknown) as IUserInfo)
       .sort((a, b) => a.username.localeCompare(b.username));
   }
 
@@ -169,7 +169,7 @@ export class UserService {
         group: 'Moderator',
       })
     )
-      .map((x) => x.toJSON())
+      .map((x) => (x.toJSON() as unknown) as IUserInfo)
       .sort((a, b) => a.username.localeCompare(b.username));
   }
 
@@ -186,7 +186,7 @@ export class UserService {
         return {
           _id: x._id,
           avatar: x.avatar,
-          username: x.toJSON().username,
+          username: ((x.toJSON() as unknown) as IUserInfo).username,
           suspended: x.suspended,
           suspendedBy: x.suspendedBy,
         } as IUserInfo;
@@ -209,7 +209,7 @@ export class UserService {
    */
   public async pardonUser(id: string): Promise<void> {
     const user = await this.getUserById(id);
-    if (user) await user.updateOne({ $unset: { suspended: 0 } });
+    if (user) await user.updateOne({ $unset: { suspended: '' } });
   }
 
   /**

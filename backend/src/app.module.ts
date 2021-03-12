@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ChartsModule } from './charts/charts.module';
 import { ExerciseModule } from './exercise/exercise.module';
+import { FeedModule } from './feed/feed.module';
 import { FHSocket } from './FHSocket';
 import { FriendsModule } from './friends/friends.module';
 import { HealthModule } from './health/health.module';
@@ -15,14 +16,12 @@ import { StatisticsModule } from './management/statistics/statistics.module';
 import { VariablesModule } from './management/variables/variables.module';
 import { MessageModule } from './message/message.module';
 import { NetlifyModule } from './netlify/netlify.module';
-import { NutritionplanModule } from './nutritionplan/nutritionplan.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { SettingModule } from './setting/setting.module';
 import { TgbotModule } from './tgbot/tgbot.module';
 import { TrainingplanModule } from './trainingplan/trainingplan.module';
 import { UserModule } from './user/user.module';
 import { WorkoutModule } from './workout/workout.module';
-import { FeedModule } from './feed/feed.module';
 
 @Module({
   imports: [
@@ -46,7 +45,7 @@ import { FeedModule } from './feed/feed.module';
     AuthModule,
     TgbotModule,
     RecipeModule,
-    NutritionplanModule,
+    // NutritionplanModule,
     FriendsModule,
     StatisticsModule,
     PromoteModule,

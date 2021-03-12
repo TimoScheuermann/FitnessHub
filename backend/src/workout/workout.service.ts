@@ -140,10 +140,8 @@ export class WorkoutService {
       _id: { $in: uniqueIds },
     });
 
-    const getExercise = (id: string): IExercise | null => {
-      return (
-        exercises.map((x) => x.toJSON()).filter((x) => x._id == id)[0] || null
-      );
+    const getExercise = (id: string): Exercise | null => {
+      return exercises.filter((x) => x._id == id)[0] || null;
     };
 
     const getExerciseInfo = (ex: IExercise | null): IExerciseInfo | null => {

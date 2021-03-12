@@ -67,14 +67,12 @@ export class FriendsService {
     userId: string,
     friendId: string,
   ): Promise<void> {
-    const friendship: IFriendship = await this.friendshipModel.findOneAndDelete(
-      {
-        $or: [
-          { invitee: userId, target: friendId },
-          { invitee: friendId, target: userId },
-        ],
-      },
-    );
+    const friendship = await this.friendshipModel.findOneAndDelete({
+      $or: [
+        { invitee: userId, target: friendId },
+        { invitee: friendId, target: userId },
+      ],
+    });
 
     // remove friends from list
     this.fhSocket.server.to(userId).emit('removeFriend', friendId);
@@ -94,7 +92,7 @@ export class FriendsService {
     user: IUser,
     friendshipId: string,
   ): Promise<void> {
-    const friendship: IFriendship = await this.friendshipModel.findOneAndUpdate(
+    const friendship = await this.friendshipModel.findOneAndUpdate(
       { _id: friendshipId, target: user._id },
       { $set: { accepted: true } },
     );
@@ -180,7 +178,7 @@ export class FriendsService {
 
     if (!targetUser) return;
 
-    const friendship: IFriendship = await this.friendshipModel.create({
+    const friendship = await this.friendshipModel.create({
       invitee: invitee._id,
       target: target,
       accepted: false,
@@ -207,9 +205,10 @@ export class FriendsService {
     targetId: string,
     friendshipId: string,
   ): Promise<void> {
-    const friendship: IFriendship = await this.friendshipModel.findOneAndDelete(
-      { _id: friendshipId, $or: [{ target: targetId }, { invitee: targetId }] },
-    );
+    const friendship = await this.friendshipModel.findOneAndDelete({
+      _id: friendshipId,
+      $or: [{ target: targetId }, { invitee: targetId }],
+    });
 
     this.fhSocket.server
       .to(friendship.target)
@@ -243,12 +242,14 @@ export class FriendsService {
     userA: string,
     userB: string,
   ): Promise<IFriendship> {
-    return await this.friendshipModel.findOne({
-      $or: [
-        { invitee: userA, target: userB },
-        { invitee: userB, target: userA },
-      ],
-    });
+    return ((
+      await this.friendshipModel.findOne({
+        $or: [
+          { invitee: userA, target: userB },
+          { invitee: userB, target: userA },
+        ],
+      })
+    ).toObject() as unknown) as IFriendship;
   }
 
   /**

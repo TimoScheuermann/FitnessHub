@@ -1,7 +1,7 @@
 import { CreateExerciseDTO } from '../dtos/CreateExercise.dto';
 
 export interface IExercise {
-  _id: string;
+  _id?: string;
 
   author: string;
   reviewed: boolean;
