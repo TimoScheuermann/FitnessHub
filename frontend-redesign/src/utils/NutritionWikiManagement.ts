@@ -24,7 +24,7 @@ export class NutritionWikiManagement {
         'Nüsse und Samen'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=25'
+        'https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -46,7 +46,7 @@ export class NutritionWikiManagement {
         'Eier'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1588710929895-6ee7a0a4d155?q=25'
+        'https://images.unsplash.com/photo-1588710929895-6ee7a0a4d155?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -58,7 +58,7 @@ export class NutritionWikiManagement {
         'Trans-Fettsäure: Chips, ... --> SCHLECHT'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?q=25'
+        'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -69,7 +69,7 @@ export class NutritionWikiManagement {
         'Zweifachzucker: Haushalts- und Milchzucker'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1605690258824-d3ececd2741d?q=25'
+        'https://images.unsplash.com/photo-1605690258824-d3ececd2741d?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -91,14 +91,14 @@ export class NutritionWikiManagement {
         'Hülsenfrüchte'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1502747220144-846486e80891?q=25'
+        'https://images.unsplash.com/photo-1502747220144-846486e80891?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
       title: 'Makronährstoffe',
       general: ['Energielieferanten', 'Kohlenhydrate, Proteine, Fette'],
       thumbnail:
-        'https://images.unsplash.com/photo-1532550907401-a500c9a57435?q=25'
+        'https://images.unsplash.com/photo-1532550907401-a500c9a57435?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -108,7 +108,7 @@ export class NutritionWikiManagement {
         'Vitamine, Mineralstoffe, Spurenelemente'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1585307510180-2d94ee4bf0ff?q=25'
+        'https://images.unsplash.com/photo-1585307510180-2d94ee4bf0ff?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -131,7 +131,7 @@ export class NutritionWikiManagement {
         'Soja'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1613744696750-4181a318e57a?q=25'
+        'https://images.unsplash.com/photo-1613744696750-4181a318e57a?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -150,7 +150,7 @@ export class NutritionWikiManagement {
         'Erbsen'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1519590350802-eb212e2ea536?q=25'
+        'https://images.unsplash.com/photo-1519590350802-eb212e2ea536?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
@@ -167,14 +167,14 @@ export class NutritionWikiManagement {
         'Tempeh'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1552767059-ce182ead6c1b?q=25'
+        'https://images.unsplash.com/photo-1552767059-ce182ead6c1b?q=5&w=1080'
     },
     {
       category: 'Nährstoffe',
       title: 'Proteine/Eiweiß',
       general: ['werden nicht lange vom Körper gespeichert'],
       thumbnail:
-        'https://images.unsplash.com/photo-1605291535557-4fc6bb3b4d00?q=25'
+        'https://images.unsplash.com/photo-1605291535557-4fc6bb3b4d00?q=5&w=1080'
     },
     {
       category: 'Vitamine',
@@ -182,7 +182,7 @@ export class NutritionWikiManagement {
       goodFor: ['Haut, Haare, Nägel', 'Stoffwechsel'],
       containedIn: ['Eier', 'Nüsse', 'Haferflocken', 'Milch', 'Hefe', 'Leber'],
       thumbnail:
-        'https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?q=25'
+        'https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?q=5&w=1080'
     },
     {
       category: 'Vitamine',
@@ -192,7 +192,7 @@ export class NutritionWikiManagement {
         'nur in tierischen Nahrungsmitteln, da es nur von Mikroorganismen synthetisiert werden kann'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1592768116796-f2c356806033?q=25'
+        'https://images.unsplash.com/photo-1592768116796-f2c356806033?q=5&w=1080'
     },
     {
       category: 'Vitamine',
@@ -215,7 +215,7 @@ export class NutritionWikiManagement {
         'Spinat'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1610554636863-8280b198ac7e?q=25'
+        'https://images.unsplash.com/photo-1610554636863-8280b198ac7e?q=5&w=1080'
     },
     {
       category: 'Vitamine',
@@ -231,7 +231,7 @@ export class NutritionWikiManagement {
         'kaum in Nahrung, jedoch: fetthaltiger Fisch (Lachs, Aal, Makrele, Hering, ...)'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1545955413-209e03defb1f?q=25'
+        'https://images.unsplash.com/photo-1545955413-209e03defb1f?q=5&w=1080'
     },
     {
       category: 'Vitamine',
@@ -252,7 +252,7 @@ export class NutritionWikiManagement {
         'Kohl'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1507727910967-9be3fdf9a009?q=25'
+        'https://images.unsplash.com/photo-1507727910967-9be3fdf9a009?q=5&w=1080'
     },
     {
       category: 'Supplements',
@@ -266,7 +266,7 @@ export class NutritionWikiManagement {
         'Whey-Hydrolysat: aus Whey-Konzentrat oder -Isolat gewonnen, aufgespaltete Proteine für eine bessere Aufnahme'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1595414902678-862fe51c9f27?q=25'
+        'https://images.unsplash.com/photo-1595414902678-862fe51c9f27?q=5&w=1080'
     },
     {
       category: 'Supplements',
@@ -276,7 +276,7 @@ export class NutritionWikiManagement {
         'wird langsamer aufgenommen (eignet sich für Abends!)'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1565498971161-42ae3dbcca75?q=25'
+        'https://images.unsplash.com/photo-1565498971161-42ae3dbcca75?q=5&w=1080'
     },
     {
       category: 'Supplements',
@@ -289,7 +289,7 @@ export class NutritionWikiManagement {
         'Achtung: Achte darauf zusätzlich genug Flüssigkeit zu dir zu nehmen!'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=25'
+        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=5&w=1080'
     },
     {
       category: 'Supplements',
@@ -299,7 +299,7 @@ export class NutritionWikiManagement {
         'schnellere Wiederauffüllung der Glykogen-Speicher'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=25'
+        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=5&w=1080'
     },
     {
       category: 'Supplements',
@@ -311,7 +311,7 @@ export class NutritionWikiManagement {
         'werden nicht genügend EAAs zugeführt, nimmt sich der Organismus dieses aus der eigenen Körpersubstanz'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=25'
+        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=5&w=1080'
     },
     {
       category: 'Supplements',
@@ -322,7 +322,7 @@ export class NutritionWikiManagement {
         'wichtig für die Muskelproteisynthese'
       ],
       thumbnail:
-        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=25'
+        'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=5&w=1080'
     }
   ];
 
