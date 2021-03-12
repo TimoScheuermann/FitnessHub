@@ -42,7 +42,6 @@ export class FeedManagement {
     this.addPosts(data);
 
     if (data && data.length === 0) {
-      console.log('H');
       store.commit('canLoadPosts', false);
     }
 
@@ -52,7 +51,6 @@ export class FeedManagement {
   public static addPosts(newPosts: IFeed[]) {
     if (newPosts && newPosts.length > 0) {
       const posts = this.posts || [];
-      console.log('Appending', newPosts.length);
 
       newPosts.forEach(x => {
         let exsits = false;
@@ -67,8 +65,6 @@ export class FeedManagement {
       });
 
       store.commit('feed', posts);
-
-      console.log('New length', (this.posts || []).length);
     }
   }
 

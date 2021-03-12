@@ -21,6 +21,7 @@
     "vue-masonry-css": "^1.0.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
+    "vue-scroll-reveal": "^1.0.11",
     "vue-socket.io-extended": "4.0.4",
     "vuex": "^3.4.0"
   },

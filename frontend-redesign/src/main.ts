@@ -8,6 +8,7 @@ import 'tccomponents_vue/lib/tccomponents_vue.css';
 import Vue from 'vue';
 import VueMasonry from 'vue-masonry-css';
 import { Route } from 'vue-router';
+import VueScrollReveal from 'vue-scroll-reveal';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { VNode } from 'vue/types/umd';
 import './registerServiceWorker';
@@ -22,6 +23,17 @@ Vue.prototype.$oFS = openFullscreen;
 Vue.prototype.$cFS = closeFullscreen;
 
 Vue.use(VueMasonry);
+Vue.use(VueScrollReveal, {
+  duration: 1000,
+  scale: 0.9,
+  opacity: 0,
+  distance: '350px',
+  delay: 0,
+  origin: 'top',
+  viewOffset: {
+    bottom: 200
+  }
+});
 
 for (const component in TCComponents) {
   Vue.component(component, TCComponents[component]);

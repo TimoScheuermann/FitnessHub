@@ -5,3 +5,4 @@ declare module '*.vue' {
 
 declare module 'tccomponents_vue';
 declare module 'vue-masonry-css';
+declare module 'vue-scroll-reveal';

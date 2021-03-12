@@ -13,7 +13,7 @@
         <p>Zurzeit existieren noch keine Posts</p>
       </tl-flow>
       <masonry v-else :cols="{ default: 2, 600: 1 }" gutter="20px">
-        <FHFeedCard v-for="p in posts" :key="p._id" :feed="p" />
+        <FHFeedCard v-scroll-reveal v-for="p in posts" :key="p._id" :feed="p" />
       </masonry>
 
       <router-link
@@ -54,7 +54,7 @@ export default class Community extends Vue {
   public appending = false;
 
   mounted() {
-    FeedManagement.loadPosts();
+    if (!this.posts) FeedManagement.loadPosts();
     FeedManagement.markAsRead();
     window.addEventListener('scroll', this.scrollListener);
   }
