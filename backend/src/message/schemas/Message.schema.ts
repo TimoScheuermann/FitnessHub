@@ -19,7 +19,7 @@ export class Message extends Document {
   read: boolean;
 
   @Prop()
-  content: string;
+  content: number[];
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

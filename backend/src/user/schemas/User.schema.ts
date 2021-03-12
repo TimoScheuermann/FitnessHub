@@ -1,8 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Provider } from 'src/auth/auth.service';
+import { IUserInfo } from '../interfaces/IUserInfo';
 
-@Schema()
+@Schema({
+  toJSON: {
+    transform: (_doc: User, ret: User): IUserInfo => {
+      return {
+        _id: ret._id,
+        avatar: ret.avatar,
+        username: [ret.givenName, ret.familyName].filter((x) => !!x).join(' '),
+      };
+    },
+  },
+})
 export class User extends Document {
   @Prop()
   givenName: string;

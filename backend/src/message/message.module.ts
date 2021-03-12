@@ -15,5 +15,6 @@ import { Message, MessageSchema } from './schemas/Message.schema';
   ],
   controllers: [MessageController],
   providers: [MessageService, FHSocket],
+  exports: [MessageService],
 })
 export class MessageModule {}

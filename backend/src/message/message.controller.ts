@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
+import { FHBot } from 'src/user/FHBot.user';
 import { IUser } from 'src/user/interfaces/IUser';
 import { IMessage } from './interfaces/IMessage';
 import { MessageService } from './message.service';
@@ -70,6 +71,6 @@ export class MessageController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('markBotAsRead')
   async markBotAsRead(@FHUser() user: IUser): Promise<void> {
-    this.messageService.markAsRead(user._id, '5f4a1a372149ef521c108f4a');
+    this.messageService.markAsRead(user._id, FHBot._id);
   }
 }

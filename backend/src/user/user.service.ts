@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Provider } from 'src/auth/auth.service';
-import { Message } from 'src/message/schemas/Message.schema';
+import { MessageService } from 'src/message/message.service';
 import { TgbotService } from 'src/tgbot/tgbot.service';
+import { FHBot } from './FHBot.user';
 import { IUser } from './interfaces/IUser';
 import { IUserInfo } from './interfaces/IUserInfo';
 import { User } from './schemas/User.schema';
@@ -12,14 +13,9 @@ import { User } from './schemas/User.schema';
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(Message.name) private messageModel: Model<Message>,
+    private readonly messageService: MessageService,
     private readonly tgbotService: TgbotService,
   ) {}
-
-  /**
-   * user id for fitnesshub bot
-   */
-  public FPUID = '5f4a1a372149ef521c108f4a';
 
   /**
    * checks if a user has already exists (2nd, 3rd, ... login)
@@ -53,25 +49,22 @@ export class UserService {
     } else {
       const user = await this.userModel.create({
         ...iuser,
+        provider: iuser.provider,
         date: new Date().getTime(),
         group: 'User',
       });
 
       this.tgbotService.sendMessage(
         `Ein neuer User hat sich angemeldet!
-      <b>Name</b> ${this.transformName(user)}`,
+      <b>Name</b> ${user.toJSON().username}`,
       );
 
-      // send welcome message
-      await this.messageModel.create({
-        date: new Date().getTime(),
-        from: this.FPUID,
-        content:
-          'Willkommen beim FitnessHub! Danke, dass du der Community beigetreten bist.',
-        to: user._id,
-        read: false,
-        type: 'message',
-      });
+      this.messageService.sendMessage(
+        FHBot,
+        user._id,
+        'Willkommen in der FitnessHub! Danke, dass du der Community beigetreten bist',
+      );
+
       return user;
     }
   }
@@ -83,6 +76,7 @@ export class UserService {
   async updateUser(u: IUser): Promise<void> {
     const user = await new this.userModel(u).toObject();
     delete user._id;
+    // Jeannine B.
     if (u._id === '5f47a68688e01f1eaa1881d9') delete user.avatar;
     await this.userModel.findByIdAndUpdate(u._id, user);
   }
@@ -107,9 +101,7 @@ export class UserService {
    * @param id string
    */
   async getUserById(id: string): Promise<User> {
-    return this.userModel.findOne({
-      _id: id,
-    });
+    return this.userModel.findOne({ _id: id });
   }
 
   /**
@@ -117,12 +109,7 @@ export class UserService {
    * @param id string
    */
   async getUserInfoById(id: string): Promise<IUserInfo> {
-    const user = await this.getUserById(id);
-    return {
-      _id: user._id,
-      username: this.transformName(user),
-      avatar: user.avatar,
-    };
+    return (await this.getUserById(id)).toJSON();
   }
 
   /**
@@ -135,27 +122,12 @@ export class UserService {
       await this.userModel
         .find({
           $or: [{ familyName: reg }, { givenName: reg }],
+          _id: { $ne: FHBot._id },
         })
         .limit(30)
     )
-      .map((x) => x.toObject())
-      .map((x: IUser) => {
-        return {
-          _id: x._id,
-          avatar: x.avatar,
-          username: this.transformName(x),
-        } as IUserInfo;
-      })
-      .filter((x) => x._id + '' !== this.FPUID)
+      .map((x) => x.toJSON())
       .sort((a, b) => a.username.localeCompare(b.username));
-  }
-
-  /**
-   * transforms a usersname to its fullname
-   * @param user IUser
-   */
-  public transformName(user: IUser): string {
-    return [user.givenName, user.familyName].filter((x) => !!x).join(' ');
   }
 
   /**
@@ -175,24 +147,16 @@ export class UserService {
 
   /**
    * promotes a user to a specific group
-   * @param promoter IUser
    * @param id targeted user's id
    * @param group group to promote to
    */
   public async promoteTo(
-    promoter: IUser,
     id: string,
     group: 'User' | 'Moderator',
   ): Promise<void> {
     const user = await this.getUserById(id);
     if (user && user.group !== 'Admin') {
       await user.update({ $set: { group: group } });
-
-      this.tgbotService.sendMessage(
-        `<b>${this.transformName(promoter)}</b> hat <b>${this.transformName(
-          user,
-        )} zur Gruppe <b>${group}</b> hinzugefügt.`,
-      );
     }
   }
 
@@ -205,14 +169,7 @@ export class UserService {
         group: 'Moderator',
       })
     )
-      .map((x) => x.toObject())
-      .map((x: IUser) => {
-        return {
-          _id: x._id,
-          avatar: x.avatar,
-          username: this.transformName(x),
-        } as IUserInfo;
-      })
+      .map((x) => x.toJSON())
       .sort((a, b) => a.username.localeCompare(b.username));
   }
 
@@ -225,12 +182,11 @@ export class UserService {
         suspended: { $exists: true },
       })
     )
-      .map((x) => x.toObject())
-      .map((x: IUser) => {
+      .map((x: User) => {
         return {
           _id: x._id,
           avatar: x.avatar,
-          username: this.transformName(x),
+          username: x.toJSON().username,
           suspended: x.suspended,
           suspendedBy: x.suspendedBy,
         } as IUserInfo;
@@ -242,9 +198,9 @@ export class UserService {
    * returns a list of every userid
    */
   public async getEveryId(): Promise<string[]> {
-    return (await this.userModel.find())
-      .map((x) => x._id)
-      .filter((x) => x + '' !== this.FPUID);
+    return (await this.userModel.find({ _id: { $ne: FHBot._id } })).map(
+      (x) => x._id,
+    );
   }
 
   /**
@@ -272,13 +228,6 @@ export class UserService {
       await user.updateOne({
         $set: { suspended: time, suspendedBy: suspender._id },
       });
-      this.tgbotService.sendURLMessage(
-        `<b>${this.transformName(suspender)}</b> hat ${this.transformName(
-          user,
-        )} temporär gesperrt!`,
-        'Gesperrte Nutzer anzeigen',
-        'https://fitnesshub.app/profile/management/suspend-user',
-      );
     }
   }
 

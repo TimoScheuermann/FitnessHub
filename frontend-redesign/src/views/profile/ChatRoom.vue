@@ -146,7 +146,7 @@ export default class ChatRoom extends Vue {
 
 <style lang="scss" scoped>
 .view-chat-room {
-  min-height: 100vh;
+  min-height: calc(100vh - 100px - env(safe-area-inset-bottom));
   padding-bottom: calc(100px + env(safe-area-inset-bottom));
 
   [max-width] {

@@ -5,8 +5,9 @@ import { Namespace, Server } from 'socket.io';
 import { FeedService } from 'src/feed/feed.service';
 import { FHSocket } from 'src/FHSocket';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
+import { MessageService } from 'src/message/message.service';
 import { Message } from 'src/message/schemas/Message.schema';
-import { TgbotService } from 'src/tgbot/tgbot.service';
+import { FHBot } from 'src/user/FHBot.user';
 import { IUser } from 'src/user/interfaces/IUser';
 import { User } from 'src/user/schemas/User.schema';
 import { CreateExerciseDTO } from './dtos/CreateExercise.dto';
@@ -26,9 +27,9 @@ export class ExerciseService {
     @InjectModel(CompletedExercise.name)
     private completedExerciseModel: Model<CompletedExercise>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
-    private readonly tgbotService: TgbotService,
     private readonly fhSocket: FHSocket,
     private readonly feedService: FeedService,
+    private readonly messageService: MessageService,
   ) {}
 
   /**
@@ -354,15 +355,7 @@ export class ExerciseService {
     // eslint-disable-next-line
     content: any,
   ): Promise<void> {
-    const createdMessage: Message = await this.messageModel.create({
-      date: new Date().getTime(),
-      content: JSON.stringify(content),
-      from: '5f4a1a372149ef521c108f4a',
-      to: to,
-      type: type,
-      read: false,
-    });
-    this.fhSocket.server.to(to).emit('message', createdMessage);
+    this.messageService.sendMessage(FHBot, to, JSON.stringify(content), type);
   }
 
   /**

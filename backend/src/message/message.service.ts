@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { createCipheriv, createDecipheriv, scrypt } from 'crypto';
 import { Model } from 'mongoose';
 import { FHSocket } from 'src/FHSocket';
-import { FriendsService } from 'src/friends/friends.service';
-import { IFriendship } from 'src/friends/interfaces/IFriendship';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUser } from 'src/user/interfaces/IUser';
+import { promisify } from 'util';
 import { IMessage } from './interfaces/IMessage';
 import { Message } from './schemas/Message.schema';
 
@@ -13,22 +13,30 @@ import { Message } from './schemas/Message.schema';
 export class MessageService {
   constructor(
     @InjectModel(Message.name) private messageModel: Model<Message>,
-    private readonly friendsService: FriendsService,
     private readonly fhSocket: FHSocket,
     private readonly tgbotService: TgbotService,
   ) {}
 
-  /**
-   * returns the encryption secret for a chat room
-   * @param userA string
-   * @param userB string
-   */
-  private async getSecret(userA: string, userB: string): Promise<string> {
-    const friendship: IFriendship = await this.friendsService.getFriendship(
-      userA,
-      userB,
+  private async encrypt(message: string, messageId: string): Promise<Buffer> {
+    const iv = Buffer.alloc(16, messageId, 'utf8');
+    const password = process.env.CHAT_SECRET;
+
+    const key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
+    const cipher = createCipheriv('aes-256-ctr', key, iv);
+
+    return Buffer.concat([cipher.update(message), cipher.final()]);
+  }
+
+  private async decrypt(message: Buffer, messageId: string): Promise<string> {
+    const iv = Buffer.alloc(16, messageId, 'utf8');
+    const password = process.env.CHAT_SECRET;
+
+    const key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
+    const decipher = createDecipheriv('aes-256-ctr', key, iv);
+
+    return Buffer.concat([decipher.update(message), decipher.final()]).toString(
+      'utf8',
     );
-    return friendship._id;
   }
 
   /**
@@ -36,9 +44,18 @@ export class MessageService {
    * @param userID string
    */
   public async getMessages(userID: string): Promise<IMessage[]> {
-    return this.messageModel.find({
+    const messages = await this.messageModel.find({
       $or: [{ from: userID }, { to: userID }],
     });
+
+    return await Promise.all(
+      messages.map(async (m) => {
+        const { content, _id } = m;
+        const buffer = Buffer.from(Uint8Array.from(content));
+        const decrypted = await this.decrypt(buffer, _id);
+        return { ...m.toJSON(), content: decrypted };
+      }),
+    );
   }
 
   /**
@@ -63,18 +80,31 @@ export class MessageService {
     from: IUser,
     to: string,
     message: string,
+    type = 'message',
   ): Promise<void> {
-    // const secret = await this.getSecret(from, to);
     const createdMessage: Message = await this.messageModel.create({
       date: new Date().getTime(),
-      content: message,
+      content: [],
       from: from._id,
       to: to,
-      type: 'message',
+      type: type,
       read: false,
     });
 
-    this.fhSocket.server.to(from._id).to(to).emit('message', createdMessage);
+    const { _id } = createdMessage;
+    const encrypted = Array.from(
+      (await this.encrypt(message, _id)).map((x) => x),
+    );
+
+    await this.messageModel.updateOne(
+      { _id: _id },
+      { $set: { content: encrypted } },
+    );
+
+    this.fhSocket.server
+      .to(from._id)
+      .to(to)
+      .emit('message', { ...createdMessage, message: message });
 
     if (!this.fhSocket.server.sockets.adapter.rooms[to]) {
       const name = [from.givenName, from.familyName]
@@ -85,6 +115,5 @@ export class MessageService {
         '<b>' + name + ' schreibt:</b>\n' + message,
       );
     }
-    // TODO: encrypt data
   }
 }

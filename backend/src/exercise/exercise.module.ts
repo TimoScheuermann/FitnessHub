@@ -7,6 +7,7 @@ import {
   Variable,
   VariableSchema,
 } from 'src/management/variables/schemas/Variable.schema';
+import { MessageModule } from 'src/message/message.module';
 import { Message, MessageSchema } from 'src/message/schemas/Message.schema';
 import { SettingModule } from 'src/setting/setting.module';
 import { TgbotService } from 'src/tgbot/tgbot.service';
@@ -31,6 +32,7 @@ import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
     FriendsModule,
     SettingModule,
     FeedModule,
+    MessageModule,
   ],
   controllers: [ExerciseController],
   providers: [ExerciseService, FHSocket, TgbotService],
