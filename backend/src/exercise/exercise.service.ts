@@ -2,6 +2,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, mongo } from 'mongoose';
 import { Namespace, Server } from 'socket.io';
+import { AchievementService } from 'src/achievement/achievement.service';
 import { FeedService } from 'src/feed/feed.service';
 import { FHSocket } from 'src/FHSocket';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
@@ -30,6 +31,7 @@ export class ExerciseService {
     private readonly fhSocket: FHSocket,
     private readonly feedService: FeedService,
     private readonly messageService: MessageService,
+    private readonly achievementService: AchievementService,
   ) {}
 
   /**
@@ -404,11 +406,6 @@ export class ExerciseService {
     const now = new Date().getTime();
     const ids = [...new Set(finish.map((x) => x.exerciseId))];
 
-    await this.exerciseModel.updateMany(
-      { _id: { $in: ids } },
-      { $set: { lastExecution: now } },
-    );
-
     await this.completedExerciseModel.insertMany(
       finish.map((x) => {
         return {
@@ -418,7 +415,13 @@ export class ExerciseService {
       }),
     );
 
-    // TODO: Inform friends?
+    const exercises = await this.exerciseModel.find({ _id: { $in: ids } });
+    await Promise.all(
+      exercises.map(async (x) => {
+        await x.update({ $set: { lastExecution: now } });
+        await this.achievementService.addExAchievement(user._id, x);
+      }),
+    );
   }
 
   /**

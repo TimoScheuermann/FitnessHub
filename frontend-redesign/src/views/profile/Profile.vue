@@ -5,6 +5,7 @@
       <tc-list :dark="$store.getters.darkmode">
         <!-- <tc-list-item icon="telegram" title="Telegram" routeName="telegram" /> -->
         <tc-badge
+          tfcolor="success"
           :value="$store.getters.unansweredFriendRequests"
           position="inside"
         >
@@ -43,7 +44,9 @@
           icon="chart-bar"
           routeName="statistics"
         />
-        <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
+        <tc-badge position="inside" :value="achievements" tfcolor="success">
+          <tc-list-item title="Erfolge" icon="star" routeName="achievements" />
+        </tc-badge>
       </tc-list>
 
       <h4>Management</h4>
@@ -108,6 +111,7 @@
 </template>
 
 <script lang="ts">
+import { AchievementManager } from '@/utils/AchievementManager';
 import { signOut } from '@/utils/auth';
 import { copyToClipboard } from '@/utils/functions';
 import { NotificationManagement } from '@/utils/NotificationManagement';
@@ -130,6 +134,10 @@ export default class Profile extends Vue {
   get submissions(): number {
     return NotificationManagement.getExerciseSubmissions();
   }
+
+  get achievements(): number {
+    return AchievementManager.getNew();
+  }
 }
 </script>
 
@@ -146,7 +154,7 @@ export default class Profile extends Vue {
   }
   .tc-list {
     margin-bottom: 20px;
-    .tc-badge:after {
+    .tc-badge:not(:last-child):after {
       position: absolute;
       content: '';
       z-index: 10;

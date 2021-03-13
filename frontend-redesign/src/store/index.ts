@@ -1,9 +1,11 @@
 /* eslint-disable */
 import { socket } from '@/main';
+import { AchievementManager } from '@/utils/AchievementManager';
 import { getUserFromJWT } from '@/utils/auth';
 import { ExerciseManagement } from '@/utils/ExerciseManagement';
 import { openFullscreen } from '@/utils/functions';
 import {
+  IAchievment,
   IExercise,
   IFeed,
   IHealth,
@@ -32,6 +34,9 @@ const store = new Vuex.Store({
     darkmode: false,
     storedRoutes: {},
     variables: null,
+
+    achievements: null,
+    newAchievements: 0,
 
     feed: null,
     unreadPosts: 0,
@@ -86,6 +91,13 @@ const store = new Vuex.Store({
     },
     variables: (state: any): IVariable[] | null => {
       return state.variables;
+    },
+
+    achievements: (state: any): IAchievment[] | null => {
+      return state.achievements;
+    },
+    newAchievements: (state: any): number => {
+      return state.newAchievements;
     },
 
     feed: (state: any): IFeed[] | null => {
@@ -183,6 +195,7 @@ const store = new Vuex.Store({
       UserManagement.loadFriends();
       UserManagement.loadFriendRequests();
       UserManagement.loadWorkouts();
+      AchievementManager.load();
       RecipeManagement.loadLiked();
       RecipeManagement.loadCreated();
       ExerciseManagement.loadSubmissions();
@@ -204,6 +217,16 @@ const store = new Vuex.Store({
     },
     variables(state: any, vars: IVariable) {
       state.variables = vars;
+    },
+
+    achievements(state: any, achievements: IAchievment[]) {
+      state.achievements = achievements;
+    },
+    newAchievements: (state: any) => {
+      state.newAchievements++;
+    },
+    clearNewAchievements: (state: any) => {
+      state.newAchievements = 0;
     },
 
     feed(state: any, feed: IFeed[]) {

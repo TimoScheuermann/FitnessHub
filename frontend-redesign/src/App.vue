@@ -17,6 +17,7 @@ import {
   unregisterMediaQueries
 } from '@/utils/mediaQueries';
 import {
+  IAchievment,
   IExercise,
   IFeed,
   IMessage,
@@ -29,6 +30,7 @@ import FHNotification from './components/FHNotification.vue';
 import { ExerciseManagement } from './utils/ExerciseManagement';
 import { VariableManagement } from './utils/VariableManagement';
 import { FeedManagement } from './utils/FeedManagement';
+import { AchievementManager } from './utils/AchievementManager';
 
 @Component({
   components: {
@@ -46,6 +48,12 @@ export default class App extends Vue {
 
   beforeDestroy() {
     unregisterMediaQueries();
+  }
+
+  @Socket('achievement')
+  newAchievement(achievement: IAchievment) {
+    console.log(achievement);
+    AchievementManager.add(achievement);
   }
 
   @Socket('message')

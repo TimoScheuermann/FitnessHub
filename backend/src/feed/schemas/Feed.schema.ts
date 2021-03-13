@@ -9,34 +9,37 @@ export class Feed extends Document {
   @Prop()
   text: string;
 
-  @Prop()
+  @Prop({ required: false })
   user?: string;
 
-  @Prop()
+  @Prop({ required: false })
   thumbnail?: string;
 
-  @Prop()
+  @Prop({ required: false })
   title?: string;
 
-  @Prop()
+  @Prop({ required: false })
   recipeId?: string;
 
-  @Prop()
+  @Prop({ required: false })
   exerciseId?: string;
 
-  @Prop()
+  @Prop({ required: false })
+  achievementTitle?: string;
+
+  @Prop({ required: false })
   hot?: string[];
 
-  @Prop()
+  @Prop({ required: false })
   like?: string[];
 
-  @Prop()
+  @Prop({ required: false })
   strong?: string[];
 
-  @Prop()
+  @Prop({ required: false })
   thumbsup?: string[];
 
-  @Prop()
+  @Prop({ required: false })
   monkey?: string[];
 }
 

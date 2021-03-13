@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { IExercise } from 'src/exercise/interfaces/IExercise';
 import { FHSocket } from 'src/FHSocket';
+import { Friendship } from 'src/friends/schemas/Friendship.schema';
 import { IRecipe } from 'src/recipe/interfaces/IRecipe';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
 import { User } from 'src/user/schemas/User.schema';
@@ -23,6 +24,8 @@ export class FeedService {
   constructor(
     @InjectModel(Feed.name) private readonly feedModel: Model<Feed>,
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(Friendship.name)
+    private readonly friendshipModel: Model<Friendship>,
     private readonly fhSocket: FHSocket,
   ) {}
 
@@ -37,11 +40,34 @@ export class FeedService {
     if (!oldest || isNaN(+oldest)) oldest = new Date().getTime();
     else oldest = +oldest;
 
-    const posts = await this.feedModel
-      .find({ timestamp: { $lt: oldest } })
-      .sort({ timestamp: -1 })
-      .limit(limit);
-
+    let posts = [];
+    if (!userId) {
+      posts = await this.feedModel
+        .find({
+          timestamp: { $lt: oldest },
+          achievementTitle: { $exists: false },
+        })
+        .sort({ timestamp: -1 })
+        .limit(limit);
+    } else {
+      const friends = await this.getFriendsOf(userId);
+      friends.push(userId);
+      posts = await this.feedModel
+        .find({
+          timestamp: { $lt: oldest },
+          $or: [
+            { achievementTitle: { $exists: false } },
+            {
+              $and: [
+                { achievementTitle: { $exists: true } },
+                { user: { $in: friends } },
+              ],
+            },
+          ],
+        })
+        .sort({ timestamp: -1 })
+        .limit(limit);
+    }
     return this.mapPost(posts, userId || null);
   }
 
@@ -211,8 +237,6 @@ export class FeedService {
       };
     };
 
-    posts = (posts.map((x) => x.toJSON()) as unknown) as Feed[];
-
     return posts.map((x) => {
       let { hot, like, strong, thumbsup, monkey } = x;
       hot = hot || [];
@@ -231,7 +255,7 @@ export class FeedService {
       }
 
       return {
-        ...x,
+        ...x.toJSON(),
         user: getUser(x.user),
         hot: hot.length,
         like: like.length,
@@ -241,5 +265,18 @@ export class FeedService {
         reactions: reactions,
       } as IFeed;
     });
+  }
+
+  private async getFriendsOf(id: string): Promise<string[]> {
+    const friends = await this.friendshipModel.find({
+      $or: [
+        { invitee: id, accepted: true },
+        { target: id, accepted: true },
+      ],
+    });
+
+    const idPairs = friends.map((x) => [x.invitee, x.target]);
+    const uniqueIds = [...new Set([].concat(...idPairs))];
+    return uniqueIds.filter((x) => isValidObjectId(x));
   }
 }

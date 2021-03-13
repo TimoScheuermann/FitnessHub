@@ -1,4 +1,5 @@
 import { Location } from 'vue-router';
+import { AchievementManager } from './AchievementManager';
 import { ExerciseManagement } from './ExerciseManagement';
 import { FHEventBus } from './FHEventbus';
 import { IFHNotification } from './interfaces';
@@ -19,7 +20,11 @@ export class NotificationManagement {
   }
 
   public static getTotalNotifications(): number {
-    return this.getUnreadMessages() + this.getExerciseSubmissions();
+    return (
+      this.getUnreadMessages() +
+      this.getExerciseSubmissions() +
+      AchievementManager.getNew()
+    );
   }
 
   public static sendNotification(

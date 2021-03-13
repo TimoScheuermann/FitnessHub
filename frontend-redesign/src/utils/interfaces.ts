@@ -225,10 +225,9 @@ export interface IVariable {
 }
 
 export interface IAchievment {
-  title: string;
-  subtitle: string;
-  date: number;
-  asset: string;
+  exerciseId: string;
+  exerciseTitle: string;
+  achievedAt: number[];
 }
 
 export interface IFeed {
@@ -240,6 +239,7 @@ export interface IFeed {
   text: string;
   recipeId?: string;
   exerciseId?: string;
+  achievementTitle?: string;
 
   hot: number;
   like: number;

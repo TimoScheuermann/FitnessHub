@@ -1,45 +1,76 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { IExercise } from 'src/exercise/interfaces/IExercise';
-import { CompletedExercise } from 'src/exercise/schemas/CompletedExercise.schema';
+import { isValidObjectId, Model } from 'mongoose';
 import { Exercise } from 'src/exercise/schemas/Exercise.schema';
-import { IAchievment } from './interfaces/IAchievement';
+import { Feed } from 'src/feed/schemas/Feed.schema';
+import { FHSocket } from 'src/FHSocket';
+import { Friendship } from 'src/friends/schemas/Friendship.schema';
+import { Achievement } from './schemas/Achievement.schema';
 
 @Injectable()
 export class AchievementService {
   constructor(
-    @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
-    @InjectModel(CompletedExercise.name)
-    private completedExerciseModel: Model<CompletedExercise>,
+    @InjectModel(Achievement.name) private achievementModel: Model<Achievement>,
+    @InjectModel(Friendship.name) private friendshipModel: Model<Friendship>,
+    @InjectModel(Feed.name) private feedModel: Model<Feed>,
+    private readonly fhSocket: FHSocket,
   ) {}
 
-  public async getAchievements(userId: string): Promise<IAchievment[]> {
-    const achievements: IAchievment[] = [];
-    const exerciseIds = await this.getUniqueCompletedExercises(userId);
-    await Promise.all(
-      exerciseIds.map(async (x) => {
-        const exercise = await this.getExercise(x);
-        if (exercise) {
-          achievements.push({
-            asset: exercise.thumbnail,
-            date: 0,
-            subtitle: `Du hast zum ersten mal die Übung "${exercise.title}" gemacht`,
-            title: exercise.title,
-          });
-        }
-      }),
-    );
-    return achievements;
+  public async getAchievements(
+    requester: string,
+    target: string,
+  ): Promise<Achievement[]> {
+    if (!requester || !target) return [];
+    if (!isValidObjectId(requester) || !isValidObjectId(target)) return [];
+
+    if (!(await this.doesFriendshipExist(requester, target))) return [];
+    return this.achievementModel.find({ userId: target });
   }
 
-  private async getUniqueCompletedExercises(userId: string): Promise<string[]> {
-    return await this.completedExerciseModel.distinct('exercise', {
-      user: userId,
+  public async addExAchievement(
+    userId: string,
+    exercise: Exercise,
+  ): Promise<void> {
+    let achievement = await this.achievementModel.findOne({
+      userId: userId,
+      exerciseId: exercise._id,
     });
+    const date = new Date().getTime();
+
+    if (!achievement) {
+      achievement = await this.achievementModel.create({
+        userId: userId,
+        exerciseId: exercise._id,
+        exerciseTitle: exercise.title,
+        achievedAt: [],
+      });
+      achievement.achievedAt = [date];
+      this.fhSocket.server.to(userId).emit('achievement', achievement.toJSON());
+
+      await this.feedModel.create({
+        timestamp: date,
+        text:
+          'Ich habe zum ersten Mal die Übung ' +
+          exercise.title +
+          ' ausgeführt.',
+        achievementTitle: 'Erfolg erzielt!',
+        user: userId,
+      });
+    }
+
+    await achievement.update({ $addToSet: { achievedAt: date } });
   }
 
-  private async getExercise(exerciseId: string): Promise<IExercise> {
-    return await this.exerciseModel.findOne({ _id: exerciseId });
+  private async doesFriendshipExist(
+    userA: string,
+    userB: string,
+  ): Promise<boolean> {
+    if (userA === userB) return true;
+    return !!(await this.friendshipModel.findOne({
+      $or: [
+        { invitee: userA, target: userB, accepted: true },
+        { invitee: userB, target: userA, accepted: true },
+      ],
+    }));
   }
 }

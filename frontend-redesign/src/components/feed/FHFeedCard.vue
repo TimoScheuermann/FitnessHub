@@ -2,8 +2,8 @@
   <div class="fh-feed-card" v-if="feed">
     <div
       class="background"
-      v-if="feed.thumbnail"
-      :style="`--background-url: url(${feed.thumbnail})`"
+      v-if="background"
+      :style="`--background-url: url(${background})`"
     />
     <div class="content-wrapper">
       <div class="fh-feed-item--head">
@@ -24,11 +24,12 @@
 
       <div class="fh-feed-item--content">
         <tl-grid minWidth="200" gap="20">
-          <div v-if="feed.thumbnail">
-            <img :src="feed.thumbnail" />
+          <div v-if="background">
+            <img :src="background" alt="" />
           </div>
           <div>
-            <h2 v-if="feed.title">{{ feed.title }}</h2>
+            <h2 v-if="feed.achievementTitle">{{ feed.achievementTitle }}</h2>
+            <h2 v-else-if="feed.title">{{ feed.title }}</h2>
             <p line-break>{{ feed.text }}</p>
 
             <tl-flow horizontal="space-between">
@@ -92,6 +93,16 @@ export default class FHFeedCard extends Vue {
         avatar: 'pwa/splash/manifest-icon-192.jpg'
       }
     );
+  }
+
+  get background(): string | null {
+    if (!this.feed) return null;
+    if (this.feed.achievementTitle) {
+      return 'assets/achievement-unlocked.webp';
+    } else if (this.feed.thumbnail) {
+      return this.feed.thumbnail;
+    }
+    return null;
   }
 
   get time(): string {

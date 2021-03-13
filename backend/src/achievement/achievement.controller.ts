@@ -1,10 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
+import { FriendIDParam } from 'src/friends/friends.guard';
 import { IUser } from 'src/user/interfaces/IUser';
 import { AchievementService } from './achievement.service';
-import { IAchievment } from './interfaces/IAchievement';
+import { Achievement } from './schemas/Achievement.schema';
 
 @Controller('achievement')
 export class AchievementController {
@@ -14,9 +14,19 @@ export class AchievementController {
    * returns achievements of user
    * @param user IUSer
    */
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getAchievements(@FHUser() user: IUser): Promise<IAchievment[]> {
-    return this.achievementService.getAchievements(user._id);
+  async getAchievements(@FHUser() user: IUser): Promise<Achievement[]> {
+    return this.achievementService.getAchievements(user._id, user._id);
+  }
+
+  @FriendIDParam('userId')
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':userId')
+  async getAchievementsOf(
+    @FHUser() user: IUser,
+    @Param('userId') userId: string,
+  ): Promise<Achievement[]> {
+    return this.achievementService.getAchievements(user._id, userId);
   }
 }

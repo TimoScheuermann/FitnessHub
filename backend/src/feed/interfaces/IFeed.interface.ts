@@ -9,6 +9,7 @@ export interface IFeed {
   text: string;
   recipeId?: string;
   exerciseId?: string;
+  achievementTitle?: string;
 
   hot: number;
   like: number;
