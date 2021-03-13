@@ -37,23 +37,38 @@ export class TgbotService {
       });
       this.bot = new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
 
-      this.clientBot.on('message', this.onMessage);
-      this.clientBot.on('callback_query', this.onCallback);
+      this.clientBot.on('message', (details: MessageDetails) =>
+        this.onMessage(details, tgChatModel),
+      );
+      this.clientBot.on('callback_query', (callback: MessageCallback) =>
+        this.onCallback(callback, tgChatModel, fhSocket),
+      );
     }
   }
 
-  private async onMessage(details: MessageDetails): Promise<void> {
-    // bot has received a message from a non connected user
+  private async onMessage(
+    details: MessageDetails,
+    model: Model<TgChat>,
+  ): Promise<void> {
     const { id } = details.chat;
-    if (!(await this.isChatRegisterd(id))) {
+    // bot has received a message from a non connected user
+    if (!(await model.findOne({ telegramChat: id }))) {
       // get token or create a new one
-      const token = await this.getToken(id);
+      let token = Math.round(Math.random() * (999999 - 100000) + 100000) + '';
+      const chat = await model.findOne({ telegramChat: id });
+      if (chat) token = chat.token;
+      else await model.create({ telegramChat: id, token: token });
+
       // send token to user
       this.clientBot.sendMessage(id, 'Dein Code lautet:\n```' + token + '```');
     }
   }
 
-  private async onCallback(callback: MessageCallback): Promise<void> {
+  private async onCallback(
+    callback: MessageCallback,
+    model: Model<TgChat>,
+    socket: FHSocket,
+  ): Promise<void> {
     const userId = callback.data;
     const canceled = userId === 'cancel';
     const chatId = callback.message.chat.id;
@@ -64,14 +79,14 @@ export class TgbotService {
     // user hasnt clicked cancel
     if (!canceled) {
       // store user to relevant chat
-      await this.tgChatModel.updateOne(
+      await model.updateOne(
         { telegramChat: chatId },
         { $set: { userId: userId } },
         { upsert: true },
       );
 
       // send update to frontend
-      this.fhSocket.server.to(userId).emit('telegram', chatId);
+      socket.server.to(userId).emit('telegram', chatId);
 
       // send update to telegram
       this.clientBot.answerCallbackQuery(callback.id, {
@@ -177,20 +192,6 @@ export class TgbotService {
     if (user && isValidObjectId(user._id)) {
       await this.tgChatModel.deleteOne({ userId: user._id });
     }
-  }
-
-  private async isChatRegisterd(chat: number): Promise<boolean> {
-    return !!(await this.tgChatModel.findOne({ telegramChat: chat }));
-  }
-
-  private async getToken(chatId: number): Promise<string> {
-    const chat = await this.tgChatModel.findOne({ telegramChat: chatId });
-    if (chat) return chat.token;
-
-    const token = Math.round(Math.random() * (999999 - 100000) + 100000) + '';
-    await this.tgChatModel.create({ telegramChat: chatId, token: token });
-
-    return token;
   }
 
   private async doesTokenExist(token: string): Promise<boolean> {
