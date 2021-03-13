@@ -62,6 +62,14 @@ export class TgbotService {
       token = Math.round(Math.random() * (999999 - 100000) + 100000) + '';
       await model.create({ telegramChat: id, token: token });
     }
+
+    if (chat && chat.userId) {
+      bot.sendMessage(
+        id,
+        'Dieser Account ist bereits mit einem FitnessHub Konto verknüpft!',
+      );
+      return;
+    }
     // send token to user
     bot.sendMessage(id, 'Dein Code lautet:');
     bot.sendMessage(id, token);
@@ -77,9 +85,6 @@ export class TgbotService {
     const userId = callback.data;
     const canceled = userId === 'cancel';
     const chatId = callback.message.chat.id;
-
-    // delete callback message
-    bot.deleteMessage(chatId, callback.message.message_id);
 
     // user hasnt clicked cancel
     if (!canceled) {
@@ -99,6 +104,9 @@ export class TgbotService {
         text: 'Accounts erfolgreich verknüpft!',
       });
     }
+
+    // delete callback message
+    bot.deleteMessage(chatId, callback.message.message_id);
   }
 
   public async validateConnection(
