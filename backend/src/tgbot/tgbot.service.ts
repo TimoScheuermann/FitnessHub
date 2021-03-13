@@ -185,4 +185,15 @@ export class TgbotService {
     if (userModel) return userModel.telegramChat || null;
     return null;
   }
+
+  public async removeCode(user: IUser): Promise<void> {
+    if (user && isValidObjectId(user._id)) {
+      await this.userModel.updateOne(
+        { _id: user._id },
+        { $unset: { telegramChat: '' } },
+      );
+
+      delete this.connectedChats[user._id];
+    }
+  }
 }

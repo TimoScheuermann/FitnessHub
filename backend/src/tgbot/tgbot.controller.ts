@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -15,16 +15,22 @@ export class TgbotController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Post('code')
-  public validateConnection(
+  async validateConnection(
     @FHUser() user: IUser,
     @Body() body: { code: string },
-  ): void {
+  ): Promise<void> {
     this.tgbotService.validateConnection(user, body.code);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  public getCode(@FHUser() user: IUser): Promise<number> {
+  async getCode(@FHUser() user: IUser): Promise<number> {
     return this.tgbotService.getCode(user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete()
+  async removeCode(@FHUser() user: IUser): Promise<void> {
+    this.tgbotService.removeCode(user);
   }
 }
