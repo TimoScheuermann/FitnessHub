@@ -38,43 +38,48 @@ export class TgbotService {
       this.bot = new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
 
       this.clientBot.on('message', (details: MessageDetails) =>
-        this.onMessage(details, tgChatModel),
+        this.onMessage(details, tgChatModel, this.clientBot),
       );
       this.clientBot.on('callback_query', (callback: MessageCallback) =>
-        this.onCallback(callback, tgChatModel, fhSocket),
+        this.onCallback(callback, tgChatModel, fhSocket, this.clientBot),
       );
     }
   }
 
+  // bot has received a message from a non connected user
   private async onMessage(
     details: MessageDetails,
     model: Model<TgChat>,
+    // eslint-disable-next-line
+    bot: any,
   ): Promise<void> {
     const { id } = details.chat;
-    // bot has received a message from a non connected user
-    if (!(await model.findOne({ telegramChat: id }))) {
-      // get token or create a new one
-      let token = Math.round(Math.random() * (999999 - 100000) + 100000) + '';
-      const chat = await model.findOne({ telegramChat: id });
-      if (chat) token = chat.token;
-      else await model.create({ telegramChat: id, token: token });
+    let token = '';
 
-      // send token to user
-      this.clientBot.sendMessage(id, 'Dein Code lautet:\n```' + token + '```');
+    const chat = await model.findOne({ telegramChat: id });
+    if (chat) token = chat.token;
+    else {
+      token = Math.round(Math.random() * (999999 - 100000) + 100000) + '';
+      await model.create({ telegramChat: id, token: token });
     }
+    // send token to user
+    bot.sendMessage(id, 'Dein Code lautet:');
+    bot.sendMessage(id, token);
   }
 
   private async onCallback(
     callback: MessageCallback,
     model: Model<TgChat>,
     socket: FHSocket,
+    // eslint-disable-next-line
+    bot: any,
   ): Promise<void> {
     const userId = callback.data;
     const canceled = userId === 'cancel';
     const chatId = callback.message.chat.id;
 
     // delete callback message
-    this.clientBot.deleteMessage(chatId, callback.message.message_id);
+    bot.deleteMessage(chatId, callback.message.message_id);
 
     // user hasnt clicked cancel
     if (!canceled) {
@@ -89,7 +94,7 @@ export class TgbotService {
       socket.server.to(userId).emit('telegram', chatId);
 
       // send update to telegram
-      this.clientBot.answerCallbackQuery(callback.id, {
+      bot.answerCallbackQuery(callback.id, {
         show_alert: true,
         text: 'Accounts erfolgreich verknüpft!',
       });
