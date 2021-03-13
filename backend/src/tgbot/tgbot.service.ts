@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import * as TelegramBot from 'node-telegram-bot-api';
 import { FHSocket } from 'src/FHSocket';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -177,5 +177,12 @@ export class TgbotService {
         parse_mode: 'HTML',
       });
     }
+  }
+
+  public async getCode(user: IUser): Promise<number | null> {
+    if (!user || !isValidObjectId(user._id)) return null;
+    const userModel = await this.userModel.findOne({ _id: user._id });
+    if (userModel) return userModel.telegramChat || null;
+    return null;
   }
 }
