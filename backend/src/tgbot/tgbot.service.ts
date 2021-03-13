@@ -85,9 +85,11 @@ export class TgbotService {
     user: IUser,
     token: string,
   ): Promise<boolean> {
-    if (!this.clientBot) return;
-
-    console.log('Token', token);
+    if (!this.clientBot) {
+      throw new UnprocessableEntityException(
+        'Diese Funktion ist zurzeit abgeschaltet.',
+      );
+    }
 
     // validate token sent via frontend
     if (!(await this.doesTokenExist(token))) {
