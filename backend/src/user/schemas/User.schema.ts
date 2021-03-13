@@ -41,9 +41,6 @@ export class User extends Document {
 
   @Prop({ required: false })
   suspended?: number;
-
-  @Prop({ required: false })
-  telegramChat?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

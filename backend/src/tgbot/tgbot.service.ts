@@ -4,141 +4,118 @@ import { isValidObjectId, Model } from 'mongoose';
 import * as TelegramBot from 'node-telegram-bot-api';
 import { FHSocket } from 'src/FHSocket';
 import { IUser } from 'src/user/interfaces/IUser';
-import { User } from 'src/user/schemas/User.schema';
-import { v4 } from 'uuid';
+import { TgChat } from './schemas/TgChat.schema';
+
+// Admin Chat
+const CHAT_ID = -473869455;
+
+interface MessageDetails {
+  message_id: string;
+  chat: {
+    id: number;
+  };
+}
+interface MessageCallback {
+  id: number;
+  data: string;
+  message: MessageDetails;
+}
 
 @Injectable()
 export class TgbotService {
-  // Admin Chat
-  private CHAT_ID = -473869455;
-
-  // declare bots if enabled via env vars.
-  private bot = process.env.IGNORE_BOT
-    ? undefined
-    : new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
-
-  private clientBot = process.env.IGNORE_BOT
-    ? undefined
-    : new TelegramBot(process.env.TG_BOT_CLIENT_TOKEN, {
-        polling: true,
-      });
-
-  // UserId, ChatId
-  private connectedChats: Record<string, number> = {};
-
-  // ChatId, Token
-  private tokens: Record<number, string> = {};
+  private bot = null;
+  private clientBot = null;
 
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(TgChat.name) private tgChatModel: Model<TgChat>,
     private readonly fhSocket: FHSocket,
   ) {
-    // load all connected clients
-    this.userModel
-      .find({ telegramChat: { $exists: true } })
-      .then((res: IUser[]) => {
-        res.forEach((x) => {
-          this.connectedChats[x._id] = x.telegramChat;
-        });
+    // declare bots if enabled via env vars.
+    if (!process.env.IGNORE_BOT) {
+      this.clientBot = new TelegramBot(process.env.TG_BOT_CLIENT_TOKEN, {
+        polling: true,
       });
+      this.bot = new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
 
-    if (this.clientBot) {
-      this.clientBot.on('message', (details) => {
-        // bot has received a message from a non connected user
-        if (!Object.values(this.connectedChats).includes(details.chat.id)) {
-          // check if token hasnt already been created
-          if (!Object.keys(this.tokens).includes(details.chat.id + '')) {
-            // create token
-            let token = v4();
-            while (Object.values(this.tokens).includes(token)) {
-              token = v4();
-            }
-            this.tokens[details.chat.id] = token;
-          }
+      this.clientBot.on('message', this.onMessage);
+      this.clientBot.on('callback_query', this.onCallback);
+    }
+  }
 
-          // send token to user
-          this.clientBot.sendMessage(
-            details.chat.id,
-            `Dein Code lautet:\n${this.tokens[details.chat.id]}`,
-          );
-        }
-      });
+  private async onMessage(details: MessageDetails): Promise<void> {
+    // bot has received a message from a non connected user
+    const { id } = details.chat;
+    if (!(await this.isChatRegisterd(id))) {
+      // get token or create a new one
+      const token = await this.getToken(id);
+      // send token to user
+      this.clientBot.sendMessage(id, 'Dein Code lautet:\n```' + token + '```');
+    }
+  }
 
-      // connection callback has been triggered
-      this.clientBot.on('callback_query', async (details) => {
-        const canceled = details.data === 'cancel';
-        const chatId = details.message.chat.id;
-        const userId = details.data;
+  private async onCallback(callback: MessageCallback): Promise<void> {
+    const userId = callback.data;
+    const canceled = userId === 'cancel';
+    const chatId = callback.message.chat.id;
 
-        delete this.tokens[chatId + ''];
+    // delete callback message
+    this.clientBot.deleteMessage(chatId, callback.message.message_id);
 
-        // user hasnt clicked cancel
-        if (!canceled) {
-          // update user model
-          await this.userModel.updateOne(
-            { _id: userId },
-            { $set: { telegramChat: chatId } },
-            { upsert: true },
-          );
+    // user hasnt clicked cancel
+    if (!canceled) {
+      // store user to relevant chat
+      await this.tgChatModel.updateOne(
+        { telegramChat: chatId },
+        { $set: { userId: userId } },
+        { upsert: true },
+      );
 
-          // send update to frontend
-          this.fhSocket.server.to(userId).emit('telegram.chat', chatId);
+      // send update to frontend
+      this.fhSocket.server.to(userId).emit('telegram', chatId);
 
-          // send update via telegram
-          this.clientBot.answerCallbackQuery(details.id, {
-            show_alert: true,
-            text: 'Accounts erfolgreich verknüpft!',
-          });
-          this.connectedChats[userId] = chatId;
-        }
-
-        // delete callback message
-        this.clientBot.deleteMessage(
-          details.message.chat.id,
-          details.message.message_id,
-        );
+      // send update to telegram
+      this.clientBot.answerCallbackQuery(callback.id, {
+        show_alert: true,
+        text: 'Accounts erfolgreich verknüpft!',
       });
     }
   }
 
-  public validateConnection(user: IUser, code: string): void {
+  public async validateConnection(
+    user: IUser,
+    token: string,
+  ): Promise<boolean> {
     if (!this.clientBot) return;
 
     // validate token sent via frontend
-    if (!Object.values(this.tokens).includes(code)) {
-      this.fhSocket.server
-        .to(user._id)
-        .emit('telegram.errorMessage', 'Code existiert nicht.');
-      return;
+    if (!(await this.doesTokenExist(token))) {
+      throw new Error('Token existiert nicht.');
     }
 
+    const name = [user.givenName, user.familyName].filter((x) => !!x).join(' ');
+
+    // create message with callback for accept or deny
+    const message = `<a href="${user.avatar}">&#8205;</a>\nDieser Account versucht sich mit deinem Telegram Account zu verknüpfen:\n<b>${name}</b>`;
+    const opts = {
+      parse_mode: 'HTML',
+      disable_web_page_preview: false,
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: 'Abbrechen', callback_data: 'cancel' },
+            { text: 'Verknüpfen', callback_data: user._id },
+          ],
+        ],
+      },
+    };
+
+    const chats = await this.getChats(token);
     // ask via telegram if connection is allowed
-    for (const key in this.tokens) {
-      // token and key match
-      if (this.tokens[key] === code) {
-        const name = [user.givenName, user.familyName]
-          .filter((x) => !!x)
-          .join(' ');
+    chats.forEach((chatId) => {
+      this.clientBot.sendMessage(chatId, message, opts);
+    });
 
-        // create message with callback for accept or deny
-        const message = `<a href="${user.avatar}">&#8205;</a>\nDieser Account versucht sich mit deinem Telegram Account zu verknüpfen:\n<b>${name}</b>`;
-        const opts = {
-          parse_mode: 'HTML',
-          disable_web_page_preview: false,
-          reply_markup: {
-            inline_keyboard: [
-              [
-                { text: 'Abbrechen', callback_data: 'cancel' },
-                { text: 'Verknüpfen', callback_data: user._id },
-              ],
-            ],
-          },
-        };
-
-        // send message
-        this.clientBot.sendMessage(key, message, opts);
-      }
-    }
+    return true;
   }
 
   /**
@@ -147,7 +124,7 @@ export class TgbotService {
    */
   public sendMessage(message: string): void {
     if (this.bot)
-      this.bot.sendMessage(this.CHAT_ID, message, { parse_mode: 'HTML' });
+      this.bot.sendMessage(CHAT_ID, message, { parse_mode: 'HTML' });
   }
 
   /**
@@ -158,7 +135,7 @@ export class TgbotService {
    */
   public sendURLMessage(message: string, label: string, url: string): void {
     if (this.bot)
-      this.bot.sendMessage(this.CHAT_ID, message, {
+      this.bot.sendMessage(CHAT_ID, message, {
         parse_mode: 'HTML',
         reply_markup: JSON.stringify({
           inline_keyboard: [[{ text: label, url: url }]],
@@ -171,29 +148,53 @@ export class TgbotService {
    * @param userId string
    * @param message message
    */
-  public sendMessageToUser(userId: string, message: string): void {
-    if (this.clientBot && this.connectedChats[userId]) {
-      this.clientBot.sendMessage(this.connectedChats[userId], message, {
-        parse_mode: 'HTML',
-      });
+  public async sendMessageToUser(
+    userId: string,
+    message: string,
+  ): Promise<void> {
+    if (this.clientBot) {
+      const chat = await this.tgChatModel.findOne({ userId: userId });
+      if (chat && chat.telegramChat) {
+        this.clientBot.sendMessage(chat.telegramChat, message, {
+          parse_mode: 'html',
+        });
+      }
     }
   }
 
-  public async getCode(user: IUser): Promise<number | null> {
-    if (!user || !isValidObjectId(user._id)) return null;
-    const userModel = await this.userModel.findOne({ _id: user._id });
-    if (userModel) return userModel.telegramChat || null;
+  public async getChatNumber(userId: string): Promise<number | null> {
+    if (!userId || !isValidObjectId(userId)) return null;
+    const chat = await this.tgChatModel.findOne({ userId: userId });
+    if (chat) return chat.telegramChat || null;
     return null;
   }
 
   public async removeCode(user: IUser): Promise<void> {
     if (user && isValidObjectId(user._id)) {
-      await this.userModel.updateOne(
-        { _id: user._id },
-        { $unset: { telegramChat: '' } },
-      );
-
-      delete this.connectedChats[user._id];
+      await this.tgChatModel.deleteOne({ userId: user._id });
     }
+  }
+
+  private async isChatRegisterd(chat: number): Promise<boolean> {
+    return !!(await this.tgChatModel.findOne({ telegramChat: chat }));
+  }
+
+  private async getToken(chatId: number): Promise<string> {
+    const chat = await this.tgChatModel.findOne({ telegramChat: chatId });
+    if (chat) return chat.token;
+
+    const token = Math.round(Math.random() * (999999 - 100000) + 100000) + '';
+    await this.tgChatModel.create({ telegramChat: chatId, token: token });
+
+    return token;
+  }
+
+  private async doesTokenExist(token: string): Promise<boolean> {
+    return !!(await this.tgChatModel.findOne({ token: token }));
+  }
+
+  private async getChats(token: string): Promise<number[]> {
+    const chats = await this.tgChatModel.find({ token: token });
+    return chats.map((x) => x.telegramChat);
   }
 }

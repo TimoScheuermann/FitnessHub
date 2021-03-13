@@ -11,7 +11,7 @@ import {
 import { MessageModule } from 'src/message/message.module';
 import { Message, MessageSchema } from 'src/message/schemas/Message.schema';
 import { SettingModule } from 'src/setting/setting.module';
-import { TgbotService } from 'src/tgbot/tgbot.service';
+import { TgbotModule } from 'src/tgbot/tgbot.module';
 import { User, UserSchema } from 'src/user/schemas/User.schema';
 import { ExerciseController } from './exercise.controller';
 import { ExerciseService } from './exercise.service';
@@ -35,8 +35,9 @@ import { Exercise, ExerciseSchema } from './schemas/Exercise.schema';
     FeedModule,
     MessageModule,
     AchievementModule,
+    TgbotModule,
   ],
   controllers: [ExerciseController],
-  providers: [ExerciseService, FHSocket, TgbotService],
+  providers: [ExerciseService, FHSocket],
 })
 export class ExerciseModule {}

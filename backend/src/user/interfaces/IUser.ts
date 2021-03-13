@@ -11,5 +11,4 @@ export interface IUser {
   readonly group?: string;
   readonly suspended?: number;
   readonly suspendedBy?: string;
-  readonly telegramChat?: number;
 }

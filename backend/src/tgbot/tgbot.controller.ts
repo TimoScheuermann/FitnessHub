@@ -14,18 +14,18 @@ export class TgbotController {
    * @param body {code: string} code received in telegram
    */
   @UseGuards(AuthGuard('jwt'))
-  @Post('code')
+  @Post()
   async validateConnection(
     @FHUser() user: IUser,
     @Body() body: { code: string },
-  ): Promise<void> {
-    this.tgbotService.validateConnection(user, body.code);
+  ): Promise<boolean> {
+    return this.tgbotService.validateConnection(user, body.code);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getCode(@FHUser() user: IUser): Promise<number> {
-    return this.tgbotService.getCode(user);
+    return this.tgbotService.getChatNumber(user._id);
   }
 
   @UseGuards(AuthGuard('jwt'))
