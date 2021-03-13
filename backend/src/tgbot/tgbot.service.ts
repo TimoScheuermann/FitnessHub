@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import * as TelegramBot from 'node-telegram-bot-api';
@@ -87,9 +87,11 @@ export class TgbotService {
   ): Promise<boolean> {
     if (!this.clientBot) return;
 
+    console.log('Token', token);
+
     // validate token sent via frontend
     if (!(await this.doesTokenExist(token))) {
-      throw new Error('Token existiert nicht.');
+      throw new UnprocessableEntityException('Token existiert nicht.');
     }
 
     const name = [user.givenName, user.familyName].filter((x) => !!x).join(' ');
