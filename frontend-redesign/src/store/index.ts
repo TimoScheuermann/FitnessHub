@@ -2,6 +2,7 @@
 import { socket } from '@/main';
 import { AchievementManager } from '@/utils/AchievementManager';
 import { getUserFromJWT } from '@/utils/auth';
+import backend from '@/utils/backend';
 import { ExerciseManagement } from '@/utils/ExerciseManagement';
 import { openFullscreen } from '@/utils/functions';
 import {
@@ -34,6 +35,7 @@ const store = new Vuex.Store({
     darkmode: false,
     storedRoutes: {},
     variables: null,
+    telegramChat: null,
 
     achievements: null,
     newAchievements: 0,
@@ -91,6 +93,9 @@ const store = new Vuex.Store({
     },
     variables: (state: any): IVariable[] | null => {
       return state.variables;
+    },
+    telegramChat: (state: any): number | null => {
+      return state.telegramChat;
     },
 
     achievements: (state: any): IAchievment[] | null => {
@@ -183,11 +188,18 @@ const store = new Vuex.Store({
       state.userValidated = false;
       state.user = undefined;
     },
-    signIn(state: any, user: IUser) {
+    async signIn(state: any, user: IUser) {
       state.user = user;
       state.userValidated = true;
       if (user.familyName)
         state.user.familyName = user.familyName.split('Ã¼').join('ü');
+
+      backend.get('tgbot').then(res => (state.telegramChat = res.data));
+
+      state.feed = null;
+      state.unreadPosts = 0;
+      state.canLoadPosts = true;
+      state.feedLoading = false;
 
       socket.emit('join', getUserFromJWT()._id);
 
@@ -217,6 +229,9 @@ const store = new Vuex.Store({
     },
     variables(state: any, vars: IVariable) {
       state.variables = vars;
+    },
+    telegramChat(state: any, telegramChat: number) {
+      state.telegramChat = telegramChat;
     },
 
     achievements(state: any, achievements: IAchievment[]) {

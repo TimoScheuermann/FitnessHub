@@ -3,7 +3,6 @@
     <div max-width>
       <h4>Social</h4>
       <tc-list :dark="$store.getters.darkmode">
-        <!-- <tc-list-item icon="telegram" title="Telegram" routeName="telegram" /> -->
         <tc-badge
           tfcolor="success"
           :value="$store.getters.unansweredFriendRequests"
@@ -22,11 +21,7 @@
             routeName="messages"
           />
         </tc-badge>
-        <tc-list-item
-          title="Herausforderungen"
-          icon="trophy"
-          description="bald"
-        />
+        <tc-list-item title="Telegram" icon="telegram" routeName="telegram" />
       </tc-list>
 
       <h4>Training</h4>

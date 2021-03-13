@@ -32,6 +32,29 @@ const router = new VueRouter({
     /**
      * => Start Fullscreen
      */
+
+    {
+      path: 'add-to-workout',
+      name: 'add-to-workout',
+      component: AddToWorkout,
+      meta: {
+        title: prefix + 'Übung hinzufügen',
+        fullscreen: true,
+        needsSignIn: true,
+        fsFallback: 'training'
+      }
+    },
+    {
+      path: 'active-workout',
+      name: 'run-workout',
+      component: RunningWorkout,
+      meta: {
+        title: prefix + 'Workout',
+        fullscreen: true,
+        needsSignIn: true,
+        fsFallback: 'workouts'
+      }
+    },
     {
       path: '/training/search',
       name: 'search-exercise',
@@ -321,6 +344,16 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'telegram',
+          name: 'telegram',
+          component: () => import('@/views/profile/Telegram.vue'),
+          meta: {
+            title: prefix + 'Telegram',
+            needsSignIn: true,
+            hero: 'Telegram'
+          }
+        },
+        {
           path: 'statistics',
           name: 'statistics',
           component: () => import('@/views/profile/Trainingstatistics.vue'),
@@ -532,28 +565,6 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Home',
         hero: 'FitnessHub'
-      }
-    },
-    {
-      path: '',
-      name: 'add-to-workout',
-      component: AddToWorkout,
-      meta: {
-        title: prefix + 'Übung hinzufügen',
-        fullscreen: true,
-        needsSignIn: true,
-        fsFallback: 'training'
-      }
-    },
-    {
-      path: '',
-      name: 'run-workout',
-      component: RunningWorkout,
-      meta: {
-        title: prefix + 'Workout',
-        fullscreen: true,
-        needsSignIn: true,
-        fsFallback: 'workouts'
       }
     },
     { path: '*', redirect: { name: 'home' } }

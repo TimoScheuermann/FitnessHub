@@ -31,6 +31,7 @@ import { ExerciseManagement } from './utils/ExerciseManagement';
 import { VariableManagement } from './utils/VariableManagement';
 import { FeedManagement } from './utils/FeedManagement';
 import { AchievementManager } from './utils/AchievementManager';
+import { NotificationManagement } from './utils/NotificationManagement';
 
 @Component({
   components: {
@@ -109,6 +110,19 @@ export default class App extends Vue {
   @Socket('feed-updated')
   feedUpdated(feed: IFeed) {
     FeedManagement.addPosts([feed]);
+  }
+
+  @Socket('telegram.chat')
+  telegramChat(chat: number) {
+    console.log('chat', chat);
+    this.$store.commit('telegramChat', chat);
+  }
+
+  @Socket('telegram.errorMessage')
+  telegramErrorMessage(message: string) {
+    NotificationManagement.sendNotification('Telegram', message, {
+      name: 'telegram'
+    });
   }
 }
 </script>
