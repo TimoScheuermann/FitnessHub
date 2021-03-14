@@ -473,7 +473,7 @@ const router = new VueRouter({
           meta: {
             title: prefix + 'Variablen',
             needsSignIn: true,
-            groups: ['Admin'],
+            groups: ['Admin', 'Moderator'],
             hero: 'Variablen'
           }
         },

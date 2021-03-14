@@ -49,15 +49,24 @@
         variant="filled"
         @click="create"
       />
-      <tc-button
-        v-else
-        :disabled="submitting"
-        icon="swap"
-        name="Post updaten"
-        tfbackground="alarm"
-        variant="filled"
-        @click="update"
-      />
+      <template v-else>
+        <tc-button
+          :disabled="submitting"
+          icon="trashcan-alt"
+          name="Post löschen"
+          tfbackground="error"
+          variant="filled"
+          @click="deletePost"
+        />
+        <tc-button
+          :disabled="submitting"
+          icon="swap"
+          name="Post updaten"
+          tfbackground="alarm"
+          variant="filled"
+          @click="update"
+        />
+      </template>
     </tl-flow>
   </div>
 </template>
@@ -65,6 +74,7 @@
 <script lang="ts">
 import backend from '@/utils/backend';
 import { CreatePostDto } from '@/utils/dtos';
+import { FeedManagement } from '@/utils/FeedManagement';
 import { FHEventBus } from '@/utils/FHEventbus';
 import { IFeed } from '@/utils/interfaces';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
@@ -117,6 +127,15 @@ export default class FHPostForm extends Vue {
       .patch('feed/' + this.item._id, this.dto)
       .then(this.handleResponse)
       .catch(this.handleCatch);
+  }
+
+  public deletePost() {
+    if (!this.item || this.submitting) return;
+    this.submitting = true;
+    backend.delete('feed/' + this.item._id);
+    FeedManagement.removePost(this.item._id);
+
+    this.$router.push({ name: 'community' });
   }
 
   private handleResponse(): void {

@@ -23,11 +23,12 @@ export default class FHFeedReaction extends Vue {
 
   get hasReacted(): boolean {
     if (!this.$store.getters.valid) return false;
-    return this.item.reactions.includes(this.reaction);
+    return (this.item.reactions || []).includes(this.reaction);
   }
 
   public click() {
     if (!this.$store.getters.valid) return;
+    if (this.$route.name !== 'community') return;
     if (this.hasReacted) {
       FeedManagement.removeReaction(this.item._id, this.reaction);
     } else {

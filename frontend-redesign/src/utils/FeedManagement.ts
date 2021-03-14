@@ -68,6 +68,13 @@ export class FeedManagement {
     }
   }
 
+  public static removePost(id: string) {
+    let posts = this.posts;
+    if (!posts) return;
+    posts = posts.filter(x => x._id !== id);
+    store.commit('feed', posts);
+  }
+
   public static getAmountOfUnread(): number {
     return store.getters.unreadPosts;
   }

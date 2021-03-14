@@ -12,14 +12,24 @@
           <div class="name">{{ user.username }}</div>
           <div class="time">{{ time }}</div>
         </div>
-        <tc-button
+        <tc-action
           v-group.admin.moderator
           v-if="user._id === fhBotId && $route.name === 'community'"
-          icon="pencil"
-          tfbackground="success"
-          variant="opaque"
-          :to="{ name: 'edit-post', params: { id: feed._id } }"
-        />
+          :dark="$store.getters.darkmode"
+        >
+          <tc-action-item
+            alarm
+            title="Bearbeiten"
+            icon="pencil"
+            @click="editPost"
+          />
+          <tc-action-item
+            error
+            title="Löschen"
+            icon="trashcan-alt"
+            @click="deletePost"
+          />
+        </tc-action>
       </div>
 
       <div class="fh-feed-item--content">
@@ -69,8 +79,10 @@
 </template>
 
 <script lang="ts">
+import backend from '@/utils/backend';
 import { fhBotId, months } from '@/utils/constants';
 import { ExerciseManagement } from '@/utils/ExerciseManagement';
+import { FeedManagement } from '@/utils/FeedManagement';
 import { IFeed, IUserInfo } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import FHFeedReaction from './FHFeedReaction.vue';
@@ -130,11 +142,29 @@ export default class FHFeedCard extends Vue {
       });
     }
   }
+
+  public editPost(): void {
+    this.$router.push({ name: 'edit-post', params: { id: this.feed._id } });
+  }
+
+  public deletePost(): void {
+    backend.delete('feed/' + this.feed._id);
+    FeedManagement.removePost(this.feed._id);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .fh-feed-card {
+  .tc-action {
+    z-index: 100;
+    /deep/ .actions-wrapper {
+      bottom: unset;
+      top: 0px;
+      z-index: 110;
+    }
+  }
+
   border-radius: $border-radius;
   margin-bottom: 20px;
   position: relative;
