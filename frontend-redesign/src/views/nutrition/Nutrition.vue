@@ -10,6 +10,18 @@
 
       <br />
 
+      <router-link
+        :to="{ name: 'food-scanner' }"
+        class="fh-graph-card food-scanner"
+      >
+        <tl-flow>
+          <img src="assets/food-scanner-logo.svg" alt="" />
+          <FHHeading subtitle="Obst / Gemüse" title="Scanner" />
+        </tl-flow>
+      </router-link>
+
+      <br />
+
       <FHAppear>
         <div v-if="categories && categories.length > 0">
           <FHHeading subtitle="rezept" title="Kategorien" />
@@ -95,6 +107,23 @@ export default class Nutrition extends Vue {
 .view-nutrition {
   .fh-graph-water {
     margin-top: 20px;
+  }
+
+  .food-scanner {
+    width: fit-content;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    // margin: 0 auto;
+    padding-right: 20px;
+    img {
+      height: 40px;
+      width: 40px;
+      margin-right: 20px;
+    }
+    .fh-heading {
+      margin-bottom: 0;
+    }
   }
 }
 </style>

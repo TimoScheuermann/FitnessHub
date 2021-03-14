@@ -1,5 +1,6 @@
 import Login from '@/views/login/Login.vue';
 import Recipe from '@/views/nutrition/Recipe.vue';
+import Scanner from '@/views/nutrition/Scanner.vue';
 import SearchRecipe from '@/views/nutrition/SearchRecipe.vue';
 import WikiItem from '@/views/nutrition/WikiItem.vue';
 import ChatRoom from '@/views/profile/ChatRoom.vue';
@@ -105,6 +106,16 @@ const router = new VueRouter({
         fullscreen: true,
         needsSignIn: true,
         fsFallback: 'workouts'
+      }
+    },
+    {
+      path: '/nutrition/scanner',
+      name: 'food-scanner',
+      component: Scanner,
+      meta: {
+        title: prefix + 'Obst / Gemüse Scanner',
+        fullscreen: true,
+        fsFallback: 'nutrition'
       }
     },
     {
