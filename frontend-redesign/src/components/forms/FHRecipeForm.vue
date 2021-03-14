@@ -137,7 +137,7 @@
             <tc-tr v-for="(s, i) in dto.steps" :key="'s-' + i">
               <tc-td>{{ s }}</tc-td>
               <tc-td>
-                <tc-link tfcolor="error" @click="removeNutrition(i)">
+                <tc-link tfcolor="error" @click="removeStep(i)">
                   entfernen
                 </tc-link>
               </tc-td>
