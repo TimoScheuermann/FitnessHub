@@ -2,9 +2,10 @@ import Login from '@/views/login/Login.vue';
 import Recipe from '@/views/nutrition/Recipe.vue';
 import SearchRecipe from '@/views/nutrition/SearchRecipe.vue';
 import WikiItem from '@/views/nutrition/WikiItem.vue';
-import AddFriend from '@/views/profile/AddFriend.vue';
 import ChatRoom from '@/views/profile/ChatRoom.vue';
 import UpdateExercise from '@/views/profile/exercise/UpdateExercise.vue';
+import AddFriend from '@/views/profile/friends/AddFriend.vue';
+import FriendDetails from '@/views/profile/friends/Details.vue';
 import ExerciseSubmission from '@/views/profile/management/ExerciseSubmission.vue';
 import UserSearch from '@/views/profile/management/UserSearch.vue';
 import UpdateRecipe from '@/views/profile/recipe/UpdateRecipe.vue';
@@ -34,7 +35,7 @@ const router = new VueRouter({
      */
 
     {
-      path: 'add-to-workout',
+      path: '/add-to-workout',
       name: 'add-to-workout',
       component: AddToWorkout,
       meta: {
@@ -45,7 +46,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'active-workout',
+      path: '/active-workout',
       name: 'run-workout',
       component: RunningWorkout,
       meta: {
@@ -163,6 +164,17 @@ const router = new VueRouter({
       component: AddFriend,
       meta: {
         title: prefix + 'Freund hinzufügen',
+        needsSignIn: true,
+        fullscreen: true,
+        fsFallback: 'friends'
+      }
+    },
+    {
+      path: '/profile/friends/:id',
+      name: 'friend-details',
+      component: FriendDetails,
+      meta: {
+        title: prefix + 'Freund',
         needsSignIn: true,
         fullscreen: true,
         fsFallback: 'friends'
@@ -304,7 +316,7 @@ const router = new VueRouter({
         {
           path: 'friends',
           name: 'friends',
-          component: () => import('@/views/profile/Friends.vue'),
+          component: () => import('@/views/profile/friends/Friends.vue'),
           meta: {
             title: prefix + 'Freunde',
             needsSignIn: true,

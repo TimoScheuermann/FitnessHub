@@ -69,7 +69,7 @@
           @click="showProfile(f._id)"
         >
           <tc-action :dark="$store.getters.darkmode">
-            <tc-action-item
+            <!-- <tc-action-item
               icon="trophy"
               title="Herausfordern"
               @click="challengeFriend(f._id)"
@@ -78,9 +78,13 @@
               icon="calendar-alt"
               title="Training planen"
               @click="planTraining(f._id)"
+            /> -->
+            <tc-action-item
+              icon="user-filled"
+              title="Profil ansehen"
+              @click="showProfile(f._id)"
             />
             <tc-action-item
-              success
               icon="chat-bubbles"
               title="Nachricht senden"
               @click="openChat(f._id)"
@@ -150,9 +154,8 @@ export default class Friends extends Vue {
     // TODO:
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public showProfile(friendId: string): void {
-    // TODO:
+    openFullscreen('friend-details', { id: friendId });
   }
 
   public openChat(friendId: string): void {

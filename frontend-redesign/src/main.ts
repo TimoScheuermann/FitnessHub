@@ -42,6 +42,13 @@ for (const component in TCComponents) {
 export const socket = io(backendURL);
 Vue.use(VueSocketIOExt, socket);
 
+if (
+  WorkoutManagement.hasActiveWorkout() &&
+  router.currentRoute.name !== 'run-workout'
+) {
+  openFullscreen('run-workout');
+}
+
 router.beforeEach(async (to: Route, from: Route, next: Function) => {
   if (!store.getters.valid && (await verfiyUser())) {
     store.commit('signIn', getUserFromJWT());
@@ -64,9 +71,6 @@ router.beforeEach(async (to: Route, from: Route, next: Function) => {
 });
 
 router.afterEach((to: Route) => {
-  if (WorkoutManagement.hasActiveWorkout() && to.name !== 'run-workout') {
-    openFullscreen('run-workout');
-  }
   const title = getTitle(to);
   document.title = title;
 

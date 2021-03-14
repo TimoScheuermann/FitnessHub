@@ -66,13 +66,7 @@ export default class Login extends Vue {
   min-height: 100vh;
   color: #fff;
 
-  background: linear-gradient(
-      to bottom,
-      rgba(#111, 0.4) calc(200px + env(safe-area-inset-top)),
-      rgba(#111, 0),
-      rgba(#111, 0.8) calc(100% - 100px),
-      rgba(#111, 0.8)
-    ),
+  background: linear-gradient(rgba($color, 0), rgba($color, 0.5)),
     url('/assets/login-bg.webp');
   background-size: cover;
   background-position: center center;

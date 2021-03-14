@@ -1,6 +1,6 @@
 <template>
   <div class="fh-router">
-    <transition :name="transitionName" :mode="transitionMode" @>
+    <transition :name="transitionName" :mode="transitionMode">
       <router-view :fullscreen="$route.meta.fullscreen" class="sub-view" />
     </transition>
   </div>
@@ -75,6 +75,9 @@ export default class FHRouter extends Vue {
   opacity: 0;
   transform: translate(0, 100%);
   border-radius: 50vw;
+}
+.slide-fullscreen-enter {
+  z-index: 12;
 }
 
 .fh-router {

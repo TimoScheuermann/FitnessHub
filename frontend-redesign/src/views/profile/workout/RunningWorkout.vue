@@ -1,18 +1,18 @@
 <template>
-  <div class="view-running-workout" v-if="dataLoaded">
+  <div class="view-running-workout">
     <FHAppear>
-      <div :key="index">
+      <div :key="index" v-if="dataLoaded">
         <tc-hero :key="index" :dark="$store.getters.darkmode">
           <img :src="exercises[index].thumbnail" slot="background" />
         </tc-hero>
       </div>
     </FHAppear>
-    <div class="index">
+    <div class="index" v-if="dataLoaded">
       <span>{{ index + 1 }}</span>
       <span>/</span>
       <span>{{ exercises.length }}</span>
     </div>
-    <div max-width content>
+    <div max-width content v-if="dataLoaded">
       <div class="timer-wrapper">
         <transition-group class="timer" name="timer">
           <div v-for="(t, i) in time" :key="t + '_' + i" :sep="t === ':'">
@@ -194,13 +194,10 @@ export default class RunningWorkout extends Vue {
   public exTime = 0;
   public exTimeUnit = '';
 
-  created() {
+  mounted() {
     if (!WorkoutManagement.hasActiveWorkout()) {
       closeFullscreen('workouts');
     }
-  }
-
-  mounted() {
     this.exercises = WorkoutManagement.getExercises();
     this.startTime = WorkoutManagement.getStartTime();
     this.stats = WorkoutManagement.getStats();

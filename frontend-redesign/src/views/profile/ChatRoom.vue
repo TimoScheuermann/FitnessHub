@@ -11,9 +11,19 @@
         </tl-flow>
         <tl-flow horizontal="end" v-if="!isBotPartner">
           <tc-action :dark="$store.getters.darkmode">
-            <tc-action-item title="Training planen" icon="calendar-alt" />
-            <tc-action-item title="Herausfordern" icon="tropy" />
-            <tc-action-item success title="Profil ansehen" icon="lens" />
+            <!-- <tc-action-item title="Training planen" icon="calendar-alt" /> -->
+            <!-- <tc-action-item title="Herausfordern" icon="trophy" /> -->
+            <tc-action-item
+              @click="showProfile"
+              title="Profil ansehen"
+              icon="lens"
+            />
+            <tc-action-item
+              error
+              @click="removeFriend"
+              title="Freund entfernen"
+              icon="trashcan-alt"
+            />
           </tc-action>
         </tl-flow>
       </template>
@@ -76,7 +86,7 @@ import FHHeader from '@/components/FHHeader.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
 import backend from '@/utils/backend';
 import { fhBotId } from '@/utils/constants';
-import { closeFullscreen } from '@/utils/functions';
+import { closeFullscreen, openFullscreen } from '@/utils/functions';
 import { IMessage, IUserInfo } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Watch } from 'vue-property-decorator';
@@ -139,6 +149,19 @@ export default class ChatRoom extends Vue {
     if (this.newMessage.length > 0 && !this.isBotPartner) {
       backend.post('message/' + this.friend?._id, { message: this.newMessage });
       this.newMessage = '';
+    }
+  }
+
+  public showProfile(): void {
+    if (this.friend) {
+      openFullscreen('friend-details', { id: this.friend._id });
+    }
+  }
+
+  public removeFriend(): void {
+    if (this.friend) {
+      UserManagement.removeFriend(this.friend._id);
+      closeFullscreen('friends');
     }
   }
 }
