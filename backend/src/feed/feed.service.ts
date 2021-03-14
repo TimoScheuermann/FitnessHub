@@ -104,6 +104,12 @@ export class FeedService {
     return true;
   }
 
+  public async deletePost(id: string): Promise<boolean> {
+    if (!id || !isValidObjectId(id)) return false;
+    await this.feedModel.deleteOne({ _id: id, user: { $exists: false } });
+    return true;
+  }
+
   public async createPost(dto: CreatePostDto): Promise<boolean> {
     dto = FeedValidator.validate(dto);
     const feed = await this.feedModel.create({

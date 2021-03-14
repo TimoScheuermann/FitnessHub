@@ -65,6 +65,13 @@ export class FeedController {
     return this.feedService.patchPost(id, dto);
   }
 
+  @Roles(['admin', 'moderator'])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Delete(':id')
+  async deletePost(@Param('id') id: string): Promise<boolean> {
+    return this.feedService.deletePost(id);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id/reaction/:type')
   async removeReaction(
