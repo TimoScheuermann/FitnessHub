@@ -182,7 +182,8 @@ export default class FHWorkoutForm extends Vue {
 .fh-workout-form {
   form,
   .tc-input {
-    margin: 0 auto;
+    margin-left: auto !important;
+    margin-right: auto !important;
     max-width: 400px;
     margin-top: 20px;
 
