@@ -326,6 +326,8 @@ export default class FHRecipeForm extends Vue {
   public async createRecipe(): Promise<void> {
     if (this.isSubmitting) return;
     this.isSubmitting = true;
+    this.dto.time = +this.dto.time;
+    this.dto.difficulty = +this.dto.difficulty;
 
     backend
       .post('recipe', this.dto)
@@ -336,6 +338,8 @@ export default class FHRecipeForm extends Vue {
   public async updateRecipe() {
     if (this.isSubmitting) return;
     this.isSubmitting = true;
+    this.dto.time = +this.dto.time;
+    this.dto.difficulty = +this.dto.difficulty;
 
     backend
       .put('recipe/' + this.recipe._id, this.dto)
