@@ -31,7 +31,6 @@ export default class NutritionScanner extends Vue {}
   min-height: 100vh;
 
   iframe {
-    background: #fff;
     height: calc(100vh - 4px);
     width: 100vw;
     margin: 0;

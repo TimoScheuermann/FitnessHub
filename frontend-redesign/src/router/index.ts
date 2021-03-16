@@ -1,3 +1,4 @@
+import store from '@/store';
 import Login from '@/views/login/Login.vue';
 import Recipe from '@/views/nutrition/Recipe.vue';
 import Scanner from '@/views/nutrition/Scanner.vue';
@@ -20,12 +21,31 @@ import SearchExercise from '@/views/training/SearchExercise.vue';
 import Workout from '@/views/training/Workout.vue';
 import Vue from 'vue';
 import VueRouter, { Route } from 'vue-router';
+import { Position, PositionResult } from 'vue-router/types/router';
 
 Vue.use(VueRouter);
 const prefix = 'FitnessHub | ';
 
+const getPos = (to: Route): Position | null => {
+  const stored = store.state.savedPositions[to.fullPath];
+  if (stored) return stored;
+  return null;
+};
+
 const router = new VueRouter({
-  scrollBehavior() {
+  async scrollBehavior(to): Promise<PositionResult> {
+    if (to.hash) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve({ offset: { x: 0, y: 80 }, selector: to.hash });
+        }, 500);
+      });
+    }
+
+    const pos = getPos(to);
+    if (pos) {
+      return { ...pos, behavior: 'auto' };
+    }
     return { x: 0, y: 0 };
   },
   mode: 'history',

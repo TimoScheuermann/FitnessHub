@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { socket } from '@/main';
+import router from '@/router';
 import { AchievementManager } from '@/utils/AchievementManager';
 import { getUserFromJWT } from '@/utils/auth';
 import backend from '@/utils/backend';
@@ -34,6 +35,7 @@ const store = new Vuex.Store({
     isDesktop: false,
     darkmode: false,
     storedRoutes: {},
+    savedPositions: {},
     variables: null,
     telegramChat: null,
 
@@ -226,6 +228,12 @@ const store = new Vuex.Store({
     },
     storeRoute(state: any, data: { key: string; route: Route }) {
       state.storedRoutes[data.key] = data.route;
+    },
+    savePosition(state: any) {
+      state.savedPositions[router.currentRoute.fullPath] = {
+        x: window.scrollX,
+        y: window.scrollY
+      };
     },
     variables(state: any, vars: IVariable) {
       state.variables = vars;

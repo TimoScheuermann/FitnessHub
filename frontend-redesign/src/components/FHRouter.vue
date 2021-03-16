@@ -1,7 +1,9 @@
 <template>
   <div class="fh-router">
     <transition :name="transitionName" :mode="transitionMode">
-      <router-view :fullscreen="$route.meta.fullscreen" class="sub-view" />
+      <keep-alive :include="[keepAlive && $route.name]">
+        <router-view :fullscreen="fullscreen" class="sub-view" />
+      </keep-alive>
     </transition>
   </div>
 </template>
@@ -15,12 +17,22 @@ export default class FHRouter extends Vue {
   public transitionName = 'slide-bottom';
   public transitionMode: string | null = 'out-in';
 
+  get keepAlive(): boolean {
+    return Object.keys(this.$route.params).length === 0;
+  }
+
+  get fullscreen(): boolean {
+    return this.$route.meta.fullscreen;
+  }
+
   created() {
     this.$router.beforeEach((to: Route, from: Route, next: Function) => {
       const toDepth = getDepth(to);
       const fromDepth = getDepth(from);
       const toPath = to.fullPath.split('/').slice(0, 2);
       const fromPath = from.fullPath.split('/').slice(0, 2);
+
+      this.$store.commit('savePosition');
 
       this.transitionMode = null;
       if (to.meta.fullscreen) {

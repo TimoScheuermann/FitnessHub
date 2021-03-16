@@ -30,7 +30,9 @@ export default class FHHeart extends Vue {
 
 <style lang="scss" scoped>
 .fh-heart {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
   z-index: 10;
   padding: 10px;
   border-radius: 0 $border-radius 0 #{2 * $border-radius};

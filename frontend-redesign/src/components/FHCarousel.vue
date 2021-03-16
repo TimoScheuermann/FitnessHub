@@ -16,11 +16,12 @@ export default class FHCarousel extends Vue {}
 
 <style lang="scss" scoped>
 .fh-carousel {
-  margin: 10px -5vw 20px;
+  margin: 10px -5vw 0px;
   display: flex;
-  overflow-x: auto;
+  overflow: scroll visible;
+  padding-bottom: 20px;
   user-select: none;
-  overflow-y: hidden;
+
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 
@@ -78,7 +79,8 @@ export default class FHCarousel extends Vue {}
     width: 5vw;
   }
 
-  div:not([class^='fh-carousel']) {
+  div:not([class^='fh-carousel']),
+  a:not([class^='fh-carousel']) {
     margin-left: 30px;
     scroll-snap-align: center;
     flex-shrink: 0;
