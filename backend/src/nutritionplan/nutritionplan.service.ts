@@ -78,7 +78,6 @@ export class NutritionplanService {
     const categories = await this.getAvailableCategories();
     const recipes = await this.getRecipeIDs();
     dto = await NutritionplanFormValidator.validate(dto, categories, recipes);
-    if (dto) return {} as INutritionplanFull;
     const nutritionplan = await this.nutritionplanModel.create({
       ...dto,
       created: new Date().getTime(),
@@ -97,7 +96,7 @@ export class NutritionplanService {
    */
   public async updateNutritionplan(
     id: string,
-    userId: string,
+    // userId: string,
     update: CreateNutritionplanDTO,
   ): Promise<INutritionplanFull> {
     const categories = await this.getAvailableCategories();
@@ -109,13 +108,12 @@ export class NutritionplanService {
     );
 
     await this.nutritionplanModel.updateOne(
-      { _id: id, author: userId },
+      { _id: id },
       { $set: { ...update, updated: new Date().getTime() } },
     );
 
     const nutritionplan = await this.nutritionplanModel.findOne({
       _id: id,
-      author: userId,
     });
 
     return (await this.mapNutritionplans([nutritionplan]))[0];
@@ -127,11 +125,10 @@ export class NutritionplanService {
    * @param nutritionplanId nutritionplan
    */
   public async deleteNutritionplan(
-    userId: string,
+    // userId: string,
     nutritionplanId: string,
   ): Promise<void> {
     await this.nutritionplanModel.findOneAndDelete({
-      author: userId,
       _id: nutritionplanId,
     });
   }

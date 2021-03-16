@@ -55,7 +55,7 @@ export class NutritionplanController {
    * @param user sender
    * @param createNutritionplan nutritionplan
    */
-  @Roles(['Moderator', 'Admin'])
+  @Roles(['moderator', 'admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   async addNutritionplan(
@@ -74,15 +74,15 @@ export class NutritionplanController {
    * @param id nutritionplan id
    * @param update new nutrition plan
    */
-  @Roles(['Moderator', 'Admin'])
+  @Roles(['moderator', 'admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put(':id')
   async updateNutritionplan(
-    @FHUser() user: IUser,
+    // @FHUser() user: IUser,
     @Param('id') id: string,
     @Body() update: CreateNutritionplanDTO,
   ): Promise<INutritionplanFull> {
-    return this.nutritionplanService.updateNutritionplan(id, user._id, update);
+    return this.nutritionplanService.updateNutritionplan(id, update);
   }
 
   /**
@@ -90,13 +90,13 @@ export class NutritionplanController {
    * @param user sender
    * @param id nutrtition plan
    */
-  @Roles(['Moderator', 'Admin'])
+  @Roles(['moderator', 'admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
   async deleteNutritionplan(
-    @FHUser() user: IUser,
+    // @FHUser() user: IUser,
     @Param('id') id: string,
   ): Promise<void> {
-    return this.nutritionplanService.deleteNutritionplan(user._id, id);
+    return this.nutritionplanService.deleteNutritionplan(id);
   }
 }
