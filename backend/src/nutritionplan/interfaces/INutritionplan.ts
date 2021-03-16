@@ -7,9 +7,8 @@ export interface INutritionplan {
   readonly updated: number;
 
   readonly title: string;
-  readonly time: number;
   readonly description: string;
-  readonly category: string;
+  readonly categories: string[];
 
   readonly monday: INutritionplanDay;
   readonly tuesday: INutritionplanDay;

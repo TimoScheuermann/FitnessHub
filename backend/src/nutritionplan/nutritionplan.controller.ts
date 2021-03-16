@@ -9,12 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateNutritionplanDTO } from './dtos/CreateNutritionplan.dto';
-import { UpdateNutritionplanDTO } from './dtos/UpdateNutritionplan.dto';
-import { INutritionplan } from './interfaces/INutritionplan';
+import { INutritionplanFull } from './interfaces/INutritionplanFull';
 import { NutritionplanService } from './nutritionplan.service';
 
 @Controller('nutritionplan')
@@ -22,21 +21,11 @@ export class NutritionplanController {
   constructor(private readonly nutritionplanService: NutritionplanService) {}
 
   /**
-   * returns all nutrition plans
+   * returns nutrition plans (limit 50)
    */
   @Get()
-  async getAll(): Promise<INutritionplan[]> {
+  async getAll(): Promise<INutritionplanFull[]> {
     return this.nutritionplanService.getAll();
-  }
-
-  /**
-   * returns nutrition plans, created by the request sender
-   * @param user sender
-   */
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Get('mine')
-  async getByAuthor(@FHUser() user: IUser): Promise<INutritionplan[]> {
-    return this.nutritionplanService.getByAuthor(user._id);
   }
 
   /**
@@ -44,7 +33,7 @@ export class NutritionplanController {
    * @param id
    */
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<INutritionplan> {
+  async getById(@Param('id') id: string): Promise<INutritionplanFull> {
     return this.nutritionplanService.getById(id);
   }
 
@@ -55,22 +44,26 @@ export class NutritionplanController {
   @Get('category/:category')
   async getByCategory(
     @Param('category') category: string,
-  ): Promise<INutritionplan[]> {
+  ): Promise<INutritionplanFull[]> {
     return this.nutritionplanService.getByCategory(category);
   }
 
   /**
-   * creates a new nutition plan
+   * creates a new nutrition plan
    * @param user sender
    * @param createNutritionplan nutritionplan
    */
+  @Roles(['Moderator', 'Admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   async addNutritionplan(
     @FHUser() user: IUser,
     @Body() createNutritionplan: CreateNutritionplanDTO,
-  ): Promise<void> {
-    this.nutritionplanService.addNutritionplan(user, createNutritionplan);
+  ): Promise<INutritionplanFull> {
+    return this.nutritionplanService.addNutritionplan(
+      user,
+      createNutritionplan,
+    );
   }
 
   /**
@@ -79,13 +72,14 @@ export class NutritionplanController {
    * @param id nutritionplan id
    * @param update new nutrition plan
    */
+  @Roles(['Moderator', 'Admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Put('update/:id')
+  @Put(':id')
   async updateNutritionplan(
     @FHUser() user: IUser,
     @Param('id') id: string,
-    @Body() update: UpdateNutritionplanDTO,
-  ): Promise<void> {
+    @Body() update: CreateNutritionplanDTO,
+  ): Promise<INutritionplanFull> {
     return this.nutritionplanService.updateNutritionplan(id, user._id, update);
   }
 
@@ -94,6 +88,7 @@ export class NutritionplanController {
    * @param user sender
    * @param id nutrtition plan
    */
+  @Roles(['Moderator', 'Admin'])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
   async deleteNutritionplan(
