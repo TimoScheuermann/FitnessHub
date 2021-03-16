@@ -17,33 +17,30 @@ export class Nutritionplan extends Document {
   title: string;
 
   @Prop()
-  time: number;
-
-  @Prop()
   description: string;
 
   @Prop()
-  category: string;
+  categories: string[];
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   monday: INutritionplanDay;
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   tuesday: INutritionplanDay;
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   wednesday: INutritionplanDay;
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   thursday: INutritionplanDay;
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   friday: INutritionplanDay;
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   saturday: INutritionplanDay;
 
-  @Prop()
+  @Prop({ type: INutritionplanDay })
   sunday: INutritionplanDay;
 }
 

@@ -16,7 +16,7 @@ export class RecipeFormValidator extends FormValidator {
         // prettier-ignore
         name: this.checkString(x.name, 'Der Name der Zutat #' + (i + 1) + 'fehlt'),
         // prettier-ignore
-        amount: this.checkString(x.amount, 'Die Mange die an ' + x.name + ' benötigt wird fehlt'),
+        amount: this.checkString(x.amount, 'Die Menge die an ' + x.name + ' benötigt wird fehlt'),
         // prettier-ignore
         unit: this.checkString(x.unit, 'Die Einheit der Menge der Zutat ' + x.name + ' fehlt'),
       };
@@ -33,8 +33,8 @@ export class RecipeFormValidator extends FormValidator {
         title: this.checkString(x.title, 'Der Name des Nährwerts #' + (i + 1) + 'fehlt'),
         amount: this.checkNumberMinMax(
           // prettier-ignore
-          this.checkNumber(x.amount, 'Die Mange des Nährwerts ' + x.title + ' fehlt'),
-          0,
+          this.checkNumber(x.amount, 'Die Menge des Nährwerts ' + x.title + ' fehlt'),
+          -1 / 100000000000,
           Number.MAX_VALUE,
           // prettier-ignore
           'Die Nährwertsmenge von ' + x.title + ' kann nicht kleiner als 0 sein',
@@ -72,7 +72,6 @@ export class RecipeFormValidator extends FormValidator {
     ingredients = this.checkIngredients(dto.ingredients);
     nutrition = this.checkNutrition(dto.nutrition);
 
-    // prettier-ignore
     category = this.compareStringArry(category, categories, ' ist keine verfügbare Kategorie');
 
     return {

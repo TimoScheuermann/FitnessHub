@@ -2,9 +2,8 @@ import { INutritionplanDay } from '../interfaces/INutritionplanDay';
 
 export class CreateNutritionplanDTO {
   readonly title: string;
-  readonly time: number;
   readonly description: string;
-  readonly category: string;
+  readonly categories: string[];
 
   readonly monday: INutritionplanDay;
   readonly tuesday: INutritionplanDay;
