@@ -53,6 +53,12 @@
         />
         <tc-list-item title="Übungen" icon="gym" routeName="exercises" />
         <tc-list-item
+          v-group.admin.moderator
+          title="Ernährungspläne"
+          icon="calendar-alt"
+          routeName="nutritionplans"
+        />
+        <tc-list-item
           title="Einstellungen"
           icon="wrench"
           routeName="settings"

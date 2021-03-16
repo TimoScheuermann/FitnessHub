@@ -1,4 +1,4 @@
-import { INutrition, INutritionplanDay, IRecipeIngredient } from './interfaces';
+import { INutrition, IRecipeIngredient } from './interfaces';
 
 export class CreateRecipeDTO {
   title!: string;
@@ -13,35 +13,6 @@ export class CreateRecipeDTO {
   source?: string;
   video?: string;
   description?: string;
-}
-
-export class CreateNutritionplanDTO {
-  readonly title!: string;
-  readonly time!: number;
-  readonly description!: string;
-  readonly category!: string;
-
-  readonly monday!: INutritionplanDay;
-  readonly tuesday!: INutritionplanDay;
-  readonly wednesday!: INutritionplanDay;
-  readonly thursday!: INutritionplanDay;
-  readonly friday!: INutritionplanDay;
-  readonly saturday!: INutritionplanDay;
-  readonly sunday!: INutritionplanDay;
-}
-export class UpdateNutritionplanDTO {
-  readonly title?: string;
-  readonly time?: number;
-  readonly description?: string;
-  readonly category?: string;
-
-  readonly monday?: INutritionplanDay;
-  readonly tuesday?: INutritionplanDay;
-  readonly wednesday?: INutritionplanDay;
-  readonly thursday?: INutritionplanDay;
-  readonly friday?: INutritionplanDay;
-  readonly saturday?: INutritionplanDay;
-  readonly sunday?: INutritionplanDay;
 }
 export class FinishExerciseDTO {
   exerciseId!: string;
@@ -88,4 +59,24 @@ export class CreatePostDto {
 
   recipeId?: string;
   exerciseId?: string;
+}
+export class NutritionplanDay {
+  breakfast!: string | undefined;
+  lunch!: string | undefined;
+  dinner!: string | undefined;
+  snacks?: string[] | undefined;
+}
+
+export class CreateNutritionplanDTO {
+  readonly title!: string;
+  readonly description!: string;
+  readonly categories!: string[];
+
+  readonly monday!: NutritionplanDay;
+  readonly tuesday!: NutritionplanDay;
+  readonly wednesday!: NutritionplanDay;
+  readonly thursday!: NutritionplanDay;
+  readonly friday!: NutritionplanDay;
+  readonly saturday!: NutritionplanDay;
+  readonly sunday!: NutritionplanDay;
 }

@@ -43,29 +43,28 @@ export interface IRecipe {
   readonly source?: string;
 }
 export interface INutritionplanDay {
-  readonly breakfast: IRecipe;
-  readonly lunch: IRecipe;
-  readonly dinner: IRecipe;
-  readonly snacks: IRecipe[];
+  breakfast: IRecipe | null;
+  lunch: IRecipe | null;
+  dinner: IRecipe | null;
+  snacks: IRecipe[];
 }
 export interface INutritionplan {
   readonly _id?: string;
-  readonly author: string;
-  readonly created: number;
-  readonly updated: number;
+  author?: string;
+  created?: number;
+  updated?: number;
 
-  readonly title: string;
-  readonly time: number;
-  readonly description: string;
-  readonly category: string;
+  title: string;
+  description: string;
+  categories: string[];
 
-  readonly monday: INutritionplanDay;
-  readonly tuesday: INutritionplanDay;
-  readonly wednesday: INutritionplanDay;
-  readonly thursday: INutritionplanDay;
-  readonly friday: INutritionplanDay;
-  readonly saturday: INutritionplanDay;
-  readonly sunday: INutritionplanDay;
+  monday: INutritionplanDay;
+  tuesday: INutritionplanDay;
+  wednesday: INutritionplanDay;
+  thursday: INutritionplanDay;
+  friday: INutritionplanDay;
+  saturday: INutritionplanDay;
+  sunday: INutritionplanDay;
 }
 export interface INutrition {
   readonly title: string;
