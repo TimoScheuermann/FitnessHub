@@ -10,6 +10,7 @@ import AddFriend from '@/views/profile/friends/AddFriend.vue';
 import FriendDetails from '@/views/profile/friends/Details.vue';
 import ExerciseSubmission from '@/views/profile/management/ExerciseSubmission.vue';
 import UserSearch from '@/views/profile/management/UserSearch.vue';
+import NutritionplanRecipeSearch from '@/views/profile/nutritionplans/NutritionplanRecipeSearch.vue';
 import UpdateRecipe from '@/views/profile/recipe/UpdateRecipe.vue';
 import UpdateTrainingplan from '@/views/profile/trainingplan/UpdateTrainingplan.vue';
 import AddToWorkout from '@/views/profile/workout/AddToWorkout.vue';
@@ -235,6 +236,19 @@ const router = new VueRouter({
     },
 
     {
+      path: '/profile/nutritionplans/recipe-search/:day/:daytime',
+      name: 'np-recipe-search',
+      component: NutritionplanRecipeSearch,
+      meta: {
+        title: prefix + 'Rezept wählen',
+        needsSignIn: true,
+        groups: ['Admin', 'Moderator'],
+        fullscreen: true,
+        fsFallback: 'nutritionplans'
+      }
+    },
+
+    {
       path: '/profile/management/submissions/:id',
       name: 'exercise-submission',
       component: ExerciseSubmission,
@@ -449,6 +463,47 @@ const router = new VueRouter({
             hero: 'Erstellen',
             backTitle: 'Übungen',
             backRoute: 'home'
+          }
+        },
+
+        {
+          path: 'nutritionplans',
+          name: 'nutritionplans',
+          component: () =>
+            import('@/views/profile/nutritionplans/Nutritionplans.vue'),
+          meta: {
+            title: prefix + 'Ernährungspläne',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator'],
+            hero: 'Ernährungspläne'
+          }
+        },
+        {
+          path: 'nutritionplans/submit',
+          name: 'submit-nutritionplan',
+          component: () =>
+            import('@/views/profile/nutritionplans/SubmitNutritionplan.vue'),
+          meta: {
+            title: prefix + 'Ernährungsplan erstellem',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator'],
+            hero: 'Plan erstellen',
+            backTitle: 'Pläne',
+            backRoute: 'nutritionplans'
+          }
+        },
+        {
+          path: 'nutritionplans/:id',
+          name: 'edit-nutritionplan',
+          component: () =>
+            import('@/views/profile/nutritionplans/EditNutritionplan.vue'),
+          meta: {
+            title: prefix + 'Ernährungsplan bearbeiten',
+            needsSignIn: true,
+            groups: ['Admin', 'Moderator'],
+            hero: 'Plan bearbeiten',
+            backTitle: 'Pläne',
+            backRoute: 'nutritionplans'
           }
         },
 

@@ -61,8 +61,18 @@
         </div>
       </FHAppear>
 
-      <FHHeading subtitle="ausgewogene" title="Ernährungspläne" />
-      <p>Bald verfügbar!</p>
+      <FHAppear>
+        <div v-if="nutritionplans && nutritionplans.length > 0">
+          <FHHeading subtitle="ausgewogene" title="Ernährungspläne" />
+          <FHCarousel>
+            <FHNutritionplanPreview
+              v-for="p in nutritionplans"
+              :key="p._id"
+              :plan="p"
+            />
+          </FHCarousel>
+        </div>
+      </FHAppear>
     </div>
   </div>
 </template>
@@ -74,20 +84,22 @@ import FHCarousel from '@/components/FHCarousel.vue';
 import FHHeading from '@/components/FHHeading.vue';
 import FHGraphWater from '@/components/graphs/FHGraphWater.vue';
 import FHCategoryPreview from '@/components/nutrition/FHCategoryPreview.vue';
+import FHNutritionplanPreview from '@/components/nutrition/FHNutritionplanPreview.vue';
 import FHRecipePreview from '@/components/nutrition/FHRecipePreview.vue';
-import { IRecipe, IVariable } from '@/utils/interfaces';
+import { INutritionplan, IRecipe, IVariable } from '@/utils/interfaces';
 import { VariableManagement } from '@/utils/VariableManagement';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
+    FHAppear,
     FHButton,
+    FHGraphWater,
     FHHeading,
     FHCarousel,
-    FHRecipePreview,
-    FHAppear,
     FHCategoryPreview,
-    FHGraphWater
+    FHRecipePreview,
+    FHNutritionplanPreview
   }
 })
 export default class Nutrition extends Vue {
@@ -99,6 +111,9 @@ export default class Nutrition extends Vue {
   }
   get categories(): IVariable[] | null {
     return VariableManagement.getCategories();
+  }
+  get nutritionplans(): INutritionplan[] | null {
+    return this.$store.getters.nutritionplans;
   }
 }
 </script>

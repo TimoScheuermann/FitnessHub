@@ -12,6 +12,7 @@ import {
   IFeed,
   IHealth,
   IMessage,
+  INutritionplan,
   IPendingFriendship,
   IRecipe,
   ITrainingplanFull,
@@ -61,6 +62,8 @@ const store = new Vuex.Store({
     belovedRecipes: null,
     likedRecipes: null,
     createdRecipes: null,
+    nutritionplans: null,
+    nutritionplanForm: null,
 
     messages: null,
     friends: null,
@@ -157,6 +160,12 @@ const store = new Vuex.Store({
     },
     createdRecipes: (state: any): IRecipe[] | null => {
       return state.createdRecipes;
+    },
+    nutritionplans: (state: any): INutritionplan[] | null => {
+      return state.nutritionplans;
+    },
+    nutritionplanForm: (state: any): INutritionplan | null => {
+      return state.nutritionplanForm;
     },
 
     messages: (state: any): IMessage[] | null => {
@@ -308,6 +317,12 @@ const store = new Vuex.Store({
     },
     createdRecipes(state: any, recipes: IRecipe[]) {
       state.createdRecipes = recipes;
+    },
+    nutritionplans(state: any, plans: INutritionplan[]) {
+      state.nutritionplans = plans;
+    },
+    nutritionplanForm(state: any, plan: INutritionplan) {
+      state.nutritionplanForm = plan;
     },
 
     messages(state: any, messages: IMessage[]) {
