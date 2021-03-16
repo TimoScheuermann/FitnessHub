@@ -36,7 +36,7 @@ export class NutritionplanFormValidator extends FormValidator {
       daytime = daytime.map((dt) => {
         const id = dto[d][dt];
         this.checkString(id, `Bitte gib ein Rezept für ${d} (${dt}) an.`);
-        if (!recipes.includes(id)) {
+        if (!recipes.some((x) => x == id)) {
           this.throwEx(
             `Das angegebene Rezept für ${d} (${dt}) existiert nicht.`,
           );
