@@ -44,11 +44,13 @@ export class NutritionplanFormValidator extends FormValidator {
         return dt;
       });
       let snacks = dto[d].snacks;
-      snacks = this.compareStringArry(
-        snacks,
-        recipes,
-        ` für ${d} (Snacks) ist kein gültiges Rezept.`,
-      );
+      if (snacks && snacks.length > 0) {
+        snacks = this.compareStringArry(
+          snacks,
+          recipes,
+          ` für ${d} (Snacks) ist kein gültiges Rezept.`,
+        );
+      }
       dto[d].snacks = snacks;
       return d;
     });
@@ -56,6 +58,3 @@ export class NutritionplanFormValidator extends FormValidator {
     return { ...dto, categories: categories };
   }
 }
-
-// ID bei den Tagen gehört zu Rezept? Existiert das Rezept?
-// Alle Felder haben Inhalte?
