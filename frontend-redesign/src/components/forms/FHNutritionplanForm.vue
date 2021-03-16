@@ -93,7 +93,7 @@
       <tl-flow>
         <tc-button
           v-if="!plan._id"
-          name="Rezept erstellen"
+          name="Plan erstellen"
           icon="reply"
           tfbackground="success"
           variant="filled"
