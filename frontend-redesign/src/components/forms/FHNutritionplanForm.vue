@@ -197,13 +197,13 @@ export default class FHNutritionplanForm extends Vue {
         title: '',
         description: '',
         categories: [],
-        monday: Object.assign({}, emptyDay),
-        tuesday: Object.assign({}, emptyDay),
-        wednesday: Object.assign({}, emptyDay),
-        thursday: Object.assign({}, emptyDay),
-        friday: Object.assign({}, emptyDay),
-        saturday: Object.assign({}, emptyDay),
-        sunday: Object.assign({}, emptyDay)
+        monday: { ...emptyDay },
+        tuesday: { ...emptyDay },
+        wednesday: { ...emptyDay },
+        thursday: { ...emptyDay },
+        friday: { ...emptyDay },
+        saturday: { ...emptyDay },
+        sunday: { ...emptyDay }
       };
     }
   }

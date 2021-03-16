@@ -31,13 +31,98 @@
         </div>
       </tc-hero>
     </FHSwipeable>
-    <div content v-if="plan">
-      <div max-width>
+    <template v-if="plan">
+      <div content>
         <h1 center>{{ plan.title }}</h1>
-
-        {{ plan }}
       </div>
-    </div>
+
+      <div class="grid-wrapper">
+        <div class="grid">
+          <div class="daynames" v-for="dn in Object.values(days)" :key="dn">
+            {{ dn }}
+          </div>
+          <div />
+          <template v-for="dt in daytimes">
+            <template v-for="d in Object.keys(days)">
+              <div class="recipe" :key="dt + d">
+                <div class="badge" :dt="dt">
+                  <i v-if="dt === 'breakfast'" class="ti-bed"></i>
+                  <i v-else-if="dt === 'lunch'" class="ti-sun"></i>
+                  <i v-else-if="dt === 'dinner'" class="ti-moon"></i>
+                </div>
+
+                <div class="thumbnail">
+                  <img :src="plan[d][dt].thumbnail" alt="" />
+                </div>
+                <div class="container">
+                  <div class="title">{{ plan[d][dt].title }}</div>
+
+                  <div class="information">
+                    <tl-flow
+                      class="nutrition"
+                      v-for="n in plan[d][dt].nutrition"
+                      :key="n.title"
+                      horizontal="space-between"
+                    >
+                      <div class="ntitle">{{ n.title }}</div>
+                      <div class="ninfo">{{ n.amount }}{{ n.unit }}</div>
+                    </tl-flow>
+
+                    <tl-flow class="additional-info" horizontal="space-between">
+                      <div class="ingred-amount">
+                        <i class="ti-list"></i>
+                        <span>
+                          {{ plan[d][dt].ingredients.length }} Zutaten
+                        </span>
+                      </div>
+                      <tc-action :dark="$store.getters.darkmode">
+                        <tc-action-item
+                          title="Rezept ansehen"
+                          icon="lens"
+                          @click="
+                            $oFS('recipe-details', { id: plan[d][dt]._id })
+                          "
+                        />
+                      </tc-action>
+                    </tl-flow>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div :key="dt + 's'" />
+          </template>
+
+          <tl-flow flow="column" v-for="d in Object.keys(days)" :key="'s' + d">
+            <template v-if="(plan[d].snacks || []).length > 0">
+              <div class="snacks-title">Snacks</div>
+              <div
+                class="recipe"
+                v-for="(s, i) in plan[d].snacks || []"
+                :key="d + i + s._id"
+              >
+                <div class="badge" dt="snack">
+                  <i class="ti-apple-alt"></i>
+                </div>
+
+                <div class="thumbnail">
+                  <img :src="s.thumbnail" alt="" />
+                </div>
+                <div class="container">
+                  <div class="title">{{ s.title }}</div>
+                  <tc-link
+                    tfcolor="success"
+                    center
+                    @click="$oFS('recipe-details', { id: s._id })"
+                  >
+                    Rezept ansehen
+                  </tc-link>
+                </div>
+              </div>
+            </template>
+          </tl-flow>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -51,17 +136,6 @@ import { closeFullscreen, formatTimeForMessage } from '@/utils/functions';
 import { INutritionplan, IRecipe, IUserInfo } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 
-const days = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday'
-];
-const daytimes = ['breakfast', 'lunch', 'dinner'];
-
 @Component({
   components: {
     FHSwipeable,
@@ -74,6 +148,17 @@ export default class Nutritionplan extends Vue {
   public plan: INutritionplan | null = null;
   public error = false;
   public author: IUserInfo | null = null;
+
+  public days = {
+    monday: 'Montag',
+    tuesday: 'Dienstag',
+    wednesday: 'Mittwoch',
+    thursday: 'Donnerstag',
+    friday: 'Freitag',
+    saturday: 'Samstag',
+    sunday: 'Sonntag'
+  };
+  public daytimes = ['breakfast', 'lunch', 'dinner'];
 
   mounted() {
     backend
@@ -94,8 +179,8 @@ export default class Nutritionplan extends Vue {
   get recipes(): IRecipe[] {
     if (!this.plan) return [];
     const recipes: IRecipe[] = [];
-    days.forEach(d => {
-      daytimes.forEach(dt => {
+    Object.keys(this.days).forEach(d => {
+      this.daytimes.forEach(dt => {
         // eslint-disable-next-line
         recipes.push((this.plan as any)[d][dt]);
       });
@@ -120,6 +205,150 @@ export default class Nutritionplan extends Vue {
 
   [content] {
     padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .grid-wrapper {
+    max-width: calc(
+      100vw - 10vw - env(safe-area-inset-right) - env(safe-area-inset-left)
+    );
+    padding-left: calc(5vw + env(safe-area-inset-left));
+    padding-right: calc(5vw + env(safe-area-inset-right));
+    padding-bottom: 20px;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 240px) 1px;
+      grid-gap: 0 40px;
+      .daynames {
+        background: $success;
+        padding: 10px;
+        border-radius: $border-radius 5px $border-radius 5px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .snacks-title {
+        margin-top: 20px;
+        margin-bottom: -10px;
+        font-weight: bold;
+        opacity: 0.75;
+        font-size: 20px;
+      }
+      .recipe {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        border-radius: $border-radius;
+
+        @media #{$isLight} {
+          background: $paragraph;
+        }
+        @media #{$isDark} {
+          background: $color;
+        }
+
+        position: relative;
+
+        .badge {
+          position: absolute;
+          top: 0;
+          right: 0;
+          $scale: 40px;
+          border-radius: #{$scale / 2.5};
+          height: $scale;
+          width: $scale;
+          transform: translate(40%, -40%);
+
+          display: grid;
+          place-content: center;
+
+          &[dt='breakfast'] {
+            background: #686de0;
+            color: #fff;
+          }
+          &[dt='lunch'] {
+            background: darken(#f9ca24, 10%);
+            color: #fff;
+          }
+          &[dt='dinner'] {
+            background: #130f40;
+            color: #fff;
+          }
+          &[dt='snack'] {
+            background: $error;
+            color: #fff;
+          }
+        }
+
+        .thumbnail {
+          height: 110px;
+          img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+
+            border-radius: $border-radius $border-radius 0 0;
+          }
+        }
+
+        .container {
+          padding: 10px;
+          display: flex;
+          flex-grow: 1;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          .title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+          }
+
+          .tc-link {
+            margin-top: -10px;
+          }
+
+          .information {
+            width: 100%;
+            .nutrition {
+              padding: 0 10px;
+              margin-bottom: 5px;
+
+              .ntitle {
+                opacity: 0.9;
+              }
+              .ninfo {
+                font-weight: 600;
+              }
+            }
+            .additional-info {
+              margin-top: 15px;
+              padding-left: 10px;
+
+              .ingred-amount {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0.75;
+                i {
+                  font-size: 14px;
+                  margin-right: 10px;
+                }
+              }
+            }
+          }
+
+          border-radius: 0 0 $border-radius $border-radius;
+        }
+      }
+    }
   }
 
   .tc-hero {

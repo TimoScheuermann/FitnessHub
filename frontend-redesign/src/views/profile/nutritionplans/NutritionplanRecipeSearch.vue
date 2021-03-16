@@ -42,7 +42,7 @@ import FHList from '@/components/list/FHList.vue';
 import FHListItem from '@/components/list/FHListItem.vue';
 import backend from '@/utils/backend';
 import { closeFullscreen } from '@/utils/functions';
-import { IRecipe } from '@/utils/interfaces';
+import { INutritionplan, IRecipe } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -72,14 +72,17 @@ export default class NutritionplanRecipeSearch extends Vue {
   public setRecipe(recipe: IRecipe) {
     const day = this.day;
     const daytime = this.daytime;
-    const plan = this.plan;
+    // eslint-disable-next-line
+    const plan = { ...this.plan } as any;
     if (!day || !daytime || !plan) {
       this.close();
       return;
     }
 
     if (daytime === 'snacks') {
-      plan[day][daytime].push(recipe);
+      const r = [...plan[day][daytime]];
+      r.push(recipe);
+      plan[day][daytime] = r;
     } else {
       plan[day][daytime] = recipe;
     }
@@ -94,13 +97,12 @@ export default class NutritionplanRecipeSearch extends Vue {
     return this.$route.params.daytime || null;
   }
 
-  // eslint-disable-next-line
-  get plan(): any | null {
+  get plan(): INutritionplan | null {
     return this.$store.getters.nutritionplanForm || null;
   }
 
   get canSet(): boolean {
-    return this.day && this.daytime && this.plan;
+    return !!this.day && !!this.daytime && !!this.plan;
   }
 
   public close() {

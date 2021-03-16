@@ -52,7 +52,6 @@ export default class App extends Vue {
 
   @Socket('achievement')
   newAchievement(achievement: IAchievment) {
-    console.log(achievement);
     AchievementManager.add(achievement);
   }
 
@@ -169,11 +168,12 @@ body {
 }
 
 [content] {
-  padding: 20px 5vw calc(20px + env(safe-area-inset-bottom));
+  padding-top: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  padding-left: calc(5vw + env(safe-area-inset-left));
+  padding-right: calc(5vw + env(safe-area-inset-right));
   @media #{$isMobile} {
     padding-bottom: calc(70px + env(safe-area-inset-bottom));
-    padding-left: calc(5vw + env(safe-area-inset-left));
-    padding-right: calc(5vw + env(safe-area-inset-right));
   }
 }
 
