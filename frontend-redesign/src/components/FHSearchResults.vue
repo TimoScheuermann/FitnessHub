@@ -16,7 +16,7 @@
           </tl-flow>
           <div v-else>
             <FHHeading :subtitle="subtitle" :title="searchFor" />
-            <tl-grid arrangement="auto-fill" minWidth="200">
+            <masonry :cols="{ default: 3, 750: 2, 500: 1 }" gutter="20px">
               <template v-if="type && type === 'exercise'">
                 <FHExercisePreview
                   v-for="r in results"
@@ -31,7 +31,7 @@
                   :recipe="r"
                 />
               </template>
-            </tl-grid>
+            </masonry>
           </div>
         </FHAppear>
       </div>
@@ -112,3 +112,10 @@ export default class FHSearchResults extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.fh-search-results {
+  .fh-preview {
+    margin-bottom: 20px;
+  }
+}
+</style>

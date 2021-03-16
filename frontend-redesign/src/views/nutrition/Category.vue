@@ -19,9 +19,9 @@
         :title="this.$route.params.category"
       />
       <br />
-      <tl-grid arrangement="auto-fill" minWidth="200">
+      <masonry :cols="{ default: 3, 750: 2, 500: 1 }" gutter="20px">
         <FHRecipePreview v-for="r in recipes" :key="r._id" :recipe="r" />
-      </tl-grid>
+      </masonry>
     </div>
   </div>
 </template>
@@ -54,3 +54,10 @@ export default class RecipeCategory extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.view-recipe-category {
+  .fh-recipe-preview {
+    margin-bottom: 20px;
+  }
+}
+</style>

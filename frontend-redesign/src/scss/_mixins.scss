@@ -100,7 +100,6 @@
 @mixin muscle-colors {
   path {
     fill: $color_dark;
-    filter: url(#drop);
 
     &[ignore] {
       opacity: .5;

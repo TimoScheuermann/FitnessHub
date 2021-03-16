@@ -16,9 +16,10 @@
     <div v-else max-width>
       <FHHeading subtitle="Ergebnisse für" :title="this.$route.params.muscle" />
       <br />
-      <tl-grid arrangement="auto-fill" minWidth="200">
+
+      <masonry :cols="{ default: 3, 750: 2, 500: 1 }" gutter="20px">
         <FHExercisePreview v-for="e in exercises" :key="e._id" :exercise="e" />
-      </tl-grid>
+      </masonry>
     </div>
   </div>
 </template>
@@ -51,3 +52,10 @@ export default class MuscleExercises extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.view-muscle-exercises {
+  .fh-exercise-preview {
+    margin-bottom: 20px;
+  }
+}
+</style>

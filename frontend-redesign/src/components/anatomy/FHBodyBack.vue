@@ -6,18 +6,6 @@
     height="924.814"
     viewBox="0 0 258 924.814"
   >
-    <defs>
-      <filter id="drop">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-        <feOffset dx="2" dy="2" result="offsetblur" />
-        <feFlood flood-color="#111" flood-opacity="0.174" />
-        <feComposite in2="offsetblur" operator="in" />
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
     <g transform="translate(-11 -4)">
       <path
         ignore

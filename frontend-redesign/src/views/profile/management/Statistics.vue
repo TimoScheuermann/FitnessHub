@@ -73,6 +73,7 @@ export default class Statistics extends Vue {
     Workouts: 'ti-list',
     Exercises: 'ti-gym',
     Recipes: 'ti-gastro-assistant',
+    'Community Posts': 'ti-star',
     'Completed Exercises': 'ti-award',
     Muskeln: 'ti-dots',
     Kategorien: 'ti-book-filled'
