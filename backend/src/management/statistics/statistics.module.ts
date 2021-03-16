@@ -5,6 +5,7 @@ import {
   CompletedExerciseSchema,
 } from 'src/exercise/schemas/CompletedExercise.schema';
 import { Exercise, ExerciseSchema } from 'src/exercise/schemas/Exercise.schema';
+import { Feed, FeedSchema } from 'src/feed/schemas/Feed.schema';
 import {
   Friendship,
   FriendshipSchema,
@@ -27,6 +28,7 @@ import { StatisticsService } from './statistics.service';
       { name: Recipe.name, schema: RecipeSchema },
       { name: CompletedExercise.name, schema: CompletedExerciseSchema },
       { name: Variable.name, schema: VariableSchema },
+      { name: Feed.name, schema: FeedSchema },
     ]),
     UserModule,
   ],

@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Provider } from 'src/auth/auth.service';
 import { CompletedExercise } from 'src/exercise/schemas/CompletedExercise.schema';
 import { Exercise } from 'src/exercise/schemas/Exercise.schema';
+import { Feed } from 'src/feed/schemas/Feed.schema';
 import { Friendship } from 'src/friends/schemas/Friendship.schema';
 import { Message } from 'src/message/schemas/Message.schema';
 import { Recipe } from 'src/recipe/schemas/Recipe.schema';
@@ -25,6 +26,7 @@ export class StatisticsService {
     @InjectModel(CompletedExercise.name)
     private completedExerciseModel: Model<CompletedExercise>,
     @InjectModel(Variable.name) private variableModel: Model<Variable>,
+    @InjectModel(Feed.name) private feedModel: Model<Feed>,
   ) {}
 
   /**
@@ -64,6 +66,10 @@ export class StatisticsService {
       {
         title: 'Recipes',
         amount: await this.recipeModel.countDocuments(),
+      },
+      {
+        title: 'Community Posts',
+        amount: await this.feedModel.countDocuments(),
       },
       {
         title: 'Completed Exercises',
