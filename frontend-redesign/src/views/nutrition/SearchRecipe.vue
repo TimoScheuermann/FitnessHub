@@ -8,7 +8,7 @@
       <h1 center>Rezept suchen</h1>
       <form @submit.prevent="submit">
         <tc-input
-          pattern=".{2,}"
+          pattern=".{3,}"
           v-model="query"
           icon="lens"
           :frosted="true"
