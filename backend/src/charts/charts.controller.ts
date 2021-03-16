@@ -1,5 +1,6 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
@@ -8,6 +9,7 @@ import { AvailableSetting } from 'src/setting/setting.service';
 import { IUser } from 'src/user/interfaces/IUser';
 import { ChartsService } from './charts.service';
 
+@ApiTags('Charts')
 @Controller('charts')
 export class ChartsController {
   constructor(private readonly chartService: ChartsService) {}

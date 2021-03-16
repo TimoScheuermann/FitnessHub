@@ -1,9 +1,11 @@
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { TgbotService } from './tgbot.service';
 
+@ApiTags('Telegram Bot')
 @Controller('tgbot')
 export class TgbotController {
   constructor(private readonly tgbotService: TgbotService) {}

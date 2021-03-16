@@ -1,6 +1,8 @@
 import { Controller, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { TgbotService } from 'src/tgbot/tgbot.service';
 
+@ApiTags('Netlify')
 @Controller('netlify')
 export class NetlifyController {
   constructor(private readonly tgbotService: TgbotService) {}

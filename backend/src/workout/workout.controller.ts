@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -16,6 +17,7 @@ import { CreateWorkoutDTO } from './dtos/CreateWorkout.dto';
 import { IWorkout } from './interfaces/IWorkout';
 import { WorkoutService } from './workout.service';
 
+@ApiTags('Workout')
 @Controller('workout')
 export class WorkoutController {
   constructor(private readonly workoutService: WorkoutService) {}

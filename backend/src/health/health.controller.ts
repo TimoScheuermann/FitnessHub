@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
@@ -17,6 +18,7 @@ import { IUser } from 'src/user/interfaces/IUser';
 import { HealthService } from './health.service';
 import { IHealth } from './interfaces/IHealth';
 
+@ApiTags('Health')
 @Controller('health')
 export class HealthController {
   constructor(private readonly healthService: HealthService) {}

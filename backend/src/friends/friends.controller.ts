@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -16,6 +17,7 @@ import { FriendIDParam, FriendsGuard } from './friends.guard';
 import { FriendsService } from './friends.service';
 import { IPendingFriendship } from './interfaces/IPendingFriendship';
 
+@ApiTags('Friends')
 @Controller('friends')
 export class FriendsController {
   constructor(private readonly friendsService: FriendsService) {}
