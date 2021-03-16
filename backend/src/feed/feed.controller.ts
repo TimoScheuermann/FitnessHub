@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -19,6 +20,7 @@ import { FeedService } from './feed.service';
 import { IFeed } from './interfaces/IFeed.interface';
 import { Feed } from './schemas/Feed.schema';
 
+@ApiTags('Feed')
 @Controller('feed')
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}

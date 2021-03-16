@@ -1,10 +1,12 @@
 import { Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
 import { AvailableSetting, SettingService } from './setting.service';
 
+@ApiTags('Setting')
 @Controller('setting')
 export class SettingController {
   constructor(private readonly settingService: SettingService) {}

@@ -8,11 +8,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import { CreateVariableDTO } from './dtos/CreateVariable.dto';
 import { IVariable } from './interfaces/IVariable';
 import { VariablesService } from './variables.service';
 
+@ApiTags('Variables')
 @Controller('variables')
 export class VariablesController {
   constructor(private readonly variablesService: VariablesService) {}

@@ -1,5 +1,6 @@
 import { Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -7,6 +8,7 @@ import { ITrainingplanFull } from './interfaces/ITrainingplanFull';
 import { Trainingplan } from './schemas/Trainingplan.schema';
 import { TrainingplanService } from './trainingplan.service';
 
+@ApiTags('Trainingsplan')
 @Controller('trainingplan')
 export class TrainingplanController {
   constructor(private readonly trainingplanService: TrainingplanService) {}

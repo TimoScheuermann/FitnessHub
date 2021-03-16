@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
@@ -21,6 +22,7 @@ import { ExerciseService } from './exercise.service';
 import { IExercise } from './interfaces/IExercise';
 import { IExerciseShowcase } from './interfaces/IExerciseShowcase';
 
+@ApiTags('Exercise')
 @Controller('exercise')
 export class ExerciseController {
   constructor(private readonly exerciseService: ExerciseService) {}

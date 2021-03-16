@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -16,6 +17,7 @@ import { CreateNutritionplanDTO } from './dtos/CreateNutritionplan.dto';
 import { INutritionplanFull } from './interfaces/INutritionplanFull';
 import { NutritionplanService } from './nutritionplan.service';
 
+@ApiTags('Nutritionplan')
 @Controller('nutritionplan')
 export class NutritionplanController {
   constructor(private readonly nutritionplanService: NutritionplanService) {}

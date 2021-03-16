@@ -1,8 +1,10 @@
 import { Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from 'src/auth/roles.guard';
 import { UserService } from 'src/user/user.service';
 
+@ApiTags('Promote')
 @Controller('promote')
 export class PromoteController {
   constructor(private readonly userService: UserService) {}

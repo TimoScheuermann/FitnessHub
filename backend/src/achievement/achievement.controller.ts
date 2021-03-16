@@ -1,11 +1,13 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import FHUser from 'src/auth/user.decorator';
 import { FriendIDParam } from 'src/friends/friends.guard';
 import { IUser } from 'src/user/interfaces/IUser';
 import { AchievementService } from './achievement.service';
 import { Achievement } from './schemas/Achievement.schema';
 
+@ApiTags('Achievement')
 @Controller('achievement')
 export class AchievementController {
   constructor(private readonly achievementService: AchievementService) {}

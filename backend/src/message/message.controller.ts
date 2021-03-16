@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { FriendIDParam, FriendsGuard } from 'src/friends/friends.guard';
@@ -16,6 +17,7 @@ import { IUser } from 'src/user/interfaces/IUser';
 import { IMessage } from './interfaces/IMessage';
 import { MessageService } from './message.service';
 
+@ApiTags('Message')
 @Controller('message')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}

@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import FHUser from 'src/auth/user.decorator';
 import { IUser } from 'src/user/interfaces/IUser';
@@ -16,6 +17,7 @@ import { CreateRecipeDTO } from './dtos/CreateRecipe.dto';
 import { IRecipe } from './interfaces/IRecipe';
 import { RecipeService } from './recipe.service';
 
+@ApiTags('Recipe')
 @Controller('recipe')
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
