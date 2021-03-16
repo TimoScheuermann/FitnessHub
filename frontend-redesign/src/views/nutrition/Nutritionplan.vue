@@ -1,26 +1,26 @@
 <template>
-  <div class="view-Workout">
-    <FHHeader :title="workout ? workout.title : 'Workout'" :trigger="250">
-      <FHFullScreenCloser @click="$cFS('training')" />
+  <div class="view-nutritionplan">
+    <FHHeader :title="plan ? plan.title : 'Ernährungsplan'" :trigger="250">
+      <FHFullScreenCloser @click="close" />
     </FHHeader>
-    <FHSwipeable @swipeDown="$cFS('training')">
+    <FHSwipeable @swipeDown="close">
       <tc-hero :dark="true">
-        <img v-if="workout" src="assets/hero/home.webp" slot="background" />
+        <img v-if="plan" src="assets/hero/home.webp" slot="background" />
         <tl-flow v-else-if="!error" flow="column">
           <tc-spinner
             variant="dots-spin"
             size="30"
             :dark="$store.getters.darkmode"
           />
-          <p>Workout wird geladen...</p>
+          <p>Ernährungsplan wird geladen...</p>
         </tl-flow>
         <tl-flow v-else flow="column">
           <i huge error class="ti-exclamation-triangle" />
-          <p>Workout konnte nicht geladen werden</p>
+          <p>Ernährungsplan konnte nicht geladen werden</p>
         </tl-flow>
 
-        <div class="hero-container" v-if="workout">
-          <FHWorkoutThumbnail :exercises="workout.exercises" />
+        <div class="hero-container" v-if="plan">
+          <FHWorkoutThumbnail :exercises="recipes" />
           <div class="workout-information" center>
             <template v-if="author">
               <tc-avatar :src="author.avatar" size="tiny" />
@@ -31,88 +31,96 @@
         </div>
       </tc-hero>
     </FHSwipeable>
-    <div content v-if="workout">
-      <tl-grid minWidth="150" gap="10" max-width>
-        <FHButton
-          :frosted="true"
-          icon="play"
-          title="Start"
-          @click="startWorkout"
-        />
-        <FHButton :frosted="true" icon="cloud-download" title="Download" />
-      </tl-grid>
-      <h1 center>{{ workout.title }}</h1>
+    <div content v-if="plan">
       <div max-width>
-        <FHWorkoutExercise
-          v-for="(e, i) in workout.exercises"
-          :key="i"
-          :exercise="e"
-        />
+        <h1 center>{{ plan.title }}</h1>
+
+        {{ plan }}
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import FHButton from '@/components/FHButton.vue';
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
 import FHHeader from '@/components/FHHeader.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
-import FHWorkoutExercise from '@/components/training/FHWorkoutExercise.vue';
 import FHWorkoutThumbnail from '@/components/training/FHWorkoutThumbnail.vue';
 import backend from '@/utils/backend';
 import { closeFullscreen, formatTimeForMessage } from '@/utils/functions';
-import { IUserInfo, IWorkout } from '@/utils/interfaces';
-import { WorkoutManagement } from '@/utils/WorkoutManagement';
+import { INutritionplan, IRecipe, IUserInfo } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
+
+const days = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday'
+];
+const daytimes = ['breakfast', 'lunch', 'dinner'];
 
 @Component({
   components: {
-    FHFullScreenCloser,
     FHSwipeable,
-    FHButton,
-    FHWorkoutExercise,
     FHHeader,
+    FHFullScreenCloser,
     FHWorkoutThumbnail
   }
 })
-export default class Exercise extends Vue {
-  public workout: IWorkout | null = null;
+export default class Nutritionplan extends Vue {
+  public plan: INutritionplan | null = null;
   public error = false;
   public author: IUserInfo | null = null;
 
   mounted() {
     backend
-      .get('workout/' + this.$route.params.id)
+      .get('nutritionplan/' + this.$route.params.id)
       .then(async res => {
-        this.workout = res.data;
+        this.plan = res.data;
 
-        if (!this.workout) return;
-        const { data } = await backend.get('user/' + this.workout.author);
+        if (!this.plan) return;
+        const { data } = await backend.get('user/' + this.plan.author);
         this.author = data;
       })
       .catch(() => {
         this.error = true;
-        closeFullscreen('training');
+        this.close();
       });
   }
 
-  get tsUpdated(): string {
-    if (!this.workout) return '';
-    return formatTimeForMessage(this.workout.updated);
+  get recipes(): IRecipe[] {
+    if (!this.plan) return [];
+    const recipes: IRecipe[] = [];
+    days.forEach(d => {
+      daytimes.forEach(dt => {
+        // eslint-disable-next-line
+        recipes.push((this.plan as any)[d][dt]);
+      });
+    });
+    return recipes;
   }
 
-  public startWorkout(): void {
-    if (this.workout) {
-      WorkoutManagement.startWorkout(this.workout.exercises);
-    }
+  get tsUpdated(): string {
+    if (!this.plan || !this.plan.updated) return '';
+    return formatTimeForMessage(this.plan.updated);
+  }
+
+  public close() {
+    closeFullscreen('nutrition');
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.view-Workout {
+.view-nutritionplan {
   min-height: 100vh;
+
+  [content] {
+    padding-top: 0;
+  }
 
   .tc-hero {
     img[src='assets/hero/home.webp'] {
@@ -163,16 +171,6 @@ export default class Exercise extends Vue {
         height: 200px;
         width: 200px;
       }
-    }
-  }
-
-  [content] {
-    padding-top: 0;
-    .tl-grid {
-      left: 50%;
-      transform: translate(-50%, calc(-100% - 40px));
-      position: absolute;
-      z-index: 10;
     }
   }
 }

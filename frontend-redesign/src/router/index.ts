@@ -1,5 +1,6 @@
 import store from '@/store';
 import Login from '@/views/login/Login.vue';
+import Nutritionplan from '@/views/nutrition/Nutritionplan.vue';
 import Recipe from '@/views/nutrition/Recipe.vue';
 import Scanner from '@/views/nutrition/Scanner.vue';
 import SearchRecipe from '@/views/nutrition/SearchRecipe.vue';
@@ -156,6 +157,15 @@ const router = new VueRouter({
       meta: {
         title: prefix + 'Rezept anpassen',
         needsSignIn: true,
+        fullscreen: true
+      }
+    },
+    {
+      path: '/nutrition/plan/:id',
+      name: 'nutritionplan',
+      component: Nutritionplan,
+      meta: {
+        title: prefix + 'Ernährungsplan',
         fullscreen: true
       }
     },

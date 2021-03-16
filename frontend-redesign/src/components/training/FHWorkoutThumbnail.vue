@@ -14,22 +14,23 @@
 </template>
 
 <script lang="ts">
-import { IExercise, IExerciseInfo } from '@/utils/interfaces';
+import { IExercise, IExerciseInfo, IRecipe } from '@/utils/interfaces';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FHWorkoutThumbnail extends Vue {
-  @Prop() exercises!: (IExercise | IExerciseInfo)[];
+  @Prop() exercises!: (IExercise | IExerciseInfo | IRecipe)[];
 
   get thumbnails(): string[] {
     if (!this.exercises) return [];
     const { length } = this.exercises;
     if (length === 0) return [];
 
-    let selection: (IExercise | IExerciseInfo)[] = [];
+    let selection: (IExercise | IExerciseInfo | IRecipe)[] = [];
     if (length < 4) selection = this.exercises.slice(0, 1);
     else if (length < 9) selection = this.exercises.slice(0, 4);
-    else selection = this.exercises.slice(0, 9);
+    else if (length < 16) selection = this.exercises.slice(0, 9);
+    else selection = this.exercises.slice(0, 16);
     return selection.map(x => x.thumbnail);
   }
 }
@@ -49,6 +50,9 @@ export default class FHWorkoutThumbnail extends Vue {
   }
   &[thumbnails='9'] {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+  &[thumbnails='16'] {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 
   div {
