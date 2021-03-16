@@ -31,7 +31,7 @@ export class FormValidator {
     message: string,
   ): string[] {
     return array.map((x) => {
-      if (!compare.includes(x)) {
+      if (!compare.some((e) => e == x)) {
         this.throwEx(x + ' ' + message);
       }
       return x;

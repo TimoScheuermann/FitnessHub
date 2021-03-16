@@ -4,6 +4,7 @@ import { isValidObjectId, Model } from 'mongoose';
 import { Variable } from 'src/management/variables/schemas/Variable.schema';
 import { Recipe } from 'src/recipe/schemas/Recipe.schema';
 import { TgbotService } from 'src/tgbot/tgbot.service';
+import { FHBot } from 'src/user/FHBot.user';
 import { IUser } from 'src/user/interfaces/IUser';
 import { CreateNutritionplanDTO } from './dtos/CreateNutritionplan.dto';
 import { INutritionplanFull } from './interfaces/INutritionplanFull';
@@ -84,7 +85,6 @@ export class NutritionplanService {
       updated: new Date().getTime(),
       author: user._id,
     });
-
     return (await this.mapNutritionplans([nutritionplan]))[0];
   }
 
@@ -186,9 +186,7 @@ export class NutritionplanService {
       });
     });
 
-    recipeIDs = [...new Set(...recipeIDs)].filter(
-      (x) => x && isValidObjectId(x),
-    );
+    recipeIDs = [...new Set(recipeIDs)].filter((x) => x && isValidObjectId(x));
 
     const recipes = await this.recipeModel.find({
       _id: { $in: recipeIDs },
@@ -201,7 +199,7 @@ export class NutritionplanService {
     return nutritionplans.map((x) => {
       return {
         _id: x._id,
-        author: x.author,
+        author: x.author || FHBot._id,
         created: x.created,
         updated: x.updated,
 
@@ -213,49 +211,49 @@ export class NutritionplanService {
           breakfast: getRecipe(x.monday.breakfast),
           lunch: getRecipe(x.monday.lunch),
           dinner: getRecipe(x.monday.dinner),
-          snacks: x.monday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.monday.snacks || []).map((x) => getRecipe(x)),
         },
 
         tuesday: {
           breakfast: getRecipe(x.tuesday.breakfast),
           lunch: getRecipe(x.tuesday.lunch),
           dinner: getRecipe(x.tuesday.dinner),
-          snacks: x.tuesday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.tuesday.snacks || []).map((x) => getRecipe(x)),
         },
 
         wednesday: {
           breakfast: getRecipe(x.wednesday.breakfast),
           lunch: getRecipe(x.wednesday.lunch),
           dinner: getRecipe(x.wednesday.dinner),
-          snacks: x.wednesday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.wednesday.snacks || []).map((x) => getRecipe(x)),
         },
 
         thursday: {
           breakfast: getRecipe(x.thursday.breakfast),
           lunch: getRecipe(x.thursday.lunch),
           dinner: getRecipe(x.thursday.dinner),
-          snacks: x.thursday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.thursday.snacks || []).map((x) => getRecipe(x)),
         },
 
         friday: {
           breakfast: getRecipe(x.friday.breakfast),
           lunch: getRecipe(x.friday.lunch),
           dinner: getRecipe(x.friday.dinner),
-          snacks: x.friday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.friday.snacks || []).map((x) => getRecipe(x)),
         },
 
         saturday: {
           breakfast: getRecipe(x.saturday.breakfast),
           lunch: getRecipe(x.saturday.lunch),
           dinner: getRecipe(x.saturday.dinner),
-          snacks: x.saturday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.saturday.snacks || []).map((x) => getRecipe(x)),
         },
 
         sunday: {
           breakfast: getRecipe(x.sunday.breakfast),
           lunch: getRecipe(x.sunday.lunch),
           dinner: getRecipe(x.sunday.dinner),
-          snacks: x.sunday.snacks.map((x) => getRecipe(x)),
+          snacks: (x.sunday.snacks || []).map((x) => getRecipe(x)),
         },
       };
     });
