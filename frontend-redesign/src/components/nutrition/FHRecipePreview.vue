@@ -1,43 +1,42 @@
 <template>
-  <div
-    class="fh-recipe-preview"
-    cursor
+  <FHPreview
     v-if="recipe"
+    class="fh-recipe-preview"
     @click="handleClick"
-    :style="`--thumbnail: url('${recipe.thumbnail}'`"
+    :title="recipe.title"
   >
-    <div class="media">
+    <template slot="media">
       <FHHeart :recipeId="recipe._id" @click="toggleLike" />
+      <img :src="recipe.thumbnail" alt="" />
+    </template>
+
+    <div class="time">
+      <i class="ti-clock-simple" />
+      <span>{{ recipe.time }} min</span>
     </div>
-    <div class="title">{{ recipe.title }}</div>
-    <tl-flow horizontal="space-between">
-      <div class="time">
-        <i class="ti-clock-simple" />
-        <span>{{ recipe.time }} min</span>
-      </div>
-      <tc-action :dark="$store.getters.darkmode">
-        <tc-action-item success icon="share" title="Teilen" />
-        <tc-action-item
-          icon="i-circle-filled"
-          title="Details"
-          @click="handleClick"
-        />
-        <tc-action-item
-          v-if="$store.getters.valid && $route.name !== 'recipes'"
-          icon="heart"
-          title="Lieblingsrezepte"
-          @click="openRecipes"
-        />
-        <tc-action-item
-          v-if="isAuthor"
-          icon="pencil"
-          title="Bearbeiten"
-          alarm
-          @click="$oFS('update-recipe', { id: recipe._id })"
-        />
-      </tc-action>
-    </tl-flow>
-  </div>
+
+    <template slot="action">
+      <tc-action-item success icon="share" title="Teilen" />
+      <tc-action-item
+        icon="i-circle-filled"
+        title="Details"
+        @click="handleClick"
+      />
+      <tc-action-item
+        v-if="$store.getters.valid && $route.name !== 'recipes'"
+        icon="heart"
+        title="Lieblingsrezepte"
+        @click="openRecipes"
+      />
+      <tc-action-item
+        v-if="isAuthor"
+        icon="pencil"
+        title="Bearbeiten"
+        alarm
+        @click="$oFS('update-recipe', { id: recipe._id })"
+      />
+    </template>
+  </FHPreview>
 </template>
 
 <script lang="ts">
@@ -46,10 +45,14 @@ import { IRecipe } from '@/utils/interfaces';
 import { RecipeManagement } from '@/utils/RecipeManagement';
 import { UserManagement } from '@/utils/UserManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import FHPreview from '../FHPreview.vue';
 import FHHeart from './FHHeart.vue';
 
 @Component({
-  components: { FHHeart }
+  components: {
+    FHHeart,
+    FHPreview
+  }
 })
 export default class FHRecipePreview extends Vue {
   @Prop() recipe!: IRecipe;
@@ -83,49 +86,6 @@ export default class FHRecipePreview extends Vue {
 
 <style lang="scss" scoped>
 .fh-recipe-preview {
-  border-radius: $border-radius;
-  height: fit-content;
-
-  background: $paragraph;
-  @media #{$isDark} {
-    background: $color;
-  }
-  box-shadow: $shadow-light;
-
-  .media {
-    height: 210px;
-    background-position: center;
-    background-size: cover;
-
-    background-image: linear-gradient(
-        to bottom,
-        transparent calc(100% - 30px),
-        $paragraph
-      ),
-      var(--thumbnail);
-    @media #{$isDark} {
-      background-image: linear-gradient(
-          to bottom,
-          transparent calc(100% - 30px),
-          $color
-        ),
-        var(--thumbnail);
-    }
-
-    display: flex;
-    justify-content: flex-end;
-    border-radius: $border-radius $border-radius 0 0;
-  }
-
-  .title {
-    margin: -12.5px 20px 0px;
-    overflow-wrap: break-word;
-    font-weight: bold;
-    font-size: 1.4em;
-  }
-  .tl-flow {
-    padding: 10px;
-  }
   .time {
     margin-left: 10px;
     opacity: 0.7;

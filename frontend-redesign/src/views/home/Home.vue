@@ -7,6 +7,7 @@
         </tl-flow>
         <h1>About</h1>
       </tl-flow>
+
       <p>
         FitnessHub ist eine Online-Oase für alle Sportenthusiasten, Sportmuffel
         und Profis, die unabhängig von Ihrem Geschlecht, Alter und Fitnesslevel
@@ -158,6 +159,7 @@
 <script lang="ts">
 import FHSectionCardLarge from '@/components/home/FHSectionCardLarge.vue';
 import FHSectionCardNormal from '@/components/home/FHSectionCardNormal.vue';
+import { IExercise } from '@/utils/interfaces';
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
@@ -166,7 +168,29 @@ import { Vue, Component } from 'vue-property-decorator';
     FHSectionCardLarge
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  public ex: IExercise = {
+    steps: ['Imitiert Ski-Langlauf'],
+    warnings: ['Schutz der Gelenke', 'Ausdauertraining', 'Gewichtsreduktion'],
+    affectedMuscles: [
+      'Cardio',
+      'Ganzkörper',
+      'Gluteus Maximus',
+      'Oberschenkel'
+    ],
+    _id: '5f573424b3bda65094e5a4bb',
+    title: 'Arc Trainer',
+    thumbnail: 'https://cdn2.pixstash.net/2020/09/09/1uxvm.jpg',
+    difficulty: 1,
+    distance: '5 km',
+    created: 1599550500990,
+    reviewedBy: '5f47a68688e01f1eaa1881d9',
+    reviewed: true,
+    updated: 1614805273365,
+    author: '5f47a68688e01f1eaa1881d9',
+    kneeFriendly: true
+  };
+}
 </script>
 
 <style lang="scss" scoped>
@@ -215,6 +239,28 @@ export default class Home extends Vue {}
       opacity: 0.75;
       margin-top: 10px;
       text-transform: uppercase;
+    }
+  }
+}
+
+.level {
+  margin-left: 10px;
+  opacity: 0.7;
+  span {
+    font-size: 14px;
+  }
+  i {
+    margin-left: 5px;
+    font-size: 10px;
+
+    &[difficulty='1'] {
+      color: $success;
+    }
+    &[difficulty='2'] {
+      color: $alarm;
+    }
+    &[difficulty='3'] {
+      color: $error;
     }
   }
 }

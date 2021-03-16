@@ -23,6 +23,7 @@
           :rounded="true"
           :shadow="false"
           title="Bizeps"
+          id="Bizeps"
           :dark="$store.getters.darkmode"
         >
           DAS Statussymbol für echte Kerle. Befindet sich im Oberarm und hat
@@ -34,6 +35,7 @@
           :rounded="true"
           :shadow="false"
           title="Deltamuskel"
+          id="Deltamuskel"
           :dark="$store.getters.darkmode"
         >
           er gehört zu der Gruppe der Schulter- und Nackenmuskeln. Er „verpackt“
@@ -46,6 +48,7 @@
           :rounded="true"
           :shadow="false"
           title="Handstrecker"
+          id="Handstrecker"
           :dark="$store.getters.darkmode"
         >
           dieser Muskel ist für den sog. Tennisellenbogen verantwortlich und
@@ -55,6 +58,7 @@
           :rounded="true"
           :shadow="false"
           title="Latissimus"
+          id="Latissimus"
           :dark="$store.getters.darkmode"
         >
           ist der größte Skelettmuskel und befindet sich an der seitlichen
@@ -65,6 +69,7 @@
           :rounded="true"
           :shadow="false"
           title="Pectoralis"
+          id="Pectoralis"
           :dark="$store.getters.darkmode"
         >
           Brustmuskel, der für definierte und starke Brustmuskulatur
@@ -74,6 +79,7 @@
           :rounded="true"
           :shadow="false"
           title="Trapezmuskel"
+          id="Trapezmuskel"
           :dark="$store.getters.darkmode"
         >
           liegt im oberen, zentralen Bereich des Rückens und Nackens und trägt
@@ -83,6 +89,7 @@
           :rounded="true"
           :shadow="false"
           title="Trizeps"
+          id="Trizeps"
           :dark="$store.getters.darkmode"
         >
           ist der Gegenspieler vom Bizeps und befindet sich auf der Rückseite
@@ -92,6 +99,7 @@
           :rounded="true"
           :shadow="false"
           title="Vorderer Sägemuskel"
+          id="Vorderer Sägemuskel"
           :dark="$store.getters.darkmode"
         >
           liegt seitlich unterhalb der Brust. Unter anderem ist der Muskel auch
@@ -110,6 +118,7 @@
           :rounded="true"
           :shadow="false"
           title="Adduktor"
+          id="Adduktor"
           :dark="$store.getters.darkmode"
         >
           ist die Innenseite deiner Oberschenkel. Bei Frauen sammeln sich die
@@ -119,6 +128,7 @@
           :rounded="true"
           :shadow="false"
           title="Abduktor"
+          id="Abduktor"
           :dark="$store.getters.darkmode"
         >
           sind die äußeren seitlichen Bauch- und Beinmuskeln.
@@ -127,6 +137,7 @@
           :rounded="true"
           :shadow="false"
           title="Beinbeuger"
+          id="Beinbeuger"
           :dark="$store.getters.darkmode"
         >
           wichtig für den hinteren Teil der Oberschenkel. Wir empfehlen das
@@ -137,6 +148,7 @@
           :rounded="true"
           :shadow="false"
           title="Gluteus Maximus"
+          id="Gluteus Maximus"
           :dark="$store.getters.darkmode"
         >
           einfach gesagt dein Gesäßmuskel. Wichtiges Trainingsziel für alle, die
@@ -147,6 +159,7 @@
           :rounded="true"
           :shadow="false"
           title="Unterer Rücken (Rückenstrecker)"
+          id="Unterer Rücken (Rückenstrecker)"
           :dark="$store.getters.darkmode"
         >
           besonders wichtig bei Menschen, die sich berufsbedingt wenig bewegen
@@ -158,6 +171,7 @@
           :rounded="true"
           :shadow="false"
           title="Rumpf"
+          id="Rumpf"
           :dark="$store.getters.darkmode"
         >
           umfasst den Brustkorb, Bauch, Rücken und Becken und seine schmalste
@@ -168,6 +182,7 @@
           :rounded="true"
           :shadow="false"
           title="Quadrizeps"
+          id="Quadrizeps"
           :dark="$store.getters.darkmode"
         >
           befindet sich auf der Vorderseite des Oberschenkels.

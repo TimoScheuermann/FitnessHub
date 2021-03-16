@@ -1,42 +1,46 @@
 <template>
-  <div class="fh-workout-preview" cursor v-if="workout" @click="handleClick">
-    <FHWorkoutThumbnail :exercises="workout.exercises" />
-    <div class="title">{{ workout.title }}</div>
-    <tl-flow horizontal="space-between">
-      <div class="exercise-amount">
-        <i class="ti-gym" />
-        <span>Übungen: {{ workout.exercises.length }}</span>
-      </div>
-      <tc-action :dark="$store.getters.darkmode">
-        <tc-action-item
-          icon="play"
-          title="Workout starten"
-          @click="startWorkout"
-        />
-        <tc-action-item
-          icon="i-circle-filled"
-          title="Details"
-          @click="handleClick"
-        />
-        <tc-action-item
-          v-if="isAuthor"
-          alarm
-          title="Bearbeiten"
-          icon="pencil"
-          @click="updateWorkout"
-        />
-        <tc-action-item
-          v-if="isAuthor"
-          error
-          title="Löschen"
-          icon="trashcan-alt"
-          @click="deleteWorkout"
-        />
+  <FHPreview
+    v-if="workout"
+    class="fh-workout-preview"
+    @click="handleClick"
+    :title="workout.title"
+  >
+    <FHWorkoutThumbnail slot="media" :exercises="workout.exercises" />
 
-        <tc-action-item success icon="share" title="Teilen" />
-      </tc-action>
-    </tl-flow>
-  </div>
+    <div class="exercise-amount">
+      <i class="ti-gym" />
+      <span>Übungen: {{ workout.exercises.length }}</span>
+    </div>
+
+    <template slot="action">
+      <tc-action-item
+        icon="play"
+        title="Workout starten"
+        @click="startWorkout"
+      />
+      <tc-action-item
+        icon="i-circle-filled"
+        title="Details"
+        @click="handleClick"
+      />
+      <tc-action-item
+        v-if="isAuthor"
+        alarm
+        title="Bearbeiten"
+        icon="pencil"
+        @click="updateWorkout"
+      />
+      <tc-action-item
+        v-if="isAuthor"
+        error
+        title="Löschen"
+        icon="trashcan-alt"
+        @click="deleteWorkout"
+      />
+
+      <tc-action-item success icon="share" title="Teilen" />
+    </template>
+  </FHPreview>
 </template>
 
 <script lang="ts">
@@ -46,11 +50,13 @@ import { IWorkout } from '@/utils/interfaces';
 import { UserManagement } from '@/utils/UserManagement';
 import { WorkoutManagement } from '@/utils/WorkoutManagement';
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import FHPreview from '../FHPreview.vue';
 import FHWorkoutThumbnail from './FHWorkoutThumbnail.vue';
 
 @Component({
   components: {
-    FHWorkoutThumbnail
+    FHWorkoutThumbnail,
+    FHPreview
   }
 })
 export default class FHWorkoutPreview extends Vue {
@@ -91,41 +97,6 @@ export default class FHWorkoutPreview extends Vue {
 
 <style lang="scss" scoped>
 .fh-workout-preview {
-  border-radius: $border-radius;
-  height: fit-content;
-
-  background: $paragraph;
-  @media #{$isDark} {
-    background: $color;
-  }
-  box-shadow: $shadow-light;
-
-  .fh-workout-thumbnail {
-    height: 210px;
-    border-radius: $border-radius $border-radius 0 0;
-  }
-
-  .title {
-    border-radius: 0 0 $border-radius $border-radius;
-    margin-top: -12.5px;
-    position: relative;
-    padding: 0 20px;
-    overflow-wrap: break-word;
-    font-weight: bold;
-    font-size: 1.4em;
-
-    background-image: linear-gradient(
-      to bottom,
-      transparent,
-      $paragraph 12.5px
-    );
-    @media #{$isDark} {
-      background-image: linear-gradient(to bottom, transparent, $color 12.5px);
-    }
-  }
-  .tl-flow {
-    padding: 10px;
-  }
   .exercise-amount {
     margin-left: 10px;
     opacity: 0.7;
@@ -136,6 +107,11 @@ export default class FHWorkoutPreview extends Vue {
     span {
       font-size: 14px;
     }
+  }
+
+  .fh-workout-thumbnail {
+    height: 210px;
+    border-radius: $border-radius $border-radius 0 0;
   }
 }
 </style>
