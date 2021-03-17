@@ -1,4 +1,4 @@
-![](https://api.timos.design:3001/etc/gh-header.svg)
+![](https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/18bb2653-50ac-435f-903f-67b367c4f032.jpeg)
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e82e9b04-0e9a-4c26-84ea-10b6c940d433/deploy-status)](https://app.netlify.com/sites/fitness-hub/deploys)
 [![Website Fitness Planner](https://img.shields.io/website-up-down-green-red/https/fitnesshub.app.svg)](https://fitnesshub.app/)
