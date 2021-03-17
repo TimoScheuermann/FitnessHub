@@ -16,6 +16,7 @@ import { getUserFromJWT, verfiyUser } from './utils/auth';
 import { backendURL } from './utils/constants';
 import {
   closeFullscreen,
+  handleDetailViewPreload,
   openFullscreen,
   shareExercise,
   shareNutritionplan,
@@ -93,6 +94,16 @@ router.afterEach((to: Route) => {
 
   const og = document.querySelector('meta[property="og:title"]');
   if (og) og.setAttribute('content', title);
+
+  if (to.name === 'recipe-details') {
+    handleDetailViewPreload(to.params.id, 'recipe', 'r');
+  } else if (to.name === 'exercise-details') {
+    handleDetailViewPreload(to.params.id, 'exercise', 'e');
+  } else if (to.name === 'workout-details') {
+    handleDetailViewPreload(to.params.id, 'workout', 'w');
+  } else if (to.name === 'nutritionplan') {
+    handleDetailViewPreload(to.params.id, 'nutritionplan', 'p');
+  }
 });
 
 // show specific html-elements only for specfic groups

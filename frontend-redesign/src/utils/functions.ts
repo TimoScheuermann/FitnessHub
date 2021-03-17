@@ -2,7 +2,7 @@ import router from '@/router';
 import store from '@/store';
 import { Route } from 'vue-router';
 import { Dictionary } from 'vue-router/types/router';
-import { anHour, days } from './constants';
+import { anHour, backendURL, days } from './constants';
 import { IExercise, INutritionplan, IRecipe, IWorkout } from './interfaces';
 import { NotificationManagement } from './NotificationManagement';
 
@@ -214,4 +214,58 @@ export function shareNutritionplan(plan: INutritionplan) {
   if (plan && plan._id) {
     share('p', plan._id, 'Ernährungsplan', undefined);
   }
+}
+
+export function handleDetailViewPreload(
+  id: string,
+  endpoint: string,
+  prefix: string
+) {
+  fetch(`${backendURL}/${endpoint}/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data) {
+        let title = data.title;
+        let description = '';
+        let thumbnail = '';
+
+        if (data.thumbnail) {
+          thumbnail = data.thumbnail;
+          if (data.reviewed) {
+            description =
+              'Sieh dir diese Übung auf der FitnessHub an, um mehr darüber zu erfahren';
+          } else {
+            description =
+              'Sieh dir dieses Rezept auf der FitnessHub an, um mehr darüber zu erfahren';
+          }
+        } else if (data.exercises) {
+          thumbnail = data.exercises[0].thumbnail;
+          description =
+            'Sieh dir dieses Workout auf der FitnessHub an, um mehr darüber zu erfahren';
+        } else if (data.monday) {
+          thumbnail = data.monday.lunch.thumbnail;
+          description =
+            'Sieh dir diesen Ernährungsplan auf der FitnessHub an, um mehr darüber zu erfahren';
+        }
+
+        const options = {
+          title: title,
+          description: description,
+          image: thumbnail,
+          url: `https://fitnesshub.app/${prefix}/${id}`
+        };
+        [
+          'meta[name="%"]',
+          'meta[property="og:%"]',
+          'meta[property="twitter:%"]'
+        ].forEach(type => {
+          for (const [key, value] of Object.entries(options)) {
+            const element = document.querySelector(type.replace('%', key));
+            if (element) {
+              element.setAttribute('content', value);
+            }
+          }
+        });
+      }
+    });
 }
