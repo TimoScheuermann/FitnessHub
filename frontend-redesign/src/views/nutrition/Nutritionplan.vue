@@ -31,12 +31,24 @@
         </div>
       </tc-hero>
     </FHSwipeable>
-    <template v-if="plan">
-      <div content>
+
+    <FHAppear>
+      <div content v-if="plan">
+        <tl-grid minWidth="150" gap="10" max-width>
+          <FHButton
+            @click="$sP(plan)"
+            :frosted="true"
+            icon="share"
+            title="Teilen"
+          />
+        </tl-grid>
+
         <h1 center>{{ plan.title }}</h1>
       </div>
+    </FHAppear>
 
-      <div class="grid-wrapper">
+    <FHAppear>
+      <div class="grid-wrapper" v-if="plan">
         <div class="grid">
           <div class="daynames" v-for="dn in Object.values(days)" :key="dn">
             {{ dn }}
@@ -122,11 +134,13 @@
           </tl-flow>
         </div>
       </div>
-    </template>
+    </FHAppear>
   </div>
 </template>
 
 <script lang="ts">
+import FHAppear from '@/components/FHAppear.vue';
+import FHButton from '@/components/FHButton.vue';
 import FHFullScreenCloser from '@/components/FHFullScreenCloser.vue';
 import FHHeader from '@/components/FHHeader.vue';
 import FHSwipeable from '@/components/FHSwipeable.vue';
@@ -141,7 +155,9 @@ import { Vue, Component } from 'vue-property-decorator';
     FHSwipeable,
     FHHeader,
     FHFullScreenCloser,
-    FHWorkoutThumbnail
+    FHWorkoutThumbnail,
+    FHButton,
+    FHAppear
   }
 })
 export default class Nutritionplan extends Vue {
@@ -202,6 +218,13 @@ export default class Nutritionplan extends Vue {
 <style lang="scss" scoped>
 .view-nutritionplan {
   min-height: 100vh;
+
+  .tl-grid {
+    left: 50%;
+    transform: translate(-50%, calc(-100% - 40px));
+    position: absolute;
+    z-index: 10;
+  }
 
   [content] {
     padding-top: 0;

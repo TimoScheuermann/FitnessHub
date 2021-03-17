@@ -3,6 +3,8 @@ import store from '@/store';
 import { Route } from 'vue-router';
 import { Dictionary } from 'vue-router/types/router';
 import { anHour, days } from './constants';
+import { IExercise, INutritionplan, IRecipe, IWorkout } from './interfaces';
+import { NotificationManagement } from './NotificationManagement';
 
 function getCurrentRoute(): Route {
   return router.currentRoute;
@@ -173,4 +175,43 @@ export function extractInfoFromUrl(
     icon: 'star',
     name: 'Original'
   };
+}
+
+function share(
+  prefix: string,
+  id: string,
+  name: string,
+  image: string | undefined
+) {
+  copyToClipboard(`https://fitnesshub.app/${prefix}/${id}`);
+  NotificationManagement.sendNotification(
+    name + ' teilen',
+    'Der Link zum Teilen wurde in deine Ablage kopiert',
+    undefined,
+    image
+  );
+}
+
+export function shareWorkout(workout: IWorkout) {
+  if (workout) {
+    share('w', workout._id, 'Workout', workout.exercises[0].thumbnail);
+  }
+}
+
+export function shareExercise(exercise: IExercise) {
+  if (exercise) {
+    share('e', exercise._id, 'Übung', exercise.thumbnail);
+  }
+}
+
+export function shareRecipe(recipe: IRecipe) {
+  if (recipe) {
+    share('r', recipe._id, 'Rezept', recipe.thumbnail);
+  }
+}
+
+export function shareNutritionplan(plan: INutritionplan) {
+  if (plan && plan._id) {
+    share('p', plan._id, 'Ernährungsplan', undefined);
+  }
 }

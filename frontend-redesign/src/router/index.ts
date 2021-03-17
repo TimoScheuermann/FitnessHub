@@ -54,6 +54,39 @@ const router = new VueRouter({
 
   routes: [
     /**
+     * => Start short urls
+     */
+
+    {
+      path: '/r/:id',
+      redirect: to => {
+        return { name: 'recipe-details', params: { id: to.params.id } };
+      }
+    },
+    {
+      path: '/e/:id',
+      redirect: to => {
+        return { name: 'exercise-details', params: { id: to.params.id } };
+      }
+    },
+    {
+      path: '/p/:id',
+      redirect: to => {
+        return { name: 'nutritionplan', params: { id: to.params.id } };
+      }
+    },
+    {
+      path: '/w/:id',
+      redirect: to => {
+        return { name: 'workout-details', params: { id: to.params.id } };
+      }
+    },
+
+    /**
+     * <= End short urls
+     */
+
+    /**
      * => Start Fullscreen
      */
 

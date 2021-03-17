@@ -16,7 +16,12 @@
     </div>
 
     <template slot="action">
-      <tc-action-item success icon="share" title="Teilen" />
+      <tc-action-item
+        success
+        icon="share"
+        title="Teilen"
+        @click="$sR(recipe)"
+      />
       <tc-action-item
         icon="i-circle-filled"
         title="Details"

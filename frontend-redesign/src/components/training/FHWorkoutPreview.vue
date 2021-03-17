@@ -14,6 +14,12 @@
 
     <template slot="action">
       <tc-action-item
+        success
+        icon="share"
+        title="Teilen"
+        @click="$sW(workout)"
+      />
+      <tc-action-item
         icon="play"
         title="Workout starten"
         @click="startWorkout"
@@ -37,8 +43,6 @@
         icon="trashcan-alt"
         @click="deleteWorkout"
       />
-
-      <tc-action-item success icon="share" title="Teilen" />
     </template>
   </FHPreview>
 </template>

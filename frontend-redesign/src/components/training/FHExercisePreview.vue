@@ -16,6 +16,13 @@
       />
     </div>
     <template slot="action" v-if="exercise.reviewed">
+      <tc-action-item
+        success
+        icon="share"
+        title="Teilen"
+        @click="$sE(exercise)"
+      />
+
       <tc-action-item icon="plus" title="Workout" @click="addToWo" />
       <tc-action-item icon="list" title="Liste" />
       <tc-action-item
@@ -30,7 +37,6 @@
         icon="pencil"
         @click="updateExercise"
       />
-      <tc-action-item success icon="share" title="Teilen" />
     </template>
     <template v-else-if="$route.name === 'exercise-submissions'">
       <tc-action-item

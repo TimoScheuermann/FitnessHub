@@ -14,13 +14,24 @@ import { VNode } from 'vue/types/umd';
 import './registerServiceWorker';
 import { getUserFromJWT, verfiyUser } from './utils/auth';
 import { backendURL } from './utils/constants';
-import { closeFullscreen, openFullscreen } from './utils/functions';
+import {
+  closeFullscreen,
+  openFullscreen,
+  shareExercise,
+  shareNutritionplan,
+  shareRecipe,
+  shareWorkout
+} from './utils/functions';
 import { WorkoutManagement } from './utils/WorkoutManagement';
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$oFS = openFullscreen;
 Vue.prototype.$cFS = closeFullscreen;
+Vue.prototype.$sE = shareExercise;
+Vue.prototype.$sR = shareRecipe;
+Vue.prototype.$sW = shareWorkout;
+Vue.prototype.$sP = shareNutritionplan;
 
 Vue.use(VueMasonry);
 Vue.use(VueScrollReveal, {

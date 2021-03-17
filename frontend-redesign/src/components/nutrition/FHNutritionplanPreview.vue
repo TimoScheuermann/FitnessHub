@@ -13,7 +13,7 @@
     </div>
 
     <template slot="action">
-      <tc-action-item success icon="share" title="Teilen" />
+      <tc-action-item success icon="share" title="Teilen" @click="$sP(plan)" />
       <tc-action-item
         icon="i-circle-filled"
         title="Details"

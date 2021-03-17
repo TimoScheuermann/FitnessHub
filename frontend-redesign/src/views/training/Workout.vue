@@ -39,7 +39,12 @@
           title="Start"
           @click="startWorkout"
         />
-        <FHButton :frosted="true" icon="cloud-download" title="Download" />
+        <FHButton
+          @click="$sW(workout)"
+          :frosted="true"
+          icon="share"
+          title="Teilen"
+        />
       </tl-grid>
       <h1 center>{{ workout.title }}</h1>
       <div max-width>

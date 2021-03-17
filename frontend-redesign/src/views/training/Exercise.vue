@@ -29,11 +29,10 @@
           @click="addToWorkout"
         />
         <FHButton
-          v-if="isAuthor"
+          @click="$sE(exercise)"
           :frosted="true"
-          icon="pencil"
-          title="Bearbeiten"
-          @click="$oFS('update-exercise', { id: exercise._id })"
+          icon="share"
+          title="Teilen"
         />
       </tl-grid>
 

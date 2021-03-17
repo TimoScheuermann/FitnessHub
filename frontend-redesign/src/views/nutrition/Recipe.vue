@@ -29,11 +29,10 @@
           @click="toggleLike"
         />
         <FHButton
-          v-if="isAuthor"
+          @click="$sR(recipe)"
           :frosted="true"
-          icon="pencil"
-          title="Bearbeiten"
-          @click="$oFS('update-recipe', { id: recipe._id })"
+          icon="share"
+          title="Teilen"
         />
       </tl-grid>
 
