@@ -221,7 +221,7 @@ export function handleDetailViewPreload(
   endpoint: string,
   prefix: string
 ) {
-  fetch(`${backendURL}/${endpoint}/${id}`)
+  fetch(`${backendURL}${endpoint}/${id}`)
     .then(res => res.json())
     .then(data => {
       if (data) {
