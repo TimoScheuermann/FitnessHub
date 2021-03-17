@@ -7,8 +7,14 @@
       <tl-flow horizontal="space-between" vertical="start">
         <div class="title">{{ exercise.title }}</div>
         <tc-action :dark="$store.getters.darkmode">
+          <tc-action-item
+            success
+            icon="share"
+            title="Teilen"
+            @click="$sE(exercise)"
+          />
           <tc-action-item icon="plus" title="Workout" @click="addToWO" />
-          <tc-action-item icon="list" title="Liste" />
+          <tc-action-item icon="list" title="Liste" @click="$aTL(exercise)" />
           <tc-action-item
             icon="i-circle-filled"
             title="Details"

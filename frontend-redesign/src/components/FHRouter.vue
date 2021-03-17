@@ -12,6 +12,7 @@
 import { getDepth } from '@/utils/functions';
 import { Vue, Component } from 'vue-property-decorator';
 import { Route } from 'vue-router';
+
 @Component
 export default class FHRouter extends Vue {
   public transitionName = 'slide-bottom';

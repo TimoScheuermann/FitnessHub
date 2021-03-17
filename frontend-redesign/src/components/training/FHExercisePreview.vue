@@ -24,7 +24,7 @@
       />
 
       <tc-action-item icon="plus" title="Workout" @click="addToWo" />
-      <tc-action-item icon="list" title="Liste" />
+      <tc-action-item icon="list" title="Liste" @click="$aTL(exercise)" />
       <tc-action-item
         icon="i-circle-filled"
         title="Details"

@@ -3,6 +3,7 @@ import store from '@/store';
 import { Route } from 'vue-router';
 import { Dictionary } from 'vue-router/types/router';
 import { anHour, backendURL, days } from './constants';
+import { FHEventBus } from './FHEventbus';
 import { IExercise, INutritionplan, IRecipe, IWorkout } from './interfaces';
 import { NotificationManagement } from './NotificationManagement';
 
@@ -177,6 +178,15 @@ export function extractInfoFromUrl(
   };
 }
 
+export function addToList(exercise: IExercise) {
+  if (!exercise) return;
+  if (!store.getters.valid) {
+    openFullscreen('login');
+    return;
+  }
+  FHEventBus.$emit('add-to-list', exercise);
+}
+
 function share(
   prefix: string,
   id: string,
@@ -254,6 +264,7 @@ export function handleDetailViewPreload(
           image: thumbnail,
           url: `https://fitnesshub.app/${prefix}/${id}`
         };
+
         [
           'meta[name="%"]',
           'meta[property="og:%"]',

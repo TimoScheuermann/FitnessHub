@@ -4,6 +4,8 @@
     <FHTabbar />
     <FHNavbar />
     <FHRouter />
+
+    <FHSpontaneousWorkout />
   </div>
 </template>
 
@@ -31,13 +33,15 @@ import { ExerciseManagement } from './utils/ExerciseManagement';
 import { VariableManagement } from './utils/VariableManagement';
 import { FeedManagement } from './utils/FeedManagement';
 import { AchievementManager } from './utils/AchievementManager';
+import FHSpontaneousWorkout from './components/FHSpontaneousWorkout.vue';
 
 @Component({
   components: {
     FHTabbar,
     FHNavbar,
     FHRouter,
-    FHNotification
+    FHNotification,
+    FHSpontaneousWorkout
   }
 })
 export default class App extends Vue {

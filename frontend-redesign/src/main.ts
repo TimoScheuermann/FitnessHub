@@ -15,6 +15,7 @@ import './registerServiceWorker';
 import { getUserFromJWT, verfiyUser } from './utils/auth';
 import { backendURL } from './utils/constants';
 import {
+  addToList,
   closeFullscreen,
   handleDetailViewPreload,
   openFullscreen,
@@ -29,6 +30,7 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$oFS = openFullscreen;
 Vue.prototype.$cFS = closeFullscreen;
+Vue.prototype.$aTL = addToList;
 Vue.prototype.$sE = shareExercise;
 Vue.prototype.$sR = shareRecipe;
 Vue.prototype.$sW = shareWorkout;
