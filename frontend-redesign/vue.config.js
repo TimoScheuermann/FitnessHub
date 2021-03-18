@@ -1,4 +1,8 @@
 module.exports = {
+  workboxPluginMode: 'InjectManifest',
+  workboxOptions: {
+    swSrc: 'public/service-worker.js'
+  },
   pwa: {
     manifestOptions: {
       display: 'fullscreen'

@@ -191,38 +191,55 @@ function share(
   prefix: string,
   id: string,
   name: string,
+  title: string,
   image: string | undefined
 ) {
-  copyToClipboard(`https://fitnesshub.app/${prefix}/${id}`);
-  NotificationManagement.sendNotification(
-    name + ' teilen',
-    'Der Link zum Teilen wurde in deine Ablage kopiert',
-    undefined,
-    image
-  );
+  const url = `https://fitnesshub.app/${prefix}/${id}`;
+  const share: ShareData = {
+    title: 'FitnessHub',
+    text: name + ': ' + title,
+    url: url
+  };
+
+  navigator
+    .share(share)
+    .then(() => {})
+    .catch(() => {
+      copyToClipboard(url);
+      NotificationManagement.sendNotification(
+        name + ' teilen',
+        'Der Link zum Teilen wurde in deine Ablage kopiert',
+        undefined,
+        image
+      );
+    });
 }
 
 export function shareWorkout(workout: IWorkout) {
   if (workout) {
-    share('w', workout._id, 'Workout', workout.exercises[0].thumbnail);
+    const { _id, title, exercises } = workout;
+    share('w', _id, 'Workout', title, exercises[0].thumbnail);
   }
 }
 
 export function shareExercise(exercise: IExercise) {
   if (exercise) {
-    share('e', exercise._id, 'Übung', exercise.thumbnail);
+    const { _id, title, thumbnail } = exercise;
+    share('e', _id, 'Übung', title, thumbnail);
   }
 }
 
 export function shareRecipe(recipe: IRecipe) {
   if (recipe) {
-    share('r', recipe._id, 'Rezept', recipe.thumbnail);
+    const { _id, title, thumbnail } = recipe;
+    share('r', _id, 'Rezept', title, thumbnail);
   }
 }
 
 export function shareNutritionplan(plan: INutritionplan) {
   if (plan && plan._id) {
-    share('p', plan._id, 'Ernährungsplan', undefined);
+    const { _id, title, monday } = plan;
+    share('p', _id, 'Ernährungsplan', title, monday.lunch?.thumbnail);
   }
 }
 

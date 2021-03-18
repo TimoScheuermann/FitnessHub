@@ -1,10 +1,13 @@
 import Axios from 'axios';
+import { cacheAdapterEnhancer } from 'axios-extensions';
 import { getToken } from './auth';
 import { backendURL } from './constants';
 
 const backend = Axios.create({
   timeout: 30000,
-  baseURL: backendURL
+  baseURL: backendURL,
+  // eslint-disable-next-line
+  adapter: cacheAdapterEnhancer(Axios.defaults.adapter as any)
 });
 
 backend.interceptors.request.use(config => {

@@ -14,7 +14,10 @@
     </transition>
 
     <transition name="workout-list">
-      <div class="workout-list" v-if="showButton && listVisible && exercises.length > 0">
+      <div
+        class="workout-list"
+        v-if="showButton && listVisible && exercises.length > 0"
+      >
         <FHList>
           <FHListItem
             v-for="(e, i) in exercises"
