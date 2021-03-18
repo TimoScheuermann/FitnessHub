@@ -1,8 +1,4 @@
 module.exports = {
-  workboxPluginMode: 'InjectManifest',
-  workboxOptions: {
-    swSrc: 'public/service-worker.js'
-  },
   pwa: {
     manifestOptions: {
       display: 'fullscreen'
@@ -18,6 +14,15 @@ module.exports = {
       appleTouchIcon: 'pwa/splash/manifest-icon-512.jpg',
       maskIcon: 'pwa/maskIcon.svg',
       msTileImage: 'pwa/msTileImage-144.png'
+    },
+
+    // configure the workbox plugin
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      // swSrc is required in InjectManifest mode.
+      swSrc: 'service-worker.js',
+      // ...other Workbox options...
+      exclude: [/\.map$/, /_redirects/] //this fixed it.
     }
   },
   css: {

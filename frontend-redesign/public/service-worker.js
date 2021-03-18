@@ -1,18 +1,17 @@
-self.__precacheManifest = [].concat(self.__precacheManifest || []);
-workbox.precaching.suppressWarnings();
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+workbox.core.setCacheNameDetails({ prefix: 'fitnesshub-app' });
 
-workbox.setConfig({ debug: true });
-
-self.addEventListener('message', e => {
-  if (e.data.action === 'skipWaiting') {
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
 
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+
 // Cache images:
 workbox.routing.registerRoute(
-  /\.(?:png|gif|jpg|jpeg|svg|webp|PNG|JPEG|JPG)$/,
+  /\.(?:png|gif|jpg|jpeg|svg|webp|JPEG|PNG|JPG)$/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'images',
     plugins: [
