@@ -13,7 +13,6 @@
         <p>Zurzeit existieren noch keine Posts</p>
       </tl-flow>
       <masonry v-else :cols="{ default: 2, 600: 1 }" gutter="20px">
-        <FHAdd />
         <FHFeedCard v-scroll-reveal v-for="p in posts" :key="p._id" :feed="p" />
       </masonry>
 
@@ -40,7 +39,6 @@
 
 <script lang="ts">
 import FHFeedCard from '@/components/feed/FHFeedCard.vue';
-import FHAdd from '@/components/FHAdd.vue';
 import FHAppear from '@/components/FHAppear.vue';
 import { FeedManagement } from '@/utils/FeedManagement';
 import { IFeed } from '@/utils/interfaces';
@@ -49,8 +47,7 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component({
   components: {
     FHAppear,
-    FHFeedCard,
-    FHAdd
+    FHFeedCard
   }
 })
 export default class Community extends Vue {

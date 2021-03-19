@@ -43,7 +43,11 @@
           />
         </tl-grid>
 
-        <h1 center>{{ plan.title }}</h1>
+        <div max-width>
+          <h1 center>{{ plan.title }}</h1>
+          <p>{{ plan.description }}</p>
+          <br />
+        </div>
       </div>
     </FHAppear>
 
