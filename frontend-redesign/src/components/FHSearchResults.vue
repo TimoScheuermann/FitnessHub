@@ -19,6 +19,7 @@
             <masonry :cols="{ default: 3, 750: 2, 500: 1 }" gutter="20px">
               <template v-if="type && type === 'exercise'">
                 <FHExercisePreview
+                  v-scroll-reveal
                   v-for="r in results"
                   :key="r._id"
                   :exercise="r"
@@ -26,6 +27,7 @@
               </template>
               <template v-if="type && type === 'recipe'">
                 <FHRecipePreview
+                  v-scroll-reveal
                   v-for="r in results"
                   :key="r._id"
                   :recipe="r"

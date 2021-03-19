@@ -18,7 +18,12 @@
       <br />
 
       <masonry :cols="{ default: 3, 750: 2, 500: 1 }" gutter="20px">
-        <FHExercisePreview v-for="e in exercises" :key="e._id" :exercise="e" />
+        <FHExercisePreview
+          v-scroll-reveal
+          v-for="e in exercises"
+          :key="e._id"
+          :exercise="e"
+        />
       </masonry>
     </div>
   </div>

@@ -20,7 +20,12 @@
       />
       <br />
       <masonry :cols="{ default: 3, 750: 2, 500: 1 }" gutter="20px">
-        <FHRecipePreview v-for="r in recipes" :key="r._id" :recipe="r" />
+        <FHRecipePreview
+          v-scroll-reveal
+          v-for="r in recipes"
+          :key="r._id"
+          :recipe="r"
+        />
       </masonry>
     </div>
   </div>
