@@ -132,7 +132,7 @@ Im Folgenden werden die Datenbankmodelle, aufgeteilt in User, Training und Nutri
 
 ## User
 
-<img width="100%" src="resources/db_user.jpg" />
+<img width="100%" src="resources/db_user.png" />
 
 ```ts
 enum Provider {
@@ -168,29 +168,32 @@ enum AvailableSetting {
 
 ## Training
 
-<img width="100%" src="resources/db_training.jpg" />
+<img width="100%" src="resources/db_training.png" />
 
 ```ts
-class UpdateExerciseDTO {
-    readonly title?: string;
-    readonly affectedMuscles?: string[];
-    readonly thumbnail?: string;
-    readonly explanatoryVideo?: string;
-    readonly difficulty?: number;
-    readonly warnings?: string[];
-    readonly steps?: string[];
-    readonly possibleAtHome?: boolean;
-    // Variable, depending on exercise
-    readonly time?: number;
-    readonly distance?: string;
-    readonly sets?: string;
-    readonly reps?: string;
+class CreateExerciseDTO {
+  readonly title: string;
+  readonly affectedMuscles: string[];
+  readonly thumbnail: string;
+  readonly explanatoryVideo?: string;
+
+  readonly difficulty: number;
+  warnings?: string[];
+  steps?: string[];
+  readonly possibleAtHome?: boolean;
+  readonly kneeFriendly?: boolean;
+
+  // Variable, depending on exercise
+  time?: number;
+  distance?: string;
+  sets?: { min: number; max: number };
+  reps?: { min: number; max: number };
 }
 ```
 
 ## Nutrition
 
-<img width="100%" src="./resources/db_nutrition.jpg" />
+<img width="100%" src="./resources/db_nutrition.png" />
 
 ```ts
 interface IRecipeIngredient {
@@ -210,12 +213,16 @@ interface INutrition {
 
 ```ts
 interface INutritionplanDay {
-    breakfast: IRecipe;
-    lunch: IRecipe;
-    dinner: IRecipe;
-    snacks: IRecipe[];
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+    snacks: string[];
 }
 ```
+
+## Feed
+
+<img width="100%" src="./resources/db_feed.png" />
 
 <br />
 
