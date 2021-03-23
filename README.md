@@ -220,6 +220,10 @@ interface INutritionplanDay {
 }
 ```
 
+## Variables
+
+<img width="100%" src="./resources/db_variables.png" />
+
 ## Feed
 
 <img width="100%" src="./resources/db_feed.png" />
