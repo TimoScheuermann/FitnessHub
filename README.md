@@ -222,7 +222,7 @@ interface INutritionplanDay {
 
 ## Variables
 
-<img width="100%" src="./resources/db_variables.png" />
+<img width="200" src="./resources/db_variables.png" />
 
 ## Feed
 
