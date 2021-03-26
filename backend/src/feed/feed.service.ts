@@ -9,6 +9,7 @@ import { IExercise } from 'src/exercise/interfaces/IExercise';
 import { FHSocket } from 'src/FHSocket';
 import { Friendship } from 'src/friends/schemas/Friendship.schema';
 import { IRecipe } from 'src/recipe/interfaces/IRecipe';
+import { TgbotService } from 'src/tgbot/tgbot.service';
 import { IUserInfo } from 'src/user/interfaces/IUserInfo';
 import { User } from 'src/user/schemas/User.schema';
 import { CreatePostDto } from './dtos/CreatePost.dto';
@@ -27,6 +28,7 @@ export class FeedService {
     @InjectModel(Friendship.name)
     private readonly friendshipModel: Model<Friendship>,
     private readonly fhSocket: FHSocket,
+    private readonly tgbotService: TgbotService,
   ) {}
 
   public async getFeed(
@@ -149,6 +151,13 @@ export class FeedService {
       });
       const mapped = (await this.mapPost([newFeed]))[0];
       this.fhSocket.server.emit('feed-create', mapped);
+
+      this.tgbotService.publishUpdate(
+        'Eine neue Übung wurde veröffentlicht!\n<b>' + e.title + '</b>',
+        'Übung ansehen',
+        'https://fitnesshub.app/e/' + e._id,
+        e.thumbnail,
+      );
     }
   }
 
@@ -174,6 +183,13 @@ export class FeedService {
     });
     const mapped = (await this.mapPost([newFeed]))[0];
     this.fhSocket.server.emit('feed-create', mapped);
+
+    this.tgbotService.publishUpdate(
+      'Ein neues Rezept wurde veröffentlicht!\n<b>' + r.title + '</b>',
+      'Rezept ansehen',
+      'https://fitnesshub.app/r/' + r._id,
+      r.thumbnail,
+    );
   }
 
   public async recipeDelete(id: string): Promise<void> {

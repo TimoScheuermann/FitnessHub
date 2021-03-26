@@ -31,7 +31,7 @@ export class TgbotService {
     private readonly fhSocket: FHSocket,
   ) {
     // declare bots if enabled via env vars.
-    if (!process.env.IGNORE_BOT) {
+    if (!process.env.IGNORE_BOT || true) {
       this.clientBot = new TelegramBot(process.env.TG_BOT_CLIENT_TOKEN, {
         polling: true,
       });
@@ -192,6 +192,31 @@ export class TgbotService {
         });
       }
     }
+  }
+
+  public async publishUpdate(
+    text: string,
+    label: string,
+    url: string,
+    thumbnail?: string,
+  ): Promise<void> {
+    if (!this.clientBot) return;
+
+    const message = `${text}<a href="${thumbnail}">&#8205;</a>`;
+    const options = {
+      disable_web_page_preview: false,
+      parse_mode: 'HTML',
+      reply_markup: JSON.stringify({
+        inline_keyboard: [
+          [
+            { text: 'Alle Beiträge', url: 'https://fitnesshub.app/community/' },
+            { text: label, url: url },
+          ],
+        ],
+      }),
+    };
+
+    this.clientBot.sendMessage('@FHUpdates', message, options);
   }
 
   public async getChatNumber(userId: string): Promise<number | null> {
