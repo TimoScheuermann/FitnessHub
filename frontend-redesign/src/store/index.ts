@@ -199,6 +199,8 @@ const store = new Vuex.Store({
     signOut(state: any) {
       state.userValidated = false;
       state.user = undefined;
+      socket.close();
+      socket.open();
     },
     async signIn(state: any, user: IUser) {
       state.user = user;
