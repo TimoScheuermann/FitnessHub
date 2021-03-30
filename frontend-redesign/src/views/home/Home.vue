@@ -32,9 +32,9 @@
             asset="https://cdn2.pixstash.net/2020/09/10/1iGh8.png"
           />
           <FHSectionCardNormal
-            title="Trainingspläne"
+            title="Timer / Stoppuhr"
             description="Stelle dir einen Timer für deine Übung. Starte die Stoppuhr."
-            asset="https://cdn2.pixstash.net/2020/09/10/1iEZd.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/e54504c0-d83f-431d-a0c3-e0139a737907.webp"
           />
         </tl-grid>
         <div class="spacer" />
@@ -133,7 +133,7 @@
           <FHSectionCardNormal
             title="Erfolge freischalten"
             description="Erfolge für verschiedene Ziele frei."
-            assets="later"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/0718bf11-a37a-4c81-a8b8-e0bd5dc772bb.webp"
           />
         </tl-grid>
         <div class="spacer" />
@@ -145,8 +145,8 @@
         <tl-grid minWidth="250" arrangement="auto-fill">
           <FHSectionCardNormal
             title="Aktivitätsfeed"
-            assets="later"
             description="Verfolge die Aktivitäten deiner Freunde. Erfahre, was sie für Übungen erstellt, Erfolge freigeschaltet oder Workouts abgeschlossen haben."
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/ec01dac8-09d0-4d9e-9770-06738d142c3d.webp"
           />
         </tl-grid>
 
