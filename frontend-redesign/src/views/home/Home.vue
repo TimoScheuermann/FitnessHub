@@ -24,17 +24,17 @@
           <FHSectionCardNormal
             title="Trainingspläne"
             description="Erstelle Trainingspläne, die dir helfen, dein Trainingsziel zu erreichen."
-            asset="assets/landing/Trainingsplan.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/d5046e80-7c73-4451-b77d-2ce227bed325.webp"
           />
           <FHSectionCardNormal
             title="Übungen"
             description="Kreiere Übungen, die du deinen Trainingsplänen hinzufügen kannst."
-            asset="assets/landing/Übung.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/61f36135-74a0-41ac-b507-5de68ffc1a6f.webp"
           />
           <FHSectionCardNormal
             title="Timer / Stoppuhr"
             description="Stelle dir einen Timer für deine Übung. Starte die Stoppuhr."
-            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/e54504c0-d83f-431d-a0c3-e0139a737907.webp"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/d3c6ae79-ed37-451f-bfa7-6955d8dd6e46.webp"
           />
         </tl-grid>
         <div class="spacer" />
@@ -47,22 +47,22 @@
           <FHSectionCardNormal
             title="Ernährungspläne"
             description="Ernährungspläne geben dir eine Hilfestellung beim Erreichen deiner Traumfigur."
-            asset="assets/landing/Ernährungsplan.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/58a3a831-8543-4d64-87d3-4926f0918f0f.webp"
           />
           <FHSectionCardNormal
             title="Kochrezepte"
             description="Finde Kochrezepte, die dein Training unterstützen und dir beim Abnehmen helfen."
-            asset="assets/landing/Rezepte.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/4ad31460-0148-4432-8213-2f1c282ca636.webp"
           />
           <FHSectionCardNormal
             title="Ernährungswiki"
             description="Informiere dich über Ernährungstipps, die dir helfen, deinen Alltag gesünder zu gestalten."
-            asset="assets/landing/Ernährungswiki.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/3e5f7126-1dad-4894-8874-fd45e7b5342d.webp"
           />
           <FHSectionCardNormal
             title="Trinkometer"
             description="Stay hydrated!"
-            asset="assets/landing/Trinkometer.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/33e92901-df23-42df-ae38-7930f588fbe0.webp"
           />
         </tl-grid>
         <div class="spacer" />
@@ -75,13 +75,13 @@
           <FHSectionCardNormal
             title="Trainingsstatistik"
             description="Schau dir an, wie viel du bereits trainiert hast. Vergleiche es mit deiner Trainingshistorie."
-            asset="https://cdn2.pixstash.net/2020/09/10/1izmW.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/d7b126b7-4969-466c-8678-2ad561bad76f.webp"
           />
 
           <FHSectionCardNormal
             title="Gewicht tracken"
             description="Tracke dein Gewicht, um deinen Fortschritt zu verfolgen."
-            asset="assets/landing/Gewichtsverlauf.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/366c7d65-ec8e-4768-aa36-9b0687b44ca3.webp"
           />
         </tl-grid>
         <div class="spacer" />
@@ -94,22 +94,22 @@
           <FHSectionCardNormal
             title="Freunde hinzufügen"
             description="Füge Freunde in deinem FitnessHub hinzu."
-            asset="assets/landing/Freunde\ hinzufügen.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/49f46de3-e750-4e3f-96cd-55773848218e.webp"
           />
           <FHSectionCardNormal
             title="Chat"
             description="Chatte mit deinen Freunden live über FitnessHub."
-            asset="assets/landing/Chat.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/e30eddae-4161-4d00-9c8c-7208bd06fc9d.webp"
           />
           <FHSectionCardNormal
             title="Profil ansehen"
             description="Sieh die Profile deiner Freunde an."
-            asset="assets/landing/Profil\ ansehen.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/4d498130-ee6f-4888-b141-cf30e6cd93f1.webp"
           />
           <FHSectionCardNormal
             title="Telegram"
             description="Behalte mit Telegram Nachrichten der Fitnesshub im Blick."
-            asset="assets/landing/Telegram.png"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/6bf7d3e5-bf7e-4b6c-a159-7b77557cc6db.webp"
           />
         </tl-grid>
         <div class="spacer" />
@@ -121,13 +121,13 @@
         <tl-grid minWidth="250" arrangement="auto-fill">
           <FHSectionCardNormal
             title="Aktivitätsfeed"
-            description="Verfolge die Aktivitäten deiner Freunde und erfahre, was es Neues giebt."
-            asset="assets/landing/Aktivitätsfeed.png"
+            description="Verfolge die Aktivitäten deiner Freunde und erfahre, was es Neues gibt."
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/5282a185-aad2-4f9d-810d-b10025263c6a.webp"
           />
           <FHSectionCardNormal
             title="Erfolge freischalten"
             description="Schalte Erfolge für verschiedene Ziele frei und teile sie über den Feed."
-            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/0718bf11-a37a-4c81-a8b8-e0bd5dc772bb.webp"
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/406018b0-13df-44b5-9bc1-b5045ef097d2.webp"
           />
         </tl-grid>
         <div class="spacer" />

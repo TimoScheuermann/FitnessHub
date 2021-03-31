@@ -40,6 +40,7 @@ export default class FHSectionCardNormal extends Vue {
 .fh-section-card-normal {
   border-radius: $border-radius;
   background: $background;
+  padding-top: 5px;
   &[dark] {
     background: $background_dark;
   }
