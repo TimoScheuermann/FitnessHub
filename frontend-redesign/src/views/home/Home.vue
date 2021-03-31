@@ -24,12 +24,12 @@
           <FHSectionCardNormal
             title="Trainingspläne"
             description="Erstelle Trainingspläne, die dir helfen, dein Trainingsziel zu erreichen."
-            asset="https://cdn2.pixstash.net/2020/09/10/1iAQb.png"
+            asset="assets/landing/Trainingsplan.png"
           />
           <FHSectionCardNormal
             title="Übungen"
             description="Kreiere Übungen, die du deinen Trainingsplänen hinzufügen kannst."
-            asset="https://cdn2.pixstash.net/2020/09/10/1iGh8.png"
+            asset="assets/landing/Übung.png"
           />
           <FHSectionCardNormal
             title="Timer / Stoppuhr"
@@ -47,22 +47,22 @@
           <FHSectionCardNormal
             title="Ernährungspläne"
             description="Ernährungspläne geben dir eine Hilfestellung beim Erreichen deiner Traumfigur."
-            asset="later"
+            asset="assets/landing/Ernährungsplan.png"
           />
           <FHSectionCardNormal
             title="Kochrezepte"
             description="Finde Kochrezepte, die dein Training unterstützen und dir beim Abnehmen helfen."
-            asset="later"
+            asset="assets/landing/Rezepte.png"
           />
           <FHSectionCardNormal
-            title="Ernährungstipps"
+            title="Ernährungswiki"
             description="Informiere dich über Ernährungstipps, die dir helfen, deinen Alltag gesünder zu gestalten."
-            asset="later"
+            asset="assets/landing/Ernährungswiki.png"
           />
           <FHSectionCardNormal
             title="Trinkometer"
             description="Stay hydrated!"
-            asset="https://cdn2.pixstash.net/2020/09/10/1iyE9.png"
+            asset="assets/landing/Trinkometer.png"
           />
         </tl-grid>
         <div class="spacer" />
@@ -74,20 +74,14 @@
         <tl-grid minWidth="250" arrangement="auto-fill">
           <FHSectionCardNormal
             title="Trainingsstatistik"
-            description="Sieh ein, wie viel du bereits trainiert hast. Diese Daten kannst du dir für die vergangene Woche oder den vergangenen Monat anzeigen lassen."
-            asset="later"
-          />
-
-          <FHSectionCardNormal
-            title="Vergleich"
-            description="Vergleiche die Trainingsdaten der aktuellen Woche mit denen der letzten Woche."
+            description="Schau dir an, wie viel du bereits trainiert hast. Vergleiche es mit deiner Trainingshistorie."
             asset="https://cdn2.pixstash.net/2020/09/10/1izmW.png"
           />
 
           <FHSectionCardNormal
             title="Gewicht tracken"
             description="Tracke dein Gewicht, um deinen Fortschritt zu verfolgen."
-            asset="https://cdn2.pixstash.net/2020/09/10/1ig5h.png"
+            asset="assets/landing/Gewichtsverlauf.png"
           />
         </tl-grid>
         <div class="spacer" />
@@ -100,56 +94,42 @@
           <FHSectionCardNormal
             title="Freunde hinzufügen"
             description="Füge Freunde in deinem FitnessHub hinzu."
-            asset="https://cdn2.pixstash.net/2020/09/10/1ipNB.png"
-          />
-          <FHSectionCardNormal
-            title="Challenges"
-            description="Stelle deinen Freunden Herausforderungen, um motiviert zu bleiben."
-            asset="later"
+            asset="assets/landing/Freunde\ hinzufügen.png"
           />
           <FHSectionCardNormal
             title="Chat"
             description="Chatte mit deinen Freunden live über FitnessHub."
-            asset="https://cdn2.pixstash.net/2020/09/10/1i9C5.png"
+            asset="assets/landing/Chat.png"
           />
           <FHSectionCardNormal
             title="Profil ansehen"
             description="Sieh die Profile deiner Freunde an."
-            asset="https://cdn2.pixstash.net/2020/09/10/1iN0a.png"
+            asset="assets/landing/Profil\ ansehen.png"
           />
           <FHSectionCardNormal
-            title="Teilen"
-            description="Teile Übungen, Statistiken oder Erfolge mit deinen Freunden."
-            asset="later"
+            title="Telegram"
+            description="Behalte mit Telegram Nachrichten der Fitnesshub im Blick."
+            asset="assets/landing/Telegram.png"
           />
         </tl-grid>
         <div class="spacer" />
       </section>
 
       <section :dark="$store.getters.darkmode">
-        <div class="subtitle">schnapp sie dir alle</div>
-        <div class="title">Erfolge</div>
-        <tl-grid minWidth="250" arrangement="auto-fill">
-          <FHSectionCardNormal
-            title="Erfolge freischalten"
-            description="Erfolge für verschiedene Ziele frei."
-            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/0718bf11-a37a-4c81-a8b8-e0bd5dc772bb.webp"
-          />
-        </tl-grid>
-        <div class="spacer" />
-      </section>
-
-      <section :dark="$store.getters.darkmode">
-        <div class="subtitle">schnapp sie dir alle</div>
-        <div class="title">Erfolge</div>
+        <div class="subtitle">Neuigkeiten & Erfolge</div>
+        <div class="title">Feed</div>
         <tl-grid minWidth="250" arrangement="auto-fill">
           <FHSectionCardNormal
             title="Aktivitätsfeed"
-            description="Verfolge die Aktivitäten deiner Freunde. Erfahre, was sie für Übungen erstellt, Erfolge freigeschaltet oder Workouts abgeschlossen haben."
-            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/ec01dac8-09d0-4d9e-9770-06738d142c3d.webp"
+            description="Verfolge die Aktivitäten deiner Freunde und erfahre, was es Neues giebt."
+            asset="assets/landing/Aktivitätsfeed.png"
+          />
+          <FHSectionCardNormal
+            title="Erfolge freischalten"
+            description="Schalte Erfolge für verschiedene Ziele frei und teile sie über den Feed."
+            asset="https://timos.s3.eu-central-1.amazonaws.com/drive/fitnesshub/0718bf11-a37a-4c81-a8b8-e0bd5dc772bb.webp"
           />
         </tl-grid>
-
         <div class="spacer" />
       </section>
     </div>
