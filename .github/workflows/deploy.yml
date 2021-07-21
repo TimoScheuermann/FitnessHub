@@ -34,6 +34,6 @@ jobs:
       - name: Deploy to Docker registry
         uses: docker/build-push-action@v2
         with:
-          file: {context}/backend/Dockerfile
+          file: /backend/Dockerfile
           push: true
           tags: timoscheuermann/fitnesshub-backend:${{ github.sha }}, timoscheuermann/fitnesshub-backend:latest
